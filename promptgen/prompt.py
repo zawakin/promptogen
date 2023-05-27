@@ -118,6 +118,14 @@ class Prompt(DataClass):
 
         return values
 
+    def drop_examples(self) -> "Prompt":
+        """Drop the examples from the prompt.
+
+        Returns:
+            A copy of the prompt without examples.
+        """
+        return self.copy(deep=True, update={"examples": []})
+
     def __repr__(self) -> str:
         return self.json(indent=4, ensure_ascii=False)
 

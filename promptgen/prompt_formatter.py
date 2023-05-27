@@ -4,6 +4,18 @@ from .input import InputFormatter, InputValue, JsonInputFormatter
 from .output import JsonOutputFormatter, OutputFormatter, OutputValue
 from .prompt import Example, Prompt
 
+class FormattablePrompt(ABC):
+    @abstractmethod
+    def format(self, input_value: InputValue) -> str:
+        pass
+
+    @abstractmethod
+    def format_without_input(self) -> str:
+        pass
+
+    @abstractmethod
+    def parse(self, output: str) -> OutputValue:
+        pass
 
 class PromptFormatter(ABC):
     @abstractmethod
@@ -25,8 +37,8 @@ class BasePromptFormatter(PromptFormatter):
 
     def __init__(
         self,
-        input_formatter: InputFormatter,
-        output_formatter: OutputFormatter,
+        input_formatter: InputFormatter = JsonInputFormatter(),
+        output_formatter: OutputFormatter = JsonOutputFormatter(),
     ):
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter

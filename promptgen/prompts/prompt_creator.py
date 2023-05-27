@@ -53,12 +53,7 @@ class PromptCreator(Prompt):
                             input=dict(input_1="prompt input 1"),
                             output=dict(output_1="prompt output 1"),
                         ),
-                        examples=[
-                            Example(
-                                input=dict(input_1="prompt example input 1"),
-                                output=dict(output_1="prompt example output 1"),
-                            ),
-                        ],
+                        examples=[],
                     ),
                 ).dict(),
             ),
@@ -69,7 +64,7 @@ class PromptCreator(Prompt):
                         background="The given text may be a sentence, a paragraph, or a document.",
                     ).dict(),
                     output=PromptCreatorOutput(
-                        prompt=categorization_prompt,
+                        prompt=categorization_prompt.drop_examples(),
                     ).dict(),
                 ),
                 Example(
@@ -78,7 +73,7 @@ class PromptCreator(Prompt):
                         background="The given text may be the part of the document.",
                     ).dict(),
                     output=PromptCreatorOutput(
-                        prompt=summarization_prompt,
+                        prompt=summarization_prompt.drop_examples(),
                     ).dict(),
                 ),
             ],

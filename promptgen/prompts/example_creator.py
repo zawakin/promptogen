@@ -88,7 +88,7 @@ class ExampleCreator(Prompt):
             examples=[
                 Example(
                     input=ExampleCreatorInput(
-                        prompt=categorization_prompt.copy(deep=True),
+                        prompt=categorization_prompt.drop_examples(),
                         n=2,
                     ).dict(),
                     output=ExampleCreatorOutput(
@@ -100,7 +100,7 @@ class ExampleCreator(Prompt):
                 ),
                 Example(
                     input=ExampleCreatorInput(
-                        prompt=summarization_prompt.copy(deep=True),
+                        prompt=summarization_prompt.drop_examples(),
                         n=2,
                     ).dict(),
                     output=ExampleCreatorOutput(
