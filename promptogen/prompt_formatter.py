@@ -1,47 +1,56 @@
 from abc import ABC, abstractmethod
-from .input import InputFormatter, InputValue
-from .output import OutputFormatter, OutputValue
+from .input import InputFormatter, InputValue, JsonInputFormatter
+from .output import JsonOutputFormatter, OutputFormatter, OutputValue
 from .prompt import Example, Prompt
 
 
 class PromptFormatter(ABC):
     @abstractmethod
-    def format(self, inputValue: InputValue, inputFormatter: InputFormatter, outputFormatter: OutputFormatter) -> str:
+    def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
         pass
 
     @abstractmethod
-    def parse(self, output: str, outputFormatter: OutputFormatter) -> OutputValue:
+    def format_prompt_without_input(self, prompt: Prompt) -> str:
+        pass
+
+    @abstractmethod
+    def parse(self, output: str) -> OutputValue:
         pass
 
 
 class BasePromptFormatter(PromptFormatter):
-    model: Prompt
+    input_formatter: InputFormatter
+    output_formatter: OutputFormatter
 
-    def __init__(self, *, model: Prompt | dict):
-        if isinstance(model, dict):
-            self.model = Prompt.from_dict(model)
-        else:
-            self.model = model
+    def __init__(self, input_formatter: InputFormatter, output_formatter: OutputFormatter):
+        self.input_formatter = input_formatter
+        self.output_formatter = output_formatter
 
-    def format(self, input: InputValue, inputFormatter: InputFormatter, outputFormatter: OutputFormatter) -> str:
-        formatted_input = inputFormatter.format(input)
-        formatted_template = self.format_example(
-            self.model.template, inputFormatter, outputFormatter)
+    def format_prompt(self, prompt: Prompt, input: InputValue) -> str:
+        formatted_input = self.input_formatter.format(input)
+        return (f"""{self.format_prompt_without_input(prompt)}
+
+Input:
+{formatted_input}
+Output:""")
+
+    def format_prompt_without_input(self, prompt: Prompt) -> str:
+        formatted_template = self.format_example(prompt.template)
         formatted_examples = "\n".join(
-            f'Example {i+1}:\n{self.format_example(e, inputFormatter, outputFormatter)}\n' for i, e in enumerate(self.model.examples)) if self.model.examples else ""
+            f'Example {i+1}:\n{self.format_example(e)}\n' for i, e in enumerate(prompt.examples)) if prompt.examples else ""
 
         formatted_input_parameters = "\n".join(
-            f"  - {p.name}: {p.description}" for p in self.model.input_parameters
+            f"  - {p.name}: {p.description}" for p in prompt.input_parameters
         )
         formatted_output_parameters = "\n".join(
-            f"  - {p.name}: {p.description}" for p in self.model.output_parameters
+            f"  - {p.name}: {p.description}" for p in prompt.output_parameters
         )
 
         return (
-            f'''You are an AI named "{self.model.name}".
-{self.model.description}
+            f'''You are an AI named "{prompt.name}".
+{prompt.description}
 
-Output a {outputFormatter.name()}-formatted string without outputting any other strings.
+Output a {self.output_formatter.name()}-formatted string without outputting any other strings.
 
 Input Parameters:
 {formatted_input_parameters}
@@ -52,17 +61,17 @@ Output Parameters:
 Template:
 {formatted_template}
 
-{formatted_examples}
+{formatted_examples}''')
 
-Input:
-{formatted_input}
-Output:'''
-        )
-
-    def format_example(self, example: Example, inputFormatter: InputFormatter, outputFormatter: OutputFormatter) -> str:
-        formatted_input = inputFormatter.format(example.input)
-        formatted_output = outputFormatter.format(example.output)
+    def format_example(self, example: Example) -> str:
+        formatted_input = self.input_formatter.format(example.input)
+        formatted_output = self.output_formatter.format(example.output)
         return f"Input:\n{formatted_input}\nOutput:\n{formatted_output}"
 
-    def parse(self, s: str, outputFormatter: OutputFormatter) -> OutputValue:
-        return outputFormatter.parse(s)
+    def parse(self, s: str) -> OutputValue:
+        return self.output_formatter.parse(s)
+
+
+class DefaultPromptFormatter(BasePromptFormatter):
+    def __init__(self):
+        super().__init__(JsonInputFormatter(), JsonOutputFormatter())
