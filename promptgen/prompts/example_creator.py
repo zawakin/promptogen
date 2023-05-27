@@ -1,5 +1,5 @@
-from promptogen.dataclass import DataClass
-from promptogen.prompt import Prompt, ParameterInfo, Example
+from promptgen.dataclass import DataClass
+from promptgen.prompt import Prompt, ParameterInfo, Example
 
 from .categorization import Categorization
 from .summarization import Summarization

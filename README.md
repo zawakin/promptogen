@@ -1,1 +1,1 @@
-# Promptogen
+# promptgen

@@ -1,6 +1,6 @@
 import pytest
 
-from promptogen.output import JsonOutputFormatter, RawStringOutputFormatter
+from promptgen.output import JsonOutputFormatter, RawStringOutputFormatter
 
 
 def test_json_output_formatter_name():

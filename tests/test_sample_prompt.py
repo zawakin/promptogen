@@ -1,9 +1,9 @@
-from promptogen.prompt import Prompt, load_prompt_from_json_file
-from promptogen.prompts.categorization import Categorization
-from promptogen.prompts.example_creator import ExampleCreator
-from promptogen.prompts.prompt_creator import PromptCreator
-from promptogen.prompts.prompt_optimizer import PromptOptimizer
-from promptogen.prompts.summarization import Summarization
+from promptgen.prompt import Prompt, load_prompt_from_json_file
+from promptgen.prompts.categorization import Categorization
+from promptgen.prompts.example_creator import ExampleCreator
+from promptgen.prompts.prompt_creator import PromptCreator
+from promptgen.prompts.prompt_optimizer import PromptOptimizer
+from promptgen.prompts.summarization import Summarization
 
 
 def test_load_prompts():

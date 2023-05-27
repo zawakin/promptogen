@@ -1,6 +1,6 @@
 import pytest
 
-from promptogen.input import JsonInputFormatter
+from promptgen.input import JsonInputFormatter
 
 
 def test_json_input_formatter_name():

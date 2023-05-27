@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "promptogen"
+name = "promptgen"
 version = "1.0.0"
 description = ""
 authors = ["zawakin <zawawahoge@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{ include = "promptogen" }]
+packages = [{ include = "promptgen" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"

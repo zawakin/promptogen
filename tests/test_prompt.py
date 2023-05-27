@@ -1,7 +1,7 @@
 from pydantic import ValidationError
 import pytest
 
-from promptogen.prompt import Example, ParameterInfo, Prompt
+from promptgen.prompt import Example, ParameterInfo, Prompt
 
 
 @pytest.fixture

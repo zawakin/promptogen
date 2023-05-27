@@ -45,16 +45,16 @@ jobs:
 
     - name: Lint with flake8
       run: |
-        poetry run flake8 promptogen
+        poetry run flake8 promptgen
 
     - name: Test with mypy
       run: |
-        poetry run mypy promptogen
+        poetry run mypy promptgen
 
     - name: Check code formatting with Black
       run: |
-        poetry run black --check promptogen
+        poetry run black --check promptgen
 
     - name: Check import formatting with isort
       run: |
-        poetry run isort --check-only promptogen
+        poetry run isort --check-only promptgen
