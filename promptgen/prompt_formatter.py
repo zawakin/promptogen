@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from .input import InputFormatter, InputValue, JsonInputFormatter
 from .output import JsonOutputFormatter, OutputFormatter, OutputValue
 from .prompt import Example, Prompt

@@ -1,5 +1,5 @@
 from promptgen.dataclass import DataClass
-from promptgen.prompt import Prompt, ParameterInfo, Example
+from promptgen.prompt import Example, ParameterInfo, Prompt
 
 
 class OptimizePromptInput(DataClass):
