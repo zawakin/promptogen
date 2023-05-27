@@ -3,7 +3,7 @@ from promptogen.prompt import Prompt, ParameterInfo, Example
 
 
 class OptimizePromptInput(DataClass):
-    original: Prompt
+    original_prompt: Prompt
     background: str
 
 
@@ -28,7 +28,7 @@ class PromptOptimizer(Prompt):
             ],
             template=Example(
                 input=OptimizePromptInput(
-                    original=Prompt(
+                    original_prompt=Prompt(
                         name="prompt name",
                         description="prompt description",
                         input_parameters=[

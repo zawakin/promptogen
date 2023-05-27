@@ -4,7 +4,6 @@ from promptogen.output import JsonOutputFormatter
 from promptogen.prompt import Example, ParameterInfo, Prompt
 
 from promptogen.prompt_formatter import BasePromptFormatter, PromptFormatter
-from tests.fixtures import create_prompt
 
 
 @pytest.fixture
@@ -75,10 +74,10 @@ def prompt():
 
 def test_base_prompt_formatter_format_prompt(prompt_formatter: PromptFormatter, prompt: Prompt):
     input_value = {
-        'test input parameter name': 'test input parameter value',
-        'test input parameter name 2': 'test input parameter value 2'
+        'test input parameter name': 'sample value',
+        'test input parameter name 2': 'sample value 2'
     }
-    assert prompt_formatter.format_prompt(prompt, input_value=input_value) == f"""You are an AI named \"test name\".
+    assert prompt_formatter.format_prompt(prompt=prompt, input_value=input_value) == f"""You are an AI named \"test name\".
 test description
 
 Output a json-formatted string without outputting any other strings.
@@ -118,7 +117,7 @@ Output:
 
 Input:
 ```json
-{{"test input parameter name": "sample input parameter value", "test input parameter name 2": "sample input parameter value 2"}}```
+{{"test input parameter name": "sample value", "test input parameter name 2": "sample value 2"}}```
 Output:"""
 
 

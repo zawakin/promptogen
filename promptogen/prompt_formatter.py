@@ -26,8 +26,8 @@ class BasePromptFormatter(PromptFormatter):
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter
 
-    def format_prompt(self, prompt: Prompt, input: InputValue) -> str:
-        formatted_input = self.input_formatter.format(input)
+    def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
+        formatted_input = self.input_formatter.format(input_value)
         return (f"""{self.format_prompt_without_input(prompt)}
 
 Input:

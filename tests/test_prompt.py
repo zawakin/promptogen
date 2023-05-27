@@ -1,10 +1,12 @@
+from pydantic import ValidationError
 import pytest
 
 from promptogen.prompt import Example, ParameterInfo, Prompt
 
 
-def test_prompt_from_dict():
-    prompt = Prompt.from_dict({
+@pytest.fixture
+def prompt_dict() -> dict:
+    return {
         'name': 'test name',
         'description': 'test description',
         'input_parameters': [
@@ -59,7 +61,11 @@ def test_prompt_from_dict():
                 },
             }
         ]
-    })
+    }
+
+
+def test_prompt_from_dict(prompt_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
 
     want = Prompt(
         name='test name',
@@ -122,5 +128,25 @@ def test_prompt_from_dict():
 
 
 def test_prompt_from_dict_invalid():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValidationError):
         Prompt.from_dict({})
+
+
+def test_prompt_to_dict(prompt_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
+
+    assert prompt.dict() == prompt_dict
+
+
+def test_prompt_from_dict_parameter_mismatch(prompt_dict: dict):
+    prompt_dict['template']['input']['test input parameter name 3'] = 'test input parameter value 3'
+
+    with pytest.raises(ValidationError):
+        Prompt.from_dict(prompt_dict)
+
+
+def test_prompt_from_dict_parameter_mismatch_2(prompt_dict: dict):
+    prompt_dict['input_parameters'][0]['name'] = "wrong name"
+
+    with pytest.raises(ValidationError):
+        Prompt.from_dict(prompt_dict)
