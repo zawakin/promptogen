@@ -33,7 +33,8 @@ class JsonOutputFormatter(OutputFormatter):
     def format(self, output: OutputValue) -> str:
         if not isinstance(output, dict):
             raise TypeError(
-                f"Expected output to be a dict, got {type(output).__name__}; output: {output}")
+                f"Expected output to be a dict, got {type(output).__name__}; "
+                "output: {output}")
 
         return with_code_block("json", json.dumps(output, ensure_ascii=False))
 

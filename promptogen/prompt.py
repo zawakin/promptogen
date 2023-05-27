@@ -1,13 +1,13 @@
 from typing import Any
 
-from pydantic import BaseModel, validator, root_validator
+from pydantic import root_validator
 
 from .dataclass import DataClass
 from .input import InputValue
 from .output import OutputValue
 
 
-class ParameterInfo(BaseModel):
+class ParameterInfo(DataClass):
     """Information about a parameter.
 
     Attributes:
@@ -18,7 +18,7 @@ class ParameterInfo(BaseModel):
     description: str
 
 
-class Example(BaseModel):
+class Example(DataClass):
     """An few-shot example of a prompt.
 
     Attributes:
@@ -29,7 +29,7 @@ class Example(BaseModel):
     output: OutputValue
 
 
-class Prompt(BaseModel):
+class Prompt(DataClass):
     """A prompt.
 
     Attributes:
@@ -55,8 +55,17 @@ class Prompt(BaseModel):
         return cls.parse_obj(d)
 
     @classmethod
-    def from_json(cls, json_str: str) -> "Prompt":
-        return cls.parse_raw(json_str)
+    def from_json_string(cls, json_string: str) -> "Prompt":
+        return cls.parse_raw(json_string)
+
+    @classmethod
+    def from_json_file(cls, filename: str) -> "Prompt":
+        with open(filename, "r") as f:
+            return cls.parse_raw(f.read())
+
+    def to_json_file(self, filename: str, indent=4) -> None:
+        with open(filename, "w") as f:
+            f.write(self.json(indent=indent))
 
     @root_validator
     def validate_template(cls, values):
@@ -64,16 +73,20 @@ class Prompt(BaseModel):
         input_parameters = values.get("input_parameters")
         output_parameters = values.get("output_parameters")
 
-        if template is None or input_parameters is None or output_parameters is None:
-            raise ValueError(
-                "Template, input parameters, and output parameters must be provided")
+        if template is None or \
+                input_parameters is None or output_parameters is None:
+            raise ValueError("Template, input parameters, "
+                             "and output parameters must be provided")
 
         if template.input.keys() != {param.name for param in input_parameters}:
             raise ValueError(
-                f"Template input keys do not match input parameters: {template.input.keys()} vs {input_parameters}")
-        if template.output.keys() != {param.name for param in output_parameters}:
+                f"Template input keys do not match input parameters: "
+                f"{template.input.keys()} vs {input_parameters}")
+        if template.output.keys() != \
+                {param.name for param in output_parameters}:
             raise ValueError(
-                f"Template output keys do not match output parameters: {template.output.keys()} vs {output_parameters}")
+                f"Template output keys do not match output parameters: "
+                f"{template.output.keys()} vs {output_parameters}")
 
         return values
 
@@ -83,19 +96,48 @@ class Prompt(BaseModel):
         input_parameters = values.get("input_parameters")
         output_parameters = values.get("output_parameters")
 
-        if examples is None or input_parameters is None or output_parameters is None:
-            raise ValueError(
-                "Examples, input parameters, and output parameters must be provided")
+        if examples is None or input_parameters is None \
+                or output_parameters is None:
+            raise ValueError("Examples, input parameters, "
+                             "and output parameters must be provided")
 
         for example in examples:
-            if example.input.keys() != {param.name for param in input_parameters}:
+            if example.input.keys() != \
+                    {param.name for param in input_parameters}:
                 raise ValueError(
-                    f"Example input keys do not match input parameters: {example.input.keys()} vs {input_parameters}")
-            if example.output.keys() != {param.name for param in output_parameters}:
+                    f"Example input keys do not match input parameters: "
+                    f"{example.input.keys()} vs {input_parameters}")
+            if example.output.keys() != \
+                    {param.name for param in output_parameters}:
                 raise ValueError(
-                    f"Example output keys do not match output parameters: {example.output.keys()} vs {output_parameters}")
+                    f"Example output keys do not match output parameters: "
+                    f"{example.output.keys()} vs {output_parameters}")
 
         return values
 
     def __repr__(self) -> str:
         return self.json(indent=4)
+
+
+def load_prompt_from_json_file(filename: str) -> Prompt:
+    """Load a prompt from a JSON file.
+
+    Args:
+        filename: The name of the file to load the prompt from.
+
+    Returns:
+        The loaded prompt.
+    """
+    return Prompt.from_json_file(filename)
+
+
+def load_prompt_from_dict(d: dict[str, Any]) -> Prompt:
+    """Load a prompt from a dictionary.
+
+    Args:
+        d: The dictionary to load the prompt from.
+
+    Returns:
+        The loaded prompt.
+    """
+    return Prompt.from_dict(d)

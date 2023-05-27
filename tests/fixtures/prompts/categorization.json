@@ -1,0 +1,66 @@
+{
+    "name": "Categorization",
+    "description": "Categorize the given text",
+    "input_parameters": [
+        {
+            "name": "text",
+            "description": "The text to be categorized"
+        },
+        {
+            "name": "categories",
+            "description": "The categories to categorize the text into"
+        }
+    ],
+    "output_parameters": [
+        {
+            "name": "category",
+            "description": "The category the text belongs to"
+        },
+        {
+            "name": "found",
+            "description": "Whether the category was found in the text"
+        }
+    ],
+    "template": {
+        "input": {
+            "text": "text",
+            "categories": [
+                "category 1",
+                "category 2"
+            ]
+        },
+        "output": {
+            "category": "category 1",
+            "found": true
+        }
+    },
+    "examples": [
+        {
+            "input": {
+                "text": "A recent study shows that regular exercise can help improve cognitive function in older adults.",
+                "categories": [
+                    "Health",
+                    "Science",
+                    "Technology"
+                ]
+            },
+            "output": {
+                "category": "Health",
+                "found": true
+            }
+        },
+        {
+            "input": {
+                "text": "The new quantum computing system is expected to revolutionize data processing and complex calculations.",
+                "categories": [
+                    "Health",
+                    "Sports"
+                ]
+            },
+            "output": {
+                "category": "",
+                "found": false
+            }
+        }
+    ]
+}

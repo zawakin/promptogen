@@ -1,4 +1,3 @@
-import promptogen
 from abc import ABC, abstractmethod
 from .input import InputFormatter, InputValue, JsonInputFormatter
 from .output import JsonOutputFormatter, OutputFormatter, OutputValue
@@ -23,7 +22,11 @@ class BasePromptFormatter(PromptFormatter):
     input_formatter: InputFormatter
     output_formatter: OutputFormatter
 
-    def __init__(self, input_formatter: InputFormatter, output_formatter: OutputFormatter):
+    def __init__(
+        self,
+        input_formatter: InputFormatter,
+        output_formatter: OutputFormatter,
+    ):
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter
 
@@ -38,7 +41,8 @@ Output:""")
     def format_prompt_without_input(self, prompt: Prompt) -> str:
         formatted_template = self.format_example(prompt.template)
         formatted_examples = "\n".join(
-            f'Example {i+1}:\n{self.format_example(e)}\n' for i, e in enumerate(prompt.examples)) if prompt.examples else ""
+            f'Example {i+1}:\n{self.format_example(e)}\n'
+            for i, e in enumerate(prompt.examples)) if prompt.examples else ""
 
         formatted_input_parameters = "\n".join(
             f"  - {p.name}: {p.description}" for p in prompt.input_parameters
@@ -51,7 +55,8 @@ Output:""")
             f'''You are an AI named "{prompt.name}".
 {prompt.description}
 
-Output a {self.output_formatter.name()}-formatted string without outputting any other strings.
+Output a {self.output_formatter.name()}-formatted string without \
+outputting any other strings.
 
 Input Parameters:
 {formatted_input_parameters}

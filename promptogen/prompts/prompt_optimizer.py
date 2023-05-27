@@ -32,12 +32,14 @@ class PromptOptimizer(Prompt):
                         name="prompt name",
                         description="prompt description",
                         input_parameters=[
-                            ParameterInfo(name="input_1",
-                                          description="description of input 1"),
+                            ParameterInfo(
+                                name="input_1",
+                                description="description of input 1"),
                         ],
                         output_parameters=[
-                            ParameterInfo(name="output_1",
-                                          description="description of output 1"),
+                            ParameterInfo(
+                                name="output_1",
+                                description="description of output 1"),
                         ],
                         template=Example(input={
                             "input_1": "prompt input 1",
@@ -61,16 +63,26 @@ class PromptOptimizer(Prompt):
                         name="optimized prompt name",
                         description="optimized prompt description",
                         input_parameters=[
-                            ParameterInfo(name="optimized_input_1",
-                                          description="description of optimized input 1"),
-                            ParameterInfo(name="optimized_input_2",
-                                          description="description of optimized input 2"),
+                            ParameterInfo(
+                                name="optimized_input_1",
+                                description="description of optimized input 1",
+                            ),
+                            ParameterInfo(
+                                name="optimized_input_2",
+                                description="description of optimized input 2",
+                            ),
                         ],
                         output_parameters=[
-                            ParameterInfo(name="optimized_output_1",
-                                          description="description of optimized output 1"),
-                            ParameterInfo(name="optimized_output_2",
-                                          description="description of optimized output 2"),
+                            ParameterInfo(
+                                name="optimized_output_1",
+                                description="description of "
+                                "optimized output 1",
+                            ),
+                            ParameterInfo(
+                                name="optimized_output_2",
+                                description="description of "
+                                "optimized output 2",
+                            ),
                         ],
                         template=Example(input={
                             "optimized_input_1": "optimized prompt input 1",
@@ -82,21 +94,29 @@ class PromptOptimizer(Prompt):
                         examples=[
                             Example(
                                 input={
-                                    "optimized_input_1": "optimized prompt example input 1",
-                                    "optimized_input_2": "optimized prompt example input 2",
+                                    "optimized_input_1": "optimized prompt "
+                                    + "example input 1",
+                                    "optimized_input_2": "optimized prompt "
+                                    + "example input 2",
                                 },
                                 output={
-                                    "optimized_output_1": "optimized prompt example output 1",
-                                    "optimized_output_2": "optimized prompt example output 2",
+                                    "optimized_output_1": "optimized prompt "
+                                    + "example output 1",
+                                    "optimized_output_2": "optimized prompt "
+                                    + "example output 2",
                                 }),
                             Example(
                                 input={
-                                    "optimized_input_1": "optimized prompt example input 3",
-                                    "optimized_input_2": "optimized prompt example input 4",
+                                    "optimized_input_1": "optimized prompt "
+                                    + "example input 3",
+                                    "optimized_input_2": "optimized prompt "
+                                    + "example input 4",
                                 },
                                 output={
-                                    "optimized_output_1": "optimized prompt example output 3",
-                                    "optimized_output_2": "optimized prompt example output 4",
+                                    "optimized_output_1": "optimized prompt "
+                                    + "example output 3",
+                                    "optimized_output_2": "optimized prompt "
+                                    + "example output 4",
                                 }),
                         ],
                     ),
