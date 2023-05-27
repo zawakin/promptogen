@@ -1,4 +1,3 @@
-
 from abc import ABC, abstractmethod
 import json
 from typing import Any
@@ -27,7 +26,6 @@ class JsonInputFormatter(InputFormatter):
 
     def format(self, input: InputValue) -> str:
         if not isinstance(input, dict):
-            raise TypeError(
-                f"Expected input to be a dict, got {type(input).__name__}.")
+            raise TypeError(f"Expected input to be a dict, got {type(input).__name__}.")
 
         return with_code_block("json", json.dumps(input, ensure_ascii=False))

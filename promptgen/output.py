@@ -1,11 +1,10 @@
-
 from abc import ABC, abstractmethod
 import json
 from typing import Any
 
 from .format_utils import remove_code_block, with_code_block
 
-"""The type of the output value."""""
+"""The type of the output value.""" ""
 OutputValue = str | dict[str, Any]
 
 
@@ -34,7 +33,8 @@ class JsonOutputFormatter(OutputFormatter):
         if not isinstance(output, dict):
             raise TypeError(
                 f"Expected output to be a dict, got {type(output).__name__}; "
-                "output: {output}")
+                "output: {output}"
+            )
 
         return with_code_block("json", json.dumps(output, ensure_ascii=False))
 
@@ -56,8 +56,7 @@ class RawStringOutputFormatter(OutputFormatter):
 
     def format(self, output: OutputValue) -> str:
         if not isinstance(output, str):
-            raise ValueError(
-                "RawStringOutputFormatter can only format strings.")
+            raise ValueError("RawStringOutputFormatter can only format strings.")
 
         return output
 

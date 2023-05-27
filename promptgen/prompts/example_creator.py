@@ -24,11 +24,13 @@ class ExampleCreator(Prompt):
             description="Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space.",
             input_parameters=[
                 ParameterInfo(name="prompt", description="prompt"),
-                ParameterInfo(
-                    name="n", description="number of examples to create"),
+                ParameterInfo(name="n", description="number of examples to create"),
             ],
             output_parameters=[
-                ParameterInfo(name="examples", description="detailed examples of the prompt. Please add examples with scattered inputs and outputs in semantic space. Specific examples are better than general examples."),
+                ParameterInfo(
+                    name="examples",
+                    description="detailed examples of the prompt. Please add examples with scattered inputs and outputs in semantic space. Specific examples are better than general examples.",
+                ),
             ],
             template=Example(
                 input=ExampleCreatorInput(
@@ -36,18 +38,19 @@ class ExampleCreator(Prompt):
                         name="prompt name",
                         description="prompt description",
                         input_parameters=[
-                            ParameterInfo(name="input_1",
-                                          description="input 1"),
+                            ParameterInfo(name="input_1", description="input 1"),
                         ],
                         output_parameters=[
-                            ParameterInfo(name="output_1",
-                                          description="output 1"),
+                            ParameterInfo(name="output_1", description="output 1"),
                         ],
-                        template=Example(input={
-                            "input_1": "prompt input 1",
-                        }, output={
-                            "output_1": "prompt output 1",
-                        }),
+                        template=Example(
+                            input={
+                                "input_1": "prompt input 1",
+                            },
+                            output={
+                                "output_1": "prompt output 1",
+                            },
+                        ),
                         examples=[
                             Example(
                                 input={
@@ -55,7 +58,8 @@ class ExampleCreator(Prompt):
                                 },
                                 output={
                                     "output_1": "prompt example output 1",
-                                }),
+                                },
+                            ),
                         ],
                     ),
                     n=2,
@@ -79,7 +83,6 @@ class ExampleCreator(Prompt):
                             },
                         ),
                     ],
-
                 ).dict(),
             ),
             examples=[

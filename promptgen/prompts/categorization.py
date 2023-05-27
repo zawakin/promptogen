@@ -18,16 +18,20 @@ class Categorization(Prompt):
             name="Categorization",
             description="Categorize the given text",
             input_parameters=[
+                ParameterInfo(name="text", description="The text to be categorized"),
                 ParameterInfo(
-                    name="text", description="The text to be categorized"),
-                ParameterInfo(name="categories",
-                              description="The categories to categorize the text into"),
+                    name="categories",
+                    description="The categories to categorize the text into",
+                ),
             ],
             output_parameters=[
-                ParameterInfo(name="category",
-                              description="The category the text belongs to"),
-                ParameterInfo(name="found",
-                              description="Whether the category was found in the text"),
+                ParameterInfo(
+                    name="category", description="The category the text belongs to"
+                ),
+                ParameterInfo(
+                    name="found",
+                    description="Whether the category was found in the text",
+                ),
             ],
             template=Example(
                 input=CategorizationInput(

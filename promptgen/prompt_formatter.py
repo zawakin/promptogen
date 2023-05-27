@@ -32,17 +32,22 @@ class BasePromptFormatter(PromptFormatter):
 
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
         formatted_input = self.input_formatter.format(input_value)
-        return (f"""{self.format_prompt_without_input(prompt)}
+        return f"""{self.format_prompt_without_input(prompt)}
 
 Input:
 {formatted_input}
-Output:""")
+Output:"""
 
     def format_prompt_without_input(self, prompt: Prompt) -> str:
         formatted_template = self.format_example(prompt.template)
-        formatted_examples = "\n".join(
-            f'Example {i+1}:\n{self.format_example(e)}\n'
-            for i, e in enumerate(prompt.examples)) if prompt.examples else ""
+        formatted_examples = (
+            "\n".join(
+                f"Example {i+1}:\n{self.format_example(e)}\n"
+                for i, e in enumerate(prompt.examples)
+            )
+            if prompt.examples
+            else ""
+        )
 
         formatted_input_parameters = "\n".join(
             f"  - {p.name}: {p.description}" for p in prompt.input_parameters
@@ -51,8 +56,7 @@ Output:""")
             f"  - {p.name}: {p.description}" for p in prompt.output_parameters
         )
 
-        return (
-            f'''You are an AI named "{prompt.name}".
+        return f"""You are an AI named "{prompt.name}".
 {prompt.description}
 
 Output a {self.output_formatter.name()}-formatted string without \
@@ -67,7 +71,7 @@ Output Parameters:
 Template:
 {formatted_template}
 
-{formatted_examples}''')
+{formatted_examples}"""
 
     def format_example(self, example: Example) -> str:
         formatted_input = self.input_formatter.format(example.input)

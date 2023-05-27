@@ -19,15 +19,14 @@ class Summarization(Prompt):
                 ParameterInfo(name="text", description="text to summarize"),
             ],
             output_parameters=[
-                ParameterInfo(name="summary",
-                              description="summary of the text"),
+                ParameterInfo(name="summary", description="summary of the text"),
             ],
             template=Example(
                 input=SummarizationInput(
-                    text='text',
+                    text="text",
                 ).dict(),
                 output=SummarizationOutput(
-                    summary='summary',
+                    summary="summary",
                 ).dict(),
             ),
             examples=[
@@ -58,7 +57,7 @@ The hidden city was uncovered last Sunday when park maintenance worker, Jim Prit
 \"I couldn't believe my eyes," said Pritchard. "One moment I was digging to fix a pipe, and the next, I was looking at the entrance to a whole new world.\""""
                     ).dict(),
                     output=SummarizationOutput(
-                        summary='An undiscovered underground city has been found beneath Greenfield Park in Willowsville. The hidden city was uncovered accidentally by a park maintenance worker, Jim Pritchard, while repairing an irrigation issue. The discovery has attracted the attention of archaeologists and historians worldwide.',
+                        summary="An undiscovered underground city has been found beneath Greenfield Park in Willowsville. The hidden city was uncovered accidentally by a park maintenance worker, Jim Pritchard, while repairing an irrigation issue. The discovery has attracted the attention of archaeologists and historians worldwide.",
                     ).dict(),
                 ),
             ],

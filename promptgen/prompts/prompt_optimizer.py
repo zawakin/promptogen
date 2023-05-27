@@ -17,14 +17,13 @@ class PromptOptimizer(Prompt):
             name="AI-Powered Prompt Optimizer",
             description="You are an advanced AI assistant and your goal is to optimize a given prompt. You need to focus on improving the prompt title, description, and the number and description of input parameters. You may feel free to add or change any input or output parameters that are necessary to express the purpose of the prompt.",
             input_parameters=[
-                ParameterInfo(name="original_prompt",
-                              description="original prompt"),
-                ParameterInfo(name="background",
-                              description="background of the prompt"),
+                ParameterInfo(name="original_prompt", description="original prompt"),
+                ParameterInfo(
+                    name="background", description="background of the prompt"
+                ),
             ],
             output_parameters=[
-                ParameterInfo(name="optimized_prompt",
-                              description="optimized prompt"),
+                ParameterInfo(name="optimized_prompt", description="optimized prompt"),
             ],
             template=Example(
                 input=OptimizePromptInput(
@@ -33,19 +32,22 @@ class PromptOptimizer(Prompt):
                         description="prompt description",
                         input_parameters=[
                             ParameterInfo(
-                                name="input_1",
-                                description="description of input 1"),
+                                name="input_1", description="description of input 1"
+                            ),
                         ],
                         output_parameters=[
                             ParameterInfo(
-                                name="output_1",
-                                description="description of output 1"),
+                                name="output_1", description="description of output 1"
+                            ),
                         ],
-                        template=Example(input={
-                            "input_1": "prompt input 1",
-                        }, output={
-                            "output_1": "prompt output 1",
-                        }),
+                        template=Example(
+                            input={
+                                "input_1": "prompt input 1",
+                            },
+                            output={
+                                "output_1": "prompt output 1",
+                            },
+                        ),
                         examples=[
                             Example(
                                 input={
@@ -53,7 +55,8 @@ class PromptOptimizer(Prompt):
                                 },
                                 output={
                                     "output_1": "prompt example output 1",
-                                }),
+                                },
+                            ),
                         ],
                     ),
                     background="background of the prompt",
@@ -75,22 +78,23 @@ class PromptOptimizer(Prompt):
                         output_parameters=[
                             ParameterInfo(
                                 name="optimized_output_1",
-                                description="description of "
-                                "optimized output 1",
+                                description="description of " "optimized output 1",
                             ),
                             ParameterInfo(
                                 name="optimized_output_2",
-                                description="description of "
-                                "optimized output 2",
+                                description="description of " "optimized output 2",
                             ),
                         ],
-                        template=Example(input={
-                            "optimized_input_1": "optimized prompt input 1",
-                            "optimized_input_2": "optimized prompt input 2",
-                        }, output={
-                            "optimized_output_1": "optimized prompt output 1",
-                            "optimized_output_2": "optimized prompt output 2",
-                        }),
+                        template=Example(
+                            input={
+                                "optimized_input_1": "optimized prompt input 1",
+                                "optimized_input_2": "optimized prompt input 2",
+                            },
+                            output={
+                                "optimized_output_1": "optimized prompt output 1",
+                                "optimized_output_2": "optimized prompt output 2",
+                            },
+                        ),
                         examples=[
                             Example(
                                 input={
@@ -104,7 +108,8 @@ class PromptOptimizer(Prompt):
                                     + "example output 1",
                                     "optimized_output_2": "optimized prompt "
                                     + "example output 2",
-                                }),
+                                },
+                            ),
                             Example(
                                 input={
                                     "optimized_input_1": "optimized prompt "
@@ -117,7 +122,8 @@ class PromptOptimizer(Prompt):
                                     + "example output 3",
                                     "optimized_output_2": "optimized prompt "
                                     + "example output 4",
-                                }),
+                                },
+                            ),
                         ],
                     ),
                 ).dict(),

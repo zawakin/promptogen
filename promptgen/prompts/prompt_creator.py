@@ -23,14 +23,16 @@ class PromptCreator(Prompt):
             name="PromptCreator",
             description="Create a prompt from the given purpose. Don't create an example with the input purpose. Instead, create an example with a different purpose. Consider background information that is necessary to understand the purpose.",
             input_parameters=[
-                ParameterInfo(name="purpose",
-                              description="purpose of the prompt"),
-                ParameterInfo(name="background",
-                              description="background of the prompt"),
+                ParameterInfo(name="purpose", description="purpose of the prompt"),
+                ParameterInfo(
+                    name="background", description="background of the prompt"
+                ),
             ],
             output_parameters=[
                 ParameterInfo(
-                    name="prompt", description="prompt created from the given purpose. Is has 'name', 'description', 'input_parameters', 'output_parameters', 'template', and 'examples'."),
+                    name="prompt",
+                    description="prompt created from the given purpose. Is has 'name', 'description', 'input_parameters', 'output_parameters', 'template', and 'examples'.",
+                ),
             ],
             template=Example(
                 input=PromptCreatorInput(
@@ -42,12 +44,10 @@ class PromptCreator(Prompt):
                         name="new prompt name",
                         description="new prompt description",
                         input_parameters=[
-                            ParameterInfo(name="input_1",
-                                          description="input 1"),
+                            ParameterInfo(name="input_1", description="input 1"),
                         ],
                         output_parameters=[
-                            ParameterInfo(name="output_1",
-                                          description="output 1"),
+                            ParameterInfo(name="output_1", description="output 1"),
                         ],
                         template=Example(
                             input=dict(input_1="prompt input 1"),
@@ -56,8 +56,7 @@ class PromptCreator(Prompt):
                         examples=[
                             Example(
                                 input=dict(input_1="prompt example input 1"),
-                                output=dict(
-                                    output_1="prompt example output 1"),
+                                output=dict(output_1="prompt example output 1"),
                             ),
                         ],
                     ),
