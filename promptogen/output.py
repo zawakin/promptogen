@@ -24,13 +24,28 @@ class OutputFormatter(ABC):
 
 
 class JsonOutputFormatter(OutputFormatter):
+    def __init__(self, strict: bool = True):
+        self.strict = strict
+
     def name(self) -> str:
         return "json"
 
     def format(self, output: OutputValue) -> str:
+        if not isinstance(output, dict):
+            raise TypeError(
+                f"Expected output to be a dict, got {type(output).__name__}; output: {output}")
+
         return with_code_block("json", json.dumps(output, ensure_ascii=False))
 
     def parse(self, output: str) -> OutputValue:
+        output = output.strip()
+
+        if self.strict:
+            if not output.startswith("```json"):
+                raise ValueError("Expected output to start with ```json.")
+            if not output.endswith("```"):
+                raise ValueError("Expected output to end with ```.")
+
         return json.loads(remove_code_block("json", output))
 
 

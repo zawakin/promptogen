@@ -26,4 +26,8 @@ class JsonInputFormatter(InputFormatter):
         return "json"
 
     def format(self, input: InputValue) -> str:
+        if not isinstance(input, dict):
+            raise TypeError(
+                f"Expected input to be a dict, got {type(input).__name__}.")
+
         return with_code_block("json", json.dumps(input, ensure_ascii=False))
