@@ -1,3 +1,4 @@
+import promptogen
 from abc import ABC, abstractmethod
 from .input import InputFormatter, InputValue, JsonInputFormatter
 from .output import JsonOutputFormatter, OutputFormatter, OutputValue
@@ -72,6 +73,6 @@ Template:
         return self.output_formatter.parse(s)
 
 
-class DefaultPromptFormatter(BasePromptFormatter):
+class JsonPromptFormatter(BasePromptFormatter):
     def __init__(self):
         super().__init__(JsonInputFormatter(), JsonOutputFormatter())

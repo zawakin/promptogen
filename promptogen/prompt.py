@@ -1,6 +1,4 @@
 from typing import Any
-import pprint
-import json
 
 from pydantic import BaseModel, validator, root_validator
 
@@ -98,3 +96,6 @@ class Prompt(BaseModel):
                     f"Example output keys do not match output parameters: {example.output.keys()} vs {output_parameters}")
 
         return values
+
+    def __repr__(self) -> str:
+        return self.json(indent=4)
