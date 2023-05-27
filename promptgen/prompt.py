@@ -67,7 +67,7 @@ class Prompt(DataClass):
 
     def to_json_file(self, filename: str, indent=4) -> None:
         with open(filename, "w") as f:
-            f.write(self.json(indent=indent))
+            f.write(self.json(indent=indent, ensure_ascii=False))
 
     @root_validator
     def validate_template(cls, values):
@@ -119,7 +119,7 @@ class Prompt(DataClass):
         return values
 
     def __repr__(self) -> str:
-        return self.json(indent=4)
+        return self.json(indent=4, ensure_ascii=False)
 
 
 def load_prompt_from_json_file(filename: str) -> Prompt:
