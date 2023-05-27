@@ -1,12 +1,12 @@
-from pydantic import BaseModel
+from promptogen.dataclass import DataClass
 from promptogen.prompt import Prompt, ParameterInfo, Example
 
 
-class SummarizationInput(BaseModel):
+class SummarizationInput(DataClass):
     text: str
 
 
-class SummarizationOutput(BaseModel):
+class SummarizationOutput(DataClass):
     summary: str
 
 

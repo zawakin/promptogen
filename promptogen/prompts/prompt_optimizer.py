@@ -1,13 +1,13 @@
-from pydantic import BaseModel
+from promptogen.dataclass import DataClass
 from promptogen.prompt import Prompt, ParameterInfo, Example
 
 
-class OptimizePromptInput(BaseModel):
+class OptimizePromptInput(DataClass):
     original: Prompt
     background: str
 
 
-class OptimizePromptOutput(BaseModel):
+class OptimizePromptOutput(DataClass):
     optimized_prompt: Prompt
 
 

@@ -1,13 +1,13 @@
-from pydantic import BaseModel
+from promptogen.dataclass import DataClass
 from promptogen.prompt import Prompt, ParameterInfo, Example
 
 
-class CategorizationInput(BaseModel):
+class CategorizationInput(DataClass):
     text: str
     categories: list[str]
 
 
-class CategorizationOutput(BaseModel):
+class CategorizationOutput(DataClass):
     category: str
     found: bool
 

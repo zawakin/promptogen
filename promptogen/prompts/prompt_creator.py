@@ -1,16 +1,16 @@
-from pydantic import BaseModel
+from promptogen.dataclass import DataClass
 from promptogen.prompt import Prompt, ParameterInfo, Example
 
 from .categorization import Categorization
 from .summarization import Summarization
 
 
-class PromptCreatorInput(BaseModel):
+class PromptCreatorInput(DataClass):
     purpose: str
     background: str
 
 
-class PromptCreatorOutput(BaseModel):
+class PromptCreatorOutput(DataClass):
     prompt: Prompt
 
 
