@@ -1,5 +1,5 @@
 {
-    "name": "Categorization",
+    "name": "TextCategorizer",
     "description": "Categorize the given text",
     "input_parameters": {
         "text": {

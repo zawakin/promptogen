@@ -1,5 +1,5 @@
 {
-    "name": "AI-Powered Prompt Optimizer",
+    "name": "PromptOptimizer",
     "description": "You are an advanced AI assistant and your goal is to optimize a given prompt. You need to focus on improving the prompt title, description, and the number and description of input parameters. You may feel free to add or change any input or output parameters that are necessary to express the purpose of the prompt.",
     "input_parameters": {
         "original_prompt": {
@@ -19,18 +19,16 @@
             "original_prompt": {
                 "name": "prompt name",
                 "description": "prompt description",
-                "input_parameters": [
-                    {
-                        "name": "input_1",
+                "input_parameters": {
+                    "input_1": {
                         "description": "description of input 1"
                     }
-                ],
-                "output_parameters": [
-                    {
-                        "name": "output_1",
+                },
+                "output_parameters": {
+                    "output_1": {
                         "description": "description of output 1"
                     }
-                ],
+                },
                 "template": {
                     "input": {
                         "input_1": "prompt input 1"
@@ -56,26 +54,22 @@
             "optimized_prompt": {
                 "name": "optimized prompt name",
                 "description": "optimized prompt description",
-                "input_parameters": [
-                    {
-                        "name": "optimized_input_1",
+                "input_parameters": {
+                    "optimized_input_1": {
                         "description": "description of optimized input 1"
                     },
-                    {
-                        "name": "optimized_input_2",
+                    "optimized_input_2": {
                         "description": "description of optimized input 2"
                     }
-                ],
-                "output_parameters": [
-                    {
-                        "name": "optimized_output_1",
+                },
+                "output_parameters": {
+                    "optimized_output_1": {
                         "description": "description of optimized output 1"
                     },
-                    {
-                        "name": "optimized_output_2",
+                    "optimized_output_2": {
                         "description": "description of optimized output 2"
                     }
-                ],
+                },
                 "template": {
                     "input": {
                         "optimized_input_1": "optimized prompt input 1",
