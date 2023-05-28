@@ -25,6 +25,13 @@ pytest = "^7.3.1"
 ipykernel = "^6.23.1"
 pyproject-flake8 = "^6.0.0.post1"
 
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+openai = "^0.27.7"
+jupyter = "^1.0.0"
+
 [tool.black]
 line-length = 120
 
