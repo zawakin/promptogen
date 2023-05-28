@@ -1,6 +1,6 @@
 import pytest
 
-from promptgen.output import JsonOutputFormatter, RawStringOutputFormatter
+from promptgen.output import JsonOutputFormatter
 
 
 def test_json_output_formatter_name():
@@ -50,20 +50,3 @@ def test_json_output_formatter_parse_invalid_json():
         f.parse("""```json
 {"test output parameter name": "test output parameter value", "test output parameter name 2": "test output parameter value 2""")
 
-
-def test_raw_string_output_formatter_name():
-    f = RawStringOutputFormatter()
-
-    assert f.name() == "raw-string"
-
-
-def test_raw_string_output_formatter_format():
-    f = RawStringOutputFormatter()
-
-    assert f.format("test output") == "test output"
-
-
-def test_raw_string_output_formatter_parse():
-    f = RawStringOutputFormatter()
-
-    assert f.parse("test output") == "test output"

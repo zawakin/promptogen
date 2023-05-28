@@ -52,16 +52,52 @@ class Prompt(DataClass):
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Prompt":
+        """Create a prompt from a dictionary.
+
+        Args:
+            d: A dictionary containing the prompt's information.
+
+        Returns:
+            A prompt.
+
+        Raises:
+            TypeError: If the dictionary is not a dictionary.
+            ValueError: If the dictionary does not contain the required keys.
+        """
         if not isinstance(d, dict):
             raise TypeError(f"Expected dict, got {type(d)}")
         return cls.parse_obj(d)
 
     @classmethod
     def from_json_string(cls, json_string: str) -> "Prompt":
+        """Create a prompt from a JSON string.
+
+        Args:
+            json_string: A JSON string containing the prompt's information.
+
+        Returns:
+            A prompt.
+
+        Raises:
+            TypeError: If the JSON string is not a string.
+            ValueError: If the JSON string is not valid JSON.
+        """
         return cls.parse_raw(json_string)
 
     @classmethod
     def from_json_file(cls, filename: str) -> "Prompt":
+        """Create a prompt from a JSON file.
+
+        Args:
+            filename: The name of the JSON file containing the prompt's information.
+
+        Returns:
+            A prompt.
+
+        Raises:
+            TypeError: If the filename is not a string.
+            ValueError: If the file does not contain valid JSON.
+        """
         with open(filename, "r") as f:
             return cls.parse_raw(f.read())
 
@@ -134,8 +170,11 @@ class Prompt(DataClass):
         return self.json(indent=4, ensure_ascii=False)
 
     def __str__(self) -> str:
-        # like map string.
-        # ex) (input1: type1, input2: type2, ...) -> (output1: type1, output2: type2, ...)
+        """Return a string representation of the prompt.
+
+        Returns:
+            A string representation of the prompt.
+        """
         input_str = ", ".join(
             [f"{param.name}" for param in self.input_parameters]
         )

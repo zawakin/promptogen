@@ -61,6 +61,7 @@ Output:"""
 
 Output a {self.output_formatter.name()}-formatted string without \
 outputting any other strings.
+{self.output_formatter.constraints()}
 
 Input Parameters:
 {formatted_input_parameters}
