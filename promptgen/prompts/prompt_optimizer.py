@@ -31,9 +31,7 @@ def get_prompt_optimizer_template() -> Prompt:
                         "input_1": ParameterInfo(description="description of input 1"),
                     },
                     output_parameters={
-                        "output_1": ParameterInfo(
-                            description="description of output 1"
-                        ),
+                        "output_1": ParameterInfo(description="description of output 1"),
                     },
                     template=Example(
                         input={
@@ -61,20 +59,12 @@ def get_prompt_optimizer_template() -> Prompt:
                     name="optimized prompt name",
                     description="optimized prompt description",
                     input_parameters={
-                        "optimized_input_1": ParameterInfo(
-                            description="description of optimized input 1"
-                        ),
-                        "optimized_input_2": ParameterInfo(
-                            description="description of optimized input 2"
-                        ),
+                        "optimized_input_1": ParameterInfo(description="description of optimized input 1"),
+                        "optimized_input_2": ParameterInfo(description="description of optimized input 2"),
                     },
                     output_parameters={
-                        "optimized_output_1": ParameterInfo(
-                            description="description of optimized output 1"
-                        ),
-                        "optimized_output_2": ParameterInfo(
-                            description="description of optimized output 2"
-                        ),
+                        "optimized_output_1": ParameterInfo(description="description of optimized output 1"),
+                        "optimized_output_2": ParameterInfo(description="description of optimized output 2"),
                     },
                     template=Example(
                         input={
@@ -89,30 +79,22 @@ def get_prompt_optimizer_template() -> Prompt:
                     examples=[
                         Example(
                             input={
-                                "optimized_input_1": "optimized prompt "
-                                + "example input 1",
-                                "optimized_input_2": "optimized prompt "
-                                + "example input 2",
+                                "optimized_input_1": "optimized prompt " + "example input 1",
+                                "optimized_input_2": "optimized prompt " + "example input 2",
                             },
                             output={
-                                "optimized_output_1": "optimized prompt "
-                                + "example output 1",
-                                "optimized_output_2": "optimized prompt "
-                                + "example output 2",
+                                "optimized_output_1": "optimized prompt " + "example output 1",
+                                "optimized_output_2": "optimized prompt " + "example output 2",
                             },
                         ),
                         Example(
                             input={
-                                "optimized_input_1": "optimized prompt "
-                                + "example input 3",
-                                "optimized_input_2": "optimized prompt "
-                                + "example input 4",
+                                "optimized_input_1": "optimized prompt " + "example input 3",
+                                "optimized_input_2": "optimized prompt " + "example input 4",
                             },
                             output={
-                                "optimized_output_1": "optimized prompt "
-                                + "example output 3",
-                                "optimized_output_2": "optimized prompt "
-                                + "example output 4",
+                                "optimized_output_1": "optimized prompt " + "example output 3",
+                                "optimized_output_2": "optimized prompt " + "example output 4",
                             },
                         ),
                     ],

@@ -110,14 +110,11 @@ class Prompt(DataClass):
         output_parameters = values.get("output_parameters")
 
         if template is None or input_parameters is None or output_parameters is None:
-            raise ValueError(
-                "Template, input parameters, " "and output parameters must be provided"
-            )
+            raise ValueError("Template, input parameters, " "and output parameters must be provided")
 
         if template.input.keys() != input_parameters.keys():
             raise ValueError(
-                f"Template input keys do not match input parameters: "
-                f"{template.input.keys()} vs {input_parameters}"
+                f"Template input keys do not match input parameters: " f"{template.input.keys()} vs {input_parameters}"
             )
         if template.output.keys() != output_parameters.keys():
             raise ValueError(
@@ -134,9 +131,7 @@ class Prompt(DataClass):
         output_parameters = values.get("output_parameters")
 
         if examples is None or input_parameters is None or output_parameters is None:
-            raise ValueError(
-                "Examples, input parameters, " "and output parameters must be provided"
-            )
+            raise ValueError("Examples, input parameters, " "and output parameters must be provided")
 
         for example in examples:
             if example.input.keys() != input_parameters.keys():
@@ -239,12 +234,8 @@ class Prompt(DataClass):
         Returns:
             A string representation of the prompt.
         """
-        input_str = ", ".join(
-            [f"{name}" for name, param in self.input_parameters.items()]
-        )
-        output_str = ", ".join(
-            [f"{name}" for name, param in self.output_parameters.items()]
-        )
+        input_str = ", ".join([f"{name}" for name, param in self.input_parameters.items()])
+        output_str = ", ".join([f"{name}" for name, param in self.output_parameters.items()])
         return f"{self.name}: ({input_str}) -> ({output_str})"
 
 

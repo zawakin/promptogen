@@ -65,14 +65,9 @@ class JsonOutputFormatter(OutputFormatter):
             str: The formatted output.
         """
         if not isinstance(output, dict):
-            raise TypeError(
-                f"Expected output to be a dict, got {type(output).__name__}; "
-                "output: {output}"
-            )
+            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
 
-        return with_code_block(
-            "json", json.dumps(output, ensure_ascii=False, indent=self.indent)
-        )
+        return with_code_block("json", json.dumps(output, ensure_ascii=False, indent=self.indent))
 
     def parse(self, output: str) -> OutputValue:
         output = output.strip()
@@ -102,10 +97,7 @@ class CodeOutputFormatter(OutputFormatter):
 
     def format(self, output: OutputValue) -> str:
         if not isinstance(output, dict):
-            raise TypeError(
-                f"Expected output to be a dict, got {type(output).__name__}; "
-                "output: {output}"
-            )
+            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
         if self.output_key not in output:
             raise ValueError(f"Expected output to have key {self.output_key}.")
 
