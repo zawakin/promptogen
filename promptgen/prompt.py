@@ -152,7 +152,7 @@ class Prompt(DataClass):
 
         return values
 
-    def with_examples(self, examples: list[Example] | list[dict]) -> "Prompt":
+    def with_examples(self, examples: list[Example | dict]) -> "Prompt":
         """Set the examples of the prompt.
 
         Args:

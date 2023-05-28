@@ -1,9 +1,11 @@
 from promptgen.prompt import Prompt
-from ..prompts.text_summarizer import TextSummarizer
-from ..prompts.text_categorizer import TextCategorizer
-from ..prompts.prompt_example_creator import PromptExampleCreator
-from ..prompts.prompt_creator import PromptCreator
-from ..prompts.prompt_optimizer import PromptOptimizer
+from ..prompts import (
+    get_example_creator_template,
+    get_prompt_creator_template,
+    get_prompt_optimizer_template,
+    get_text_categorizer_template,
+    get_text_summarizer_template,
+)
 
 
 class PromptLoader:
@@ -14,11 +16,11 @@ class PromptLoader:
 
     def load_prompts(self):
         prompts = [
-            TextSummarizer(),
-            TextCategorizer(),
-            PromptExampleCreator(),
-            PromptCreator(),
-            PromptOptimizer(),
+            get_text_categorizer_template(),
+            get_text_summarizer_template(),
+            get_example_creator_template(),
+            get_prompt_creator_template(),
+            get_prompt_optimizer_template(),
         ]
 
         for prompt in prompts:

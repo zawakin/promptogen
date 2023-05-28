@@ -2,6 +2,7 @@ from .input import InputFormatter, InputValue, JsonInputFormatter, CodeInputForm
 from .output import JsonOutputFormatter, CodeOutputFormatter , OutputFormatter, OutputValue
 from .prompt import Example, ParameterInfo, Prompt, load_prompt_from_dict, load_prompt_from_json_file
 from .prompt_formatter import JsonPromptFormatter, PromptFormatterInterface, PromptFormatter
+from .loader import PromptLoader
 
 __all__ = [
     # common
@@ -29,4 +30,5 @@ __all__ = [
     # load
     "load_prompt_from_dict",
     "load_prompt_from_json_file",
+    "PromptLoader",
 ]

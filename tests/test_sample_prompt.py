@@ -1,21 +1,12 @@
+from promptgen.loader import PromptLoader
 from promptgen.prompt import Prompt, load_prompt_from_json_file
-from promptgen.prompts.text_categorizer import TextCategorizer
-from promptgen.prompts.prompt_example_creator import PromptExampleCreator
-from promptgen.prompts.prompt_creator import PromptCreator
-from promptgen.prompts.prompt_optimizer import PromptOptimizer
-from promptgen.prompts.text_summarizer import TextSummarizer
 
 
 def test_load_prompts():
-    prompts = [
-        TextSummarizer(),
-        TextCategorizer(),
-        PromptExampleCreator(),
-        PromptCreator(),
-        PromptOptimizer(),
-    ]
+    loader = PromptLoader()
+    prompts = loader.prompts
 
-    for prompt in prompts:
+    for name, prompt in prompts.items():
         assert isinstance(prompt, Prompt)
 
 
