@@ -50,10 +50,10 @@ Output:"""
         )
 
         formatted_input_parameters = "\n".join(
-            f"  - {p.name}: {p.description}" for p in prompt.input_parameters
+            f"  - {name}: {p.description}" for name, p in prompt.input_parameters.items()
         )
         formatted_output_parameters = "\n".join(
-            f"  - {p.name}: {p.description}" for p in prompt.output_parameters
+            f"  - {name}: {p.description}" for name, p in prompt.output_parameters.items()
         )
 
         return f"""You are an AI named "{prompt.name}".

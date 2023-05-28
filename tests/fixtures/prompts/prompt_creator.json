@@ -1,22 +1,19 @@
 {
     "name": "PromptCreator",
     "description": "Create a prompt from the given purpose. Don't create an example with the input purpose. Instead, create an example with a different purpose. Consider background information that is necessary to understand the purpose.",
-    "input_parameters": [
-        {
-            "name": "purpose",
+    "input_parameters": {
+        "purpose": {
             "description": "purpose of the prompt"
         },
-        {
-            "name": "background",
+        "background": {
             "description": "background of the prompt"
         }
-    ],
-    "output_parameters": [
-        {
-            "name": "prompt",
+    },
+    "output_parameters": {
+        "prompt": {
             "description": "prompt created from the given purpose. Is has 'name', 'description', 'input_parameters', 'output_parameters', 'template', and 'examples'."
         }
-    ],
+    },
     "template": {
         "input": {
             "purpose": "purpose of the prompt",

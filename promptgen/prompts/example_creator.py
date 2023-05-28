@@ -22,27 +22,26 @@ class ExampleCreator(Prompt):
         super().__init__(
             name="example_creator",
             description="Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space.",
-            input_parameters=[
-                ParameterInfo(name="prompt", description="prompt"),
-                ParameterInfo(name="n", description="number of examples to create"),
-            ],
-            output_parameters=[
-                ParameterInfo(
-                    name="examples",
+            input_parameters={
+                "prompt": ParameterInfo( description="prompt"),
+                "n": ParameterInfo(description="number of examples to create"),
+                },
+            output_parameters={
+                "examples": ParameterInfo(
                     description="detailed examples of the prompt. Please add examples with scattered inputs and outputs in semantic space. Specific examples are better than general examples.",
                 ),
-            ],
+                },
             template=Example(
                 input=ExampleCreatorInput(
                     prompt=Prompt(
                         name="prompt name",
                         description="prompt description",
-                        input_parameters=[
-                            ParameterInfo(name="input_1", description="input 1"),
-                        ],
-                        output_parameters=[
-                            ParameterInfo(name="output_1", description="output 1"),
-                        ],
+                        input_parameters={
+                            "input_1": ParameterInfo(description="input 1"),
+                            },
+                        output_parameters={
+                            "output_1": ParameterInfo(description="output 1"),
+                            },
                         template=Example(
                             input={
                                 "input_1": "prompt input 1",

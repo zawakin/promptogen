@@ -17,22 +17,20 @@ class Categorization(Prompt):
         super().__init__(
             name="Categorization",
             description="Categorize the given text",
-            input_parameters=[
-                ParameterInfo(name="text", description="The text to be categorized"),
-                ParameterInfo(
-                    name="categories",
+            input_parameters={
+                "text": ParameterInfo(description="The text to be categorized"),
+                "categories": ParameterInfo(
                     description="The categories to categorize the text into",
                 ),
-            ],
-            output_parameters=[
-                ParameterInfo(
-                    name="category", description="The category the text belongs to"
+                },
+            output_parameters={
+                "category": ParameterInfo(
+                    description="The category the text belongs to"
                 ),
-                ParameterInfo(
-                    name="found",
+                "found": ParameterInfo(
                     description="Whether the category was found in the text",
                 ),
-            ],
+                },
             template=Example(
                 input=CategorizationInput(
                     text="text",

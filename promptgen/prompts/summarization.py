@@ -15,12 +15,12 @@ class Summarization(Prompt):
         super().__init__(
             name="Summarization of text",
             description="Summarize the text into a shorter text.",
-            input_parameters=[
-                ParameterInfo(name="text", description="text to summarize"),
-            ],
-            output_parameters=[
-                ParameterInfo(name="summary", description="summary of the text"),
-            ],
+            input_parameters={
+                "text": ParameterInfo(description="text to summarize"),
+            },
+            output_parameters={
+                "summary": ParameterInfo(description="summary of the text"),
+            },
             template=Example(
                 input=SummarizationInput(
                     text="text",

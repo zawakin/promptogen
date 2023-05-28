@@ -9,26 +9,22 @@ def prompt_dict() -> dict:
     return {
         'name': 'test name',
         'description': 'test description',
-        'input_parameters': [
-            {
-                'name': 'test input parameter name',
+        'input_parameters': {
+            'test input parameter name': {
                 'description': 'test input parameter description',
             },
-            {
-                'name': 'test input parameter name 2',
+            'test input parameter name 2': {
                 'description': 'test input parameter description 2',
             }
-        ],
-        'output_parameters': [
-            {
-                'name': 'test output parameter name',
+        },
+        'output_parameters': {
+            'test output parameter name': {
                 'description': 'test output parameter description',
             },
-            {
-                'name': 'test output parameter name 2',
+            'test output parameter name 2': {
                 'description': 'test output parameter description 2',
             }
-        ],
+        },
         'template': {
             'input': {
                 'test input parameter name': 'test input parameter value',
@@ -84,26 +80,22 @@ def test_prompt_from_dict(prompt_dict: dict):
     want = Prompt(
         name='test name',
         description='test description',
-        input_parameters=[
-            ParameterInfo(
-                name='test input parameter name',
+        input_parameters={
+            "test input parameter name": ParameterInfo(
                 description='test input parameter description',
             ),
-            ParameterInfo(
-                name='test input parameter name 2',
+            "test input parameter name 2": ParameterInfo(
                 description='test input parameter description 2',
             ),
-        ],
-        output_parameters=[
-            ParameterInfo(
-                name='test output parameter name',
+            },
+        output_parameters={
+            "test output parameter name": ParameterInfo(
                 description='test output parameter description',
             ),
-            ParameterInfo(
-                name='test output parameter name 2',
+            "test output parameter name 2": ParameterInfo(
                 description='test output parameter description 2',
             ),
-        ],
+            },
         template=Example(
             input={
                 'test input parameter name': 'test input parameter value',
@@ -160,7 +152,9 @@ def test_prompt_from_dict_parameter_mismatch(prompt_dict: dict):
 
 
 def test_prompt_from_dict_parameter_mismatch_2(prompt_dict: dict):
-    prompt_dict['input_parameters'][0]['name'] = "wrong name"
+    prompt_dict['input_parameters']['test input parameter name 3'] = {
+        "description": "test input parameter description 3"
+    }
 
     with pytest.raises(ValidationError):
         Prompt.from_dict(prompt_dict)

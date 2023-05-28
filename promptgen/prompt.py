@@ -11,11 +11,9 @@ class ParameterInfo(DataClass):
     """Information about a parameter.
 
     Attributes:
-        name: The name of the parameter.
         description: A description of the parameter.
     """
 
-    name: str
     description: str
 
 
@@ -45,8 +43,8 @@ class Prompt(DataClass):
 
     name: str
     description: str
-    input_parameters: list[ParameterInfo]
-    output_parameters: list[ParameterInfo]
+    input_parameters: dict[str, ParameterInfo]
+    output_parameters: dict[str, ParameterInfo]
     template: Example
     examples: list[Example]
 
@@ -116,12 +114,12 @@ class Prompt(DataClass):
                 "Template, input parameters, " "and output parameters must be provided"
             )
 
-        if template.input.keys() != {param.name for param in input_parameters}:
+        if template.input.keys() != input_parameters.keys():
             raise ValueError(
                 f"Template input keys do not match input parameters: "
                 f"{template.input.keys()} vs {input_parameters}"
             )
-        if template.output.keys() != {param.name for param in output_parameters}:
+        if template.output.keys() != output_parameters.keys():
             raise ValueError(
                 f"Template output keys do not match output parameters: "
                 f"{template.output.keys()} vs {output_parameters}"
@@ -141,12 +139,12 @@ class Prompt(DataClass):
             )
 
         for example in examples:
-            if example.input.keys() != {param.name for param in input_parameters}:
+            if example.input.keys() != input_parameters.keys():
                 raise ValueError(
                     f"Example input keys do not match input parameters: "
                     f"{example.input.keys()} vs {input_parameters}"
                 )
-            if example.output.keys() != {param.name for param in output_parameters}:
+            if example.output.keys() != output_parameters.keys():
                 raise ValueError(
                     f"Example output keys do not match output parameters: "
                     f"{example.output.keys()} vs {output_parameters}"
@@ -176,10 +174,10 @@ class Prompt(DataClass):
             A string representation of the prompt.
         """
         input_str = ", ".join(
-            [f"{param.name}" for param in self.input_parameters]
+            [f"{name}" for name, param in self.input_parameters.items()]
         )
         output_str = ", ".join(
-            [f"{param.name}" for param in self.output_parameters]
+            [f"{name}" for name, param in self.output_parameters.items()]
         )
         return f"{self.name}: ({input_str}) -> ({output_str})"
 

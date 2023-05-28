@@ -1,26 +1,22 @@
 {
     "name": "Categorization",
     "description": "Categorize the given text",
-    "input_parameters": [
-        {
-            "name": "text",
+    "input_parameters": {
+        "text": {
             "description": "The text to be categorized"
         },
-        {
-            "name": "categories",
+        "categories": {
             "description": "The categories to categorize the text into"
         }
-    ],
-    "output_parameters": [
-        {
-            "name": "category",
+    },
+    "output_parameters": {
+        "category": {
             "description": "The category the text belongs to"
         },
-        {
-            "name": "found",
+        "found": {
             "description": "Whether the category was found in the text"
         }
-    ],
+    },
     "template": {
         "input": {
             "text": "text",

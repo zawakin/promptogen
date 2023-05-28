@@ -9,7 +9,7 @@ from promptgen.prompt_formatter import BasePromptFormatter, PromptFormatter
 @pytest.fixture
 def prompt_formatter():
     input_formatter = JsonInputFormatter()
-    output_formatter = JsonOutputFormatter()
+    output_formatter = JsonOutputFormatter(indent=None)
     return BasePromptFormatter(input_formatter=input_formatter, output_formatter=output_formatter)
 
 
@@ -18,26 +18,22 @@ def prompt():
     return Prompt(
         name='test name',
         description='test description',
-        input_parameters=[
-            ParameterInfo(
-                name='test input parameter name',
+        input_parameters={
+            "test input parameter name": ParameterInfo(
                 description='test input parameter description',
             ),
-            ParameterInfo(
-                name='test input parameter name 2',
+            "test input parameter name 2": ParameterInfo(
                 description='test input parameter description 2',
             ),
-        ],
-        output_parameters=[
-            ParameterInfo(
-                name='test output parameter name',
+            },
+        output_parameters={
+            "test output parameter name": ParameterInfo(
                 description='test output parameter description',
             ),
-            ParameterInfo(
-                name='test output parameter name 2',
+            "test output parameter name 2": ParameterInfo(
                 description='test output parameter description 2',
             ),
-        ],
+            },
         template=Example(
             input={
                 'test input parameter name': 'test input parameter value',
@@ -81,6 +77,7 @@ def test_base_prompt_formatter_format_prompt(prompt_formatter: PromptFormatter, 
 test description
 
 Output a json-formatted string without outputting any other strings.
+Be careful with the order of brackets in the json.
 
 Input Parameters:
   - test input parameter name: test input parameter description
@@ -126,6 +123,7 @@ def test_base_prompt_formatter_format_prompt_without_input(prompt_formatter: Pro
 test description
 
 Output a json-formatted string without outputting any other strings.
+Be careful with the order of brackets in the json.
 
 Input Parameters:
   - test input parameter name: test input parameter description

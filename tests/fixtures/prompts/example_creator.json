@@ -1,22 +1,19 @@
 {
     "name": "example_creator",
     "description": "Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space.",
-    "input_parameters": [
-        {
-            "name": "prompt",
+    "input_parameters": {
+        "prompt": {
             "description": "prompt"
         },
-        {
-            "name": "n",
+        "n": {
             "description": "number of examples to create"
         }
-    ],
-    "output_parameters": [
-        {
-            "name": "examples",
+    },
+    "output_parameters": {
+        "examples": {
             "description": "detailed examples of the prompt. Please add examples with scattered inputs and outputs in semantic space. Specific examples are better than general examples."
         }
-    ],
+    },
     "template": {
         "input": {
             "prompt": {

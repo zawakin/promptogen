@@ -1,18 +1,16 @@
 {
     "name": "Summarization of text",
     "description": "Summarize the text into a shorter text.",
-    "input_parameters": [
-        {
-            "name": "text",
+    "input_parameters": {
+        "text": {
             "description": "text to summarize"
         }
-    ],
-    "output_parameters": [
-        {
-            "name": "summary",
+    },
+    "output_parameters": {
+        "summary": {
             "description": "summary of the text"
         }
-    ],
+    },
     "template": {
         "input": {
             "text": "text"

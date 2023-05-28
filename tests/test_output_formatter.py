@@ -10,7 +10,7 @@ def test_json_output_formatter_name():
 
 
 def test_json_output_formatter_format():
-    f = JsonOutputFormatter()
+    f = JsonOutputFormatter(indent=None)
 
     assert f.format({
         'test output parameter name': 'test output parameter value',
