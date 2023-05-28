@@ -118,16 +118,32 @@ class Prompt(DataClass):
 
         return values
 
-    def drop_examples(self) -> "Prompt":
-        """Drop the examples from the prompt.
+    def with_examples(self, examples: list[Example] | list[dict]) -> "Prompt":
+        """Set the examples of the prompt.
+
+        Args:
+            examples: The examples to set.
 
         Returns:
-            A copy of the prompt without examples.
+            A copy of the prompt with the examples set.
         """
-        return self.copy(deep=True, update={"examples": []})
+        exs = [Example(**ex) if isinstance(ex, dict) else ex for ex in examples]
+        return self.copy(deep=True, update={"examples": exs})
 
     def __repr__(self) -> str:
         return self.json(indent=4, ensure_ascii=False)
+
+    def __str__(self) -> str:
+        # like map string.
+        # ex) (input1: type1, input2: type2, ...) -> (output1: type1, output2: type2, ...)
+        input_str = ", ".join(
+            [f"{param.name}" for param in self.input_parameters]
+        )
+        output_str = ", ".join(
+            [f"{param.name}" for param in self.output_parameters]
+        )
+        return f"{self.name}: ({input_str}) -> ({output_str})"
+
 
 
 def load_prompt_from_json_file(filename: str) -> Prompt:

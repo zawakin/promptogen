@@ -63,6 +63,20 @@ def prompt_dict() -> dict:
         ]
     }
 
+@pytest.fixture
+def other_example_dict() -> dict:
+    return {
+        'input': {
+            'test input parameter name': 'other example test input parameter value',
+            'test input parameter name 2': 'other example test input parameter value 2'
+        },
+        'output': {
+            'test output parameter name': 'other example test output parameter value',
+            'test output parameter name 2': 'other example test output parameter value 2'
+        },
+    }
+
+
 
 def test_prompt_from_dict(prompt_dict: dict):
     prompt = Prompt.from_dict(prompt_dict)
@@ -150,3 +164,13 @@ def test_prompt_from_dict_parameter_mismatch_2(prompt_dict: dict):
 
     with pytest.raises(ValidationError):
         Prompt.from_dict(prompt_dict)
+
+def test_prompt_with_examples(prompt_dict: dict, other_example_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
+
+    got = prompt.with_examples([other_example_dict])
+
+    assert type(got.examples) == list
+    assert type(got.examples[0]) == Example
+    assert got.examples[0].input == other_example_dict['input']
+    assert got.examples[0].output == other_example_dict['output']
