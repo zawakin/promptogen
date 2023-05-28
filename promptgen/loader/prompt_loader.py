@@ -1,12 +1,10 @@
 from promptgen.prompt import Prompt
 
-from ..prompts import (
-    get_example_creator_template,
-    get_prompt_creator_template,
-    get_prompt_optimizer_template,
-    get_text_categorizer_template,
-    get_text_summarizer_template,
-)
+from ..prompts import (get_example_creator_template,
+                       get_prompt_creator_template,
+                       get_prompt_optimizer_template,
+                       get_text_categorizer_template,
+                       get_text_summarizer_template)
 
 
 class PromptLoader:

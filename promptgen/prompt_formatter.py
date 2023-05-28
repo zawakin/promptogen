@@ -1,12 +1,9 @@
 from abc import ABC, abstractmethod
 
-from .input import CodeInputFormatter, InputFormatter, InputValue, JsonInputFormatter
-from .output import (
-    CodeOutputFormatter,
-    JsonOutputFormatter,
-    OutputFormatter,
-    OutputValue,
-)
+from .input import (CodeInputFormatter, InputFormatter, InputValue,
+                    JsonInputFormatter)
+from .output import (CodeOutputFormatter, JsonOutputFormatter, OutputFormatter,
+                     OutputValue)
 from .prompt import Example, Prompt
 
 
