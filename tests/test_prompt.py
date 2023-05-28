@@ -168,3 +168,23 @@ def test_prompt_with_examples(prompt_dict: dict, other_example_dict: dict):
     assert type(got.examples[0]) == Example
     assert got.examples[0].input == other_example_dict['input']
     assert got.examples[0].output == other_example_dict['output']
+
+def test_prompt_rename_input_parameter(prompt_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
+
+    got = prompt.rename_input_parameter('test input parameter name', 'test input parameter name 3')
+
+    assert type(got.input_parameters) == dict
+    assert 'test input parameter name' not in got.input_parameters
+    assert 'test input parameter name 3' in got.input_parameters
+    assert got.input_parameters['test input parameter name 3'].description == 'test input parameter description'
+
+def test_prompt_rename_output_parameter(prompt_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
+
+    got = prompt.rename_output_parameter('test output parameter name', 'test output parameter name 3')
+
+    assert type(got.output_parameters) == dict
+    assert 'test output parameter name' not in got.output_parameters
+    assert 'test output parameter name 3' in got.output_parameters
+    assert got.output_parameters['test output parameter name 3'].description == 'test output parameter description'

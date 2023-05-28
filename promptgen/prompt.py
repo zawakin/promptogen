@@ -164,6 +164,58 @@ class Prompt(DataClass):
         exs = [Example(**ex) if isinstance(ex, dict) else ex for ex in examples]
         return self.copy(deep=True, update={"examples": exs})
 
+    def rename_input_parameter(self, old_name: str, new_name: str) -> "Prompt":
+        """Rename an input parameter.
+
+        Args:
+            old_name: The old name of the input parameter.
+            new_name: The new name of the input parameter.
+
+        Returns:
+            A copy of the prompt with the input parameter renamed.
+        """
+        input_parameters = self.input_parameters.copy()
+        input_parameters[new_name] = input_parameters.pop(old_name)
+
+        # rename in template
+        template = self.template.copy(deep=True)
+        template.input[new_name] = template.input.pop(old_name)
+
+        # rename in examples
+        examples = []
+        for example in self.examples:
+            example = example.copy(deep=True)
+            example.input[new_name] = example.input.pop(old_name)
+            examples.append(example)
+
+        return self.copy(deep=True, update={"input_parameters": input_parameters, "template": template, "examples": examples})
+
+    def rename_output_parameter(self, old_name: str, new_name: str) -> "Prompt":
+        """Rename an output parameter.
+
+        Args:
+            old_name: The old name of the output parameter.
+            new_name: The new name of the output parameter.
+
+        Returns:
+            A copy of the prompt with the output parameter renamed.
+        """
+        output_parameters = self.output_parameters.copy()
+        output_parameters[new_name] = output_parameters.pop(old_name)
+
+        # rename in template
+        template = self.template.copy(deep=True)
+        template.output[new_name] = template.output.pop(old_name)
+
+        # rename in examples
+        examples = []
+        for example in self.examples:
+            example = example.copy(deep=True)
+            example.output[new_name] = example.output.pop(old_name)
+            examples.append(example)
+
+        return self.copy(deep=True, update={"output_parameters": output_parameters, "template": template, "examples": examples})
+
     def __repr__(self) -> str:
         return self.json(indent=4, ensure_ascii=False)
 

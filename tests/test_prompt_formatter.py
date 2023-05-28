@@ -3,14 +3,14 @@ from promptgen.input import JsonInputFormatter
 from promptgen.output import JsonOutputFormatter
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
-from promptgen.prompt_formatter import BasePromptFormatter, PromptFormatter
+from promptgen.prompt_formatter import PromptFormatter, PromptFormatterInterface
 
 
 @pytest.fixture
 def prompt_formatter():
     input_formatter = JsonInputFormatter()
     output_formatter = JsonOutputFormatter(indent=None)
-    return BasePromptFormatter(input_formatter=input_formatter, output_formatter=output_formatter)
+    return PromptFormatter(input_formatter=input_formatter, output_formatter=output_formatter)
 
 
 @pytest.fixture
@@ -68,7 +68,7 @@ def prompt():
         ])
 
 
-def test_base_prompt_formatter_format_prompt(prompt_formatter: PromptFormatter, prompt: Prompt):
+def test_base_prompt_formatter_format_prompt(prompt_formatter: PromptFormatterInterface, prompt: Prompt):
     input_value = {
         'test input parameter name': 'sample value',
         'test input parameter name 2': 'sample value 2'
@@ -118,7 +118,7 @@ Input:
 Output:"""
 
 
-def test_base_prompt_formatter_format_prompt_without_input(prompt_formatter: PromptFormatter, prompt: Prompt):
+def test_base_prompt_formatter_format_prompt_without_input(prompt_formatter: PromptFormatterInterface, prompt: Prompt):
     assert prompt_formatter.format_prompt_without_input(prompt) == f"""You are an AI named \"test name\".
 test description
 

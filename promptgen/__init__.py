@@ -1,21 +1,32 @@
-from .input import InputFormatter, InputValue, JsonInputFormatter
-from .output import JsonOutputFormatter, OutputFormatter, OutputValue
+from .input import InputFormatter, InputValue, JsonInputFormatter, CodeInputFormatter
+from .output import JsonOutputFormatter, CodeOutputFormatter , OutputFormatter, OutputValue
 from .prompt import Example, ParameterInfo, Prompt, load_prompt_from_dict, load_prompt_from_json_file
-from .prompt_formatter import JsonPromptFormatter, PromptFormatter
+from .prompt_formatter import JsonPromptFormatter, PromptFormatterInterface, PromptFormatter
 
 __all__ = [
+    # common
     "InputFormatter",
-    "JsonInputFormatter",
     "OutputFormatter",
+    "PromptFormatter",
+
+    # json
+    "JsonInputFormatter",
     "JsonOutputFormatter",
+    "JsonPromptFormatter",
+
+    # code
+    "CodeInputFormatter",
+    "CodeOutputFormatter",
+
+    # prompt
     "Prompt",
     "ParameterInfo",
     "Example",
-    "PromptFormatter",
+    "PromptFormatterInterface",
     "InputValue",
     "OutputValue",
-    "JsonPromptFormatter",
 
+    # load
     "load_prompt_from_dict",
     "load_prompt_from_json_file",
 ]

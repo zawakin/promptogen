@@ -82,3 +82,33 @@ class JsonOutputFormatter(OutputFormatter):
                 raise ValueError("Expected output to end with ```.")
 
         return json.loads(remove_code_block("json", output))
+
+
+class CodeOutputFormatter(OutputFormatter):
+    language: str
+    output_key: str
+
+    def __init__(self, language: str, output_key: str = "code"):
+        self.language = language
+        self.output_key = output_key
+
+    def name(self) -> str:
+        return "code"
+
+    def constraints(self) -> str:
+        return ""
+
+    def format(self, output: OutputValue) -> str:
+        if not isinstance(output, dict):
+            raise TypeError(
+                f"Expected output to be a dict, got {type(output).__name__}; "
+                "output: {output}"
+            )
+        if self.output_key not in output:
+            raise ValueError(f"Expected output to have key {self.output_key}.")
+
+        return with_code_block(self.language, output[self.output_key])
+
+    def parse(self, output: str) -> OutputValue:
+        result = remove_code_block(self.language, output)
+        return {self.output_key: result}

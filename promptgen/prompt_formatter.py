@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 
-from .input import InputFormatter, InputValue, JsonInputFormatter
-from .output import JsonOutputFormatter, OutputFormatter, OutputValue
+from .input import CodeInputFormatter, InputFormatter, InputValue, JsonInputFormatter
+from .output import CodeOutputFormatter, JsonOutputFormatter, OutputFormatter, OutputValue
 from .prompt import Example, Prompt
 
-class PromptFormatter(ABC):
+class PromptFormatterInterface(ABC):
     @abstractmethod
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
         pass
@@ -18,7 +18,7 @@ class PromptFormatter(ABC):
         pass
 
 
-class BasePromptFormatter(PromptFormatter):
+class PromptFormatter(PromptFormatterInterface):
     input_formatter: InputFormatter
     output_formatter: OutputFormatter
 
@@ -27,6 +27,14 @@ class BasePromptFormatter(PromptFormatter):
         input_formatter: InputFormatter = JsonInputFormatter(),
         output_formatter: OutputFormatter = JsonOutputFormatter(),
     ):
+        if not isinstance(input_formatter, InputFormatter):
+            raise TypeError(
+                f"Expected input_formatter to be an InputFormatter, got {type(input_formatter).__name__}."
+            )
+        if not isinstance(output_formatter, OutputFormatter):
+            raise TypeError(
+                f"Expected output_formatter to be an OutputFormatter, got {type(output_formatter).__name__}."
+            )
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter
 
@@ -83,6 +91,6 @@ Template:
         return self.output_formatter.parse(s)
 
 
-class JsonPromptFormatter(BasePromptFormatter):
+class JsonPromptFormatter(PromptFormatter):
     def __init__(self):
         super().__init__(JsonInputFormatter(), JsonOutputFormatter())
