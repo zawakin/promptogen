@@ -10,10 +10,10 @@ class SummarizationOutput(DataClass):
     summary: str
 
 
-class Summarization(Prompt):
+class TextSummarizer(Prompt):
     def __init__(self):
         super().__init__(
-            name="Summarization of text",
+            name="TextSummarizer",
             description="Summarize the text into a shorter text.",
             input_parameters={
                 "text": ParameterInfo(description="text to summarize"),

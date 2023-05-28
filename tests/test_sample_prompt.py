@@ -1,16 +1,16 @@
 from promptgen.prompt import Prompt, load_prompt_from_json_file
-from promptgen.prompts.categorization import Categorization
-from promptgen.prompts.example_creator import ExampleCreator
+from promptgen.prompts.text_categorizer import TextCategorizer
+from promptgen.prompts.prompt_example_creator import PromptExampleCreator
 from promptgen.prompts.prompt_creator import PromptCreator
 from promptgen.prompts.prompt_optimizer import PromptOptimizer
-from promptgen.prompts.summarization import Summarization
+from promptgen.prompts.text_summarizer import TextSummarizer
 
 
 def test_load_prompts():
     prompts = [
-        Summarization(),
-        Categorization(),
-        ExampleCreator(),
+        TextSummarizer(),
+        TextCategorizer(),
+        PromptExampleCreator(),
         PromptCreator(),
         PromptOptimizer(),
     ]

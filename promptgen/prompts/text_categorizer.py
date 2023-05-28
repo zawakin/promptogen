@@ -2,20 +2,20 @@ from promptgen.dataclass import DataClass
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
 
-class CategorizationInput(DataClass):
+class TextCategorzierInput(DataClass):
     text: str
     categories: list[str]
 
 
-class CategorizationOutput(DataClass):
+class TextCategorizerOutput(DataClass):
     category: str
     found: bool
 
 
-class Categorization(Prompt):
+class TextCategorizer(Prompt):
     def __init__(self):
         super().__init__(
-            name="Categorization",
+            name="TextCategorizer",
             description="Categorize the given text",
             input_parameters={
                 "text": ParameterInfo(description="The text to be categorized"),
@@ -32,32 +32,32 @@ class Categorization(Prompt):
                 ),
                 },
             template=Example(
-                input=CategorizationInput(
+                input=TextCategorzierInput(
                     text="text",
                     categories=["category 1", "category 2"],
                 ).dict(),
-                output=CategorizationOutput(
+                output=TextCategorizerOutput(
                     category="category 1",
                     found=True,
                 ).dict(),
             ),
             examples=[
                 Example(
-                    input=CategorizationInput(
+                    input=TextCategorzierInput(
                         text="A recent study shows that regular exercise can help improve cognitive function in older adults.",
                         categories=["Health", "Science", "Technology"],
                     ).dict(),
-                    output=CategorizationOutput(
+                    output=TextCategorizerOutput(
                         category="Health",
                         found=True,
                     ).dict(),
                 ),
                 Example(
-                    input=CategorizationInput(
+                    input=TextCategorzierInput(
                         text="The new quantum computing system is expected to revolutionize data processing and complex calculations.",
                         categories=["Health", "Sports"],
                     ).dict(),
-                    output=CategorizationOutput(
+                    output=TextCategorizerOutput(
                         category="",
                         found=False,
                     ).dict(),

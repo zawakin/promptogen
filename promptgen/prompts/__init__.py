@@ -1,15 +1,15 @@
-from .categorization import Categorization
-from .example_creator import ExampleCreator
+from .text_categorizer import TextCategorizer
+from .prompt_example_creator import PromptExampleCreator
 from .prompt_creator import PromptCreator
 from .prompt_optimizer import PromptOptimizer
-from .summarization import Summarization
+from .text_summarizer import TextSummarizer
 
 __all__ = [
-    "Categorization",
-    "ExampleCreator",
+    "TextCategorizer",
+    "PromptExampleCreator",
     "PromptCreator",
     "PromptOptimizer",
-    "Summarization",
+    "TextSummarizer",
 ]
 
 from enum import Enum

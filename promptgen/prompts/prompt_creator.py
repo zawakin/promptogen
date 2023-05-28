@@ -1,8 +1,8 @@
 from promptgen.dataclass import DataClass
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
-from .categorization import Categorization
-from .summarization import Summarization
+from .text_categorizer import TextCategorizer
+from .text_summarizer import TextSummarizer
 
 
 class PromptCreatorInput(DataClass):
@@ -16,8 +16,8 @@ class PromptCreatorOutput(DataClass):
 
 class PromptCreator(Prompt):
     def __init__(self):
-        categorization_prompt = Categorization()
-        summarization_prompt = Summarization()
+        categorization_prompt = TextCategorizer()
+        summarization_prompt = TextSummarizer()
 
         super().__init__(
             name="PromptCreator",

@@ -1,8 +1,8 @@
 from promptgen.dataclass import DataClass
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
-from .categorization import Categorization
-from .summarization import Summarization
+from .text_categorizer import TextCategorizer
+from .text_summarizer import TextSummarizer
 
 
 class ExampleCreatorInput(DataClass):
@@ -14,13 +14,13 @@ class ExampleCreatorOutput(DataClass):
     examples: list[Example]
 
 
-class ExampleCreator(Prompt):
+class PromptExampleCreator(Prompt):
     def __init__(self):
-        categorization_prompt = Categorization()
-        summarization_prompt = Summarization()
+        categorization_prompt = TextCategorizer()
+        summarization_prompt = TextSummarizer()
 
         super().__init__(
-            name="example_creator",
+            name="PromptExampleCreator",
             description="Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space.",
             input_parameters={
                 "prompt": ParameterInfo( description="prompt"),
