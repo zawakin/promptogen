@@ -22,9 +22,7 @@ def get_prompt_creator_template() -> Prompt:
         description="Create a prompt from the given purpose. Don't create an example with the input purpose. Instead, create an example with a different purpose. Consider background information that is necessary to understand the purpose.",
         input_parameters={
             "purpose": ParameterInfo(description="purpose of the prompt"),
-            "background": ParameterInfo(
-                description="background of the prompt"
-            ),
+            "background": ParameterInfo(description="background of the prompt"),
         },
         output_parameters={
             "prompt": ParameterInfo(
@@ -42,10 +40,10 @@ def get_prompt_creator_template() -> Prompt:
                     description="new prompt description",
                     input_parameters={
                         "input_1": ParameterInfo(description="input 1"),
-                        },
+                    },
                     output_parameters={
                         "output_1": ParameterInfo(description="output 1"),
-                        },
+                    },
                     template=Example(
                         input=dict(input_1="prompt input 1"),
                         output=dict(output_1="prompt output 1"),

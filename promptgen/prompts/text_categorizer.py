@@ -21,15 +21,13 @@ def get_text_categorizer_template() -> Prompt:
             "categories": ParameterInfo(
                 description="The categories to categorize the text into",
             ),
-            },
+        },
         output_parameters={
-            "category": ParameterInfo(
-                description="The category the text belongs to"
-            ),
+            "category": ParameterInfo(description="The category the text belongs to"),
             "found": ParameterInfo(
                 description="Whether the category was found in the text",
             ),
-            },
+        },
         template=Example(
             input=TextCategorzierInput(
                 text="text",

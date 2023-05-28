@@ -188,7 +188,14 @@ class Prompt(DataClass):
             example.input[new_name] = example.input.pop(old_name)
             examples.append(example)
 
-        return self.copy(deep=True, update={"input_parameters": input_parameters, "template": template, "examples": examples})
+        return self.copy(
+            deep=True,
+            update={
+                "input_parameters": input_parameters,
+                "template": template,
+                "examples": examples,
+            },
+        )
 
     def rename_output_parameter(self, old_name: str, new_name: str) -> "Prompt":
         """Rename an output parameter.
@@ -214,7 +221,14 @@ class Prompt(DataClass):
             example.output[new_name] = example.output.pop(old_name)
             examples.append(example)
 
-        return self.copy(deep=True, update={"output_parameters": output_parameters, "template": template, "examples": examples})
+        return self.copy(
+            deep=True,
+            update={
+                "output_parameters": output_parameters,
+                "template": template,
+                "examples": examples,
+            },
+        )
 
     def __repr__(self) -> str:
         return self.json(indent=4, ensure_ascii=False)
@@ -232,7 +246,6 @@ class Prompt(DataClass):
             [f"{name}" for name, param in self.output_parameters.items()]
         )
         return f"{self.name}: ({input_str}) -> ({output_str})"
-
 
 
 def load_prompt_from_json_file(filename: str) -> Prompt:

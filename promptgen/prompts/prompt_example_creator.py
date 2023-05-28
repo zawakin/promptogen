@@ -4,7 +4,6 @@ from promptgen.prompts.text_categorizer import get_text_categorizer_template
 from promptgen.prompts.text_summarizer import get_text_summarizer_template
 
 
-
 class ExampleCreatorInput(DataClass):
     prompt: Prompt
     n: int
@@ -22,14 +21,14 @@ def get_example_creator_template() -> Prompt:
         name="PromptExampleCreator",
         description="Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space.",
         input_parameters={
-            "prompt": ParameterInfo( description="prompt"),
+            "prompt": ParameterInfo(description="prompt"),
             "n": ParameterInfo(description="number of examples to create"),
-            },
+        },
         output_parameters={
             "examples": ParameterInfo(
                 description="detailed examples of the prompt. Please add examples with scattered inputs and outputs in semantic space. Specific examples are better than general examples.",
             ),
-            },
+        },
         template=Example(
             input=ExampleCreatorInput(
                 prompt=Prompt(
@@ -37,10 +36,10 @@ def get_example_creator_template() -> Prompt:
                     description="prompt description",
                     input_parameters={
                         "input_1": ParameterInfo(description="input 1"),
-                        },
+                    },
                     output_parameters={
                         "output_1": ParameterInfo(description="output 1"),
-                        },
+                    },
                     template=Example(
                         input={
                             "input_1": "prompt input 1",

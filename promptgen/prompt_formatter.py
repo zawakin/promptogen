@@ -1,8 +1,11 @@
 from abc import ABC, abstractmethod
 
-from .input import CodeInputFormatter, InputFormatter, InputValue, JsonInputFormatter
-from .output import CodeOutputFormatter, JsonOutputFormatter, OutputFormatter, OutputValue
+from .input import (CodeInputFormatter, InputFormatter, InputValue,
+                    JsonInputFormatter)
+from .output import (CodeOutputFormatter, JsonOutputFormatter, OutputFormatter,
+                     OutputValue)
 from .prompt import Example, Prompt
+
 
 class PromptFormatterInterface(ABC):
     @abstractmethod
@@ -58,10 +61,12 @@ Output:"""
         )
 
         formatted_input_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.input_parameters.items()
+            f"  - {name}: {p.description}"
+            for name, p in prompt.input_parameters.items()
         )
         formatted_output_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.output_parameters.items()
+            f"  - {name}: {p.description}"
+            for name, p in prompt.output_parameters.items()
         )
 
         return f"""You are an AI named "{prompt.name}".

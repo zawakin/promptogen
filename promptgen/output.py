@@ -33,10 +33,11 @@ class JsonOutputFormatter(OutputFormatter):
         strict (bool, optional): Whether to check if the output starts and ends with ```json. Defaults to True.
         indent (int | None, optional): The indent to use. Defaults to 1.
     """
+
     strict: bool
     indent: int | None
 
-    def __init__(self, strict: bool = True, indent: int | None=1):
+    def __init__(self, strict: bool = True, indent: int | None = 1):
         self.strict = strict
         self.indent = indent
 
@@ -50,7 +51,6 @@ class JsonOutputFormatter(OutputFormatter):
         # be careful with the order of brackets
 
         return "Be careful with the order of brackets in the json."
-
 
     def format(self, output: OutputValue) -> str:
         """Format the output value into a string.
@@ -70,7 +70,9 @@ class JsonOutputFormatter(OutputFormatter):
                 "output: {output}"
             )
 
-        return with_code_block("json", json.dumps(output, ensure_ascii=False, indent=self.indent))
+        return with_code_block(
+            "json", json.dumps(output, ensure_ascii=False, indent=self.indent)
+        )
 
     def parse(self, output: str) -> OutputValue:
         output = output.strip()
