@@ -39,9 +39,16 @@ jobs:
       run: |
         poetry install
 
-    - name: Run Tests
+
+    - name: Run tests with pytest
       run: |
-        poetry run pytest
+        pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=promptgen tests/ | tee pytest-coverage.txt
+
+    - name: Pytest coverage comment
+      uses: MishaKav/pytest-coverage-comment@main
+      with:
+        pytest-coverage-path: ./pytest-coverage.txt
+        junitxml-path: ./pytest.xml
 
     - name: Lint with flake8
       run: |
