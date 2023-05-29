@@ -29,8 +29,7 @@ class PromptFormatter(PromptFormatterInterface):
         output_formatter: OutputFormatter = JsonOutputFormatter(),
     ):
         if not isinstance(input_formatter, InputFormatter):
-            raise TypeError(
-                f"Expected input_formatter to be an InputFormatter, got {type(input_formatter).__name__}.")
+            raise TypeError(f"Expected input_formatter to be an InputFormatter, got {type(input_formatter).__name__}.")
         if not isinstance(output_formatter, OutputFormatter):
             raise TypeError(
                 f"Expected output_formatter to be an OutputFormatter, got {type(output_formatter).__name__}."
@@ -49,8 +48,7 @@ Output:"""
     def format_prompt_without_input(self, prompt: Prompt) -> str:
         formatted_template = self.format_example(prompt.template)
         formatted_examples = (
-            "\n".join(
-                f"Example {i+1}:\n{self.format_example(e)}\n" for i, e in enumerate(prompt.examples))
+            "\n".join(f"Example {i+1}:\n{self.format_example(e)}\n" for i, e in enumerate(prompt.examples))
             if prompt.examples
             else ""
         )
