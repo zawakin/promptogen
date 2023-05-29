@@ -34,21 +34,20 @@ jobs:
         key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
         restore-keys: |
           ${{ runner.os }}-poetry-
-          
+
     - name: Install dependencies
       run: |
         poetry install
 
-
     - name: Run tests with pytest
       run: |
-        pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=promptgen tests/ | tee pytest-coverage.txt
+        poetry run pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=promptgen tests/ | tee pytest-coverage.txt
 
     - name: Pytest coverage comment
       uses: MishaKav/pytest-coverage-comment@main
       with:
-        pytest-coverage-path: pytest-coverage.txt
-        junitxml-path: pytest.xml
+        pytest-coverage-path: ./pytest-coverage.txt
+        junitxml-path: ./pytest.xml
 
     - name: Lint with flake8
       run: |
