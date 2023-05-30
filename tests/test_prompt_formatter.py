@@ -75,7 +75,6 @@ def test_base_prompt_formatter_format_prompt(prompt_formatter: PromptFormatterIn
     }
     assert prompt_formatter.format_prompt(prompt=prompt, input_value=input_value) == f"""You are an AI named \"test name\".
 test description
-
 Output a JSON-formatted string without outputting any other strings.
 Be careful with the order of brackets in the json.
 
@@ -122,7 +121,6 @@ Output:"""
 def test_base_prompt_formatter_format_prompt_without_input(prompt_formatter: PromptFormatterInterface, prompt: Prompt):
     assert prompt_formatter.format_prompt_without_input(prompt) == f"""You are an AI named \"test name\".
 test description
-
 Output a JSON-formatted string without outputting any other strings.
 Be careful with the order of brackets in the json.
 

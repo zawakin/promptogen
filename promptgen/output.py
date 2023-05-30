@@ -153,7 +153,7 @@ class KeyValueOutputFormatter(OutputFormatter):
                 value = f"'{value}'"
             s += f"{key}: {value}\n"
 
-        return s
+        return s.strip()
 
     def parse(self, output: str) -> OutputValue:
         if not isinstance(output, str):

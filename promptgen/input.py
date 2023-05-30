@@ -80,4 +80,4 @@ class KeyValueInputFormatter(InputFormatter):
             else:
                 s += f"{key}: {value}\n"
 
-        return s
+        return s.strip()
