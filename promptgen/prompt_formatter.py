@@ -55,6 +55,12 @@ Input:
 Output:"""
 
     def format_prompt_without_input(self, prompt: Prompt) -> str:
+        formatted_input_parameters = "\n".join(
+            f"  - {name}: {p.description}" for name, p in prompt.input_parameters.items()
+        )
+        formatted_output_parameters = "\n".join(
+            f"  - {name}: {p.description}" for name, p in prompt.output_parameters.items()
+        )
         formatted_template = self.format_example(prompt.template)
         formatted_examples = (
             "\n".join(f"Example {i+1}:\n{self.format_example(e)}\n" for i, e in enumerate(prompt.examples))
@@ -62,16 +68,8 @@ Output:"""
             else ""
         )
 
-        formatted_input_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.input_parameters.items()
-        )
-        formatted_output_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.output_parameters.items()
-        )
-
         return f"""You are an AI named "{prompt.name}".
 {prompt.description}
-
 {self.output_formatter.description()}
 
 Input Parameters:
