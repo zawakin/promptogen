@@ -3,13 +3,27 @@ from .input import (
     InputFormatter,
     InputValue,
     JsonInputFormatter,
-    ListInputFormatter,
+    KeyValueInputFormatter,
     TextInputFormatter,
 )
-from .output import CodeOutputFormatter, JsonOutputFormatter, OutputFormatter, OutputValue, TextOutputFormatter
-from .prompt import Example, ParameterInfo, Prompt, load_prompt_from_dict, load_prompt_from_json_file
+from .output import (
+    CodeOutputFormatter,
+    JsonOutputFormatter,
+    KeyValueOutputFormatter,
+    OutputFormatter,
+    OutputValue,
+    TextOutputFormatter,
+)
+from .prompt import (
+    Example,
+    ParameterInfo,
+    Prompt,
+    load_prompt_from_dict,
+    load_prompt_from_json_file,
+    load_prompt_from_json_string,
+)
 from .prompt_collection import PromptCollection
-from .prompt_formatter import JsonPromptFormatter, PromptFormatter, PromptFormatterInterface
+from .prompt_formatter import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface
 
 __all__ = [
     # common
@@ -27,7 +41,9 @@ __all__ = [
     "TextInputFormatter",
     "TextOutputFormatter",
     # list
-    "ListInputFormatter",
+    "KeyValueInputFormatter",
+    "KeyValueOutputFormatter",
+    "KeyValuePromptFormatter",
     # prompt
     "Prompt",
     "ParameterInfo",
@@ -38,5 +54,6 @@ __all__ = [
     # load
     "load_prompt_from_dict",
     "load_prompt_from_json_file",
+    "load_prompt_from_json_string",
     "PromptCollection",
 ]

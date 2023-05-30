@@ -65,9 +65,9 @@ class TextInputFormatter(InputFormatter):
         return input[self.input_key]
 
 
-class ListInputFormatter(InputFormatter):
+class KeyValueInputFormatter(InputFormatter):
     def name(self) -> str:
-        return "list"
+        return "key_value"
 
     def format(self, input: InputValue) -> str:
         if not isinstance(input, dict):
@@ -75,6 +75,9 @@ class ListInputFormatter(InputFormatter):
 
         s = ""
         for key, value in input.items():
+            # only primitive values are allowed
+            if not isinstance(value, (str, int, float, bool)):
+                raise TypeError(f"Expected value to be a primitive type, got {type(value).__name__}.")
             s += f"{key}: {value}\n"
 
         return s

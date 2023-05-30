@@ -136,3 +136,53 @@ class TextOutputFormatter(OutputFormatter):
 
     def parse(self, output: str) -> OutputValue:
         return {self.output_key: output}
+
+
+class KeyValueOutputFormatter(OutputFormatter):
+    def name(self) -> str:
+        return "key_value"
+
+    def constraints(self) -> str:
+        return ""
+
+    def format(self, output: OutputValue) -> str:
+        if not isinstance(output, dict):
+            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
+
+        s = ""
+        for key, value in output.items():
+            # only support primitive types
+            if not isinstance(value, (str, int, float, bool)):
+                raise TypeError(f"Expected output[{key}] to be a primitive type, got {type(value).__name__}.")
+            s += f"{key}: {value}\n"
+
+        return s
+
+    def parse(self, output: str) -> OutputValue:
+        if not isinstance(output, str):
+            raise TypeError(f"Expected formatted_str to be a str, got {type(output).__name__}.")
+
+        lines = output.split("\n")
+        result: dict[str, str | int | float | bool] = {}
+        for line in lines:
+            if not line:
+                continue
+            split_line = line.split(": ", 1)
+            if len(split_line) != 2:
+                raise ValueError(f"Invalid line format: {line}. Expected format 'key: value.'")
+
+            key, value = split_line
+            # Parse value to the appropriate primitive type
+            if value.isdigit():
+                result[key] = int(value)
+            elif value.replace(".", "", 1).isdigit():
+                # Only support floats with one decimal point not "1.e-10"
+                f = float(value)
+                result[key] = f
+            elif value.lower() in ["true", "false"]:
+                b = value.lower() == "true"
+                result[key] = b
+            else:
+                result[key] = str(value)
+
+        return result

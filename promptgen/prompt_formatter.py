@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from .input import InputFormatter, InputValue, JsonInputFormatter
-from .output import JsonOutputFormatter, OutputFormatter, OutputValue
+from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
+from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue
 from .prompt import Example, Prompt
 
 
@@ -98,3 +98,8 @@ Template:
 class JsonPromptFormatter(PromptFormatter):
     def __init__(self):
         super().__init__(JsonInputFormatter(), JsonOutputFormatter())
+
+
+class KeyValuePromptFormatter(PromptFormatter):
+    def __init__(self):
+        super().__init__(KeyValueInputFormatter(), KeyValueOutputFormatter())
