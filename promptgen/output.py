@@ -14,7 +14,7 @@ class OutputFormatter(ABC):
         pass
 
     @abstractmethod
-    def constraints(self) -> str:
+    def description(self) -> str:
         pass
 
     @abstractmethod
@@ -44,13 +44,11 @@ class JsonOutputFormatter(OutputFormatter):
     def name(self) -> str:
         return "json"
 
-    def constraints(self) -> str:
-        """The constraints for the json output formatter."""
+    def description(self) -> str:
+        """The description of the json output formatter."""
 
-        # add constraints message for deep-nested json to be parsed correctly
-        # be careful with the order of brackets
-
-        return "Be careful with the order of brackets in the json."
+        return """Output a JSON-formatted string without outputting any other strings.
+Be careful with the order of brackets in the json."""
 
     def format(self, output: OutputValue) -> str:
         """Format the output value into a string.
@@ -92,8 +90,8 @@ class CodeOutputFormatter(OutputFormatter):
     def name(self) -> str:
         return "code"
 
-    def constraints(self) -> str:
-        return ""
+    def description(self) -> str:
+        return f"""Output a code-block in {self.language} without outputting any other strings."""
 
     def format(self, output: OutputValue) -> str:
         """Format the output value into a string.
@@ -122,7 +120,7 @@ class TextOutputFormatter(OutputFormatter):
     def name(self) -> str:
         return "text"
 
-    def constraints(self) -> str:
+    def description(self) -> str:
         return ""
 
     def format(self, output: OutputValue) -> str:
@@ -142,7 +140,7 @@ class KeyValueOutputFormatter(OutputFormatter):
     def name(self) -> str:
         return "key_value"
 
-    def constraints(self) -> str:
+    def description(self) -> str:
         return ""
 
     def format(self, output: OutputValue) -> str:

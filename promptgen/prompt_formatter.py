@@ -48,6 +48,7 @@ class PromptFormatter(PromptFormatterInterface):
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
         formatted_input = self.input_formatter.format(input_value)
         return f"""{self.format_prompt_without_input(prompt)}
+--------
 
 Input:
 {formatted_input}
@@ -71,9 +72,7 @@ Output:"""
         return f"""You are an AI named "{prompt.name}".
 {prompt.description}
 
-Output a {self.output_formatter.name()}-formatted string without \
-outputting any other strings.
-{self.output_formatter.constraints()}
+{self.output_formatter.description()}
 
 Input Parameters:
 {formatted_input_parameters}
