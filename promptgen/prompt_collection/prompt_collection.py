@@ -1,20 +1,17 @@
 from typing import Any
+
 from promptgen.prompt import Prompt
 
-from ..prompts import (
-    get_example_creator_template,
-    get_prompt_creator_template,
-    get_prompt_optimizer_template,
-    get_text_categorizer_template,
-    get_text_summarizer_template,
-)
+from ..prompts import load_predefined_prompts
 
-class PromptCollection():
+
+class PromptCollection:
     prompts: dict[str, Prompt] = {}
 
-    def __init__(self, load_predefined_prompts: bool = True):
-        if load_predefined_prompts:
-            self.load_predefined_prompts()
+    def __init__(self, load_predefined: bool = True):
+        if load_predefined:
+            for prompt in load_predefined_prompts():
+                self.add_prompt(prompt)
 
     def get_prompt(self, name: str) -> Prompt:
         if name not in self.prompts:
@@ -63,15 +60,3 @@ class PromptCollection():
 
     def __repr__(self):
         return self.__str__()
-
-    def load_predefined_prompts(self):
-        prompts = [
-            get_text_categorizer_template(),
-            get_text_summarizer_template(),
-            get_example_creator_template(),
-            get_prompt_creator_template(),
-            get_prompt_optimizer_template(),
-        ]
-
-        for prompt in prompts:
-            self.add_prompt(prompt)

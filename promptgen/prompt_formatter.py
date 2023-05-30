@@ -34,7 +34,7 @@ class PromptFormatter(PromptFormatterInterface):
                 "Usage: JsonInputFormatter() instead of JsonInputFormatter."
                 "If you want to use a custom input formatter, you can subclass InputFormatter and pass an instance of"
                 "your subclass to the PromptFormatter constructor."
-                )
+            )
         if not isinstance(output_formatter, OutputFormatter):
             raise TypeError(
                 f"Expected output_formatter to be an instance of OutputFormatter, got {type(output_formatter).__name__}."

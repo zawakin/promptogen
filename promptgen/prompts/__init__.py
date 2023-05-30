@@ -1,3 +1,4 @@
+from .predefined_prompts import load_predefined_prompts
 from .prompt_creator import get_prompt_creator_template
 from .prompt_example_creator import get_example_creator_template
 from .prompt_optimizer import get_prompt_optimizer_template
@@ -10,4 +11,6 @@ __all__ = [
     "get_example_creator_template",
     "get_prompt_creator_template",
     "get_prompt_optimizer_template",
+    # loader function
+    "load_predefined_prompts",
 ]

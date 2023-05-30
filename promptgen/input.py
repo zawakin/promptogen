@@ -48,6 +48,7 @@ class CodeInputFormatter(InputFormatter):
 
         return with_code_block(self.language, input[self.input_key])
 
+
 class TextInputFormatter(InputFormatter):
     input_key: str
 
@@ -62,6 +63,7 @@ class TextInputFormatter(InputFormatter):
             raise TypeError(f"Expected input to be a dict, got {type(input).__name__}.")
 
         return input[self.input_key]
+
 
 class ListInputFormatter(InputFormatter):
     def name(self) -> str:
