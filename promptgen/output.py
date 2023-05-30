@@ -96,6 +96,11 @@ class CodeOutputFormatter(OutputFormatter):
         return ""
 
     def format(self, output: OutputValue) -> str:
+        """Format the output value into a string.
+
+        Args:
+            output (OutputValue): The output value. Must be a dict with the key `self.output_key` (default: `code`).
+        """
         if not isinstance(output, dict):
             raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
         if self.output_key not in output:
@@ -106,3 +111,28 @@ class CodeOutputFormatter(OutputFormatter):
     def parse(self, output: str) -> OutputValue:
         result = remove_code_block(self.language, output)
         return {self.output_key: result}
+
+
+class TextOutputFormatter(OutputFormatter):
+    output_key: str
+
+    def __init__(self, output_key: str = "text"):
+        self.output_key = output_key
+
+    def name(self) -> str:
+        return "text"
+
+    def constraints(self) -> str:
+        return ""
+
+    def format(self, output: OutputValue) -> str:
+        if not isinstance(output, dict):
+            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
+        if self.output_key not in output:
+            raise ValueError(f"Expected output to have key {self.output_key}.")
+        if not isinstance(output[self.output_key], str):
+            raise TypeError(f"Expected output[{self.output_key}] to be a str, got {type(output[self.output_key])}.")
+        return output[self.output_key]
+
+    def parse(self, output: str) -> OutputValue:
+        return {self.output_key: output}

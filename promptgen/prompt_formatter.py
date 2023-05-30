@@ -29,10 +29,18 @@ class PromptFormatter(PromptFormatterInterface):
         output_formatter: OutputFormatter = JsonOutputFormatter(),
     ):
         if not isinstance(input_formatter, InputFormatter):
-            raise TypeError(f"Expected input_formatter to be an InputFormatter, got {type(input_formatter).__name__}.")
+            raise TypeError(
+                f"Expected input_formatter to be an instance of InputFormatter, got {type(input_formatter).__name__}."
+                "Usage: JsonInputFormatter() instead of JsonInputFormatter."
+                "If you want to use a custom input formatter, you can subclass InputFormatter and pass an instance of"
+                "your subclass to the PromptFormatter constructor."
+                )
         if not isinstance(output_formatter, OutputFormatter):
             raise TypeError(
-                f"Expected output_formatter to be an OutputFormatter, got {type(output_formatter).__name__}."
+                f"Expected output_formatter to be an instance of OutputFormatter, got {type(output_formatter).__name__}."
+                "Usage: JsonOutputFormatter() instead of JsonOutputFormatter."
+                "If you want to use a custom output formatter, you can subclass OutputFormatter and pass an instance of"
+                "your subclass to the PromptFormatter constructor."
             )
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter
