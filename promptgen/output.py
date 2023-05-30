@@ -141,7 +141,7 @@ class KeyValueOutputFormatter(OutputFormatter):
         return "key_value"
 
     def description(self) -> str:
-        return ""
+        return "You should follow 'Template' format. The format is 'key: value'."
 
     def format(self, output: OutputValue) -> str:
         if not isinstance(output, dict):

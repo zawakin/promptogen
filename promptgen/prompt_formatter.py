@@ -46,6 +46,14 @@ class PromptFormatter(PromptFormatterInterface):
         self.output_formatter = output_formatter
 
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
+        if not isinstance(input_value, dict):
+            raise TypeError(f"Expected input_value to be a dict, got {type(input_value).__name__}.")
+        if not isinstance(prompt, Prompt):
+            raise TypeError(f"Expected prompt to be an instance of Prompt, got {type(prompt).__name__}.")
+        if prompt.input_parameters.keys() != input_value.keys():
+            raise ValueError(
+                f"Expected input_value to have the same keys as prompt.input_parameters, got {input_value.keys()}; wanted {prompt.input_parameters.keys()}."
+            )
         formatted_input = self.input_formatter.format(input_value)
         return f"""{self.format_prompt_without_input(prompt)}
 --------
