@@ -1,10 +1,10 @@
-from promptgen.loader import PromptLoader
+from promptgen.prompt_collection import PromptCollection
 from promptgen.prompt import Prompt, load_prompt_from_json_file
 
 
-def test_load_prompts():
-    loader = PromptLoader()
-    prompts = loader.prompts
+def test_collection_prompts():
+    collection = PromptCollection()
+    prompts = collection.prompts
 
     for name, prompt in prompts.items():
         assert isinstance(prompt, Prompt)

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from .input import InputFormatter, InputValue, JsonInputFormatter
-from .output import JsonOutputFormatter, OutputFormatter, OutputValue
+from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
+from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue
 from .prompt import Example, Prompt
 
 
@@ -29,10 +29,18 @@ class PromptFormatter(PromptFormatterInterface):
         output_formatter: OutputFormatter = JsonOutputFormatter(),
     ):
         if not isinstance(input_formatter, InputFormatter):
-            raise TypeError(f"Expected input_formatter to be an InputFormatter, got {type(input_formatter).__name__}.")
+            raise TypeError(
+                f"Expected input_formatter to be an instance of InputFormatter, got {type(input_formatter).__name__}."
+                "Usage: JsonInputFormatter() instead of JsonInputFormatter."
+                "If you want to use a custom input formatter, you can subclass InputFormatter and pass an instance of"
+                "your subclass to the PromptFormatter constructor."
+            )
         if not isinstance(output_formatter, OutputFormatter):
             raise TypeError(
-                f"Expected output_formatter to be an OutputFormatter, got {type(output_formatter).__name__}."
+                f"Expected output_formatter to be an instance of OutputFormatter, got {type(output_formatter).__name__}."
+                "Usage: JsonOutputFormatter() instead of JsonOutputFormatter."
+                "If you want to use a custom output formatter, you can subclass OutputFormatter and pass an instance of"
+                "your subclass to the PromptFormatter constructor."
             )
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter
@@ -40,12 +48,19 @@ class PromptFormatter(PromptFormatterInterface):
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
         formatted_input = self.input_formatter.format(input_value)
         return f"""{self.format_prompt_without_input(prompt)}
+--------
 
 Input:
 {formatted_input}
 Output:"""
 
     def format_prompt_without_input(self, prompt: Prompt) -> str:
+        formatted_input_parameters = "\n".join(
+            f"  - {name}: {p.description}" for name, p in prompt.input_parameters.items()
+        )
+        formatted_output_parameters = "\n".join(
+            f"  - {name}: {p.description}" for name, p in prompt.output_parameters.items()
+        )
         formatted_template = self.format_example(prompt.template)
         formatted_examples = (
             "\n".join(f"Example {i+1}:\n{self.format_example(e)}\n" for i, e in enumerate(prompt.examples))
@@ -53,19 +68,9 @@ Output:"""
             else ""
         )
 
-        formatted_input_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.input_parameters.items()
-        )
-        formatted_output_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.output_parameters.items()
-        )
-
         return f"""You are an AI named "{prompt.name}".
 {prompt.description}
-
-Output a {self.output_formatter.name()}-formatted string without \
-outputting any other strings.
-{self.output_formatter.constraints()}
+{self.output_formatter.description()}
 
 Input Parameters:
 {formatted_input_parameters}
@@ -90,3 +95,8 @@ Template:
 class JsonPromptFormatter(PromptFormatter):
     def __init__(self):
         super().__init__(JsonInputFormatter(), JsonOutputFormatter())
+
+
+class KeyValuePromptFormatter(PromptFormatter):
+    def __init__(self):
+        super().__init__(KeyValueInputFormatter(), KeyValueOutputFormatter())

@@ -14,7 +14,7 @@ class OutputFormatter(ABC):
         pass
 
     @abstractmethod
-    def constraints(self) -> str:
+    def description(self) -> str:
         pass
 
     @abstractmethod
@@ -44,13 +44,11 @@ class JsonOutputFormatter(OutputFormatter):
     def name(self) -> str:
         return "json"
 
-    def constraints(self) -> str:
-        """The constraints for the json output formatter."""
+    def description(self) -> str:
+        """The description of the json output formatter."""
 
-        # add constraints message for deep-nested json to be parsed correctly
-        # be careful with the order of brackets
-
-        return "Be careful with the order of brackets in the json."
+        return """Output a JSON-formatted string without outputting any other strings.
+Be careful with the order of brackets in the json."""
 
     def format(self, output: OutputValue) -> str:
         """Format the output value into a string.
@@ -92,10 +90,15 @@ class CodeOutputFormatter(OutputFormatter):
     def name(self) -> str:
         return "code"
 
-    def constraints(self) -> str:
-        return ""
+    def description(self) -> str:
+        return f"""Output a code-block in {self.language} without outputting any other strings."""
 
     def format(self, output: OutputValue) -> str:
+        """Format the output value into a string.
+
+        Args:
+            output (OutputValue): The output value. Must be a dict with the key `self.output_key` (default: `code`).
+        """
         if not isinstance(output, dict):
             raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
         if self.output_key not in output:
@@ -106,3 +109,69 @@ class CodeOutputFormatter(OutputFormatter):
     def parse(self, output: str) -> OutputValue:
         result = remove_code_block(self.language, output)
         return {self.output_key: result}
+
+
+class TextOutputFormatter(OutputFormatter):
+    output_key: str
+
+    def __init__(self, output_key: str = "text"):
+        self.output_key = output_key
+
+    def name(self) -> str:
+        return "text"
+
+    def description(self) -> str:
+        return ""
+
+    def format(self, output: OutputValue) -> str:
+        if not isinstance(output, dict):
+            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
+        if self.output_key not in output:
+            raise ValueError(f"Expected output to have key {self.output_key}.")
+        if not isinstance(output[self.output_key], str):
+            raise TypeError(f"Expected output[{self.output_key}] to be a str, got {type(output[self.output_key])}.")
+        return output[self.output_key]
+
+    def parse(self, output: str) -> OutputValue:
+        return {self.output_key: output}
+
+
+class KeyValueOutputFormatter(OutputFormatter):
+    def name(self) -> str:
+        return "key_value"
+
+    def description(self) -> str:
+        return ""
+
+    def format(self, output: OutputValue) -> str:
+        if not isinstance(output, dict):
+            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
+
+        s = ""
+        for key, value in output.items():
+            if isinstance(value, str):
+                value = f"'{value}'"
+            s += f"{key}: {value}\n"
+
+        return s.strip()
+
+    def parse(self, output: str) -> OutputValue:
+        if not isinstance(output, str):
+            raise TypeError(f"Expected formatted_str to be a str, got {type(output).__name__}.")
+
+        lines = output.split("\n")
+        result: dict[str, Any] = {}
+        from ast import literal_eval
+
+        for line in lines:
+            if not line:
+                continue
+            split_line = line.split(": ", 1)
+            if len(split_line) != 2:
+                raise ValueError(f"Invalid line format: {line}. Expected format 'key: value.'")
+
+            val = split_line[1]
+            obj = literal_eval(val)
+            result[split_line[0]] = obj
+
+        return result

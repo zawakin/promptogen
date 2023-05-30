@@ -251,6 +251,18 @@ def load_prompt_from_json_file(filename: str) -> Prompt:
     return Prompt.from_json_file(filename)
 
 
+def load_prompt_from_json_string(json_str: str) -> Prompt:
+    """Load a prompt from a JSON string.
+
+    Args:
+        json_str: The JSON string to load the prompt from.
+
+    Returns:
+        The loaded prompt.
+    """
+    return Prompt.parse_raw(json_str)
+
+
 def load_prompt_from_dict(d: dict[str, Any]) -> Prompt:
     """Load a prompt from a dictionary.
 
