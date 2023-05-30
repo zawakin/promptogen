@@ -149,9 +149,8 @@ class KeyValueOutputFormatter(OutputFormatter):
 
         s = ""
         for key, value in output.items():
-            # only support primitive types
-            if not isinstance(value, (str, int, float, bool)):
-                raise TypeError(f"Expected output[{key}] to be a primitive type, got {type(value).__name__}.")
+            if isinstance(value, str):
+                value = f"'{value}'"
             s += f"{key}: {value}\n"
 
         return s
@@ -161,7 +160,9 @@ class KeyValueOutputFormatter(OutputFormatter):
             raise TypeError(f"Expected formatted_str to be a str, got {type(output).__name__}.")
 
         lines = output.split("\n")
-        result: dict[str, str | int | float | bool] = {}
+        result: dict[str, Any] = {}
+        from ast import literal_eval
+
         for line in lines:
             if not line:
                 continue
@@ -169,18 +170,8 @@ class KeyValueOutputFormatter(OutputFormatter):
             if len(split_line) != 2:
                 raise ValueError(f"Invalid line format: {line}. Expected format 'key: value.'")
 
-            key, value = split_line
-            # Parse value to the appropriate primitive type
-            if value.isdigit():
-                result[key] = int(value)
-            elif value.replace(".", "", 1).isdigit():
-                # Only support floats with one decimal point not "1.e-10"
-                f = float(value)
-                result[key] = f
-            elif value.lower() in ["true", "false"]:
-                b = value.lower() == "true"
-                result[key] = b
-            else:
-                result[key] = str(value)
+            val = split_line[1]
+            obj = literal_eval(val)
+            result[split_line[0]] = obj
 
         return result

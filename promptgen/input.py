@@ -75,9 +75,9 @@ class KeyValueInputFormatter(InputFormatter):
 
         s = ""
         for key, value in input.items():
-            # only primitive values are allowed
-            if not isinstance(value, (str, int, float, bool)):
-                raise TypeError(f"Expected value to be a primitive type, got {type(value).__name__}.")
-            s += f"{key}: {value}\n"
+            if isinstance(value, str):
+                s += f"{key}: '{value}'\n"
+            else:
+                s += f"{key}: {value}\n"
 
         return s
