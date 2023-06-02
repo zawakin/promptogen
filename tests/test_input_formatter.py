@@ -1,6 +1,6 @@
 import pytest
 
-from promptgen.input import CodeInputFormatter, JsonInputFormatter
+from promptgen.input import CodeInputFormatter, JsonInputFormatter, KeyValueInputFormatter
 
 
 def test_json_input_formatter_name():
@@ -39,3 +39,11 @@ def test_code_input_formatter_format_invalid():
     with pytest.raises(TypeError):
         f.format(10)  # type: ignore
 
+def test_key_value_input_formatter_format():
+    f = KeyValueInputFormatter()
+
+    assert f.format({
+        'test input parameter name': 'test input parameter value',
+        'test input parameter name 2': 'test input parameter value 2'
+    }) == f"""test input parameter name: 'test input parameter value'
+test input parameter name 2: 'test input parameter value 2'"""

@@ -25,8 +25,8 @@ class PromptFormatter(PromptFormatterInterface):
 
     def __init__(
         self,
-        input_formatter: InputFormatter = JsonInputFormatter(),
-        output_formatter: OutputFormatter = JsonOutputFormatter(),
+        input_formatter: InputFormatter,
+        output_formatter: OutputFormatter,
     ):
         if not isinstance(input_formatter, InputFormatter):
             raise TypeError(
