@@ -5,10 +5,7 @@ from typing import Any
 
 from promptgen.dataclass import DataClass, DictLike
 
-from .format_utils import convert_data_class_to_dict, with_code_block
-
-"""The type of the input value."""
-# InputValue = dict[str, Any]
+from .format_utils import with_code_block
 
 
 class InputValue(DictLike):
@@ -23,18 +20,6 @@ class InputValue(DictLike):
         if not isinstance(data, DataClass):
             raise TypeError("InputValue.from_dataclass() only accepts DataClass")
         return cls.parse_obj(data)
-
-
-def input_value_class(custom_input_cls):
-    original_init = custom_input_cls.__init__
-
-    @functools.wraps(original_init)
-    def new_init(self, **kwargs: Any):
-        original_init(self, **kwargs)
-        self.data = kwargs
-
-    custom_input_cls.__init__ = new_init
-    return custom_input_cls
 
 
 class InputFormatter(ABC):

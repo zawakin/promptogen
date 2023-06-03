@@ -1,15 +1,14 @@
-from promptgen.dataclass import DataClass
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
 
-class OptimizePromptInput(DataClass):
+class OptimizePromptInput(InputValue):
     original_prompt: Prompt
     background: str
 
 
-class OptimizePromptOutput(DataClass):
+class OptimizePromptOutput(OutputValue):
     optimized_prompt: Prompt
 
 

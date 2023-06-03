@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 from promptgen.dataclass import DataClass
-from promptgen.format_utils import convert_data_class_to_dict
 
 from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
 from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue

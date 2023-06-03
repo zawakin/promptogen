@@ -5,10 +5,7 @@ from typing import Any
 
 from promptgen.dataclass import DataClass, DictLike
 
-from .format_utils import convert_data_class_to_dict, remove_code_block, with_code_block
-
-"""The type of the output value.""" ""
-# OutputValue = dict[str, Any]
+from .format_utils import remove_code_block, with_code_block
 
 
 class OutputValue(DictLike):
@@ -23,18 +20,6 @@ class OutputValue(DictLike):
         if not isinstance(data, DataClass):
             raise TypeError("OutputValue.from_dataclass() only accepts DataClass")
         return cls.parse_obj(data)
-
-
-def output_value_class(cls) -> OutputValue:
-    original_init = cls.__init__
-
-    @functools.wraps(original_init)
-    def new_init(self, **kwargs: Any):
-        original_init(self, **kwargs)
-        super(cls, self).__init__(**kwargs)
-
-    cls.__init__ = new_init
-    return cls
 
 
 class OutputFormatter(ABC):

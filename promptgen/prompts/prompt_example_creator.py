@@ -1,6 +1,5 @@
-from promptgen.dataclass import DataClass
-from promptgen.input import InputValue, input_value_class
-from promptgen.output import OutputValue, output_value_class
+from promptgen.input import InputValue
+from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt
 from promptgen.prompts.text_categorizer import get_text_categorizer_template
 from promptgen.prompts.text_summarizer import get_text_summarizer_template

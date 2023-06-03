@@ -1,15 +1,14 @@
-from promptgen.dataclass import DataClass
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
 
-class TextCategorzierInput(DataClass):
+class TextCategorzierInput(InputValue):
     text: str
     categories: list[str]
 
 
-class TextCategorizerOutput(DataClass):
+class TextCategorizerOutput(OutputValue):
     category: str
     found: bool
 
