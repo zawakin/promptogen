@@ -104,17 +104,29 @@ class Prompt(DataClass):
             f.write(self.json(indent=indent, ensure_ascii=False))
 
     @root_validator
-    def validate_template(cls, values):
-        template = values.get("template")
-        input_parameters = values.get("input_parameters")
-        output_parameters = values.get("output_parameters")
+    def validate_template(cls, values: dict[str, Any]):
+        t = values.get("template")
+        if t is None:
+            raise ValueError("Template must be provided")
+        template: Example = t
+        exs = values.get("examples")
+        if exs is None:
+            raise ValueError("Examples must be provided")
+        examples: list[Example] = exs
 
-        if template is None or input_parameters is None or output_parameters is None:
-            raise ValueError("Template, input parameters, " "and output parameters must be provided")
+        _input = values.get("input_parameters")
+        if _input is None:
+            raise ValueError("Input parameters must be provided")
+        input_parameters: dict[str, ParameterInfo] = _input
+
+        _output = values.get("output_parameters")
+        if _output is None:
+            raise ValueError("Output parameters must be provided")
+        output_parameters: dict[str, ParameterInfo] = _output
 
         if template.input.keys() != input_parameters.keys():
             raise ValueError(
-                f"Template input keys do not match input parameters: " f"{template.input.keys()} vs {input_parameters}"
+                f"Template input keys do not match input parameters: " f"{template.input} vs {input_parameters}"
             )
         if template.output.keys() != output_parameters.keys():
             raise ValueError(
@@ -122,27 +134,14 @@ class Prompt(DataClass):
                 f"{template.output.keys()} vs {output_parameters}"
             )
 
-        return values
-
-    @root_validator
-    def validate_examples(cls, values):
-        examples = values.get("examples")
-        input_parameters = values.get("input_parameters")
-        output_parameters = values.get("output_parameters")
-
-        if examples is None or input_parameters is None or output_parameters is None:
-            raise ValueError("Examples, input parameters, " "and output parameters must be provided")
-
         for example in examples:
             if example.input.keys() != input_parameters.keys():
                 raise ValueError(
-                    f"Example input keys do not match input parameters: "
-                    f"{example.input.keys()} vs {input_parameters}"
+                    f"Example input keys do not match input parameters: " f"{example.input} vs {input_parameters}"
                 )
             if example.output.keys() != output_parameters.keys():
                 raise ValueError(
-                    f"Example output keys do not match output parameters: "
-                    f"{example.output.keys()} vs {output_parameters}"
+                    f"Example output keys do not match output parameters: " f"{example.output} vs {output_parameters}"
                 )
 
         return values
@@ -296,17 +295,17 @@ def create_sample_prompt(suffix: str) -> Prompt:
             "output2": ParameterInfo(description="The second output parameter."),
         },
         template=Example(
-            input={"input1": "Hello, world!", "input2": "Hello, world!"},
-            output={"output1": "Hello, world!", "output2": "Hello, world!"},
+            input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
+            output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
         ),
         examples=[
             Example(
-                input={"input1": "Hello, world!", "input2": "Hello, world!"},
-                output={"output1": "Hello, world!", "output2": "Hello, world!"},
+                input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
+                output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
             ),
             Example(
-                input={"input1": "Hello, world!", "input2": "Hello, world!"},
-                output={"output1": "Hello, world!", "output2": "Hello, world!"},
+                input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
+                output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
             ),
         ],
     )

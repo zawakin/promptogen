@@ -31,7 +31,7 @@ def remove_code_block(language: str, s: str) -> str:
 
 def convert_data_class_to_dict(obj: DataClass | dict) -> dict[str, Any]:
     if isinstance(obj, DataClass):
-        obj = obj.dict()
+        return obj.dict()
     if isinstance(obj, dict):
         return {k: convert_data_class_to_dict(v) for k, v in obj.items()}
     return obj

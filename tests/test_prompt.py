@@ -1,5 +1,7 @@
 from pydantic import ValidationError
 import pytest
+from promptgen.input import InputValue
+from promptgen.output import OutputValue
 
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
@@ -97,35 +99,35 @@ def test_prompt_from_dict(prompt_dict: dict):
             ),
             },
         template=Example(
-            input={
+            input=InputValue.from_dict({
                 'test input parameter name': 'test input parameter value',
                 'test input parameter name 2': 'test input parameter value 2'
-            },
-            output={
+            }),
+            output=OutputValue.from_dict({
                 'test output parameter name': 'test output parameter value',
                 'test output parameter name 2': 'test output parameter value 2'
-            },
+            }),
         ),
         examples=[
             Example(
-                input={
+                input=InputValue.from_dict({
                     'test input parameter name': 'example test input parameter value',
                     'test input parameter name 2': 'example test input parameter value 2'
-                },
-                output={
+                }),
+                output=OutputValue.from_dict({
                     'test output parameter name': 'example test output parameter value',
                     'test output parameter name 2': 'example test output parameter value 2'
-                },
+                }),
             ),
             Example(
-                input={
+                input=InputValue.from_dict({
                     'test input parameter name': 'example test input parameter value 3',
                     'test input parameter name 2': 'example test input parameter value 4'
-                },
-                output={
+                }),
+                output=OutputValue.from_dict({
                     'test output parameter name': 'example test output parameter value 3',
                     'test output parameter name 2': 'example test output parameter value 4'
-                },
+                }),
             ),
         ])
 

@@ -1,15 +1,17 @@
 from promptgen.dataclass import DataClass
+from promptgen.input import InputValue, input_value_class
+from promptgen.output import OutputValue, output_value_class
 from promptgen.prompt import Example, ParameterInfo, Prompt
 from promptgen.prompts.text_categorizer import get_text_categorizer_template
 from promptgen.prompts.text_summarizer import get_text_summarizer_template
 
 
-class ExampleCreatorInput(DataClass):
+class ExampleCreatorInput(InputValue):
     prompt: Prompt
     n: int
 
 
-class ExampleCreatorOutput(DataClass):
+class ExampleCreatorOutput(OutputValue):
     examples: list[Example]
 
 
@@ -41,71 +43,87 @@ def get_example_creator_template() -> Prompt:
                         "output_1": ParameterInfo(description="output 1"),
                     },
                     template=Example(
-                        input={
-                            "input_1": "prompt input 1",
-                        },
-                        output={
-                            "output_1": "prompt output 1",
-                        },
+                        input=InputValue.from_dict(
+                            {
+                                "input_1": "prompt input 1",
+                            }
+                        ),
+                        output=OutputValue.from_dict(
+                            {
+                                "output_1": "prompt output 1",
+                            }
+                        ),
                     ),
                     examples=[
                         Example(
-                            input={
-                                "input_1": "prompt example input 1",
-                            },
-                            output={
-                                "output_1": "prompt example output 1",
-                            },
+                            input=InputValue.from_dict(
+                                {
+                                    "input_1": "prompt example input 1",
+                                }
+                            ),
+                            output=OutputValue.from_dict(
+                                {
+                                    "output_1": "prompt example output 1",
+                                }
+                            ),
                         ),
                     ],
                 ),
                 n=2,
-            ).dict(),
+            ),
             output=ExampleCreatorOutput(
                 examples=[
                     Example(
-                        input={
-                            "input_1": "example input 1",
-                        },
-                        output={
-                            "output_1": "example output 1",
-                        },
+                        input=InputValue.from_dict(
+                            {
+                                "input_1": "example input 1",
+                            }
+                        ),
+                        output=OutputValue.from_dict(
+                            {
+                                "output_1": "example output 1",
+                            }
+                        ),
                     ),
                     Example(
-                        input={
-                            "input_1": "example input 2",
-                        },
-                        output={
-                            "output_1": "example output 2",
-                        },
+                        input=InputValue.from_dict(
+                            {
+                                "input_1": "example input 2",
+                            }
+                        ),
+                        output=OutputValue.from_dict(
+                            {
+                                "output_1": "example output 2",
+                            }
+                        ),
                     ),
                 ],
-            ).dict(),
+            ),
         ),
         examples=[
             Example(
                 input=ExampleCreatorInput(
                     prompt=categorization_prompt.with_examples([]),
                     n=2,
-                ).dict(),
+                ),
                 output=ExampleCreatorOutput(
                     examples=[
                         categorization_prompt.examples[0],
                         categorization_prompt.examples[1],
                     ],
-                ).dict(),
+                ),
             ),
             Example(
                 input=ExampleCreatorInput(
                     prompt=summarization_prompt.with_examples([]),
                     n=2,
-                ).dict(),
+                ),
                 output=ExampleCreatorOutput(
                     examples=[
                         summarization_prompt.examples[0],
                         summarization_prompt.examples[1],
                     ],
-                ).dict(),
+                ),
             ),
         ],
     )

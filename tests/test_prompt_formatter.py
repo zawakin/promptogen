@@ -1,6 +1,6 @@
 import pytest
-from promptgen.input import JsonInputFormatter
-from promptgen.output import JsonOutputFormatter
+from promptgen.input import InputValue, JsonInputFormatter
+from promptgen.output import JsonOutputFormatter, OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
 from promptgen.prompt_formatter import PromptFormatter, PromptFormatterInterface
@@ -35,44 +35,44 @@ def prompt():
             ),
             },
         template=Example(
-            input={
+            input=InputValue.from_dict({
                 'test input parameter name': 'test input parameter value',
                 'test input parameter name 2': 'test input parameter value 2'
-            },
-            output={
+            }),
+            output=OutputValue.from_dict({
                 'test output parameter name': 'test output parameter value',
                 'test output parameter name 2': 'test output parameter value 2'
-            },
+            }),
         ),
         examples=[
             Example(
-                input={
+                input=InputValue.from_dict({
                     'test input parameter name': 'example test input parameter value',
                     'test input parameter name 2': 'example test input parameter value 2'
-                },
-                output={
+                }),
+                output=OutputValue.from_dict({
                     'test output parameter name': 'example test output parameter value',
                     'test output parameter name 2': 'example test output parameter value 2'
-                },
+                }),
             ),
             Example(
-                input={
+                input=InputValue.from_dict({
                     'test input parameter name': 'example test input parameter value 3',
                     'test input parameter name 2': 'example test input parameter value 4'
-                },
-                output={
+                }),
+                output=OutputValue.from_dict({
                     'test output parameter name': 'example test output parameter value 3',
                     'test output parameter name 2': 'example test output parameter value 4'
-                },
+                }),
             ),
         ])
 
 
 def test_base_prompt_formatter_format_prompt(prompt_formatter: PromptFormatterInterface, prompt: Prompt):
-    input_value = {
+    input_value = InputValue.from_dict({
         'test input parameter name': 'sample value',
         'test input parameter name 2': 'sample value 2'
-    }
+    })
     assert prompt_formatter.format_prompt(prompt=prompt, input_value=input_value) == f"""You are an AI named \"test name\".
 test description
 Output a JSON-formatted string without outputting any other strings.

@@ -1,6 +1,6 @@
 import pytest
 
-from promptgen.output import CodeOutputFormatter, JsonOutputFormatter, KeyValueOutputFormatter
+from promptgen.output import CodeOutputFormatter, JsonOutputFormatter, KeyValueOutputFormatter, OutputValue
 
 
 def test_json_output_formatter_name():
@@ -12,10 +12,10 @@ def test_json_output_formatter_name():
 def test_json_output_formatter_format():
     f = JsonOutputFormatter(indent=None)
 
-    assert f.format({
+    assert f.format(OutputValue.from_dict({
         'test output parameter name': 'test output parameter value',
         'test output parameter name 2': 'test output parameter value 2'
-    }) == f"""```json
+    })) == f"""```json
 {{"test output parameter name": "test output parameter value", "test output parameter name 2": "test output parameter value 2"}}```"""
 
 
@@ -54,9 +54,9 @@ def test_json_output_formatter_parse_invalid_json():
 def test_code_output_formatter_format():
     f = CodeOutputFormatter('python')
 
-    assert f.format({
+    assert f.format(OutputValue.from_dict({
         'code': 'print("hello world")',
-    }) == f"""```python
+    })) == f"""```python
 print("hello world")```"""
 
 def test_code_output_formatter_format_invalid():
@@ -76,10 +76,10 @@ print("hello world")```""") == {
 def test_key_value_output_formatter_format():
     f = KeyValueOutputFormatter()
 
-    assert f.format({
+    assert f.format(OutputValue.from_dict({
         'test output parameter name': 'test output parameter value',
         'test output parameter name 2': 'test output parameter value 2'
-    }) == f"""test output parameter name: 'test output parameter value'
+    })) == f"""test output parameter name: 'test output parameter value'
 test output parameter name 2: 'test output parameter value 2'"""
 
 def test_key_value_output_formatter_format_invalid():

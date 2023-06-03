@@ -1,15 +1,17 @@
 from promptgen.dataclass import DataClass
+from promptgen.input import InputValue, input_value_class
+from promptgen.output import OutputValue, output_value_class
 from promptgen.prompt import Example, ParameterInfo, Prompt
 from promptgen.prompts.text_categorizer import get_text_categorizer_template
 from promptgen.prompts.text_summarizer import get_text_summarizer_template
 
 
-class PromptCreatorInput(DataClass):
+class PromptCreatorInput(InputValue):
     purpose: str
     background: str
 
 
-class PromptCreatorOutput(DataClass):
+class PromptCreatorOutput(OutputValue):
     prompt: Prompt
 
 
@@ -33,7 +35,7 @@ def get_prompt_creator_template() -> Prompt:
             input=PromptCreatorInput(
                 purpose="purpose of the prompt",
                 background="background of the prompt",
-            ).dict(),
+            ),
             output=PromptCreatorOutput(
                 prompt=Prompt(
                     name="new prompt name",
@@ -45,31 +47,31 @@ def get_prompt_creator_template() -> Prompt:
                         "output_1": ParameterInfo(description="output 1"),
                     },
                     template=Example(
-                        input=dict(input_1="prompt input 1"),
-                        output=dict(output_1="prompt output 1"),
+                        input=InputValue(input_1="prompt input 1"),
+                        output=OutputValue(output_1="prompt output 1"),
                     ),
                     examples=[],
                 ),
-            ).dict(),
+            ),
         ),
         examples=[
             Example(
                 input=PromptCreatorInput(
                     purpose="Categorize the given text into one of the given categories.",
                     background="The given text may be a sentence, a paragraph, or a document.",
-                ).dict(),
+                ),
                 output=PromptCreatorOutput(
                     prompt=categorization_prompt.with_examples([]),
-                ).dict(),
+                ),
             ),
             Example(
                 input=PromptCreatorInput(
                     purpose="Summarize the given text.",
                     background="The given text may be the part of the document.",
-                ).dict(),
+                ),
                 output=PromptCreatorOutput(
                     prompt=summarization_prompt.with_examples([]),
-                ).dict(),
+                ),
             ),
         ],
     )

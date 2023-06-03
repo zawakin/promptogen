@@ -1,11 +1,40 @@
+import functools
 import json
 from abc import ABC, abstractmethod
 from typing import Any
 
-from .format_utils import with_code_block
+from promptgen.dataclass import DataClass, DictLike
+
+from .format_utils import convert_data_class_to_dict, with_code_block
 
 """The type of the input value."""
-InputValue = dict[str, Any]
+# InputValue = dict[str, Any]
+
+
+class InputValue(DictLike):
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "InputValue":
+        if not isinstance(data, dict):
+            raise TypeError("InputValue.from_dict() only accepts dict")
+        return cls.parse_obj(data)
+
+    @classmethod
+    def from_dataclass(cls, data: DataClass) -> "InputValue":
+        if not isinstance(data, DataClass):
+            raise TypeError("InputValue.from_dataclass() only accepts DataClass")
+        return cls.parse_obj(data)
+
+
+def input_value_class(custom_input_cls):
+    original_init = custom_input_cls.__init__
+
+    @functools.wraps(original_init)
+    def new_init(self, **kwargs: Any):
+        original_init(self, **kwargs)
+        self.data = kwargs
+
+    custom_input_cls.__init__ = new_init
+    return custom_input_cls
 
 
 class InputFormatter(ABC):
@@ -25,10 +54,10 @@ class JsonInputFormatter(InputFormatter):
         return "json"
 
     def format(self, input: InputValue) -> str:
-        if not isinstance(input, dict):
-            raise TypeError(f"Expected input to be a dict, got {type(input).__name__}.")
+        if not isinstance(input, InputValue):
+            raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
 
-        return with_code_block("json", json.dumps(input, ensure_ascii=False))
+        return with_code_block("json", input.json(ensure_ascii=False))
 
 
 class CodeInputFormatter(InputFormatter):
@@ -43,8 +72,8 @@ class CodeInputFormatter(InputFormatter):
         return "code"
 
     def format(self, input: InputValue) -> str:
-        if not isinstance(input, dict):
-            raise TypeError(f"Expected input to be a dict, got {type(input).__name__}.")
+        if not isinstance(input, InputValue):
+            raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
 
         return with_code_block(self.language, input[self.input_key])
 
@@ -59,8 +88,8 @@ class TextInputFormatter(InputFormatter):
         return "raw-text"
 
     def format(self, input: InputValue) -> str:
-        if not isinstance(input, dict):
-            raise TypeError(f"Expected input to be a dict, got {type(input).__name__}.")
+        if not isinstance(input, InputValue):
+            raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
 
         return input[self.input_key]
 
@@ -70,11 +99,11 @@ class KeyValueInputFormatter(InputFormatter):
         return "key_value"
 
     def format(self, input: InputValue) -> str:
-        if not isinstance(input, dict):
-            raise TypeError(f"Expected input to be a dict, got {type(input).__name__}.")
+        if not isinstance(input, InputValue):
+            raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
 
         s = ""
-        for key, value in input.items():
+        for key, value in input.dict().items():
             if isinstance(value, str):
                 s += f"{key}: '{value}'\n"
             else:
