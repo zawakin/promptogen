@@ -2,6 +2,7 @@ import pytest
 
 from promptgen.input import CodeInputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
 
+
 def test_input_value_from_dict():
     assert InputValue.from_dict({
         'test_input_parameter_name': 'test input parameter value',
@@ -11,9 +12,11 @@ def test_input_value_from_dict():
         test_input_parameter_name_2='test input parameter value 2'
     )
 
+
 def test_input_value_from_dict_invalid():
     with pytest.raises(TypeError):
         InputValue.from_dict(10)  # type: ignore
+
 
 def test_json_input_formatter_name():
     f = JsonInputFormatter()
@@ -37,6 +40,7 @@ def test_json_input_formatter_format_invalid():
     with pytest.raises(TypeError):
         f.format(10)  # type: ignore
 
+
 def test_code_input_formatter_format():
     f = CodeInputFormatter('python')
 
@@ -45,11 +49,13 @@ def test_code_input_formatter_format():
     })) == f"""```python
 print("hello world")```"""
 
+
 def test_code_input_formatter_format_invalid():
     f = CodeInputFormatter('python')
 
     with pytest.raises(TypeError):
         f.format(10)  # type: ignore
+
 
 def test_key_value_input_formatter_format():
     f = KeyValueInputFormatter()

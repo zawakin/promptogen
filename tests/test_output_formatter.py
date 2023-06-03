@@ -59,11 +59,13 @@ def test_code_output_formatter_format():
     })) == f"""```python
 print("hello world")```"""
 
+
 def test_code_output_formatter_format_invalid():
     f = CodeOutputFormatter('python')
 
     with pytest.raises(TypeError):
         f.format(10)  # type: ignore
+
 
 def test_code_output_formatter_parse():
     f = CodeOutputFormatter('python')
@@ -72,6 +74,7 @@ def test_code_output_formatter_parse():
 print("hello world")```""") == {
         'code': 'print("hello world")',
     }
+
 
 def test_key_value_output_formatter_format():
     f = KeyValueOutputFormatter()
@@ -82,11 +85,13 @@ def test_key_value_output_formatter_format():
     })) == f"""test output parameter name: 'test output parameter value'
 test output parameter name 2: 'test output parameter value 2'"""
 
+
 def test_key_value_output_formatter_format_invalid():
     f = KeyValueOutputFormatter()
 
     with pytest.raises(TypeError):
         f.format(10)  # type: ignore
+
 
 def test_key_value_output_formatter_parse():
     f = KeyValueOutputFormatter()
