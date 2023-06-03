@@ -140,6 +140,10 @@ venv.bak/
 
 # mkdocs documentation
 /site
+/docs_build
+
+# experimantal
+/experimental
 
 # mypy
 .mypy_cache/

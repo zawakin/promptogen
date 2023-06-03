@@ -1,6 +1,5 @@
 # ref. https://github.com/tiangolo/fastapi/blob/master/scripts/docs.py
 import os
-import re
 import shutil
 import subprocess
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -14,7 +13,6 @@ import mkdocs.config
 import mkdocs.utils
 import typer
 import yaml # type: ignore
-from jinja2 import Template
 
 app = typer.Typer()
 
@@ -112,7 +110,7 @@ def new_lang(lang: str = typer.Argument(..., callback=lang_callback)):
     new_overrides_gitignore_path.parent.mkdir(parents=True, exist_ok=True)
     new_overrides_gitignore_path.write_text("")
     typer.secho(f"Successfully initialized: {new_path}", color=typer.colors.GREEN) # type: ignore
-    update_languages(lang=None)
+    update_languages(lang=None) # type: ignore
 
 
 @app.command()
@@ -156,9 +154,12 @@ def build_lang(
         lang_config_path.read_text(encoding="utf-8")
     )
     lang_nav = lang_config["nav"]
-    use_nav = nav
+    use_nav = nav[2:]
     lang_use_nav = lang_nav[2:]
     file_to_nav = get_file_to_nav_map(use_nav)
+
+    # file_to_nav is dict[str, tuple]
+
     sections = get_sections(use_nav)
     lang_file_to_nav = get_file_to_nav_map(lang_use_nav)
     use_lang_file_to_nav = get_file_to_nav_map(lang_use_nav)
@@ -171,6 +172,8 @@ def build_lang(
             en_text = en_file_path.read_text(encoding="utf-8")
             lang_text = get_text_with_translate_missing(en_text)
             lang_file_path.write_text(lang_text, encoding="utf-8")
+            # file is a file path
+            # file_key is a tuple of strings.
             file_key = file_to_nav[file]
             use_lang_file_to_nav[file] = file_key
             if file_key:
@@ -214,7 +217,7 @@ def build_all():
     at directory ./site/ with each language inside.
     """
     site_path = Path("site").absolute()
-    update_languages(lang=None)
+    update_languages(lang=None) # type: ignore
     current_dir = os.getcwd()
     os.chdir(en_docs_path)
     typer.echo("Building docs for: en")
@@ -240,7 +243,7 @@ def update_single_lang(lang: str):
 
 @app.command()
 def update_languages(
-    lang: str | None = typer.Argument(
+    lang: str = typer.Argument(
         None, callback=lang_callback, autocompletion=complete_existing_lang
     )
 ):
@@ -361,6 +364,10 @@ def get_text_with_translate_missing(text: str) -> str:
 
 
 def get_file_to_nav_map(nav: list) -> Dict[str, Tuple[str, ...]]:
+    """
+    Given a nav list, return a map of file name to nav path.
+    A nav path is a tuple of strings, each string being a nav title.
+    """
     file_to_nav: Dict[str, Tuple[str, ...]] = {}
     for item in nav:
         if type(item) is str:

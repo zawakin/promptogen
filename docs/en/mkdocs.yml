@@ -6,8 +6,10 @@ nav:
 - Languages:
   - en: /
   - ja: /ja/
-- Tutorial: tutorial.md
-- License: https://github.com/zawakin/promptgen/blob/main/LICENSE
+- Tutorial:
+  - tutorial.md
+- Introduction:
+  - introduction/hello.md
 theme:
   name: material
   font:
