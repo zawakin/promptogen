@@ -12,6 +12,7 @@ from .format_utils import remove_code_block, with_code_block
 class OutputValue(DictLike):
     def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
+
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "OutputValue":
         if not isinstance(data, dict):
