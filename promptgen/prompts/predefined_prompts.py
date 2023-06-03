@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from promptgen.prompt import Prompt
 
 from .prompt_creator import get_prompt_creator_template

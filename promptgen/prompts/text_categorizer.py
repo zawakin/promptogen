@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt

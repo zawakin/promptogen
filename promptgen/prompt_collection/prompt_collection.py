@@ -1,4 +1,4 @@
-from typing import Any
+from __future__ import annotations
 
 from promptgen.prompt import Prompt
 

@@ -1,6 +1,4 @@
-from typing import Any
-
-from promptgen.dataclass import DataClass
+from __future__ import annotations
 
 
 def with_code_block(language: str, s: str) -> str:
