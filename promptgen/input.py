@@ -9,6 +9,8 @@ from .format_utils import with_code_block
 
 
 class InputValue(DictLike):
+    def __init__(self, **kwargs: Any):
+        super().__init__(**kwargs)
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "InputValue":
         if not isinstance(data, dict):
