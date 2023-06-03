@@ -273,3 +273,40 @@ def load_prompt_from_dict(d: dict[str, Any]) -> Prompt:
         The loaded prompt.
     """
     return Prompt.from_dict(d)
+
+
+def create_sample_prompt(suffix: str) -> Prompt:
+    """Create a sample prompt.
+
+    Args:
+        suffix: The suffix to append to the prompt name.
+
+    Returns:
+        The sample prompt.
+    """
+    return Prompt(
+        name=f"sample-{suffix}",
+        description="A sample prompt.",
+        input_parameters={
+            "input1": ParameterInfo(description="The first input parameter."),
+            "input2": ParameterInfo(description="The second input parameter."),
+        },
+        output_parameters={
+            "output1": ParameterInfo(description="The first output parameter."),
+            "output2": ParameterInfo(description="The second output parameter."),
+        },
+        template=Example(
+            input={"input1": "Hello, world!", "input2": "Hello, world!"},
+            output={"output1": "Hello, world!", "output2": "Hello, world!"},
+        ),
+        examples=[
+            Example(
+                input={"input1": "Hello, world!", "input2": "Hello, world!"},
+                output={"output1": "Hello, world!", "output2": "Hello, world!"},
+            ),
+            Example(
+                input={"input1": "Hello, world!", "input2": "Hello, world!"},
+                output={"output1": "Hello, world!", "output2": "Hello, world!"},
+            ),
+        ],
+    )

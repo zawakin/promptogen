@@ -18,6 +18,7 @@ from .prompt import (
     Example,
     ParameterInfo,
     Prompt,
+    create_sample_prompt,
     load_prompt_from_dict,
     load_prompt_from_json_file,
     load_prompt_from_json_string,
@@ -51,6 +52,7 @@ __all__ = [
     "PromptFormatterInterface",
     "InputValue",
     "OutputValue",
+    "create_sample_prompt",
     # load
     "load_prompt_from_dict",
     "load_prompt_from_json_file",

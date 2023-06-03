@@ -1,3 +1,8 @@
+from typing import Any
+
+from promptgen.dataclass import DataClass
+
+
 def with_code_block(language: str, s: str) -> str:
     """Wrap the string in a code block.
 
@@ -22,3 +27,11 @@ def remove_code_block(language: str, s: str) -> str:
         str: The string without the code block.
     """
     return s.replace(f"```{language}", "").replace("```", "").strip()
+
+
+def convert_data_class_to_dict(obj: DataClass | dict) -> dict[str, Any]:
+    if isinstance(obj, DataClass):
+        obj = obj.dict()
+    if isinstance(obj, dict):
+        return {k: convert_data_class_to_dict(v) for k, v in obj.items()}
+    return obj
