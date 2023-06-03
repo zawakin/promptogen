@@ -52,9 +52,10 @@ class PromptFormatter(PromptFormatterInterface):
             raise TypeError(f"Expected input_value to be an instance of InputValue, got {type(input_value).__name__}.")
         if not isinstance(prompt, Prompt):
             raise TypeError(f"Expected prompt to be an instance of Prompt, got {type(prompt).__name__}.")
-        if prompt.input_parameters.keys() != input_value.dict().keys():
+        input_parameter_keys = {p.name for p in prompt.input_parameters}
+        if input_parameter_keys != input_value.dict().keys():
             raise ValueError(
-                f"Expected input_value to have the same keys as prompt.input_parameters, got {input_value.dict().keys()}; wanted {prompt.input_parameters.keys()}."
+                f"Expected input_value to have the same keys as prompt.input_parameters, got {input_value.dict().keys()}; wanted {input_parameter_keys}."
             )
         formatted_input = self.input_formatter.format(input_value)
         return f"""{self.format_prompt_without_input(prompt)}
@@ -65,12 +66,8 @@ Input:
 Output:"""
 
     def format_prompt_without_input(self, prompt: Prompt) -> str:
-        formatted_input_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.input_parameters.items()
-        )
-        formatted_output_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.output_parameters.items()
-        )
+        formatted_input_parameters = "\n".join(f"  - {p.name}: {p.description}" for p in prompt.input_parameters)
+        formatted_output_parameters = "\n".join(f"  - {p.name}: {p.description}" for p in prompt.output_parameters)
         formatted_template = self.format_example(prompt.template)
         formatted_examples = (
             "\n".join(f"Example {i+1}:\n{self.format_example(e)}\n" for i, e in enumerate(prompt.examples))

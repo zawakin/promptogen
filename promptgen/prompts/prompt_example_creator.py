@@ -1,6 +1,6 @@
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
-from promptgen.prompt import Example, ParameterInfo, Prompt
+from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
 from promptgen.prompts.text_categorizer import get_text_categorizer_template
 from promptgen.prompts.text_summarizer import get_text_summarizer_template
 
@@ -21,53 +21,19 @@ def get_example_creator_template() -> Prompt:
     return Prompt(
         name="PromptExampleCreator",
         description="Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space.",
-        input_parameters={
-            "prompt": ParameterInfo(description="prompt"),
-            "n": ParameterInfo(description="number of examples to create"),
-        },
-        output_parameters={
-            "examples": ParameterInfo(
+        input_parameters=[
+            ParameterInfo(name="prompt", description="prompt"),
+            ParameterInfo(name="n", description="number of examples to create"),
+        ],
+        output_parameters=[
+            ParameterInfo(
+                name="examples",
                 description="detailed examples of the prompt. Please add examples with scattered inputs and outputs in semantic space. Specific examples are better than general examples.",
             ),
-        },
+        ],
         template=Example(
             input=ExampleCreatorInput(
-                prompt=Prompt(
-                    name="prompt name",
-                    description="prompt description",
-                    input_parameters={
-                        "input_1": ParameterInfo(description="input 1"),
-                    },
-                    output_parameters={
-                        "output_1": ParameterInfo(description="output 1"),
-                    },
-                    template=Example(
-                        input=InputValue.from_dict(
-                            {
-                                "input_1": "prompt input 1",
-                            }
-                        ),
-                        output=OutputValue.from_dict(
-                            {
-                                "output_1": "prompt output 1",
-                            }
-                        ),
-                    ),
-                    examples=[
-                        Example(
-                            input=InputValue.from_dict(
-                                {
-                                    "input_1": "prompt example input 1",
-                                }
-                            ),
-                            output=OutputValue.from_dict(
-                                {
-                                    "output_1": "prompt example output 1",
-                                }
-                            ),
-                        ),
-                    ],
-                ),
+                prompt=create_sample_prompt("prompt"),
                 n=2,
             ),
             output=ExampleCreatorOutput(

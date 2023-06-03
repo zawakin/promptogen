@@ -14,6 +14,7 @@ class ParameterInfo(DataClass):
         description: A description of the parameter.
     """
 
+    name: str
     description: str
 
 
@@ -43,8 +44,8 @@ class Prompt(DataClass):
 
     name: str
     description: str
-    input_parameters: dict[str, ParameterInfo]
-    output_parameters: dict[str, ParameterInfo]
+    input_parameters: list[ParameterInfo]
+    output_parameters: list[ParameterInfo]
     template: Example
     examples: list[Example]
 
@@ -117,29 +118,31 @@ class Prompt(DataClass):
         _input = values.get("input_parameters")
         if _input is None:
             raise ValueError("Input parameters must be provided")
-        input_parameters: dict[str, ParameterInfo] = _input
+        input_parameters: list[ParameterInfo] = _input
 
         _output = values.get("output_parameters")
         if _output is None:
             raise ValueError("Output parameters must be provided")
-        output_parameters: dict[str, ParameterInfo] = _output
+        output_parameters: list[ParameterInfo] = _output
 
-        if template.input.keys() != input_parameters.keys():
+        input_parameter_keys = {parameter.name for parameter in input_parameters}
+        output_parameter_keys = {parameter.name for parameter in output_parameters}
+        if template.input.keys() != input_parameter_keys:
             raise ValueError(
                 f"Template input keys do not match input parameters: " f"{template.input} vs {input_parameters}"
             )
-        if template.output.keys() != output_parameters.keys():
+        if template.output.keys() != output_parameter_keys:
             raise ValueError(
                 f"Template output keys do not match output parameters: "
                 f"{template.output.keys()} vs {output_parameters}"
             )
 
         for example in examples:
-            if example.input.keys() != input_parameters.keys():
+            if example.input.keys() != input_parameter_keys:
                 raise ValueError(
                     f"Example input keys do not match input parameters: " f"{example.input} vs {input_parameters}"
                 )
-            if example.output.keys() != output_parameters.keys():
+            if example.output.keys() != output_parameter_keys:
                 raise ValueError(
                     f"Example output keys do not match output parameters: " f"{example.output} vs {output_parameters}"
                 )
@@ -169,7 +172,17 @@ class Prompt(DataClass):
             A copy of the prompt with the input parameter renamed.
         """
         input_parameters = self.input_parameters.copy()
-        input_parameters[new_name] = input_parameters.pop(old_name)
+        # find the parameter
+        found = False
+        index = -1
+        for i, parameter in enumerate(input_parameters):
+            if parameter.name == old_name:
+                found = True
+                index = i
+                break
+        if not found:
+            raise ValueError(f"Could not find input parameter with name {old_name}")
+        input_parameters[index].name = new_name
 
         # rename in template
         template = self.template.copy(deep=True)
@@ -202,7 +215,18 @@ class Prompt(DataClass):
             A copy of the prompt with the output parameter renamed.
         """
         output_parameters = self.output_parameters.copy()
-        output_parameters[new_name] = output_parameters.pop(old_name)
+
+        # find the parameter
+        found = False
+        index = -1
+        for i, parameter in enumerate(output_parameters):
+            if parameter.name == old_name:
+                found = True
+                index = i
+                break
+        if not found:
+            raise ValueError(f"Could not find output parameter with name {old_name}")
+        output_parameters[index].name = new_name
 
         # rename in template
         template = self.template.copy(deep=True)
@@ -233,8 +257,8 @@ class Prompt(DataClass):
         Returns:
             A string representation of the prompt.
         """
-        input_str = ", ".join([f"{name}" for name, param in self.input_parameters.items()])
-        output_str = ", ".join([f"{name}" for name, param in self.output_parameters.items()])
+        input_str = ", ".join([f"{param.name}" for param in self.input_parameters])
+        output_str = ", ".join([f"{param.name}" for param in self.output_parameters])
         return f"{self.name}: ({input_str}) -> ({output_str})"
 
 
@@ -286,14 +310,14 @@ def create_sample_prompt(suffix: str) -> Prompt:
     return Prompt(
         name=f"sample-{suffix}",
         description="A sample prompt.",
-        input_parameters={
-            "input1": ParameterInfo(description="The first input parameter."),
-            "input2": ParameterInfo(description="The second input parameter."),
-        },
-        output_parameters={
-            "output1": ParameterInfo(description="The first output parameter."),
-            "output2": ParameterInfo(description="The second output parameter."),
-        },
+        input_parameters=[
+            ParameterInfo(name="input1", description="The first input parameter."),
+            ParameterInfo(name="input2", description="The second input parameter."),
+        ],
+        output_parameters=[
+            ParameterInfo(name="output1", description="The first output parameter."),
+            ParameterInfo(name="output2", description="The second output parameter."),
+        ],
         template=Example(
             input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
             output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),

@@ -15,12 +15,12 @@ def get_text_summarizer_template() -> Prompt:
     return Prompt(
         name="TextSummarizer",
         description="Summarize the text into a shorter text.",
-        input_parameters={
-            "text": ParameterInfo(description="text to summarize"),
-        },
-        output_parameters={
-            "summary": ParameterInfo(description="summary of the text"),
-        },
+        input_parameters=[
+            ParameterInfo(name="text", description="text to summarize"),
+        ],
+        output_parameters=[
+            ParameterInfo(name="summary", description="summary of the text"),
+        ],
         template=Example(
             input=SummarizationInput(
                 text="text",

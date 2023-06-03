@@ -17,18 +17,14 @@ def get_text_categorizer_template() -> Prompt:
     return Prompt(
         name="TextCategorizer",
         description="Categorize the given text",
-        input_parameters={
-            "text": ParameterInfo(description="The text to be categorized"),
-            "categories": ParameterInfo(
-                description="The categories to categorize the text into",
-            ),
-        },
-        output_parameters={
-            "category": ParameterInfo(description="The category the text belongs to"),
-            "found": ParameterInfo(
-                description="Whether the category was found in the text",
-            ),
-        },
+        input_parameters=[
+            ParameterInfo(name="text", description="The text to be categorized"),
+            ParameterInfo(name="categories", description="The categories to categorize the text into"),
+        ],
+        output_parameters=[
+            ParameterInfo(name="category", description="The category the text belongs to"),
+            ParameterInfo(name="found", description="Whether the category was found in the text"),
+        ],
         template=Example(
             input=InputValue.from_dataclass(
                 TextCategorzierInput(
