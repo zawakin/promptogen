@@ -1,0 +1,37 @@
+site_name: PromptGen
+site_url: https://promptgen.zawakin.dev/
+repo_url: https://github.com/zawakin/promptgen
+nav:
+- PromptGen: index.md
+- Languages:
+  - en: /
+  - ja: /ja/
+- Tutorial: tutorial.md
+- License: https://github.com/zawakin/promptgen/blob/main/LICENSE
+theme:
+  name: material
+  font:
+    text: Roboto
+  logo: https://localhost.svg
+  favicon: https://localhost/favicon.png
+  language: en
+markdown_extensions:
+- admonition: null
+- codehilite: null
+- pymdownx.keys: null
+- pymdownx.highlight:
+    anchor_linenums: true
+    line_spans: __span
+    pygments_lang_class: true
+- pymdownx.inlinehilite: null
+- pymdownx.snippets: null
+- pymdownx.superfences: null
+extra:
+  social:
+  - icon: fontawesome/brands/twitter
+    link: https://twitter.com/fastapi
+  alternate:
+  - link: /
+    name: en - English
+  - link: /ja/
+    name: ja - 日本語
