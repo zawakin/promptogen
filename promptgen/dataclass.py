@@ -19,6 +19,7 @@ class DictLike(DataClass):
 
     @classmethod
     def from_dataclass(cls, data: DataClass) -> "DictLike":
+        print(data)
         return cls(**data.dict())
 
     def __getitem__(self, key: str) -> Any:

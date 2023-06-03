@@ -28,10 +28,6 @@ class OutputValue(DictLike):
 
 class OutputFormatter(ABC):
     @abstractmethod
-    def name(self) -> str:
-        pass
-
-    @abstractmethod
     def description(self) -> str:
         pass
 
@@ -58,9 +54,6 @@ class JsonOutputFormatter(OutputFormatter):
     def __init__(self, strict: bool = True, indent: int | None = 1):
         self.strict = strict
         self.indent = indent
-
-    def name(self) -> str:
-        return "json"
 
     def description(self) -> str:
         """The description of the json output formatter."""
@@ -105,9 +98,6 @@ class CodeOutputFormatter(OutputFormatter):
         self.language = language
         self.output_key = output_key
 
-    def name(self) -> str:
-        return "code"
-
     def description(self) -> str:
         return f"""Output a code-block in {self.language} without outputting any other strings."""
 
@@ -135,9 +125,6 @@ class TextOutputFormatter(OutputFormatter):
     def __init__(self, output_key: str = "text"):
         self.output_key = output_key
 
-    def name(self) -> str:
-        return "text"
-
     def description(self) -> str:
         return ""
 
@@ -155,9 +142,6 @@ class TextOutputFormatter(OutputFormatter):
 
 
 class KeyValueOutputFormatter(OutputFormatter):
-    def name(self) -> str:
-        return "key_value"
-
     def description(self) -> str:
         return "You should follow 'Template' format. The format is 'key: value'."
 

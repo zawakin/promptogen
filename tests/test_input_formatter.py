@@ -1,6 +1,19 @@
 import pytest
 
 from promptgen.input import CodeInputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
+from promptgen.dataclass import DataClass
+
+
+@pytest.fixture
+def dataclass() -> DataClass:
+    class TmpDataClass(DataClass):
+        test_input_parameter_name: str
+        test_input_parameter_name_2: str
+
+    return TmpDataClass(
+        test_input_parameter_name='test input parameter value',
+        test_input_parameter_name_2='test input parameter value 2'
+    )
 
 
 def test_input_value_from_dict():
@@ -18,10 +31,16 @@ def test_input_value_from_dict_invalid():
         InputValue.from_dict(10)  # type: ignore
 
 
-def test_json_input_formatter_name():
-    f = JsonInputFormatter()
+def test_input_value_from_dataclass(dataclass: DataClass):
+    assert InputValue.from_dataclass(dataclass) == InputValue(
+        test_input_parameter_name='test input parameter value',
+        test_input_parameter_name_2='test input parameter value 2'
+    )
 
-    assert f.name() == "json"
+
+def test_input_value_from_dataclass_invalid():
+    with pytest.raises(TypeError):
+        InputValue.from_dataclass(10)  # type: ignore
 
 
 def test_json_input_formatter_format():

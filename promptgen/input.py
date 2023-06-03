@@ -27,20 +27,12 @@ class InputValue(DictLike):
 
 class InputFormatter(ABC):
     @abstractmethod
-    def name(self) -> str:
-        """The name of the input format."""
-        pass
-
-    @abstractmethod
     def format(self, input: InputValue) -> str:
         """Format the input value into a string."""
         pass
 
 
 class JsonInputFormatter(InputFormatter):
-    def name(self) -> str:
-        return "json"
-
     def format(self, input: InputValue) -> str:
         if not isinstance(input, InputValue):
             raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
@@ -56,9 +48,6 @@ class CodeInputFormatter(InputFormatter):
         self.language = language
         self.input_key = input_key
 
-    def name(self) -> str:
-        return "code"
-
     def format(self, input: InputValue) -> str:
         if not isinstance(input, InputValue):
             raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
@@ -72,9 +61,6 @@ class TextInputFormatter(InputFormatter):
     def __init__(self, input_key: str = "text"):
         self.input_key = input_key
 
-    def name(self) -> str:
-        return "raw-text"
-
     def format(self, input: InputValue) -> str:
         if not isinstance(input, InputValue):
             raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
@@ -83,9 +69,6 @@ class TextInputFormatter(InputFormatter):
 
 
 class KeyValueInputFormatter(InputFormatter):
-    def name(self) -> str:
-        return "key_value"
-
     def format(self, input: InputValue) -> str:
         if not isinstance(input, InputValue):
             raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")

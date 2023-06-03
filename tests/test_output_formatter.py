@@ -3,12 +3,6 @@ import pytest
 from promptgen.output import CodeOutputFormatter, JsonOutputFormatter, KeyValueOutputFormatter, OutputValue
 
 
-def test_json_output_formatter_name():
-    f = JsonOutputFormatter()
-
-    assert f.name() == "json"
-
-
 def test_json_output_formatter_format():
     f = JsonOutputFormatter(indent=None)
 
