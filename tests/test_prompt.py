@@ -1,9 +1,11 @@
+import json
+import tempfile
 from pydantic import ValidationError
 import pytest
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 
-from promptgen.prompt import Example, ParameterInfo, Prompt
+from promptgen.prompt import Example, ParameterInfo, Prompt, load_prompt_from_dict, load_prompt_from_json_string
 
 
 @pytest.fixture
@@ -148,6 +150,9 @@ def test_prompt_from_dict_invalid():
     with pytest.raises(ValidationError):
         Prompt.from_dict({})
 
+    with pytest.raises(TypeError):
+        Prompt.from_dict(None) # type: ignore
+
 
 def test_prompt_to_dict(prompt_dict: dict):
     prompt = Prompt.from_dict(prompt_dict)
@@ -172,6 +177,24 @@ def test_prompt_from_dict_parameter_mismatch_2(prompt_dict: dict):
         Prompt.from_dict(prompt_dict)
 
 
+def test_prompt_from_json_string(prompt_dict: dict):
+    prompt_json = json.dumps(prompt_dict)
+
+    prompt = Prompt.from_json_string(prompt_json)
+
+    assert prompt.dict() == prompt_dict
+
+
+def test_prompt_to_json_file(prompt_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
+
+    with tempfile.NamedTemporaryFile() as f:
+        prompt.to_json_file(f.name)
+
+        with open(f.name, 'r') as f2:
+            assert prompt.dict() == json.load(f2)
+
+
 def test_prompt_with_examples(prompt_dict: dict, other_example_dict: dict):
     prompt = Prompt.from_dict(prompt_dict)
 
@@ -194,6 +217,13 @@ def test_prompt_rename_input_parameter(prompt_dict: dict):
     assert got.input_parameters[0].description == 'test input parameter description'
 
 
+def test_prompt_rename_input_parameter_invalid(prompt_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
+
+    with pytest.raises(ValueError):
+        prompt.rename_input_parameter('test input parameter name 3', 'test input parameter name 3')
+
+
 def test_prompt_rename_output_parameter(prompt_dict: dict):
     prompt = Prompt.from_dict(prompt_dict)
 
@@ -203,3 +233,206 @@ def test_prompt_rename_output_parameter(prompt_dict: dict):
     assert 'test output parameter name' != got.output_parameters[0].name
     assert 'test output parameter name 3' == got.output_parameters[0].name
     assert got.output_parameters[0].description == 'test output parameter description'
+
+
+def test_prompt_validate_template_valid():
+    assert Prompt.validate_template({
+    'name': 'test name',
+    'description': 'test description',
+    'input_parameters': [
+        ParameterInfo(name='test input parameter name', description='test input parameter description')
+    ],
+    'output_parameters': [
+        ParameterInfo(name='test output parameter name', description='test output parameter description')
+    ],
+    'template': Example(
+        input=InputValue.from_dict({
+            'test input parameter name': 'example test input parameter value',
+        }),
+        output=OutputValue.from_dict({
+            'test output parameter name': 'example test output parameter value',
+        }),
+    ),
+    'examples': [
+        Example(
+            input=InputValue.from_dict({
+                'test input parameter name': 'example test input parameter value',
+            }),
+            output=OutputValue.from_dict({
+                'test output parameter name': 'example test output parameter value',
+            }),
+        ),
+    ],
+})
+
+
+def test_prompt_validate_template_invalid():
+    # no template
+    with pytest.raises(ValueError):
+        Prompt.validate_template({
+            'name': 'test name',
+            'description': 'test description',
+            'input_parameters': [],
+            'output_parameters': [],
+            'examples': [],
+        })
+
+    # no examples
+    with pytest.raises(ValueError):
+        Prompt.validate_template({
+            'name': 'test name',
+            'description': 'test description',
+            'input_parameters': [],
+            'output_parameters': [],
+            'template': {},
+        })
+
+    # no input parameters
+    with pytest.raises(ValueError):
+        Prompt.validate_template({
+            'name': 'test name',
+            'description': 'test description',
+            'output_parameters': [],
+            'template': {},
+            'examples': [],
+        })
+
+    # no output parameters
+    with pytest.raises(ValueError):
+        Prompt.validate_template({
+            'name': 'test name',
+            'description': 'test description',
+            'input_parameters': [],
+            'template': {},
+            'examples': [],
+        })
+
+    # invalid template input
+    with pytest.raises(ValueError):
+        Prompt.validate_template({
+            'name': 'test name',
+            'description': 'test description',
+            'input_parameters': [
+                ParameterInfo(name='test input parameter name', description='test input parameter description')
+            ],
+            'output_parameters': [
+                ParameterInfo(name='test output parameter name', description='test output parameter description')
+            ],
+            'template': Example(
+                # missing input parameter
+                input=InputValue.from_dict({}),
+                output=OutputValue.from_dict({
+                    'test output parameter name': 'example test output parameter value',
+                }),
+            ),
+            'examples': [],
+        })
+
+    # invalid template output
+    with pytest.raises(ValueError):
+        Prompt.validate_template({
+            'name': 'test name',
+            'description': 'test description',
+            'input_parameters': [
+                ParameterInfo(name='test input parameter name', description='test input parameter description')
+            ],
+            'output_parameters': [
+                ParameterInfo(name='test output parameter name', description='test output parameter description')
+            ],
+            'template': Example(
+                input=InputValue.from_dict({
+                    'test input parameter name': 'example test input parameter value',
+                }),
+                # missing output parameter
+                output=OutputValue.from_dict({}),
+            ),
+            'examples': [],
+        })
+
+    # invalid example input
+    with pytest.raises(ValueError):
+        Prompt.validate_template({
+            'name': 'test name',
+            'description': 'test description',
+            'input_parameters': [
+                ParameterInfo(name='test input parameter name', description='test input parameter description')
+            ],
+            'output_parameters': [
+                ParameterInfo(name='test output parameter name', description='test output parameter description')
+            ],
+            'template': Example(
+                input=InputValue.from_dict({
+                    'test input parameter name': 'example test input parameter value',
+                }),
+                output=OutputValue.from_dict({
+                    'test output parameter name': 'example test output parameter value',
+                }),
+            ),
+            'examples': [
+                Example(
+                    # missing input parameter
+                    input=InputValue.from_dict({}),
+                    output=OutputValue.from_dict({
+                        'test output parameter name': 'example test output parameter value',
+                    }),
+                ),
+            ],
+        })
+
+    # invalid example output
+    with pytest.raises(ValueError):
+        Prompt.validate_template({
+            'name': 'test name',
+            'description': 'test description',
+            'input_parameters': [
+                ParameterInfo(name='test input parameter name', description='test input parameter description')
+            ],
+            'output_parameters': [
+                ParameterInfo(name='test output parameter name', description='test output parameter description')
+            ],
+            'template': Example(
+                input=InputValue.from_dict({
+                    'test input parameter name': 'example test input parameter value',
+                }),
+                output=OutputValue.from_dict({
+                    'test output parameter name': 'example test output parameter value',
+                }),
+            ),
+            'examples': [
+                Example(
+                    input=InputValue.from_dict({
+                        'test input parameter name': 'example test input parameter value',
+                    }),
+                    # missing output parameter
+                    output=OutputValue.from_dict({}),
+                ),
+            ],
+        })
+
+
+def test_prompt_str(prompt_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
+
+    assert str(prompt) == """test name: (test input parameter name, test input parameter name 2) -> (test output parameter name, test output parameter name 2)"""
+
+
+def test_prompt_repr(prompt_dict: dict):
+    want = json.dumps(prompt_dict, indent=4, ensure_ascii=False)
+    prompt = Prompt.from_dict(prompt_dict)
+
+    assert repr(prompt) == want
+
+
+def test_prompt_rename_output_parameter_invalid(prompt_dict: dict):
+    prompt = Prompt.from_dict(prompt_dict)
+
+    with pytest.raises(ValueError):
+        prompt.rename_output_parameter('test output parameter name 3', 'test output parameter name 3')
+
+
+def test_load_prompt_from_json_string(prompt_dict: dict):
+    prompt_json = json.dumps(prompt_dict)
+
+    prompt = load_prompt_from_json_string(prompt_json)
+
+    assert load_prompt_from_dict(prompt.dict()) == prompt_dict

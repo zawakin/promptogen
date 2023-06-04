@@ -29,15 +29,15 @@ class OutputValue(DictLike):
 class OutputFormatter(ABC):
     @abstractmethod
     def description(self) -> str:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def format(self, output: OutputValue) -> str:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def parse(self, output: str) -> OutputValue:
-        pass
+        pass  # pragma: no cover
 
 
 class JsonOutputFormatter(OutputFormatter):
@@ -133,6 +133,7 @@ class TextOutputFormatter(OutputFormatter):
             raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
         if self.output_key not in output.dict():
             raise ValueError(f"Expected output to have key {self.output_key}.")
+        print(output[self.output_key], type(output[self.output_key]))
         if not isinstance(output[self.output_key], str):
             raise TypeError(f"Expected output[{self.output_key}] to be a str, got {type(output[self.output_key])}.")
         return output[self.output_key]
@@ -166,8 +167,6 @@ class KeyValueOutputFormatter(OutputFormatter):
         from ast import literal_eval
 
         for line in lines:
-            if not line:
-                continue
             split_line = line.split(": ", 1)
             if len(split_line) != 2:
                 raise ValueError(f"Invalid line format: {line}. Expected format 'key: value.'")

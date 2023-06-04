@@ -1,6 +1,6 @@
 import pytest
 
-from promptgen.input import CodeInputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
+from promptgen.input import CodeInputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter, TextInputFormatter
 from promptgen.dataclass import DataClass
 
 
@@ -76,11 +76,37 @@ def test_code_input_formatter_format_invalid():
         f.format(10)  # type: ignore
 
 
+def test_text_input_formatter_format():
+    f = TextInputFormatter()
+
+    assert f.format(InputValue.from_dict({
+        'text': 'hello world',
+    })) == f"""hello world"""
+
+
+def test_text_input_formatter_format_invalid():
+    f = TextInputFormatter()
+
+    with pytest.raises(TypeError):
+        f.format(10)  # type: ignore
+
+
 def test_key_value_input_formatter_format():
     f = KeyValueInputFormatter()
 
     assert f.format(InputValue.from_dict({
         'test input parameter name': 'test input parameter value',
-        'test input parameter name 2': 'test input parameter value 2'
+        'test input parameter name 2': 'test input parameter value 2',
+        'nested': {
+            'test input parameter name': 'test input parameter value',
+        },
     })) == f"""test input parameter name: 'test input parameter value'
-test input parameter name 2: 'test input parameter value 2'"""
+test input parameter name 2: 'test input parameter value 2'
+nested: {{'test input parameter name': 'test input parameter value'}}"""
+
+
+def test_key_value_input_formatter_format_invalid():
+    f = KeyValueInputFormatter()
+
+    with pytest.raises(TypeError):
+        f.format(10)  # type: ignore

@@ -29,7 +29,7 @@ class InputFormatter(ABC):
     @abstractmethod
     def format(self, input: InputValue) -> str:
         """Format the input value into a string."""
-        pass
+        pass  # pragma: no cover
 
 
 class JsonInputFormatter(InputFormatter):

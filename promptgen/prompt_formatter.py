@@ -12,15 +12,15 @@ from .prompt import Example, Prompt
 class PromptFormatterInterface(ABC):
     @abstractmethod
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def format_prompt_without_input(self, prompt: Prompt) -> str:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def parse(self, output: str) -> OutputValue:
-        pass
+        pass  # pragma: no cover
 
 
 class PromptFormatter(PromptFormatterInterface):

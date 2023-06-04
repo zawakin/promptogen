@@ -4,9 +4,8 @@ from promptgen.prompt import Prompt, load_prompt_from_json_file
 
 def test_collection_prompts():
     collection = PromptCollection()
-    prompts = collection.prompts
 
-    for name, prompt in prompts.items():
+    for _, prompt in collection.items():
         assert isinstance(prompt, Prompt)
 
 
