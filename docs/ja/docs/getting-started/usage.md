@@ -1,3 +1,5 @@
+# 使い方
+
 ```python
 import promptgen as pg
 ```

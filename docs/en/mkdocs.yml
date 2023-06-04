@@ -1,11 +1,11 @@
 site_name: PromptGen
-site_url: https://promptgen.zawakin.dev/
+site_url: https://promptgen.zawakin.dev/ja/en/
 repo_url: https://github.com/zawakin/promptgen
 nav:
 - PromptGen: index.md
 - Languages:
-  - en: /
-  - ja: /ja/
+  - ja: /
+  - en: /en/
 - Tutorial:
   - tutorial.md
 - Introduction:
@@ -14,8 +14,8 @@ theme:
   name: material
   font:
     text: Roboto
-  logo: https://localhost.svg
-  favicon: https://localhost/favicon.png
+  logo: https://promptgen.zawakin.dev/https://promptgen.zawakin.dev/https://localhost.svg
+  favicon: https://promptgen.zawakin.dev/https://promptgen.zawakin.dev/https://localhost/favicon.png
   language: en
 markdown_extensions:
 - admonition: null
@@ -35,5 +35,5 @@ extra:
   alternate:
   - link: /
     name: en - English
-  - link: /ja/
-    name: ja - 日本語
+  - link: /en/
+    name: en

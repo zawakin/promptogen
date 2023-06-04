@@ -22,8 +22,10 @@ missing_translation_snippet = """
 {!../../../docs/missing-translation.md!}
 """
 
+base_lang = "ja"
+
 docs_path = Path("docs")
-en_docs_path = Path("docs/en")
+en_docs_path = Path(f"docs/{base_lang}")
 en_config_path: Path = en_docs_path / mkdocs_name
 
 
@@ -130,10 +132,9 @@ def build_lang(
     build_dir_path = Path("docs_build")
     build_dir_path.mkdir(exist_ok=True)
     build_lang_path = build_dir_path / lang
-    en_lang_path = Path("docs/en")
     site_path = Path("site").absolute()
-    dist_path: Path = site_path if lang == "en" else site_path / lang
-    # if lang == "en":
+    dist_path: Path = site_path if lang == base_lang else site_path / lang
+    # if lang == base_lang:
     #     dist_path = site_path
     # else:
     #     dist_path: Path = site_path / lang
@@ -146,7 +147,7 @@ def build_lang(
     #     dest_path = overrides_dest / path.name
     #     if not dest_path.exists():
     #         shutil.copy(path, dest_path)
-    en_config_path: Path = en_lang_path / mkdocs_name
+    en_config_path: Path = en_docs_path / mkdocs_name
     en_config: dict = mkdocs.utils.yaml_load(en_config_path.read_text(encoding="utf-8"))
     nav = en_config["nav"]
     lang_config_path: Path = lang_path / mkdocs_name
@@ -166,7 +167,7 @@ def build_lang(
     for file in file_to_nav:
         file_path = Path(file)
         lang_file_path: Path = build_lang_path / "docs" / file_path
-        en_file_path: Path = en_lang_path / "docs" / file_path
+        en_file_path: Path = en_docs_path / "docs" / file_path
         lang_file_path.parent.mkdir(parents=True, exist_ok=True)
         if not lang_file_path.is_file():
             en_text = en_file_path.read_text(encoding="utf-8")
@@ -213,14 +214,14 @@ def build_lang(
 @app.command()
 def build_all():
     """
-    Build mkdocs site for en, and then build each language inside, end result is located
+    Build mkdocs site for base lang, and then build each language inside, end result is located
     at directory ./site/ with each language inside.
     """
     site_path = Path("site").absolute()
     update_languages(lang=None) # type: ignore
     current_dir = os.getcwd()
     os.chdir(en_docs_path)
-    typer.echo("Building docs for: en")
+    typer.echo(f"Building docs for: {base_lang}")
     subprocess.run(["mkdocs", "build", "--site-dir", site_path], check=True)
     os.chdir(current_dir)
     langs = []
@@ -299,7 +300,7 @@ def live(
     en.
     """
     if lang is None:
-        lang = "en"
+        lang = base_lang
     lang_path: Path = docs_path / lang
     os.chdir(lang_path)
     mkdocs.commands.serve.serve(dev_addr="127.0.0.1:8008")
@@ -311,18 +312,18 @@ def update_config(lang: str):
     current_config: dict = mkdocs.utils.yaml_load(
         config_path.read_text(encoding="utf-8")
     )
-    if lang == "en":
+    if lang == base_lang:
         config = get_en_config()
     else:
         config = get_base_lang_config(lang)
         config["nav"] = current_config["nav"]
         config["theme"]["language"] = current_config["theme"]["language"]
-    languages = [{"en": "/"}]
+    languages = [{base_lang: "/"}]
     alternate: List[Dict[str, str]] = config["extra"].get("alternate", [])
     alternate_dict = {alt["link"]: alt["name"] for alt in alternate}
     new_alternate: List[Dict[str, str]] = []
     for lang_path in get_lang_paths():
-        if lang_path.name == "en" or not lang_path.is_dir():
+        if lang_path.name == base_lang or not lang_path.is_dir():
             continue
         name = lang_path.name
         languages.append({name: f"/{name}/"})
