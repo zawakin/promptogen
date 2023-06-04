@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from pydantic import BaseModel, root_validator
+from pydantic import root_validator
 
+from .dataclass import DataClass
 from .input import InputValue
 from .output import OutputValue
 
 
-class ParameterInfo(BaseModel):
+class ParameterInfo(DataClass):
     """Information about a parameter.
 
     Attributes:
@@ -19,7 +20,7 @@ class ParameterInfo(BaseModel):
     description: str
 
 
-class Example(BaseModel):
+class Example(DataClass):
     """An few-shot example of a prompt.
 
     Attributes:
@@ -31,7 +32,7 @@ class Example(BaseModel):
     output: OutputValue
 
 
-class Prompt(BaseModel):
+class Prompt(DataClass):
     """A prompt.
 
     Attributes:
