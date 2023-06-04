@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import List
+
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt
@@ -7,7 +9,7 @@ from promptgen.prompt import Example, ParameterInfo, Prompt
 
 class TextCategorzierInput(InputValue):
     text: str
-    categories: list[str]
+    categories: List[str]
 
 
 class TextCategorizerOutput(OutputValue):

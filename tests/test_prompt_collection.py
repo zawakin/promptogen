@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 from promptgen.prompt import create_sample_prompt
 

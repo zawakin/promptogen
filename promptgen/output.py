@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import json
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Dict
 
-from promptgen.dataclass import DataClass, DictLike
+from pydantic import BaseModel
+
+from promptgen.dataclass import DictLike
 
 from .format_utils import remove_code_block, with_code_block
 
@@ -14,15 +16,15 @@ class OutputValue(DictLike):
         super().__init__(**kwargs)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "OutputValue":
+    def from_dict(cls, data: Dict[str, Any]) -> "OutputValue":
         if not isinstance(data, dict):
             raise TypeError("OutputValue.from_dict() only accepts dict")
         return cls.parse_obj(data)
 
     @classmethod
-    def from_dataclass(cls, data: DataClass) -> "OutputValue":
-        if not isinstance(data, DataClass):
-            raise TypeError("OutputValue.from_dataclass() only accepts DataClass")
+    def from_dataclass(cls, data: BaseModel) -> "OutputValue":
+        if not isinstance(data, BaseModel):
+            raise TypeError("OutputValue.from_BaseModel() only accepts BaseModel")
         return cls.parse_obj(data)
 
 
@@ -163,7 +165,7 @@ class KeyValueOutputFormatter(OutputFormatter):
             raise TypeError(f"Expected formatted_str to be a str, got {type(output).__name__}.")
 
         lines = output.split("\n")
-        result: dict[str, Any] = {}
+        result: Dict[str, Any] = {}
         from ast import literal_eval
 
         for line in lines:

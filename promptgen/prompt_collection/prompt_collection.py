@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict
+from typing import Dict, List
 
 from promptgen.prompt import Prompt
 
@@ -20,7 +20,7 @@ class PromptCollection(Dict[str, Prompt]):
     def get_prompt(self, name: str) -> Prompt:
         return self.__getitem__(name)
 
-    def list_prompts(self) -> list[str]:
+    def list_prompts(self) -> List[str]:
         return list(self.keys())
 
     def add_prompt(self, prompt: Prompt):

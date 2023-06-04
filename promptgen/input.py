@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Dict
 
-from promptgen.dataclass import DataClass, DictLike
+from pydantic import BaseModel
+
+from promptgen.dataclass import DictLike
 
 from .format_utils import with_code_block
 
@@ -13,15 +15,15 @@ class InputValue(DictLike):
         super().__init__(**kwargs)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "InputValue":
+    def from_dict(cls, data: Dict[str, Any]) -> "InputValue":
         if not isinstance(data, dict):
             raise TypeError("InputValue.from_dict() only accepts dict")
         return cls.parse_obj(data)
 
     @classmethod
-    def from_dataclass(cls, data: DataClass) -> "InputValue":
-        if not isinstance(data, DataClass):
-            raise TypeError("InputValue.from_dataclass() only accepts DataClass")
+    def from_dataclass(cls, data: BaseModel) -> "InputValue":
+        if not isinstance(data, BaseModel):
+            raise TypeError("InputValue.from_BaseModel() only accepts BaseModel")
         return cls.parse_obj(data)
 
 

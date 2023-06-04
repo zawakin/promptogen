@@ -1,12 +1,12 @@
+from pydantic import BaseModel
 import pytest
-from promptgen.dataclass import DataClass
 
 from promptgen.output import CodeOutputFormatter, JsonOutputFormatter, KeyValueOutputFormatter, OutputValue, TextOutputFormatter
 
 
 @pytest.fixture
 def dataclass():
-    class Tmp(DataClass):
+    class Tmp(BaseModel):
         test_output_parameter_name: str = 'test output parameter value' # type: ignore
         test_output_parameter_name_2: str = 'test output parameter value 2' # type: ignore
 
@@ -28,14 +28,14 @@ def test_output_value_from_dict_invalid():
         OutputValue.from_dict(10)  # type: ignore
 
 
-def test_output_value_from_dataclass(dataclass: DataClass):
+def test_output_value_from_BaseModel(dataclass: BaseModel):
     assert OutputValue.from_dataclass(dataclass) == OutputValue(
         test_output_parameter_name='test output parameter value',
         test_output_parameter_name_2='test output parameter value 2'
     )
 
 
-def test_output_value_from_dataclass_invalid():
+def test_output_value_from_BaseModel_invalid():
     with pytest.raises(TypeError):
         OutputValue.from_dataclass(10)  # type: ignore
 

@@ -1,24 +1,26 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict
 
 from pydantic import BaseModel
 
-# NOTE: Define DataClass alias for BaseModel to reduce dependency on pydantic
-DataClass = BaseModel
+# NOTE: Define BaseModel alias for BaseModel to reduce dependency on pydantic
+# BaseModel = BaseModel
+
+# BaseModel = TypeVar("BaseModel", bound=BaseModel)
 
 
-class DictLike(DataClass):
+class DictLike(BaseModel):
     def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
         self.__dict__.update(kwargs)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "DictLike":
+    def from_dict(cls, data: Dict[str, Any]) -> "DictLike":
         return cls(**data)
 
     @classmethod
-    def from_dataclass(cls, data: DataClass) -> "DictLike":
+    def from_dataclass(cls, data: BaseModel) -> "DictLike":
         print(data)
         return cls(**data.dict())
 

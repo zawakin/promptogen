@@ -6,12 +6,13 @@ build-backend = "hatchling.build"
 name = "promptgen"
 description = ""
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 license = "MIT"
-authors = [{ name = "Yuki Miyake", email = "zawawahoge@gmail.com" }]
+authors = [{ name = "zawakin(Yuki Miyake)", email = "zawawahoge@gmail.com" }]
 classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -41,7 +42,7 @@ test = [
 
 doc = [
     "mkdocs >=1.1.2,<2.0.0",
-    "pygments >=2.15.1",
+    "pygments >=2.11",
     "pymdown-extensions >=10.0.1",
     "mkdocs-material >=8.1.4,<9.0.0",
     "typer >=0.9.0",

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import List
+
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
@@ -13,7 +15,7 @@ class ExampleCreatorInput(InputValue):
 
 
 class ExampleCreatorOutput(OutputValue):
-    examples: list[Example]
+    examples: List[Example]
 
 
 def get_example_creator_template() -> Prompt:

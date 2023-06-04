@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict, List
 
-from pydantic import root_validator
+from pydantic import BaseModel, root_validator
 
-from .dataclass import DataClass
 from .input import InputValue
 from .output import OutputValue
 
 
-class ParameterInfo(DataClass):
+class ParameterInfo(BaseModel):
     """Information about a parameter.
 
     Attributes:
@@ -20,7 +19,7 @@ class ParameterInfo(DataClass):
     description: str
 
 
-class Example(DataClass):
+class Example(BaseModel):
     """An few-shot example of a prompt.
 
     Attributes:
@@ -32,7 +31,7 @@ class Example(DataClass):
     output: OutputValue
 
 
-class Prompt(DataClass):
+class Prompt(BaseModel):
     """A prompt.
 
     Attributes:
@@ -46,13 +45,13 @@ class Prompt(DataClass):
 
     name: str
     description: str
-    input_parameters: list[ParameterInfo]
-    output_parameters: list[ParameterInfo]
+    input_parameters: List[ParameterInfo]
+    output_parameters: List[ParameterInfo]
     template: Example
-    examples: list[Example]
+    examples: List[Example]
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Prompt":
+    def from_dict(cls, d: Dict[str, Any]) -> "Prompt":
         """Create a prompt from a dictionary.
 
         Args:
@@ -106,8 +105,8 @@ class Prompt(DataClass):
         with open(filename, "w") as f:
             f.write(self.json(indent=indent, ensure_ascii=False))
 
-    @root_validator
-    def validate_template(cls, values: dict[str, Any]):
+    @root_validator(allow_reuse=True)
+    def validate_template(cls, values: Dict[str, Any]):
         t = values.get("template")
         if t is None:
             raise ValueError("Template must be provided")
@@ -115,17 +114,17 @@ class Prompt(DataClass):
         exs = values.get("examples")
         if exs is None:
             raise ValueError("Examples must be provided")
-        examples: list[Example] = exs
+        examples: List[Example] = exs
 
         _input = values.get("input_parameters")
         if _input is None:
             raise ValueError("Input parameters must be provided")
-        input_parameters: list[ParameterInfo] = _input
+        input_parameters: List[ParameterInfo] = _input
 
         _output = values.get("output_parameters")
         if _output is None:
             raise ValueError("Output parameters must be provided")
-        output_parameters: list[ParameterInfo] = _output
+        output_parameters: List[ParameterInfo] = _output
 
         input_parameter_keys = {parameter.name for parameter in input_parameters}
         output_parameter_keys = {parameter.name for parameter in output_parameters}
@@ -151,7 +150,7 @@ class Prompt(DataClass):
 
         return values
 
-    def with_examples(self, examples: list[Example | dict]) -> "Prompt":
+    def with_examples(self, examples: List[Example | dict]) -> "Prompt":
         """Set the examples of the prompt.
 
         Args:
@@ -288,7 +287,7 @@ def load_prompt_from_json_string(json_str: str) -> Prompt:
     return Prompt.parse_raw(json_str)
 
 
-def load_prompt_from_dict(d: dict[str, Any]) -> Prompt:
+def load_prompt_from_dict(d: Dict[str, Any]) -> Prompt:
     """Load a prompt from a dictionary.
 
     Args:

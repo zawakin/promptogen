@@ -1,16 +1,16 @@
+from pydantic import BaseModel
 import pytest
 
 from promptgen.input import CodeInputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter, TextInputFormatter
-from promptgen.dataclass import DataClass
 
 
 @pytest.fixture
-def dataclass() -> DataClass:
-    class TmpDataClass(DataClass):
+def dataclass() -> BaseModel:
+    class TmpBaseModel(BaseModel):
         test_input_parameter_name: str
         test_input_parameter_name_2: str
 
-    return TmpDataClass(
+    return TmpBaseModel(
         test_input_parameter_name='test input parameter value',
         test_input_parameter_name_2='test input parameter value 2'
     )
@@ -31,14 +31,14 @@ def test_input_value_from_dict_invalid():
         InputValue.from_dict(10)  # type: ignore
 
 
-def test_input_value_from_dataclass(dataclass: DataClass):
+def test_input_value_from_BaseModel(dataclass: BaseModel):
     assert InputValue.from_dataclass(dataclass) == InputValue(
         test_input_parameter_name='test input parameter value',
         test_input_parameter_name_2='test input parameter value 2'
     )
 
 
-def test_input_value_from_dataclass_invalid():
+def test_input_value_from_BaseModel_invalid():
     with pytest.raises(TypeError):
         InputValue.from_dataclass(10)  # type: ignore
 

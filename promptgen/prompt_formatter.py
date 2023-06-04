@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from promptgen.dataclass import DataClass
-
 from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
 from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue
 from .prompt import Example, Prompt
