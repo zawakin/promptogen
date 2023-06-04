@@ -3,14 +3,13 @@ from __future__ import annotations
 from typing import Any, Dict
 
 from pydantic import BaseModel
+from typing_extensions import TypeAlias
 
 # NOTE: Define BaseModel alias for BaseModel to reduce dependency on pydantic
-# BaseModel = BaseModel
-
-# BaseModel = TypeVar("BaseModel", bound=BaseModel)
+DataClass: TypeAlias = BaseModel
 
 
-class DictLike(BaseModel):
+class DictLike(DataClass):
     def __init__(self, **kwargs: Any):
         super().__init__(**kwargs)
         self.__dict__.update(kwargs)
