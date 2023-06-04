@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from typing import Dict
+
 from promptgen.prompt import Prompt
 
 from ..prompts import load_predefined_prompts
 
 
-class PromptCollection(dict[str, Prompt]):
+class PromptCollection(Dict[str, Prompt]):
     # prompts: dict[str, Prompt] = {}
 
     def __init__(self, load_predefined: bool = True):
