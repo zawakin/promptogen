@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+__version__ = "0.1.0"
+
 from .input import (
     CodeInputFormatter,
     InputFormatter,
@@ -18,6 +22,7 @@ from .prompt import (
     Example,
     ParameterInfo,
     Prompt,
+    create_sample_prompt,
     load_prompt_from_dict,
     load_prompt_from_json_file,
     load_prompt_from_json_string,
@@ -27,6 +32,8 @@ from .prompt_formatter import JsonPromptFormatter, KeyValuePromptFormatter, Prom
 
 __all__ = [
     # common
+    "InputValue",
+    "OutputValue",
     "InputFormatter",
     "OutputFormatter",
     "PromptFormatter",
@@ -49,8 +56,7 @@ __all__ = [
     "ParameterInfo",
     "Example",
     "PromptFormatterInterface",
-    "InputValue",
-    "OutputValue",
+    "create_sample_prompt",
     # load
     "load_prompt_from_dict",
     "load_prompt_from_json_file",

@@ -1,13 +1,13 @@
 import pytest
-from promptgen.input import JsonInputFormatter
-from promptgen.output import JsonOutputFormatter
+from promptgen.input import InputValue, JsonInputFormatter, KeyValueInputFormatter
+from promptgen.output import JsonOutputFormatter, KeyValueOutputFormatter, OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
-from promptgen.prompt_formatter import PromptFormatter, PromptFormatterInterface
+from promptgen.prompt_formatter import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface
 
 
 @pytest.fixture
-def prompt_formatter():
+def json_prompt_formatter():
     input_formatter = JsonInputFormatter()
     output_formatter = JsonOutputFormatter(indent=None)
     return PromptFormatter(input_formatter=input_formatter, output_formatter=output_formatter)
@@ -18,62 +18,67 @@ def prompt():
     return Prompt(
         name='test name',
         description='test description',
-        input_parameters={
-            "test input parameter name": ParameterInfo(
-                description='test input parameter description',
-            ),
-            "test input parameter name 2": ParameterInfo(
-                description='test input parameter description 2',
-            ),
-            },
-        output_parameters={
-            "test output parameter name": ParameterInfo(
-                description='test output parameter description',
-            ),
-            "test output parameter name 2": ParameterInfo(
-                description='test output parameter description 2',
-            ),
-            },
+        input_parameters=[
+            ParameterInfo(name="test input parameter name", description='test input parameter description'),
+            ParameterInfo(name="test input parameter name 2", description='test input parameter description 2'),
+        ],
+        output_parameters=[
+            ParameterInfo(name="test output parameter name", description='test output parameter description'),
+            ParameterInfo(name="test output parameter name 2", description='test output parameter description 2'),
+        ],
         template=Example(
-            input={
+            input=InputValue.from_dict({
                 'test input parameter name': 'test input parameter value',
                 'test input parameter name 2': 'test input parameter value 2'
-            },
-            output={
+            }),
+            output=OutputValue.from_dict({
                 'test output parameter name': 'test output parameter value',
                 'test output parameter name 2': 'test output parameter value 2'
-            },
+            }),
         ),
         examples=[
             Example(
-                input={
+                input=InputValue.from_dict({
                     'test input parameter name': 'example test input parameter value',
                     'test input parameter name 2': 'example test input parameter value 2'
-                },
-                output={
+                }),
+                output=OutputValue.from_dict({
                     'test output parameter name': 'example test output parameter value',
                     'test output parameter name 2': 'example test output parameter value 2'
-                },
+                }),
             ),
             Example(
-                input={
+                input=InputValue.from_dict({
                     'test input parameter name': 'example test input parameter value 3',
                     'test input parameter name 2': 'example test input parameter value 4'
-                },
-                output={
+                }),
+                output=OutputValue.from_dict({
                     'test output parameter name': 'example test output parameter value 3',
                     'test output parameter name 2': 'example test output parameter value 4'
-                },
+                }),
             ),
         ])
 
 
-def test_base_prompt_formatter_format_prompt(prompt_formatter: PromptFormatterInterface, prompt: Prompt):
-    input_value = {
+def test_prompt_formatter_init_invalid():
+    input_formatter = JsonInputFormatter()
+    output_formatter = JsonOutputFormatter(indent=None)
+    with pytest.raises(TypeError):
+        PromptFormatter(input_formatter=object(), output_formatter=object()) # type: ignore
+
+    with pytest.raises(TypeError):
+        PromptFormatter(input_formatter=input_formatter, output_formatter=object()) # type: ignore
+
+    with pytest.raises(TypeError):
+        PromptFormatter(input_formatter=object(), output_formatter=output_formatter) # type: ignore
+
+
+def test_prompt_formatter_format_prompt(json_prompt_formatter: PromptFormatterInterface, prompt: Prompt):
+    input_value = InputValue.from_dict({
         'test input parameter name': 'sample value',
         'test input parameter name 2': 'sample value 2'
-    }
-    assert prompt_formatter.format_prompt(prompt=prompt, input_value=input_value) == f"""You are an AI named \"test name\".
+    })
+    assert json_prompt_formatter.format_prompt(prompt=prompt, input_value=input_value) == f"""You are an AI named \"test name\".
 test description
 Output a JSON-formatted string without outputting any other strings.
 Be careful with the order of brackets in the json.
@@ -118,8 +123,23 @@ Input:
 Output:"""
 
 
-def test_base_prompt_formatter_format_prompt_without_input(prompt_formatter: PromptFormatterInterface, prompt: Prompt):
-    assert prompt_formatter.format_prompt_without_input(prompt) == f"""You are an AI named \"test name\".
+def test_prompt_formatter_format_prompt_invalid(json_prompt_formatter: PromptFormatterInterface, prompt: Prompt):
+    input_value = InputValue.from_dict({
+        'test input parameter name': 'sample value',
+        'test input parameter name 2': 'sample value 2'
+    })
+    with pytest.raises(TypeError):
+        json_prompt_formatter.format_prompt(prompt=prompt, input_value=10) # type: ignore
+
+    with pytest.raises(TypeError):
+        json_prompt_formatter.format_prompt(prompt=object(), input_value=input_value) # type: ignore
+
+    with pytest.raises(ValueError):
+        json_prompt_formatter.format_prompt(prompt=prompt, input_value=InputValue.from_dict({}))
+
+
+def test_prompt_formatter_format_prompt_without_input(json_prompt_formatter: PromptFormatterInterface, prompt: Prompt):
+    assert json_prompt_formatter.format_prompt_without_input(prompt) == f"""You are an AI named \"test name\".
 test description
 Output a JSON-formatted string without outputting any other strings.
 Be careful with the order of brackets in the json.
@@ -156,3 +176,30 @@ Output:
 ```json
 {{"test output parameter name": "example test output parameter value 3", "test output parameter name 2": "example test output parameter value 4"}}```
 """
+
+
+def test_prompt_formatter_parse(json_prompt_formatter: PromptFormatterInterface):
+    input_value = InputValue.from_dict({
+        'test input parameter name': 'sample value',
+        'test input parameter name 2': 'sample value 2'
+    })
+    output_value = OutputValue.from_dict({
+        'test output parameter name': 'sample value',
+        'test output parameter name 2': 'sample value 2'
+    })
+    assert json_prompt_formatter.parse("""```json
+{"test output parameter name": "sample value", "test output parameter name 2": "sample value 2"}```""") == output_value
+
+
+def test_json_prompt_formatter():
+    f = JsonPromptFormatter()
+
+    assert type(f.input_formatter) == JsonInputFormatter
+    assert type(f.output_formatter) == JsonOutputFormatter
+
+
+def test_key_value_prompt_formatter():
+    f = KeyValuePromptFormatter()
+
+    assert type(f.input_formatter) == KeyValueInputFormatter
+    assert type(f.output_formatter) == KeyValueOutputFormatter

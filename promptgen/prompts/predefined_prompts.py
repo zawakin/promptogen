@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import List
+
 from promptgen.prompt import Prompt
 
 from .prompt_creator import get_prompt_creator_template
@@ -7,7 +11,7 @@ from .text_categorizer import get_text_categorizer_template
 from .text_summarizer import get_text_summarizer_template
 
 
-def load_predefined_prompts() -> list[Prompt]:
+def load_predefined_prompts() -> List[Prompt]:
     prompts = [
         get_text_categorizer_template(),
         get_text_summarizer_template(),

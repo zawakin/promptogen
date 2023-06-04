@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 
 from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
@@ -8,15 +10,15 @@ from .prompt import Example, Prompt
 class PromptFormatterInterface(ABC):
     @abstractmethod
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def format_prompt_without_input(self, prompt: Prompt) -> str:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def parse(self, output: str) -> OutputValue:
-        pass
+        pass  # pragma: no cover
 
 
 class PromptFormatter(PromptFormatterInterface):
@@ -25,8 +27,8 @@ class PromptFormatter(PromptFormatterInterface):
 
     def __init__(
         self,
-        input_formatter: InputFormatter = JsonInputFormatter(),
-        output_formatter: OutputFormatter = JsonOutputFormatter(),
+        input_formatter: InputFormatter,
+        output_formatter: OutputFormatter,
     ):
         if not isinstance(input_formatter, InputFormatter):
             raise TypeError(
@@ -46,6 +48,15 @@ class PromptFormatter(PromptFormatterInterface):
         self.output_formatter = output_formatter
 
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
+        if not isinstance(input_value, InputValue):
+            raise TypeError(f"Expected input_value to be an instance of InputValue, got {type(input_value).__name__}.")
+        if not isinstance(prompt, Prompt):
+            raise TypeError(f"Expected prompt to be an instance of Prompt, got {type(prompt).__name__}.")
+        input_parameter_keys = {p.name for p in prompt.input_parameters}
+        if input_parameter_keys != input_value.dict().keys():
+            raise ValueError(
+                f"Expected input_value to have the same keys as prompt.input_parameters, got {input_value.dict().keys()}; wanted {input_parameter_keys}."
+            )
         formatted_input = self.input_formatter.format(input_value)
         return f"""{self.format_prompt_without_input(prompt)}
 --------
@@ -55,12 +66,8 @@ Input:
 Output:"""
 
     def format_prompt_without_input(self, prompt: Prompt) -> str:
-        formatted_input_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.input_parameters.items()
-        )
-        formatted_output_parameters = "\n".join(
-            f"  - {name}: {p.description}" for name, p in prompt.output_parameters.items()
-        )
+        formatted_input_parameters = "\n".join(f"  - {p.name}: {p.description}" for p in prompt.input_parameters)
+        formatted_output_parameters = "\n".join(f"  - {p.name}: {p.description}" for p in prompt.output_parameters)
         formatted_template = self.format_example(prompt.template)
         formatted_examples = (
             "\n".join(f"Example {i+1}:\n{self.format_example(e)}\n" for i, e in enumerate(prompt.examples))

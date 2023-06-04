@@ -1,29 +1,45 @@
+from __future__ import annotations
+
 import json
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Dict
+
+from pydantic import BaseModel
+
+from promptgen.dataclass import DictLike
 
 from .format_utils import remove_code_block, with_code_block
 
-"""The type of the output value.""" ""
-OutputValue = dict[str, Any]
+
+class OutputValue(DictLike):
+    def __init__(self, **kwargs: Any):
+        super().__init__(**kwargs)
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "OutputValue":
+        if not isinstance(data, dict):
+            raise TypeError("OutputValue.from_dict() only accepts dict")
+        return cls.parse_obj(data)
+
+    @classmethod
+    def from_dataclass(cls, data: BaseModel) -> "OutputValue":
+        if not isinstance(data, BaseModel):
+            raise TypeError("OutputValue.from_BaseModel() only accepts BaseModel")
+        return cls.parse_obj(data)
 
 
 class OutputFormatter(ABC):
     @abstractmethod
-    def name(self) -> str:
-        pass
-
-    @abstractmethod
     def description(self) -> str:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def format(self, output: OutputValue) -> str:
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def parse(self, output: str) -> OutputValue:
-        pass
+        pass  # pragma: no cover
 
 
 class JsonOutputFormatter(OutputFormatter):
@@ -40,9 +56,6 @@ class JsonOutputFormatter(OutputFormatter):
     def __init__(self, strict: bool = True, indent: int | None = 1):
         self.strict = strict
         self.indent = indent
-
-    def name(self) -> str:
-        return "json"
 
     def description(self) -> str:
         """The description of the json output formatter."""
@@ -62,10 +75,10 @@ Be careful with the order of brackets in the json."""
         Returns:
             str: The formatted output.
         """
-        if not isinstance(output, dict):
-            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
+        if not isinstance(output, OutputValue):
+            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
 
-        return with_code_block("json", json.dumps(output, ensure_ascii=False, indent=self.indent))
+        return with_code_block("json", output.json(ensure_ascii=False, indent=self.indent))
 
     def parse(self, output: str) -> OutputValue:
         output = output.strip()
@@ -87,9 +100,6 @@ class CodeOutputFormatter(OutputFormatter):
         self.language = language
         self.output_key = output_key
 
-    def name(self) -> str:
-        return "code"
-
     def description(self) -> str:
         return f"""Output a code-block in {self.language} without outputting any other strings."""
 
@@ -99,16 +109,16 @@ class CodeOutputFormatter(OutputFormatter):
         Args:
             output (OutputValue): The output value. Must be a dict with the key `self.output_key` (default: `code`).
         """
-        if not isinstance(output, dict):
-            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
-        if self.output_key not in output:
+        if not isinstance(output, OutputValue):
+            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
+        if self.output_key not in output.dict():
             raise ValueError(f"Expected output to have key {self.output_key}.")
 
         return with_code_block(self.language, output[self.output_key])
 
     def parse(self, output: str) -> OutputValue:
         result = remove_code_block(self.language, output)
-        return {self.output_key: result}
+        return OutputValue.from_dict({self.output_key: result})
 
 
 class TextOutputFormatter(OutputFormatter):
@@ -117,38 +127,33 @@ class TextOutputFormatter(OutputFormatter):
     def __init__(self, output_key: str = "text"):
         self.output_key = output_key
 
-    def name(self) -> str:
-        return "text"
-
     def description(self) -> str:
         return ""
 
     def format(self, output: OutputValue) -> str:
-        if not isinstance(output, dict):
-            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
-        if self.output_key not in output:
+        if not isinstance(output, OutputValue):
+            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
+        if self.output_key not in output.dict():
             raise ValueError(f"Expected output to have key {self.output_key}.")
+        print(output[self.output_key], type(output[self.output_key]))
         if not isinstance(output[self.output_key], str):
             raise TypeError(f"Expected output[{self.output_key}] to be a str, got {type(output[self.output_key])}.")
         return output[self.output_key]
 
     def parse(self, output: str) -> OutputValue:
-        return {self.output_key: output}
+        return OutputValue.from_dict({self.output_key: output})
 
 
 class KeyValueOutputFormatter(OutputFormatter):
-    def name(self) -> str:
-        return "key_value"
-
     def description(self) -> str:
-        return ""
+        return "You should follow 'Template' format. The format is 'key: value'."
 
     def format(self, output: OutputValue) -> str:
-        if not isinstance(output, dict):
-            raise TypeError(f"Expected output to be a dict, got {type(output).__name__}; " "output: {output}")
+        if not isinstance(output, OutputValue):
+            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
 
         s = ""
-        for key, value in output.items():
+        for key, value in output.dict().items():
             if isinstance(value, str):
                 value = f"'{value}'"
             s += f"{key}: {value}\n"
@@ -160,12 +165,10 @@ class KeyValueOutputFormatter(OutputFormatter):
             raise TypeError(f"Expected formatted_str to be a str, got {type(output).__name__}.")
 
         lines = output.split("\n")
-        result: dict[str, Any] = {}
+        result: Dict[str, Any] = {}
         from ast import literal_eval
 
         for line in lines:
-            if not line:
-                continue
             split_line = line.split(": ", 1)
             if len(split_line) != 2:
                 raise ValueError(f"Invalid line format: {line}. Expected format 'key: value.'")
@@ -174,4 +177,4 @@ class KeyValueOutputFormatter(OutputFormatter):
             obj = literal_eval(val)
             result[split_line[0]] = obj
 
-        return result
+        return OutputValue.from_dict(result)

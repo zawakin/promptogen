@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 def with_code_block(language: str, s: str) -> str:
     """Wrap the string in a code block.
 

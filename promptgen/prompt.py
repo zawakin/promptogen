@@ -1,23 +1,25 @@
-from typing import Any
+from __future__ import annotations
 
-from pydantic import root_validator
+from typing import Any, Dict, List
 
-from .dataclass import DataClass
+from pydantic import BaseModel, root_validator
+
 from .input import InputValue
 from .output import OutputValue
 
 
-class ParameterInfo(DataClass):
+class ParameterInfo(BaseModel):
     """Information about a parameter.
 
     Attributes:
         description: A description of the parameter.
     """
 
+    name: str
     description: str
 
 
-class Example(DataClass):
+class Example(BaseModel):
     """An few-shot example of a prompt.
 
     Attributes:
@@ -29,7 +31,7 @@ class Example(DataClass):
     output: OutputValue
 
 
-class Prompt(DataClass):
+class Prompt(BaseModel):
     """A prompt.
 
     Attributes:
@@ -43,13 +45,13 @@ class Prompt(DataClass):
 
     name: str
     description: str
-    input_parameters: dict[str, ParameterInfo]
-    output_parameters: dict[str, ParameterInfo]
+    input_parameters: List[ParameterInfo]
+    output_parameters: List[ParameterInfo]
     template: Example
-    examples: list[Example]
+    examples: List[Example]
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Prompt":
+    def from_dict(cls, d: Dict[str, Any]) -> "Prompt":
         """Create a prompt from a dictionary.
 
         Args:
@@ -103,51 +105,52 @@ class Prompt(DataClass):
         with open(filename, "w") as f:
             f.write(self.json(indent=indent, ensure_ascii=False))
 
-    @root_validator
-    def validate_template(cls, values):
-        template = values.get("template")
-        input_parameters = values.get("input_parameters")
-        output_parameters = values.get("output_parameters")
+    @root_validator(allow_reuse=True)
+    def validate_template(cls, values: Dict[str, Any]):
+        t = values.get("template")
+        if t is None:
+            raise ValueError("Template must be provided")
+        template: Example = t
+        exs = values.get("examples")
+        if exs is None:
+            raise ValueError("Examples must be provided")
+        examples: List[Example] = exs
 
-        if template is None or input_parameters is None or output_parameters is None:
-            raise ValueError("Template, input parameters, " "and output parameters must be provided")
+        _input = values.get("input_parameters")
+        if _input is None:
+            raise ValueError("Input parameters must be provided")
+        input_parameters: List[ParameterInfo] = _input
 
-        if template.input.keys() != input_parameters.keys():
+        _output = values.get("output_parameters")
+        if _output is None:
+            raise ValueError("Output parameters must be provided")
+        output_parameters: List[ParameterInfo] = _output
+
+        input_parameter_keys = {parameter.name for parameter in input_parameters}
+        output_parameter_keys = {parameter.name for parameter in output_parameters}
+        if template.input.keys() != input_parameter_keys:
             raise ValueError(
-                f"Template input keys do not match input parameters: " f"{template.input.keys()} vs {input_parameters}"
+                f"Template input keys do not match input parameters: " f"{template.input} vs {input_parameters}"
             )
-        if template.output.keys() != output_parameters.keys():
+        if template.output.keys() != output_parameter_keys:
             raise ValueError(
                 f"Template output keys do not match output parameters: "
                 f"{template.output.keys()} vs {output_parameters}"
             )
 
-        return values
-
-    @root_validator
-    def validate_examples(cls, values):
-        examples = values.get("examples")
-        input_parameters = values.get("input_parameters")
-        output_parameters = values.get("output_parameters")
-
-        if examples is None or input_parameters is None or output_parameters is None:
-            raise ValueError("Examples, input parameters, " "and output parameters must be provided")
-
         for example in examples:
-            if example.input.keys() != input_parameters.keys():
+            if example.input.keys() != input_parameter_keys:
                 raise ValueError(
-                    f"Example input keys do not match input parameters: "
-                    f"{example.input.keys()} vs {input_parameters}"
+                    f"Example input keys do not match input parameters: " f"{example.input} vs {input_parameters}"
                 )
-            if example.output.keys() != output_parameters.keys():
+            if example.output.keys() != output_parameter_keys:
                 raise ValueError(
-                    f"Example output keys do not match output parameters: "
-                    f"{example.output.keys()} vs {output_parameters}"
+                    f"Example output keys do not match output parameters: " f"{example.output} vs {output_parameters}"
                 )
 
         return values
 
-    def with_examples(self, examples: list[Example | dict]) -> "Prompt":
+    def with_examples(self, examples: List[Example | dict]) -> "Prompt":
         """Set the examples of the prompt.
 
         Args:
@@ -170,7 +173,17 @@ class Prompt(DataClass):
             A copy of the prompt with the input parameter renamed.
         """
         input_parameters = self.input_parameters.copy()
-        input_parameters[new_name] = input_parameters.pop(old_name)
+        # find the parameter
+        found = False
+        index = -1
+        for i, parameter in enumerate(input_parameters):
+            if parameter.name == old_name:
+                found = True
+                index = i
+                break
+        if not found:
+            raise ValueError(f"Could not find input parameter with name {old_name}")
+        input_parameters[index].name = new_name
 
         # rename in template
         template = self.template.copy(deep=True)
@@ -203,7 +216,18 @@ class Prompt(DataClass):
             A copy of the prompt with the output parameter renamed.
         """
         output_parameters = self.output_parameters.copy()
-        output_parameters[new_name] = output_parameters.pop(old_name)
+
+        # find the parameter
+        found = False
+        index = -1
+        for i, parameter in enumerate(output_parameters):
+            if parameter.name == old_name:
+                found = True
+                index = i
+                break
+        if not found:
+            raise ValueError(f"Could not find output parameter with name {old_name}")
+        output_parameters[index].name = new_name
 
         # rename in template
         template = self.template.copy(deep=True)
@@ -234,8 +258,8 @@ class Prompt(DataClass):
         Returns:
             A string representation of the prompt.
         """
-        input_str = ", ".join([f"{name}" for name, param in self.input_parameters.items()])
-        output_str = ", ".join([f"{name}" for name, param in self.output_parameters.items()])
+        input_str = ", ".join([f"{param.name}" for param in self.input_parameters])
+        output_str = ", ".join([f"{param.name}" for param in self.output_parameters])
         return f"{self.name}: ({input_str}) -> ({output_str})"
 
 
@@ -263,7 +287,7 @@ def load_prompt_from_json_string(json_str: str) -> Prompt:
     return Prompt.parse_raw(json_str)
 
 
-def load_prompt_from_dict(d: dict[str, Any]) -> Prompt:
+def load_prompt_from_dict(d: Dict[str, Any]) -> Prompt:
     """Load a prompt from a dictionary.
 
     Args:
@@ -273,3 +297,40 @@ def load_prompt_from_dict(d: dict[str, Any]) -> Prompt:
         The loaded prompt.
     """
     return Prompt.from_dict(d)
+
+
+def create_sample_prompt(suffix: str) -> Prompt:
+    """Create a sample prompt.
+
+    Args:
+        suffix: The suffix to append to the prompt name.
+
+    Returns:
+        The sample prompt.
+    """
+    return Prompt(
+        name=f"sample-{suffix}",
+        description="A sample prompt.",
+        input_parameters=[
+            ParameterInfo(name="input1", description="The first input parameter."),
+            ParameterInfo(name="input2", description="The second input parameter."),
+        ],
+        output_parameters=[
+            ParameterInfo(name="output1", description="The first output parameter."),
+            ParameterInfo(name="output2", description="The second output parameter."),
+        ],
+        template=Example(
+            input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
+            output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
+        ),
+        examples=[
+            Example(
+                input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
+                output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
+            ),
+            Example(
+                input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
+                output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
+            ),
+        ],
+    )

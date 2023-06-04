@@ -1,6 +1,6 @@
 TARGET_DIR="promptgen"
 
-poetry run flake8 "${TARGET_DIR}"
-poetry run mypy "${TARGET_DIR}"
-poetry run black "${TARGET_DIR}"
-poetry run isort "${TARGET_DIR}"
+flake8 "${TARGET_DIR}"
+mypy "${TARGET_DIR}"
+black "${TARGET_DIR}"
+isort "${TARGET_DIR}"
