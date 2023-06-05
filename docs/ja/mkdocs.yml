@@ -5,15 +5,13 @@ edit_uri: edit/main/docs/ja/docs/
 nav:
 - PromptGen: index.md
 - クイックスタートガイド: quickstart.md
-- コンセプト: concept.md
-- 使い方:
-  - インストール方法: getting-started/installation.md
-  - getting-started/usage.md
-- ライブラリコンポーネント:
+- インストール方法: getting-started/installation.md
+- 使い方: getting-started/usage.md
+- ライブラリのコンセプト: concepts/concept.md
+- ライブラリのコンポーネント:
   - フォーマッター: library-components/formatter.md
   - パーサー: library-components/parser.md
-- コントリビューション: contribute.md
-- ライセンス: license.md
+- コントリビューションガイド: contributing.md
 - 言語(Language):
   - en: /
   - ja: /ja/
@@ -23,6 +21,7 @@ theme:
   palette:
     - scheme: default
       primary: black
+      accent: black
     - scheme: slate
       primary: indigo
   features:
@@ -57,16 +56,16 @@ theme:
     logo: logo
   language: ja
 markdown_extensions:
-# - admonition: null
-# - codehilite: null
-# - pymdownx.keys: null
-# - pymdownx.highlight:
-#     anchor_linenums: true
-#     line_spans: __span
-#     pygments_lang_class: true
-# - pymdownx.inlinehilite: null
-# - pymdownx.snippets: null
-# - pymdownx.superfences: null
+  # - admonition: null
+  # - codehilite: null
+  # - pymdownx.keys: null
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  # - pymdownx.inlinehilite: null
+  # - pymdownx.snippets: null
+  - pymdownx.superfences: null
   - abbr
   - admonition
   - attr_list
