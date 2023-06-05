@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
+from promptgen.dataclass import DataClass
+
 from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
 from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue
 from .prompt import Example, Prompt
@@ -32,16 +34,16 @@ class PromptFormatter(PromptFormatterInterface):
     ):
         if not isinstance(input_formatter, InputFormatter):
             raise TypeError(
-                f"Expected input_formatter to be an instance of InputFormatter, got {type(input_formatter).__name__}."
-                "Usage: JsonInputFormatter() instead of JsonInputFormatter."
-                "If you want to use a custom input formatter, you can subclass InputFormatter and pass an instance of"
+                f"Expected input_formatter to be an instance of InputFormatter, got {type(input_formatter).__name__}.\n"
+                "Usage: JsonInputFormatter() instead of JsonInputFormatter.\n"
+                "If you want to use a custom input formatter, you can subclass InputFormatter and pass an instance of\n"
                 "your subclass to the PromptFormatter constructor."
             )
         if not isinstance(output_formatter, OutputFormatter):
             raise TypeError(
-                f"Expected output_formatter to be an instance of OutputFormatter, got {type(output_formatter).__name__}."
-                "Usage: JsonOutputFormatter() instead of JsonOutputFormatter."
-                "If you want to use a custom output formatter, you can subclass OutputFormatter and pass an instance of"
+                f"Expected output_formatter to be an instance of OutputFormatter, got {type(output_formatter).__name__}.\n"
+                "Usage: JsonOutputFormatter() instead of JsonOutputFormatter.\n"
+                "If you want to use a custom output formatter, you can subclass OutputFormatter and pass an instance of\n"
                 "your subclass to the PromptFormatter constructor."
             )
         self.input_formatter = input_formatter
