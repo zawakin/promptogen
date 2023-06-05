@@ -1,5 +1,0 @@
-# Concept
-
-## Modularity
-
-## Small library

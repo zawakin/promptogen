@@ -5,10 +5,11 @@ edit_uri: edit/main/docs/ja/docs/
 nav:
 - PromptGen: index.md
 - クイックスタートガイド: quickstart.md
-- インストール方法: getting-started/installation.md
-- 使い方: getting-started/usage.md
-- ライブラリのコンセプト: concepts/concept.md
-- ライブラリのコンポーネント:
+- インストール方法: installation.md
+- 使い方:
+  - 使い方: usages/usage.md
+- コンセプト: concepts/concept.md
+- コンポーネント:
   - フォーマッター: library-components/formatter.md
   - パーサー: library-components/parser.md
 - コントリビューションガイド: contributing.md

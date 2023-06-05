@@ -1,32 +1,39 @@
-# Contributing
+# コントリビューションガイド
 
-## Setup
+バグの報告、新機能の提案、プルリクエスト等は大歓迎です！
 
-### Install Python
+## 環境構築
 
-```console
-$ python -m venv env
+PromptGenの開発ではPython 3.8以上を使用します。
+
+### Poetryのインストール
+
+https://python-poetry.org/docs/#installation
+
+### リポジトリのクローンと依存パッケージのインストール
+
+```bash
+$ git clone https://github.com/zawakin/promptgen.git
+$ cd promptgen
+$ poetry install --with docs
 ```
 
-```cosole
-$ source env/bin/activate
+### テストの実行
+
+```bash
+$ poetry run pytest -vv
 ```
 
-Check the path to the Python executable.
+## ドキュメントのビルド
 
-```console
-$ which pip
-your/working/directory/promptgen/env/bin/pip
+```bash
+$ poetry run python ./scripts/docs.py build-all
 ```
 
-Update pip.
+## ドキュメントのプレビュー
 
-```console
-$ python -m pip install --upgrade pip
+```bash
+$ poetry run python ./scripts/docs.py live <lang>
 ```
 
-### Install dependencies
-
-```console
-$ pip install -e ".[doc,test]"
-```
+`<lang>` には `ja` または `en` を指定します。

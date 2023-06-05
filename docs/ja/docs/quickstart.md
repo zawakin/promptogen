@@ -74,6 +74,8 @@ summarizer = pg.Prompt(
 
 まずは、プロンプトを入力パラメータなしで文字列にフォーマットしてみましょう。
 
+PromptGenでは、プロンプトを文字列にするためのフォーマッターを柔軟に作成できます。
+
 ここでは、入出力変数のキーとバリューを `key: value` の形式で出力する `KeyValuePromptFormatter` というフォーマッターを使用します。
 
 入力パラメータなしで文字列にフォーマットするには、`format_prompt_without_input` メソッドを使用します。
@@ -118,7 +120,7 @@ keywords: ['friends', 'park', 'sports', 'memories']
 
 入力パラメータは、`InputValue` クラスのインスタンスを使用して指定します。
 
-入力パラメータありで文字列にフォーマットするには、`format_prompt` メソッドを使用します。
+プロンプトを入力パラメータ込みで文字列にフォーマットするには、`format_prompt` メソッドを使用します。
 
 ```python
 input_value = pg.InputValue(text="In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.")
@@ -208,7 +210,8 @@ keywords: ['software engineering', 'developers', 'collaborate', 'version control
 
 ```python
 summarized_resp = formatter.parse(raw_resp)
-print(f'summary:\n{summarized_resp["summary"]}')
+print('summary:')
+print(f'{summarized_resp["summary"]}')
 print('keywords:')
 for keyword in summarized_resp["keywords"]:
     print(f'  - {keyword}')
