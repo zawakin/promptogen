@@ -259,7 +259,19 @@ class Prompt(DataClass):
         return [param.name for param in self.output_parameters]
 
     def __repr__(self) -> str:
-        return self.json(indent=4, ensure_ascii=False)
+        input_parameters = "\n".join([f"    - {param.name} ({type(self.template.input[param.name]).__name__}): {param.description}" for param in self.input_parameters])
+        output_parameters = "\n".join([f"    - {param.name} ({type(self.template.output[param.name]).__name__}): {param.description}" for param in self.output_parameters])
+        s = f"""Prompt: {self.name}
+
+{self.description}
+
+Input Parameters:
+{input_parameters}
+
+Output Parameters:
+{output_parameters}
+"""
+        return s
 
     def __str__(self) -> str:
         """Return a string representation of the prompt.
@@ -267,8 +279,8 @@ class Prompt(DataClass):
         Returns:
             A string representation of the prompt.
         """
-        input_str = ", ".join([f"{param.name}" for param in self.input_parameters])
-        output_str = ", ".join([f"{param.name}" for param in self.output_parameters])
+        input_str = ", ".join([f"{param.name}: {type(self.template.input[param.name]).__name__}" for param in self.input_parameters])
+        output_str = ", ".join([f"{param.name}: {type(self.template.output[param.name]).__name__}" for param in self.output_parameters])
         return f"{self.name}: ({input_str}) -> ({output_str})"
 
 

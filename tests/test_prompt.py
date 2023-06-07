@@ -413,14 +413,25 @@ def test_prompt_validate_template_invalid():
 def test_prompt_str(prompt_dict: dict):
     prompt = Prompt.from_dict(prompt_dict)
 
-    assert str(prompt) == """test name: (test input parameter name, test input parameter name 2) -> (test output parameter name, test output parameter name 2)"""
+    assert str(prompt) == """test name: (test input parameter name: str, test input parameter name 2: str) -> (test output parameter name: str, test output parameter name 2: str)"""
 
 
 def test_prompt_repr(prompt_dict: dict):
     want = json.dumps(prompt_dict, indent=4, ensure_ascii=False)
     prompt = Prompt.from_dict(prompt_dict)
 
-    assert repr(prompt) == want
+    assert repr(prompt) == """Prompt: test name
+
+test description
+
+Input Parameters:
+    - test input parameter name (str): test input parameter description
+    - test input parameter name 2 (str): test input parameter description 2
+
+Output Parameters:
+    - test output parameter name (str): test output parameter description
+    - test output parameter name 2 (str): test output parameter description 2
+"""
 
 
 def test_prompt_rename_output_parameter_invalid(prompt_dict: dict):
