@@ -5,6 +5,7 @@ from .prompt_optimizer import get_prompt_optimizer_template
 from .python_code_generator import get_python_code_generator_prompt
 from .text_categorizer import get_text_categorizer_template
 from .text_summarizer import get_text_summarizer_template
+from .python_code_generator import get_python_code_generator_prompt
 
 __all__ = [
     "get_text_categorizer_template",
