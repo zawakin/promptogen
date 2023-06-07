@@ -49,7 +49,7 @@ def get_prompt_creator_template() -> Prompt:
                     background="The given text may be a sentence, a paragraph, or a document.",
                 ),
                 output=PromptCreatorOutput(
-                    prompt=categorization_prompt.with_examples([]),
+                    prompt=categorization_prompt.with_examples([categorization_prompt.examples[0]]),
                 ),
             ),
             Example(
@@ -58,7 +58,7 @@ def get_prompt_creator_template() -> Prompt:
                     background="The given text may be the part of the document.",
                 ),
                 output=PromptCreatorOutput(
-                    prompt=summarization_prompt.with_examples([]),
+                    prompt=summarization_prompt.with_examples([summarization_prompt.examples[0]]),
                 ),
             ),
         ],

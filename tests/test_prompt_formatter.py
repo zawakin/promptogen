@@ -178,7 +178,7 @@ Output:
 """
 
 
-def test_prompt_formatter_parse(json_prompt_formatter: PromptFormatterInterface):
+def test_prompt_formatter_parse(json_prompt_formatter: PromptFormatterInterface, prompt: Prompt):
     input_value = InputValue.from_dict({
         'test input parameter name': 'sample value',
         'test input parameter name 2': 'sample value 2'
@@ -187,7 +187,7 @@ def test_prompt_formatter_parse(json_prompt_formatter: PromptFormatterInterface)
         'test output parameter name': 'sample value',
         'test output parameter name 2': 'sample value 2'
     })
-    assert json_prompt_formatter.parse("""```json
+    assert json_prompt_formatter.parse(prompt, """```json
 {"test output parameter name": "sample value", "test output parameter name 2": "sample value 2"}```""") == output_value
 
 

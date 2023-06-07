@@ -250,6 +250,14 @@ class Prompt(DataClass):
             },
         )
 
+    def get_output_keys(self) -> List[str]:
+        """Get the output keys of the prompt.
+
+        Returns:
+            The output keys of the prompt.
+        """
+        return [param.name for param in self.output_parameters]
+
     def __repr__(self) -> str:
         return self.json(indent=4, ensure_ascii=False)
 

@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import json
+import re
 from abc import ABC, abstractmethod
-from typing import Any, Dict
+from ast import literal_eval
+from pprint import pformat
+from typing import Any, Dict, List
 
 from pydantic import BaseModel
 
@@ -38,7 +41,7 @@ class OutputFormatter(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def parse(self, output: str) -> OutputValue:
+    def parse(self, output_keys: List[str], output: str) -> OutputValue:
         pass  # pragma: no cover
 
 
@@ -80,7 +83,7 @@ Be careful with the order of brackets in the json."""
 
         return with_code_block("json", output.json(ensure_ascii=False, indent=self.indent))
 
-    def parse(self, output: str) -> OutputValue:
+    def parse(self, output_keys: List[str], output: str) -> OutputValue:
         output = output.strip()
 
         if self.strict:
@@ -89,59 +92,13 @@ Be careful with the order of brackets in the json."""
             if not output.endswith("```"):
                 raise ValueError("Expected output to end with ```.")
 
-        return json.loads(remove_code_block("json", output))
+        resp = json.loads(remove_code_block("json", output))
 
+        for key in output_keys:
+            if key not in resp:
+                raise ValueError(f"Expected output to have key {key}.")
 
-class CodeOutputFormatter(OutputFormatter):
-    language: str
-    output_key: str
-
-    def __init__(self, language: str, output_key: str = "code"):
-        self.language = language
-        self.output_key = output_key
-
-    def description(self) -> str:
-        return f"""Output a code-block in {self.language} without outputting any other strings."""
-
-    def format(self, output: OutputValue) -> str:
-        """Format the output value into a string.
-
-        Args:
-            output (OutputValue): The output value. Must be a dict with the key `self.output_key` (default: `code`).
-        """
-        if not isinstance(output, OutputValue):
-            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
-        if self.output_key not in output.dict():
-            raise ValueError(f"Expected output to have key {self.output_key}.")
-
-        return with_code_block(self.language, output[self.output_key])
-
-    def parse(self, output: str) -> OutputValue:
-        result = remove_code_block(self.language, output)
-        return OutputValue.from_dict({self.output_key: result})
-
-
-class TextOutputFormatter(OutputFormatter):
-    output_key: str
-
-    def __init__(self, output_key: str = "text"):
-        self.output_key = output_key
-
-    def description(self) -> str:
-        return ""
-
-    def format(self, output: OutputValue) -> str:
-        if not isinstance(output, OutputValue):
-            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
-        if self.output_key not in output.dict():
-            raise ValueError(f"Expected output to have key {self.output_key}.")
-        print(output[self.output_key], type(output[self.output_key]))
-        if not isinstance(output[self.output_key], str):
-            raise TypeError(f"Expected output[{self.output_key}] to be a str, got {type(output[self.output_key])}.")
-        return output[self.output_key]
-
-    def parse(self, output: str) -> OutputValue:
-        return OutputValue.from_dict({self.output_key: output})
+        return OutputValue.from_dict(resp)
 
 
 class KeyValueOutputFormatter(OutputFormatter):
@@ -155,26 +112,36 @@ class KeyValueOutputFormatter(OutputFormatter):
         s = ""
         for key, value in output.dict().items():
             if isinstance(value, str):
-                value = f"'{value}'"
-            s += f"{key}: {value}\n"
+                s += f'{key}: """{value}"""\n'
+            else:
+                pretty_value = pformat(value, indent=2, sort_dicts=False, width=160)
+                s += f"{key}: {pretty_value}\n"
 
         return s.strip()
 
-    def parse(self, output: str) -> OutputValue:
+    def parse(self, output_keys: List[str], output: str) -> OutputValue:
         if not isinstance(output, str):
             raise TypeError(f"Expected formatted_str to be a str, got {type(output).__name__}.")
 
-        lines = output.split("\n")
-        result: Dict[str, Any] = {}
-        from ast import literal_eval
+        for key in output_keys:
+            if key not in output:
+                raise ValueError(f"Expected output to have key {key}.")
 
-        for line in lines:
-            split_line = line.split(": ", 1)
-            if len(split_line) != 2:
-                raise ValueError(f"Invalid line format: {line}. Expected format 'key: value.'")
+        if len(output_keys) == 0:
+            raise ValueError("Expected output_keys to have at least one key.")
 
-            val = split_line[1]
-            obj = literal_eval(val)
-            result[split_line[0]] = obj
+        result = {}
+
+        for idx, key in enumerate(output_keys):
+            next_key = output_keys[idx + 1] if idx + 1 < len(output_keys) else None
+            if next_key:
+                pattern = re.compile(f"{key}:.*?(?={next_key}:)", re.MULTILINE | re.DOTALL)
+            else:
+                pattern = re.compile(f"{key}:.*", re.MULTILINE | re.DOTALL)
+            value = re.search(pattern, output)
+            if value is not None:
+                m: re.Match[str] = value
+                s = m.group().replace(f"{key}:", "").strip()
+                result[key] = literal_eval(s)
 
         return OutputValue.from_dict(result)

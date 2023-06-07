@@ -1,7 +1,8 @@
+from typing import List
 from pydantic import BaseModel
 import pytest
 
-from promptgen.output import CodeOutputFormatter, JsonOutputFormatter, KeyValueOutputFormatter, OutputValue, TextOutputFormatter
+from promptgen.output import JsonOutputFormatter, KeyValueOutputFormatter, OutputValue
 
 
 @pytest.fixture
@@ -11,6 +12,14 @@ def dataclass():
         test_output_parameter_name_2: str = 'test output parameter value 2' # type: ignore
 
     return Tmp()
+
+
+@pytest.fixture
+def output_keys() -> List[str]:
+    return [
+        'test output parameter name',
+        'test output parameter name 2'
+    ]
 
 
 def test_output_value_from_dict():
@@ -59,102 +68,31 @@ def test_json_output_formater_format_invalid():
 
 def test_json_output_formatter_parse():
     f = JsonOutputFormatter()
+    output_keys = [
+        'test output parameter name',
+        'test output parameter name 2'
+    ]
 
-    assert f.parse("""```json
+    assert f.parse(output_keys, """```json
 {"test output parameter name": "test output parameter value", "test output parameter name 2": "test output parameter value 2"}```""") == {
         'test output parameter name': 'test output parameter value',
         'test output parameter name 2': 'test output parameter value 2'
     }
 
 
-def test_json_output_formatter_parse_no_code_block():
+def test_json_output_formatter_parse_no_code_block(output_keys: List[str]):
     f = JsonOutputFormatter()
 
     with pytest.raises(ValueError):
-        f.parse("""{"test output parameter name": "test output parameter value", "test output parameter name 2": "test output parameter value 2"}""")
+        f.parse(output_keys, """{"test output parameter name": "test output parameter value", "test output parameter name 2": "test output parameter value 2"}""")
 
 
-def test_json_output_formatter_parse_invalid_json():
+def test_json_output_formatter_parse_invalid_json(output_keys: List[str]):
     f = JsonOutputFormatter()
 
     with pytest.raises(ValueError):
-        f.parse("""```json
+        f.parse(output_keys, """```json
 {"test output parameter name": "test output parameter value", "test output parameter name 2": "test output parameter value 2""")
-
-
-def test_code_output_formatter_description():
-    f = CodeOutputFormatter('python')
-
-    assert f.description() == """Output a code-block in python without outputting any other strings."""
-
-
-def test_code_output_formatter_format():
-    f = CodeOutputFormatter('python')
-
-    assert f.format(OutputValue.from_dict({
-        'code': 'print("hello world")',
-    })) == f"""```python
-print("hello world")```"""
-
-
-def test_code_output_formatter_format_invalid():
-    f = CodeOutputFormatter('python')
-
-    with pytest.raises(TypeError):
-        f.format(10)  # type: ignore
-
-    with pytest.raises(ValueError):
-        f.format(OutputValue.from_dict({
-            'cod': 'print("hello world")',
-        }))
-
-
-def test_code_output_formatter_parse():
-    f = CodeOutputFormatter('python')
-
-    assert f.parse("""```python
-print("hello world")```""") == {
-        'code': 'print("hello world")',
-    }
-
-
-def test_text_output_formatter_description():
-    f = TextOutputFormatter()
-
-    assert f.description() == ""
-
-
-def test_text_output_formatter_format():
-    f = TextOutputFormatter()
-
-    assert f.format(OutputValue.from_dict({
-        'text': 'hello world',
-    })) == f"""hello world"""
-
-
-def test_text_output_formatter_format_invalid():
-    f = TextOutputFormatter()
-
-    with pytest.raises(TypeError):
-        f.format(10)  # type: ignore
-
-    with pytest.raises(ValueError):
-        f.format(OutputValue.from_dict({
-            'tex': 'print("hello world")',
-        }))
-
-    with pytest.raises(TypeError):
-        f.format(OutputValue.from_dict({
-            'text': 10,
-        }))
-
-
-def test_text_output_formatter_parse():
-    f = TextOutputFormatter()
-
-    assert f.parse("""hello world""") == {
-        'text': 'hello world',
-    }
 
 
 def test_key_value_output_formatter_description():
@@ -169,8 +107,8 @@ def test_key_value_output_formatter_format():
     assert f.format(OutputValue.from_dict({
         'test output parameter name': 'test output parameter value',
         'test output parameter name 2': 'test output parameter value 2'
-    })) == f"""test output parameter name: 'test output parameter value'
-test output parameter name 2: 'test output parameter value 2'"""
+    })) == f'''test output parameter name: """test output parameter value"""
+test output parameter name 2: """test output parameter value 2"""'''
 
 
 def test_key_value_output_formatter_format_invalid():
@@ -180,29 +118,54 @@ def test_key_value_output_formatter_format_invalid():
         f.format(10)  # type: ignore
 
 
-def test_key_value_output_formatter_parse():
+def test_key_value_output_formatter_parse(output_keys: List[str]):
     f = KeyValueOutputFormatter()
 
-    assert f.parse("""test output parameter name: 'test output parameter value'
+    assert f.parse(output_keys, """test output parameter name: 'test output parameter value'
 test output parameter name 2: 'test output parameter value 2'""") == {
         'test output parameter name': 'test output parameter value',
         'test output parameter name 2': 'test output parameter value 2'
     }
 
+    assert f.parse(['key1', 'key2'], """key1: 'value1'
+key2: 'value2'""") == {
+        'key1': 'value1',
+        'key2': 'value2'
+    }
 
-def test_key_value_output_formatter_parse_syntax_error():
+    assert f.parse(['key1'], """key1: 'value1'""") == {
+        'key1': 'value1'
+    }
+
+    assert f.parse(['key1'], """key1: ['value1', 'value2']""") == {
+        'key1': ['value1', 'value2']
+    }
+
+    assert f.parse(['key1', 'key2'], """
+                   key1: 'value1'
+        key2: [
+            'value2-1',
+            'value2-2'
+        ]
+    """) == {
+        'key1': 'value1',
+        'key2': ['value2-1', 'value2-2']
+    }
+
+
+def test_key_value_output_formatter_parse_syntax_error(output_keys: List[str]):
     f = KeyValueOutputFormatter()
 
     with pytest.raises(SyntaxError):
-        f.parse("""test output parameter name: 'test output parameter value'
+        f.parse(output_keys, """test output parameter name: 'test output parameter value'
 test output parameter name 2: 'test output parameter value 2""")
 
 
-def test_key_value_output_formatter_parse_invalid():
+def test_key_value_output_formatter_parse_invalid(output_keys: List[str]):
     f = KeyValueOutputFormatter()
 
-    with pytest.raises(ValueError):
-        f.parse("""test output parameter name: 'test output parameter value'
+    with pytest.raises(SyntaxError):
+        f.parse(output_keys, """test output parameter name: 'test output parameter value'
 test output parameter name 2: 'test output parameter value 2'
 test output parameter name 3""")
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from pprint import pformat
 from typing import Any, Dict
 
 from pydantic import BaseModel
@@ -42,34 +43,6 @@ class JsonInputFormatter(InputFormatter):
         return with_code_block("json", input.json(ensure_ascii=False))
 
 
-class CodeInputFormatter(InputFormatter):
-    language: str
-    input_key: str
-
-    def __init__(self, language: str, input_key: str = "code"):
-        self.language = language
-        self.input_key = input_key
-
-    def format(self, input: InputValue) -> str:
-        if not isinstance(input, InputValue):
-            raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
-
-        return with_code_block(self.language, input[self.input_key])
-
-
-class TextInputFormatter(InputFormatter):
-    input_key: str
-
-    def __init__(self, input_key: str = "text"):
-        self.input_key = input_key
-
-    def format(self, input: InputValue) -> str:
-        if not isinstance(input, InputValue):
-            raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
-
-        return input[self.input_key]
-
-
 class KeyValueInputFormatter(InputFormatter):
     def format(self, input: InputValue) -> str:
         if not isinstance(input, InputValue):
@@ -78,8 +51,9 @@ class KeyValueInputFormatter(InputFormatter):
         s = ""
         for key, value in input.dict().items():
             if isinstance(value, str):
-                s += f"{key}: '{value}'\n"
+                s += f'{key}: """{value}"""\n'
             else:
-                s += f"{key}: {value}\n"
+                pretty_value = pformat(value, indent=2, sort_dicts=False, width=160)
+                s += f"{key}: {pretty_value}\n"
 
         return s.strip()
