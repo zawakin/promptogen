@@ -12,6 +12,10 @@ nav:
 - コンポーネント:
   - フォーマッター: library-components/formatter.md
   - パーサー: library-components/parser.md
+- 使用例:
+  - プロンプト自動生成:
+    - タスク分割: examples/task_splitter.md
+    - コード生成: examples/code_generator.md
 - コントリビューションガイド: contributing.md
 - 言語(Language):
   - en: /

@@ -30,9 +30,11 @@ class PromptCollection(Dict[str, Prompt]):
 
     def __str__(self):
         s = ""
-        s += "Available prompts:\n"
-        for name, prompt in self.items():
-            s += f"- {name}: {prompt.description}\n"
+        s += "<PromptCollection>\n"
+        s += f"Number of prompts: {len(self)}\n\n"
+        s += "Prompts:\n"
+        for _, prompt in self.items():
+            s += f"- {prompt.__str__()}\n"
 
         return s
 

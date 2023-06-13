@@ -44,6 +44,7 @@ pyyaml = "^6.0"
 openai = "^0.27.7"
 python-dotenv = "0.21.1"
 ipykernel = "^6.23.1"
+jupyter = "^1.0.0"
 
 [tool.black]
 line-length = 120

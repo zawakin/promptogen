@@ -159,7 +159,7 @@ summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
 
 
-### より詳細な使用例
+### クイックスタートガイド
 
 [クイックスタートガイド](quickstart.md)を参照してください。
 
@@ -174,7 +174,7 @@ summarizer = pg.Prompt.from_json_file("summarizer.json")
 
 ## コントリビューション
 
-バグの報告、新機能の提案、プルリクエスト等は大歓迎です！詳しくは[コントリビューション](CONTRIBUTING.md)をご覧ください。
+バグの報告、新機能の提案、プルリクエスト等は大歓迎です！詳しくは[コントリビューション](contributing.md)をご覧ください。
 
 ## ライセンス
 

@@ -77,9 +77,12 @@ def test_prompt_collection_str():
     c.add_prompt(ps[0])
     c.add_prompt(ps[1])
 
-    assert str(c) == f"""Available prompts:
-- {ps[0].name}: {ps[0].description}
-- {ps[1].name}: {ps[1].description}
+    assert str(c) == f"""<PromptCollection>
+Number of prompts: 2
+
+Prompts:
+- {ps[0].__str__()}
+- {ps[1].__str__()}
 """
 
 
@@ -89,7 +92,10 @@ def test_prompt_collection_repr():
     c.add_prompt(ps[0])
     c.add_prompt(ps[1])
 
-    assert repr(c) == f"""Available prompts:
-- {ps[0].name}: {ps[0].description}
-- {ps[1].name}: {ps[1].description}
+    assert repr(c) == f"""<PromptCollection>
+Number of prompts: 2
+
+Prompts:
+- {ps[0].__str__()}
+- {ps[1].__str__()}
 """

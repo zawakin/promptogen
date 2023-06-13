@@ -5,8 +5,8 @@ from typing import List
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptgen.prompts.python_code_generator import get_python_code_generator_prompt
 from promptgen.prompts.text_categorizer import get_text_categorizer_template
-from promptgen.prompts.text_summarizer import get_text_summarizer_template
 
 
 class ExampleCreatorInput(InputValue):
@@ -20,7 +20,7 @@ class ExampleCreatorOutput(OutputValue):
 
 def get_example_creator_template() -> Prompt:
     categorization_prompt = get_text_categorizer_template()
-    summarization_prompt = get_text_summarizer_template()
+    python_code_generator_prompt = get_python_code_generator_prompt()
 
     return Prompt(
         name="PromptExampleCreator",
@@ -84,13 +84,12 @@ def get_example_creator_template() -> Prompt:
             ),
             Example(
                 input=ExampleCreatorInput(
-                    prompt=summarization_prompt.with_examples([]),
-                    n=2,
+                    prompt=python_code_generator_prompt.with_examples([]),
+                    n=1,
                 ),
                 output=ExampleCreatorOutput(
                     examples=[
-                        summarization_prompt.examples[0],
-                        summarization_prompt.examples[1],
+                        python_code_generator_prompt.examples[0],
                     ],
                 ),
             ),

@@ -19,7 +19,7 @@ class PromptFormatterInterface(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def parse(self, output: str) -> OutputValue:
+    def parse(self, prompt: Prompt, output: str) -> OutputValue:
         pass  # pragma: no cover
 
 
@@ -97,8 +97,9 @@ Template:
         formatted_output = self.output_formatter.format(example.output)
         return f"Input:\n{formatted_input}\nOutput:\n{formatted_output}"
 
-    def parse(self, s: str) -> OutputValue:
-        return self.output_formatter.parse(s)
+    def parse(self, prompt: Prompt, s: str) -> OutputValue:
+        output_keys = prompt.get_output_keys()
+        return self.output_formatter.parse(output_keys, s)
 
 
 class JsonPromptFormatter(PromptFormatter):

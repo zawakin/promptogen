@@ -3,8 +3,8 @@ from __future__ import annotations
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptgen.prompts.python_code_generator import get_python_code_generator_prompt
 from promptgen.prompts.text_categorizer import get_text_categorizer_template
-from promptgen.prompts.text_summarizer import get_text_summarizer_template
 
 
 class PromptCreatorInput(InputValue):
@@ -18,7 +18,7 @@ class PromptCreatorOutput(OutputValue):
 
 def get_prompt_creator_template() -> Prompt:
     categorization_prompt = get_text_categorizer_template()
-    summarization_prompt = get_text_summarizer_template()
+    python_code_generator_prompt = get_python_code_generator_prompt()
 
     return Prompt(
         name="PromptCreator",
@@ -49,16 +49,16 @@ def get_prompt_creator_template() -> Prompt:
                     background="The given text may be a sentence, a paragraph, or a document.",
                 ),
                 output=PromptCreatorOutput(
-                    prompt=categorization_prompt.with_examples([]),
+                    prompt=categorization_prompt.with_examples([categorization_prompt.examples[0]]),
                 ),
             ),
             Example(
                 input=PromptCreatorInput(
-                    purpose="Summarize the given text.",
-                    background="The given text may be the part of the document.",
+                    purpose="Python code generator",
+                    background="style: input: (task: str), output: (reason: str, code: str)",
                 ),
                 output=PromptCreatorOutput(
-                    prompt=summarization_prompt.with_examples([]),
+                    prompt=python_code_generator_prompt.with_examples([python_code_generator_prompt.examples[0]]),
                 ),
             ),
         ],
