@@ -47,7 +47,7 @@ import openai
 import os
 
 from dotenv import load_dotenv
-load_dotenv('../experimental/.env')
+load_dotenv('../../.env')
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.organization = os.getenv("OPENAI_ORG_ID")
@@ -75,7 +75,7 @@ raw_resp = generate_llm_response(raw_req, 'gpt-3.5-turbo')
 print(raw_resp)
 
 # %%
-summarized_resp = formatter.parse(raw_resp)
+summarized_resp = formatter.parse(summarizer, raw_resp)
 print(f'summary:\n{summarized_resp["summary"]}')
 print('keywords:')
 for keyword in summarized_resp["keywords"]:
