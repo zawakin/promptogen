@@ -1,5 +1,7 @@
+from typing import List
 from pydantic import BaseModel
 import pytest
+from promptgen.dataclass import DataClass
 
 from promptgen.input import InputValue, JsonInputFormatter, KeyValueInputFormatter
 
@@ -14,6 +16,40 @@ def dataclass() -> BaseModel:
         test_input_parameter_name='test input parameter value',
         test_input_parameter_name_2='test input parameter value 2'
     )
+
+
+def test_input_value_custom():
+    class InnerInputValue(DataClass):
+        value: str
+
+    class CustomInputValue(InputValue):
+        outer_value: str
+        inner_value: InnerInputValue
+        inner_values: List[InnerInputValue]
+
+
+    d = {
+        'outer_value': 'outer value',
+        'inner_value': {
+            'value': 'inner value'
+        },
+        'inner_values': [
+            {
+                'value': 'inner value 1'
+            }
+        ]
+    }
+
+    assert CustomInputValue.from_dict(d) == CustomInputValue(
+        outer_value=d['outer_value'],
+        inner_value=InnerInputValue(value=d['inner_value']['value']),
+        inner_values=[
+            InnerInputValue(value=d['inner_values'][0]['value'])
+        ]
+    )
+    assert CustomInputValue.from_dict(d).dict() == d
+    assert CustomInputValue.from_dict(d)['inner_value'] == InnerInputValue(value='inner value')
+    assert CustomInputValue.from_dict(d)['inner_values'] == [InnerInputValue(value='inner value 1')]
 
 
 def test_input_value_from_dict():
