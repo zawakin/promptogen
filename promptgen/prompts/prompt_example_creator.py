@@ -11,11 +11,10 @@ from promptgen.prompts.text_categorizer import get_text_categorizer_template
 
 class ExampleCreatorInput(InputValue):
     prompt: Prompt
-    n: int
 
 
 class ExampleCreatorOutput(OutputValue):
-    examples: List[Example]
+    example: Example
 
 
 def get_example_creator_template() -> Prompt:
@@ -27,70 +26,47 @@ def get_example_creator_template() -> Prompt:
         description="Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space.",
         input_parameters=[
             ParameterInfo(name="prompt", description="prompt"),
-            ParameterInfo(name="n", description="number of examples to create"),
         ],
         output_parameters=[
             ParameterInfo(
-                name="examples",
-                description="detailed examples of the prompt. Please add examples with scattered inputs and outputs in semantic space. Specific examples are better than general examples.",
+                name="example",
+                description="detailed example of the prompt. Please add an example with scattered inputs and outputs in semantic space. Specific example is better than general examples.",
             ),
         ],
         template=Example(
             input=ExampleCreatorInput(
                 prompt=create_sample_prompt("prompt"),
-                n=2,
             ),
             output=ExampleCreatorOutput(
-                examples=[
-                    Example(
-                        input=InputValue.from_dict(
-                            {
-                                "input_1": "example input 1",
-                            }
-                        ),
-                        output=OutputValue.from_dict(
-                            {
-                                "output_1": "example output 1",
-                            }
-                        ),
+                example=Example(
+                    input=InputValue.from_dict(
+                        {
+                            "input_1": "example input 1",
+                        }
                     ),
-                    Example(
-                        input=InputValue.from_dict(
-                            {
-                                "input_1": "example input 2",
-                            }
-                        ),
-                        output=OutputValue.from_dict(
-                            {
-                                "output_1": "example output 2",
-                            }
-                        ),
+                    output=OutputValue.from_dict(
+                        {
+                            "output_1": "example output 1",
+                        }
                     ),
-                ],
+                ),
             ),
         ),
         examples=[
             Example(
                 input=ExampleCreatorInput(
                     prompt=categorization_prompt.with_examples([]),
-                    n=2,
                 ),
                 output=ExampleCreatorOutput(
-                    examples=[
-                        categorization_prompt.examples[0],
-                        categorization_prompt.examples[1],
-                    ],
+                    example=categorization_prompt.examples[0],
                 ),
             ),
             Example(
                 input=ExampleCreatorInput(
                     prompt=python_code_generator_prompt.with_examples([]),
-                    n=1,
                 ),
                 output=ExampleCreatorOutput(
-                    examples=[
-                        python_code_generator_prompt.examples[0],
-                    ],
+                    example=python_code_generator_prompt.examples[0],
                 ),
             ),
         ],
