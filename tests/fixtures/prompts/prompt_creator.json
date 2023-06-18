@@ -124,40 +124,70 @@
                             "found": true
                         }
                     },
-                    "examples": []
+                    "examples": [
+                        {
+                            "input": {
+                                "text": "A recent study shows that regular exercise can help improve cognitive function in older adults.",
+                                "categories": [
+                                    "Health",
+                                    "Science",
+                                    "Technology"
+                                ]
+                            },
+                            "output": {
+                                "category": "Health",
+                                "found": true
+                            }
+                        }
+                    ]
                 }
             }
         },
         {
             "input": {
-                "purpose": "Summarize the given text.",
-                "background": "The given text may be the part of the document."
+                "purpose": "Python code generator",
+                "background": "style: input: (task: str), output: (reason: str, code: str)"
             },
             "output": {
                 "prompt": {
-                    "name": "TextSummarizer",
-                    "description": "Summarize the text into a shorter text.",
+                    "name": "PythonCodeGenerator",
+                    "description": "Generate Python code based on the given task",
                     "input_parameters": [
                         {
-                            "name": "text",
-                            "description": "text to summarize"
+                            "name": "task",
+                            "description": "The task for which Python code needs to be generated"
                         }
                     ],
                     "output_parameters": [
                         {
-                            "name": "summary",
-                            "description": "summary of the text"
+                            "name": "reason",
+                            "description": "Reason for the generated Python code"
+                        },
+                        {
+                            "name": "code",
+                            "description": "Python code generated to complete the task"
                         }
                     ],
                     "template": {
                         "input": {
-                            "text": "text"
+                            "task": "task"
                         },
                         "output": {
-                            "summary": "summary"
+                            "reason": "reason",
+                            "code": "code"
                         }
                     },
-                    "examples": []
+                    "examples": [
+                        {
+                            "input": {
+                                "task": "Create a function that calculates the factorial of a number"
+                            },
+                            "output": {
+                                "reason": "Factorial function is a common use case in Python programming",
+                                "code": "def factorial(n):\n    if n == 0:\n        return 1\n    else:\n        return n * factorial(n-1)"
+                            }
+                        }
+                    ]
                 }
             }
         }
