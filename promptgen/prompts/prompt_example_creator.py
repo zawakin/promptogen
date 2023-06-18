@@ -39,16 +39,16 @@ def get_example_creator_template() -> Prompt:
             ),
             output=ExampleCreatorOutput(
                 example=Example(
-                        input=InputValue.from_dict(
-                            {
-                                "input_1": "example input 1",
-                            }
-                        ),
-                        output=OutputValue.from_dict(
-                            {
-                                "output_1": "example output 1",
-                            }
-                        ),
+                    input=InputValue.from_dict(
+                        {
+                            "input_1": "example input 1",
+                        }
+                    ),
+                    output=OutputValue.from_dict(
+                        {
+                            "output_1": "example output 1",
+                        }
+                    ),
                 ),
             ),
         ),

@@ -1,64 +1,19 @@
-# %% [markdown]
-# # プロンプトを自動生成してみよう
-#
-# `PromptCreator` は、目的と背景を入力として、プロンプトを自動生成するプロンプトです。
-#
-# PromptGenでは、プロンプトのモデルそのものも入出力パラメータとして扱うことができます。これにより、プロンプトを自動生成するプロンプトを作成することができます。
-
 # %%
-from typing import List
-from pydantic import BaseModel
 import promptgen as pg
-from promptgen.dataclass import DataClass
+from promptgen import Prompt, InputValue, OutputValue, Example, ParameterInfo
 
 # %%
 collection = pg.PromptCollection(load_predefined=True)
-print(collection)
-
-# %% [markdown]
-# ## プロンプトを生成するプロンプト
-#
-# `PromptCreator` は、プロンプトを生成するプロンプトです。
-#
-# 入力パラメータは、以下の通りです。
-#
-# ```python
-# class PromptCreatorInput(InputValue):
-#     purpose: str
-#     background: str
-# ```
-#
-# 出力パラメータは、以下の通りです。
-#
-# ```python
-# class PromptCreatorOutput(OutputValue):
-#     prompt: Prompt
-# ```
-
-# %%
-prompt_creator = collection['PromptCreator']
-prompt_creator
-
-# %% [markdown]
-# プロンプトを文字列にフォーマットすると、以下のようになります。
-
-# %%
 formatter = pg.KeyValuePromptFormatter()
 
-print(formatter.format_prompt_without_input(prompt=prompt_creator))
-
-#%%
-
-from promptgen import Prompt, InputValue, OutputValue, Example, ParameterInfo
-
-p = Prompt(
+function_calling_prompt = Prompt(
     name='function calling creator',
     description='Create a function calling code from given task',
     input_parameters=[
         ParameterInfo(name='task', description='The task for which function calling code needs to be generated'),
     ],
     output_parameters=[
-        ParameterInfo(name='function', description='Function calling code generated to complete the tas'),
+        ParameterInfo(name='function', description='Function calling code generated to complete the task'),
     ],
     template=Example(
         input=InputValue.from_dict({
@@ -114,17 +69,12 @@ p = Prompt(
     ],
 )
 
-# %% [markdown]
-# ## 大規模言語モデルの準備
-#
-# 今回は、 `gpt-3.5-turbo` を使います。
-
-# %%
+#%%
 import openai
 import os
 
 from dotenv import load_dotenv
-load_dotenv('../../.env')
+load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.organization = os.getenv("OPENAI_ORG_ID")
@@ -141,19 +91,6 @@ def generate_llm_response(prompt: str, model: str) -> str:
 # %%
 
 
-class PromptCreatorInput(pg.InputValue):
-    purpose: str
-    background: str
-
-
-class PromptCreatorOutput(pg.OutputValue):
-    prompt: pg.Prompt
-
-#%%
-
-
-#%%
-
 class ExampleCreatorInput(pg.InputValue):
     prompt: pg.Prompt
 
@@ -166,34 +103,9 @@ example_creator = collection['PromptExampleCreator']
 
 # %%
 raw_req = formatter.format_prompt(example_creator, input_value=ExampleCreatorInput(
-    prompt=p,
+    prompt=function_calling_prompt,
 ))
 raw_resp = generate_llm_response(raw_req, 'gpt-3.5-turbo')
 resp = ExampleCreatorOutput.from_dataclass(formatter.parse(example_creator, raw_resp))
 
-#%%
-
-code_generator = pg.Prompt.from_dict(resp.prompt)
-code_generator
-
-# %% [markdown]
-# 作成したプロンプトを使って、タスクを分解してみましょう。
-
-# %%
-raw_req = formatter.format_prompt(code_generator, pg.InputValue.from_dict({
-    'task': 'read stdin as stream and write stdout the upper-case string'
-}))
-raw_resp = generate_llm_response(raw_req, 'gpt-3.5-turbo')
-
-print(raw_resp)
-
-# %%
-output_value = formatter.parse(code_generator, raw_resp)
-output_value
-
-# %%
-print(output_value['code'])
-
-
-
-# %%
+print(resp)
