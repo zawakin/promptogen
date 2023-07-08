@@ -5,7 +5,7 @@ import re
 from abc import ABC, abstractmethod
 from ast import literal_eval
 from pprint import pformat
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 from pydantic import BaseModel
 
@@ -41,7 +41,7 @@ class OutputFormatter(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def parse(self, output_keys: List[str], output: str) -> OutputValue:
+    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> OutputValue:
         pass  # pragma: no cover
 
 
@@ -83,7 +83,7 @@ Be careful with the order of brackets in the json."""
 
         return with_code_block("json", output.json(ensure_ascii=False, indent=self.indent))
 
-    def parse(self, output_keys: List[str], output: str) -> OutputValue:
+    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> OutputValue:
         output = output.strip()
 
         if self.strict:
@@ -94,7 +94,7 @@ Be careful with the order of brackets in the json."""
 
         resp = json.loads(remove_code_block("json", output))
 
-        for key in output_keys:
+        for key, _ in output_keys:
             if key not in resp:
                 raise ValueError(f"Expected output to have key {key}.")
 
@@ -103,6 +103,7 @@ Be careful with the order of brackets in the json."""
 
 class KeyValueOutputFormatter(OutputFormatter):
     def description(self) -> str:
+        # return ""
         return "You should follow 'Template' format. The format is 'key: value'."
 
     def format(self, output: OutputValue) -> str:
@@ -119,11 +120,11 @@ class KeyValueOutputFormatter(OutputFormatter):
 
         return s.strip()
 
-    def parse(self, output_keys: List[str], output: str) -> OutputValue:
+    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> OutputValue:
         if not isinstance(output, str):
             raise TypeError(f"Expected formatted_str to be a str, got {type(output).__name__}.")
 
-        for key in output_keys:
+        for key, _ in output_keys:
             if key not in output:
                 raise ValueError(f"Expected output to have key {key}.")
 
@@ -132,16 +133,54 @@ class KeyValueOutputFormatter(OutputFormatter):
 
         result = {}
 
-        for idx, key in enumerate(output_keys):
-            next_key = output_keys[idx + 1] if idx + 1 < len(output_keys) else None
+        for idx, (key, key_type) in enumerate(output_keys):
+            next_key = output_keys[idx + 1][0] if idx + 1 < len(output_keys) else None
             if next_key:
                 pattern = re.compile(f"{key}:.*?(?={next_key}:)", re.MULTILINE | re.DOTALL)
             else:
                 pattern = re.compile(f"{key}:.*", re.MULTILINE | re.DOTALL)
             value = re.search(pattern, output)
-            if value is not None:
-                m: re.Match[str] = value
-                s = m.group().replace(f"{key}:", "").strip()
-                result[key] = literal_eval(s)
+            if value is None:
+                raise ValueError(f"Expected output to have key {key}.")
+
+            m: re.Match[str] = value
+            s = m.group().replace(f"{key}:", "").strip()
+
+            if key_type == str:
+                extracted_str, found = extract_string(s)
+                if found:
+                    result[key] = extracted_str
+                    continue
+                # The value will be a raw string without quotes.
+                result[key] = s
+
+            result[key] = literal_eval(s)
 
         return OutputValue.from_dict(result)
+
+
+def extract_string(s: str) -> Tuple[str, bool]:
+    # patternsとそれに対応するフラグをリストで定義します
+    patterns_flags = [(r'"""(.*?)"""', re.DOTALL), (r'"(.*?)"', 0), (r"'(.*?)'", 0)]
+
+    for pattern, flags in patterns_flags:
+        match = re.search(pattern, s, flags)
+        if match:
+            return match.group(1), True
+    return "", False
+
+
+class TextOutputFormatter(OutputFormatter):
+    output_key: str
+
+    def __init__(self, output_key: str):
+        self.output_key = output_key
+
+    def description(self) -> str:
+        return ""
+
+    def format(self, output: OutputValue) -> str:
+        return output[self.output_key]
+
+    def parse(self, _: List[Tuple[str, type]], output: str) -> OutputValue:
+        return OutputValue.from_dict({self.output_key: output})

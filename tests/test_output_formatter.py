@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from pydantic import BaseModel
 import pytest
 
@@ -15,10 +15,10 @@ def dataclass():
 
 
 @pytest.fixture
-def output_keys() -> List[str]:
+def output_keys() -> List[Tuple[str, type]]:
     return [
-        'test output parameter name',
-        'test output parameter name 2'
+        ('test output parameter name', str),
+        ('test output parameter name 2', str)
     ]
 
 
@@ -69,8 +69,8 @@ def test_json_output_formater_format_invalid():
 def test_json_output_formatter_parse():
     f = JsonOutputFormatter()
     output_keys = [
-        'test output parameter name',
-        'test output parameter name 2'
+        ('test output parameter name', str),
+        ('test output parameter name 2', str)
     ]
 
     assert f.parse(output_keys, """```json
@@ -80,14 +80,14 @@ def test_json_output_formatter_parse():
     }
 
 
-def test_json_output_formatter_parse_no_code_block(output_keys: List[str]):
+def test_json_output_formatter_parse_no_code_block(output_keys: List[Tuple[str, type]]):
     f = JsonOutputFormatter()
 
     with pytest.raises(ValueError):
         f.parse(output_keys, """{"test output parameter name": "test output parameter value", "test output parameter name 2": "test output parameter value 2"}""")
 
 
-def test_json_output_formatter_parse_invalid_json(output_keys: List[str]):
+def test_json_output_formatter_parse_invalid_json(output_keys: List[Tuple[str, type]]):
     f = JsonOutputFormatter()
 
     with pytest.raises(ValueError):
@@ -118,30 +118,40 @@ def test_key_value_output_formatter_format_invalid():
         f.format(10)  # type: ignore
 
 
-def test_key_value_output_formatter_parse(output_keys: List[str]):
+def test_key_value_output_formatter_parse(output_keys: List[Tuple[str, type]]):
     f = KeyValueOutputFormatter()
 
     assert f.parse(output_keys, """test output parameter name: 'test output parameter value'
-test output parameter name 2: 'test output parameter value 2'""") == {
+test output parameter name 2: 'test output parameter value 2'""") == OutputValue.from_dict({
         'test output parameter name': 'test output parameter value',
         'test output parameter name 2': 'test output parameter value 2'
-    }
+    })
 
-    assert f.parse(['key1', 'key2'], """key1: 'value1'
+    assert f.parse([('key1', str), ('key2', str)], """key1: 'value1'
 key2: 'value2'""") == {
         'key1': 'value1',
         'key2': 'value2'
     }
 
-    assert f.parse(['key1'], """key1: 'value1'""") == {
+    assert f.parse([('key1', str)], """key1: 'value1'""") == {
         'key1': 'value1'
     }
 
-    assert f.parse(['key1'], """key1: ['value1', 'value2']""") == {
+    assert f.parse([('key1', list)], """key1: ['value1', 'value2']""") == {
         'key1': ['value1', 'value2']
     }
 
-    assert f.parse(['key1', 'key2'], """
+    # triple quote
+    assert f.parse([('key1', str)], """key1: \"\"\"value1\"\"\" (this value1 is string)""") == {
+        'key1': 'value1'
+    }
+
+    # double quote
+    assert f.parse([('key1', str)], """key1: \"value1\" (this value1 is string)""") == {
+        'key1': 'value1'
+    }
+
+    assert f.parse([('key1', str), ('key2', list)], """
                    key1: 'value1'
         key2: [
             'value2-1',
@@ -153,7 +163,7 @@ key2: 'value2'""") == {
     }
 
 
-def test_key_value_output_formatter_parse_syntax_error(output_keys: List[str]):
+def test_key_value_output_formatter_parse_syntax_error(output_keys: List[Tuple[str, type]]):
     f = KeyValueOutputFormatter()
 
     with pytest.raises(SyntaxError):
@@ -161,13 +171,12 @@ def test_key_value_output_formatter_parse_syntax_error(output_keys: List[str]):
 test output parameter name 2: 'test output parameter value 2""")
 
 
-def test_key_value_output_formatter_parse_invalid(output_keys: List[str]):
+def test_key_value_output_formatter_parse_invalid(output_keys: List[Tuple[str, type]]):
     f = KeyValueOutputFormatter()
 
     with pytest.raises(SyntaxError):
         f.parse(output_keys, """test output parameter name: 'test output parameter value'
-test output parameter name 2: 'test output parameter value 2'
-test output parameter name 3""")
+test output parameter name 2:""")
 
 
 def test_key_value_output_formatter_parse_invalid_input():

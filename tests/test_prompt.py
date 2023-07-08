@@ -198,7 +198,7 @@ def test_prompt_to_json_file(prompt_dict: dict):
 def test_prompt_with_examples(prompt_dict: dict, other_example_dict: dict):
     prompt = Prompt.from_dict(prompt_dict)
 
-    got = prompt.with_examples([other_example_dict])
+    got = prompt.with_examples([Example.from_dict(other_example_dict)])
 
     assert type(got.examples) == list
     assert type(got.examples[0]) == Example
