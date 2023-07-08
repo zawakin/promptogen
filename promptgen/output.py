@@ -94,7 +94,7 @@ Be careful with the order of brackets in the json."""
 
         resp = json.loads(remove_code_block("json", output))
 
-        for (key, _) in output_keys:
+        for key, _ in output_keys:
             if key not in resp:
                 raise ValueError(f"Expected output to have key {key}.")
 

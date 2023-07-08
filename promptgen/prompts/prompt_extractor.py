@@ -18,80 +18,40 @@ def get_prompt_extractor_template() -> Prompt:
         {
             "name": "PromptExtractor",
             "description": "You are an advanced AI assistant and your goal is to Extract a given prompt from raw text.",
-            "input_parameters": [
-                {
-                    "name": "raw_text",
-                    "description": "raw text in which the prompt is hidden"
-                }
-            ],
+            "input_parameters": [{"name": "raw_text", "description": "raw text in which the prompt is hidden"}],
             "output_parameters": [
-                {
-                    "name": "extracted_prompt",
-                    "description": "Extracted prompt from the given raw text"
-                }
+                {"name": "extracted_prompt", "description": "Extracted prompt from the given raw text"}
             ],
             "template": {
-                "input": {
-                    "raw_text": "raw text in which the prompt is hidden"
-                },
+                "input": {"raw_text": "raw text in which the prompt is hidden"},
                 "output": {
                     "extracted_prompt": {
                         "name": "sample-Extracted prompt",
                         "description": "A sample prompt.",
                         "input_parameters": [
-                            {
-                                "name": "input1",
-                                "description": "The first input parameter."
-                            },
-                            {
-                                "name": "input2",
-                                "description": "The second input parameter."
-                            }
+                            {"name": "input1", "description": "The first input parameter."},
+                            {"name": "input2", "description": "The second input parameter."},
                         ],
                         "output_parameters": [
-                            {
-                                "name": "output1",
-                                "description": "The first output parameter."
-                            },
-                            {
-                                "name": "output2",
-                                "description": "The second output parameter."
-                            }
+                            {"name": "output1", "description": "The first output parameter."},
+                            {"name": "output2", "description": "The second output parameter."},
                         ],
                         "template": {
-                            "input": {
-                                "input1": "Hello, world!",
-                                "input2": "Hello, world!"
-                            },
-                            "output": {
-                                "output1": "Hello, world!",
-                                "output2": "Hello, world!"
-                            }
+                            "input": {"input1": "Hello, world!", "input2": "Hello, world!"},
+                            "output": {"output1": "Hello, world!", "output2": "Hello, world!"},
                         },
                         "examples": [
                             {
-                                "input": {
-                                    "input1": "Hello, world!",
-                                    "input2": "Hello, world!"
-                                },
-                                "output": {
-                                    "output1": "Hello, world!",
-                                    "output2": "Hello, world!"
-                                }
+                                "input": {"input1": "Hello, world!", "input2": "Hello, world!"},
+                                "output": {"output1": "Hello, world!", "output2": "Hello, world!"},
                             },
                             {
-                                "input": {
-                                    "input1": "Hello, world!",
-                                    "input2": "Hello, world!"
-                                },
-                                "output": {
-                                    "output1": "Hello, world!",
-                                    "output2": "Hello, world!"
-                                }
-                            }
-                        ]
+                                "input": {"input1": "Hello, world!", "input2": "Hello, world!"},
+                                "output": {"output1": "Hello, world!", "output2": "Hello, world!"},
+                            },
+                        ],
                     }
-                }
+                },
             },
             "examples": [
                 {
@@ -105,93 +65,38 @@ def get_prompt_extractor_template() -> Prompt:
                             "input_parameters": [
                                 {
                                     "name": "number",
-                                    "description": "The number for which the factorial needs to be calculated"
+                                    "description": "The number for which the factorial needs to be calculated",
                                 }
                             ],
                             "output_parameters": [
-                                {
-                                    "name": "factorial",
-                                    "description": "The factorial of the given number"
-                                }
+                                {"name": "factorial", "description": "The factorial of the given number"}
                             ],
-                            "template": {
-                                "input": {
-                                    "number": 1
-                                },
-                                "output": {
-                                    "factorial": 1
-                                }
-                            },
+                            "template": {"input": {"number": 1}, "output": {"factorial": 1}},
                             "examples": [
-                                {
-                                    "input": {
-                                        "number": 5
-                                    },
-                                    "output": {
-                                        "factorial": 120
-                                    }
-                                },
-                                {
-                                    "input": {
-                                        "number": 3
-                                    },
-                                    "output": {
-                                        "factorial": 6
-                                    }
-                                }
-                            ]
+                                {"input": {"number": 5}, "output": {"factorial": 120}},
+                                {"input": {"number": 3}, "output": {"factorial": 6}},
+                            ],
                         }
-                    }
+                    },
                 },
                 {
-                    "input": {
-                        "raw_text": "I need to find out how many days are left until Christmas this year."
-                    },
+                    "input": {"raw_text": "I need to find out how many days are left until Christmas this year."},
                     "output": {
                         "extracted_prompt": {
                             "name": "DaysUntilChristmas",
                             "description": "Calculate the number of days left until Christmas in the current year.",
-                            "input_parameters": [
-                                {
-                                    "name": "current_date",
-                                    "description": "The current date"
-                                }
-                            ],
+                            "input_parameters": [{"name": "current_date", "description": "The current date"}],
                             "output_parameters": [
-                                {
-                                    "name": "days_left",
-                                    "description": "The number of days left until Christmas"
-                                }
+                                {"name": "days_left", "description": "The number of days left until Christmas"}
                             ],
-                            "template": {
-                                "input": {
-                                    "current_date": "2000-12-24"
-                                },
-                                "output": {
-                                    "days_left": 1
-                                }
-                            },
+                            "template": {"input": {"current_date": "2000-12-24"}, "output": {"days_left": 1}},
                             "examples": [
-                                {
-                                    "input": {
-                                        "current_date": "2021-10-01"
-                                    },
-                                    "output": {
-                                        "days_left": 85
-                                    }
-                                },
-                                {
-                                    "input": {
-                                        "current_date": "2021-12-01"
-                                    },
-                                    "output": {
-                                        "days_left": 24
-                                    }
-                                }
-                            ]
+                                {"input": {"current_date": "2021-10-01"}, "output": {"days_left": 85}},
+                                {"input": {"current_date": "2021-12-01"}, "output": {"days_left": 24}},
+                            ],
                         }
-                    }
-                }
-            ]
+                    },
+                },
+            ],
         }
     )
