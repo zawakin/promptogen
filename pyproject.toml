@@ -45,6 +45,7 @@ openai = "^0.27.7"
 python-dotenv = "0.21.1"
 ipykernel = "^6.23.1"
 jupyter = "^1.0.0"
+datasets = "^2.13.0"
 
 [tool.black]
 line-length = 120
@@ -52,3 +53,6 @@ line-length = 120
 [tool.isort]
 profile = "black"
 line_length = 120
+
+[tool.mypy]
+ignore_missing_imports = true

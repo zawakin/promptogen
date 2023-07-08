@@ -3,7 +3,7 @@ from __future__ import annotations
 __version__ = "0.1.0"
 
 from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
-from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue
+from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue, TextOutputFormatter
 from .prompt import (
     Example,
     ParameterInfo,
@@ -31,6 +31,8 @@ __all__ = [
     "KeyValueInputFormatter",
     "KeyValueOutputFormatter",
     "KeyValuePromptFormatter",
+    # text
+    "TextOutputFormatter",
     # prompt
     "Prompt",
     "ParameterInfo",

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 from pydantic import root_validator
 
@@ -30,6 +30,24 @@ class Example(DataClass):
 
     input: InputValue
     output: OutputValue
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> "Example":
+        """Create an example from a dictionary.
+
+        Args:
+            d: A dictionary containing the example's information.
+
+        Returns:
+            An example.
+
+        Raises:
+            TypeError: If the dictionary is not a dictionary.
+            ValueError: If the dictionary does not contain the required keys.
+        """
+        if not isinstance(d, dict):
+            raise TypeError(f"Expected dict, got {type(d)}")
+        return cls.parse_obj(d)
 
 
 class Prompt(DataClass):
@@ -151,7 +169,7 @@ class Prompt(DataClass):
 
         return values
 
-    def with_examples(self, examples: List[Example | dict]) -> "Prompt":
+    def with_examples(self, examples: List[Example]) -> "Prompt":
         """Set the examples of the prompt.
 
         Args:
@@ -160,8 +178,7 @@ class Prompt(DataClass):
         Returns:
             A copy of the prompt with the examples set.
         """
-        exs = [Example(**ex) if isinstance(ex, dict) else ex for ex in examples]
-        return self.copy(deep=True, update={"examples": exs})
+        return self.copy(deep=True, update={"examples": examples})
 
     def rename_input_parameter(self, old_name: str, new_name: str) -> "Prompt":
         """Rename an input parameter.
@@ -250,13 +267,14 @@ class Prompt(DataClass):
             },
         )
 
-    def get_output_keys(self) -> List[str]:
+    def get_output_keys(self) -> List[Tuple[str, type]]:
         """Get the output keys of the prompt.
 
         Returns:
             The output keys of the prompt.
         """
-        return [param.name for param in self.output_parameters]
+        # return [param.name for param in self.output_parameters]
+        return [(param.name, type(self.template.output[param.name])) for param in self.output_parameters]
 
     def __repr__(self) -> str:
         input_parameters = "\n".join(

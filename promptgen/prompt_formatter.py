@@ -77,8 +77,7 @@ Output:"""
             else ""
         )
 
-        return f"""You are an AI named "{prompt.name}".
-{prompt.description}
+        return f"""{prompt.description}
 {self.output_formatter.description()}
 
 Input Parameters:
