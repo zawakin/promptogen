@@ -7,8 +7,6 @@ from ast import literal_eval
 from pprint import pformat
 from typing import Any, Dict, List, Tuple, TypeAlias
 
-from pydantic import BaseModel
-
 from .format_utils import remove_code_block, with_code_block
 
 OutputValue: TypeAlias = Dict[str, Any]
@@ -134,24 +132,32 @@ class KeyValueOutputFormatter(OutputFormatter):
                 if found:
                     result[key] = extracted_str
                 else:
-                    # The value will be a raw string without quotes.
-                    result[key] = s
-                continue
-
-            result[key] = literal_eval(s)
+                    raise SyntaxError(f"invalid syntax for key {key}: {s}")
+            else:
+                result[key] = literal_eval(s)
 
         return result
 
 
 def extract_string(s: str) -> Tuple[str, bool]:
-    # patternsとそれに対応するフラグをリストで定義します
-    patterns_flags = [(r'"""(.*?)"""', re.DOTALL), (r'"(.*?)"', 0), (r"'(.*?)'", 0)]
+    quotes_flags = [
+        ("'''", re.DOTALL),
+        ('"""', re.DOTALL),
+        ("'", 0),
+        ('"', 0),
+    ]
 
-    for pattern, flags in patterns_flags:
-        match = re.search(pattern, s, flags)
+    for quote, flag in quotes_flags:
+        if not s.startswith(quote):
+            continue
+        match = re.search(f"{quote}(.*?){quote}", s, flag)
         if match:
             return match.group(1), True
-    return "", False
+        else:
+            return "", False
+
+    # If no quotes are found, return the original string.
+    return s, False
 
 
 class TextOutputFormatter(OutputFormatter):

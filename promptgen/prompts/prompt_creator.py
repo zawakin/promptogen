@@ -1,18 +1,17 @@
 from __future__ import annotations
 
-from promptgen.input import InputValue
-from promptgen.output import OutputValue
+from promptgen.dataclass import DataClass
 from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
 from promptgen.prompts.python_code_generator import get_python_code_generator_prompt
 from promptgen.prompts.text_categorizer import get_text_categorizer_template
 
 
-class PromptCreatorInput(InputValue):
+class PromptCreatorInput(DataClass):
     purpose: str
     background: str
 
 
-class PromptCreatorOutput(OutputValue):
+class PromptCreatorOutput(DataClass):
     prompt: Prompt
 
 
@@ -37,29 +36,29 @@ def get_prompt_creator_template() -> Prompt:
             input=PromptCreatorInput(
                 purpose="purpose of the prompt",
                 background="background of the prompt",
-            ),
+            ).dict(),
             output=PromptCreatorOutput(
                 prompt=create_sample_prompt("new prompt"),
-            ),
+            ).dict(),
         ),
         examples=[
             Example(
                 input=PromptCreatorInput(
                     purpose="Categorize the given text into one of the given categories.",
                     background="The given text may be a sentence, a paragraph, or a document.",
-                ),
+                ).dict(),
                 output=PromptCreatorOutput(
                     prompt=categorization_prompt.with_examples([categorization_prompt.examples[0]]),
-                ),
+                ).dict(),
             ),
             Example(
                 input=PromptCreatorInput(
                     purpose="Python code generator",
                     background="style: input: (task: str), output: (reason: str, code: str)",
-                ),
+                ).dict(),
                 output=PromptCreatorOutput(
                     prompt=python_code_generator_prompt.with_examples([python_code_generator_prompt.examples[0]]),
-                ),
+                ).dict(),
             ),
         ],
     )

@@ -5,8 +5,6 @@ from abc import ABC, abstractmethod
 from pprint import pformat
 from typing import Any, Dict, TypeAlias
 
-from pydantic import BaseModel
-
 from .format_utils import with_code_block
 
 InputValue: TypeAlias = Dict[str, Any]
