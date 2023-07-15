@@ -5,30 +5,13 @@ import re
 from abc import ABC, abstractmethod
 from ast import literal_eval
 from pprint import pformat
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, TypeAlias
 
 from pydantic import BaseModel
 
-from promptgen.dataclass import DictLike
-
 from .format_utils import remove_code_block, with_code_block
 
-
-class OutputValue(DictLike):
-    def __init__(self, **kwargs: Any):
-        super().__init__(**kwargs)
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "OutputValue":
-        if not isinstance(data, dict):
-            raise TypeError("OutputValue.from_dict() only accepts dict")
-        return cls.parse_obj(data)
-
-    @classmethod
-    def from_dataclass(cls, data: BaseModel) -> "OutputValue":
-        if not isinstance(data, BaseModel):
-            raise TypeError("OutputValue.from_BaseModel() only accepts BaseModel")
-        return cls.parse_obj(data)
+OutputValue: TypeAlias = Dict[str, Any]
 
 
 class OutputFormatter(ABC):
@@ -78,10 +61,10 @@ Be careful with the order of brackets in the json."""
         Returns:
             str: The formatted output.
         """
-        if not isinstance(output, OutputValue):
+        if not isinstance(output, dict):
             raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
 
-        return with_code_block("json", output.json(ensure_ascii=False, indent=self.indent))
+        return with_code_block("json", json.dumps(output, ensure_ascii=False, indent=self.indent))
 
     def parse(self, output_keys: List[Tuple[str, type]], output: str) -> OutputValue:
         output = output.strip()
@@ -98,7 +81,7 @@ Be careful with the order of brackets in the json."""
             if key not in resp:
                 raise ValueError(f"Expected output to have key {key}.")
 
-        return OutputValue.from_dict(resp)
+        return resp
 
 
 class KeyValueOutputFormatter(OutputFormatter):
@@ -107,11 +90,11 @@ class KeyValueOutputFormatter(OutputFormatter):
         return "You should follow 'Template' format. The format is 'key: value'."
 
     def format(self, output: OutputValue) -> str:
-        if not isinstance(output, OutputValue):
+        if not isinstance(output, dict):
             raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
 
         s = ""
-        for key, value in output.dict().items():
+        for key, value in output.items():
             if isinstance(value, str):
                 s += f'{key}: """{value}"""\n'
             else:
@@ -150,13 +133,14 @@ class KeyValueOutputFormatter(OutputFormatter):
                 extracted_str, found = extract_string(s)
                 if found:
                     result[key] = extracted_str
-                    continue
-                # The value will be a raw string without quotes.
-                result[key] = s
+                else:
+                    # The value will be a raw string without quotes.
+                    result[key] = s
+                continue
 
             result[key] = literal_eval(s)
 
-        return OutputValue.from_dict(result)
+        return result
 
 
 def extract_string(s: str) -> Tuple[str, bool]:
@@ -183,4 +167,4 @@ class TextOutputFormatter(OutputFormatter):
         return output[self.output_key]
 
     def parse(self, _: List[Tuple[str, type]], output: str) -> OutputValue:
-        return OutputValue.from_dict({self.output_key: output})
+        return {self.output_key: output}

@@ -1,16 +1,17 @@
 from __future__ import annotations
 
+from promptgen.dataclass import DataClass
 from promptgen.input import InputValue
 from promptgen.output import OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
 
 
-class OptimizePromptInput(InputValue):
+class OptimizePromptInput(DataClass):
     original_prompt: Prompt
     background: str
 
 
-class OptimizePromptOutput(OutputValue):
+class OptimizePromptOutput(DataClass):
     optimized_prompt: Prompt
 
 
@@ -26,17 +27,13 @@ def get_prompt_optimizer_template() -> Prompt:
             ParameterInfo(name="optimized_prompt", description="optimized prompt"),
         ],
         template=Example(
-            input=InputValue.from_dataclass(
-                OptimizePromptInput(
-                    original_prompt=create_sample_prompt("original prompt"),
-                    background="background of the prompt",
-                )
-            ),
-            output=OutputValue.from_dataclass(
-                OptimizePromptOutput(
-                    optimized_prompt=create_sample_prompt("optimized prompt"),
-                )
-            ),
+            input=OptimizePromptInput(
+                original_prompt=create_sample_prompt("original prompt"),
+                background="background of the prompt",
+            ).dict(),
+            output=OptimizePromptOutput(
+                optimized_prompt=create_sample_prompt("optimized prompt"),
+            ).dict(),
         ),
         examples=[],
     )

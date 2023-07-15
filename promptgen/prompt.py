@@ -373,17 +373,17 @@ def create_sample_prompt(suffix: str) -> Prompt:
             ParameterInfo(name="output2", description="The second output parameter."),
         ],
         template=Example(
-            input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
-            output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
+            input={"input1": "Hello, world!", "input2": "Hello, world!"},
+            output={"output1": "Hello, world!", "output2": "Hello, world!"},
         ),
         examples=[
             Example(
-                input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
-                output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
+                input={"input1": "Hello, world!", "input2": "Hello, world!"},
+                output={"output1": "Hello, world!", "output2": "Hello, world!"},
             ),
             Example(
-                input=InputValue.from_dict({"input1": "Hello, world!", "input2": "Hello, world!"}),
-                output=OutputValue.from_dict({"output1": "Hello, world!", "output2": "Hello, world!"}),
+                input={"input1": "Hello, world!", "input2": "Hello, world!"},
+                output={"output1": "Hello, world!", "output2": "Hello, world!"},
             ),
         ],
     )

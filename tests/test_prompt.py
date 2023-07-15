@@ -110,35 +110,35 @@ def test_prompt_from_dict(prompt_dict: dict):
             ),
         ],
         template=Example(
-            input=InputValue.from_dict({
+            input={
                 'test input parameter name': 'test input parameter value',
                 'test input parameter name 2': 'test input parameter value 2'
-            }),
-            output=OutputValue.from_dict({
+            },
+            output={
                 'test output parameter name': 'test output parameter value',
                 'test output parameter name 2': 'test output parameter value 2'
-            }),
+            },
         ),
         examples=[
             Example(
-                input=InputValue.from_dict({
+                input={
                     'test input parameter name': 'example test input parameter value',
                     'test input parameter name 2': 'example test input parameter value 2'
-                }),
-                output=OutputValue.from_dict({
+                },
+                output={
                     'test output parameter name': 'example test output parameter value',
                     'test output parameter name 2': 'example test output parameter value 2'
-                }),
+                },
             ),
             Example(
-                input=InputValue.from_dict({
+                input={
                     'test input parameter name': 'example test input parameter value 3',
                     'test input parameter name 2': 'example test input parameter value 4'
-                }),
-                output=OutputValue.from_dict({
+                },
+                output={
                     'test output parameter name': 'example test output parameter value 3',
                     'test output parameter name 2': 'example test output parameter value 4'
-                }),
+                },
             ),
         ])
 
@@ -246,21 +246,21 @@ def test_prompt_validate_template_valid():
         ParameterInfo(name='test output parameter name', description='test output parameter description')
     ],
     'template': Example(
-        input=InputValue.from_dict({
+        input={
             'test input parameter name': 'example test input parameter value',
-        }),
-        output=OutputValue.from_dict({
+        },
+        output={
             'test output parameter name': 'example test output parameter value',
-        }),
+        },
     ),
     'examples': [
         Example(
-            input=InputValue.from_dict({
+            input={
                 'test input parameter name': 'example test input parameter value',
-            }),
-            output=OutputValue.from_dict({
+            },
+            output={
                 'test output parameter name': 'example test output parameter value',
-            }),
+            },
         ),
     ],
 })
@@ -320,10 +320,10 @@ def test_prompt_validate_template_invalid():
             ],
             'template': Example(
                 # missing input parameter
-                input=InputValue.from_dict({}),
-                output=OutputValue.from_dict({
+                input={},
+                output={
                     'test output parameter name': 'example test output parameter value',
-                }),
+                },
             ),
             'examples': [],
         })
@@ -340,11 +340,11 @@ def test_prompt_validate_template_invalid():
                 ParameterInfo(name='test output parameter name', description='test output parameter description')
             ],
             'template': Example(
-                input=InputValue.from_dict({
+                input={
                     'test input parameter name': 'example test input parameter value',
-                }),
+                },
                 # missing output parameter
-                output=OutputValue.from_dict({}),
+                output={},
             ),
             'examples': [],
         })
@@ -361,20 +361,20 @@ def test_prompt_validate_template_invalid():
                 ParameterInfo(name='test output parameter name', description='test output parameter description')
             ],
             'template': Example(
-                input=InputValue.from_dict({
+                input={
                     'test input parameter name': 'example test input parameter value',
-                }),
-                output=OutputValue.from_dict({
+                },
+                output={
                     'test output parameter name': 'example test output parameter value',
-                }),
+                },
             ),
             'examples': [
                 Example(
                     # missing input parameter
-                    input=InputValue.from_dict({}),
-                    output=OutputValue.from_dict({
+                    input={},
+                    output={
                         'test output parameter name': 'example test output parameter value',
-                    }),
+                    },
                 ),
             ],
         })
@@ -391,20 +391,20 @@ def test_prompt_validate_template_invalid():
                 ParameterInfo(name='test output parameter name', description='test output parameter description')
             ],
             'template': Example(
-                input=InputValue.from_dict({
+                input={
                     'test input parameter name': 'example test input parameter value',
-                }),
-                output=OutputValue.from_dict({
+                },
+                output={
                     'test output parameter name': 'example test output parameter value',
-                }),
+                },
             ),
             'examples': [
                 Example(
-                    input=InputValue.from_dict({
+                    input={
                         'test input parameter name': 'example test input parameter value',
-                    }),
+                    },
                     # missing output parameter
-                    output=OutputValue.from_dict({}),
+                    output={},
                 ),
             ],
         })
