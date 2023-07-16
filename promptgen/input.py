@@ -3,7 +3,9 @@ from __future__ import annotations
 import json
 from abc import ABC, abstractmethod
 from pprint import pformat
-from typing import Any, Dict, TypeAlias
+from typing import Any, Dict
+
+from typing_extensions import TypeAlias
 
 from .format_utils import with_code_block
 

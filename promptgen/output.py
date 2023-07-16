@@ -5,7 +5,9 @@ import re
 from abc import ABC, abstractmethod
 from ast import literal_eval
 from pprint import pformat
-from typing import Any, Dict, List, Tuple, TypeAlias
+from typing import Any, Dict, List, Tuple
+
+from typing_extensions import TypeAlias
 
 from .format_utils import remove_code_block, with_code_block
 
