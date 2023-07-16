@@ -25,10 +25,10 @@ def get_text_summarizer_template() -> Prompt:
         template=Example(
             input=SummarizationInput(
                 text="text",
-            ).dict(),
+            ).model_dump(),
             output=SummarizationOutput(
                 summary="summary",
-            ).dict(),
+            ).model_dump(),
         ),
         examples=[
             Example(
@@ -40,10 +40,10 @@ At the heart of Eldorina stood a grand library, where knowledge from across the 
 The residents of Eldorina lived in harmony, their talents complementing each other and contributing to the overall magic of the village. There was Floriana, the fairy botanist, who could make flowers bloom with a mere touch; Gilby, the gnome inventor, whose creations could perform the most extraordinary tasks; and many more.
 
 One day, a mysterious wanderer arrived in Eldorina. His name was Vesper, and he was a collector of stories. Vesper's arrival was heralded by a sudden eclipse, casting an eerie darkness over the village. The villagers were curious and cautious, unsure of what to make of the stranger in their midst."""
-                ).dict(),
+                ).model_dump(),
                 output=SummarizationOutput(
                     summary="In the magical village of Eldorina, inhabited by various magical creatures, a grand library managed by an ancient dragon named Biblios stands at the heart of the village. The residents live in harmony, each contributing their unique talents. One day, a mysterious wanderer named Vesper, a collector of stories, arrives in the village, causing an eclipse and leaving the villagers curious and cautious.",
-                ).dict(),
+                ).model_dump(),
             ),
             Example(
                 input=SummarizationInput(
@@ -56,10 +56,10 @@ In an unexpected turn of events, a previously undiscovered underground city has 
 The hidden city was uncovered last Sunday when park maintenance worker, Jim Pritchard, accidentally stumbled upon a concealed entrance while attempting to repair an irrigation issue. Pritchard was astounded to find an intricately designed tunnel that led to the entrance of the underground city.
 
 \"I couldn't believe my eyes," said Pritchard. "One moment I was digging to fix a pipe, and the next, I was looking at the entrance to a whole new world.\""""
-                ).dict(),
+                ).model_dump(),
                 output=SummarizationOutput(
                     summary="An undiscovered underground city has been found beneath Greenfield Park in Willowsville. The hidden city was uncovered accidentally by a park maintenance worker, Jim Pritchard, while repairing an irrigation issue. The discovery has attracted the attention of archaeologists and historians worldwide.",
-                ).dict(),
+                ).model_dump(),
             ),
         ],
     )

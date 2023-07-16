@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Tuple
 
-from pydantic import root_validator
+from pydantic import model_validator
 
 from .dataclass import DataClass
 from .input import InputValue
@@ -47,7 +47,7 @@ class Example(DataClass):
         """
         if not isinstance(d, dict):
             raise TypeError(f"Expected dict, got {type(d)}")
-        return cls.parse_obj(d)
+        return cls.model_validate(d)
 
 
 class Prompt(DataClass):
@@ -85,7 +85,7 @@ class Prompt(DataClass):
         """
         if not isinstance(d, dict):
             raise TypeError(f"Expected dict, got {type(d)}")
-        return cls.parse_obj(d)
+        return cls.model_validate(d)
 
     @classmethod
     def from_json_string(cls, json_string: str) -> "Prompt":
@@ -101,7 +101,7 @@ class Prompt(DataClass):
             TypeError: If the JSON string is not a string.
             ValueError: If the JSON string is not valid JSON.
         """
-        return cls.parse_raw(json_string)
+        return cls.model_validate_json(json_string)
 
     @classmethod
     def from_json_file(cls, filename: str) -> "Prompt":
@@ -118,32 +118,18 @@ class Prompt(DataClass):
             ValueError: If the file does not contain valid JSON.
         """
         with open(filename, "r") as f:
-            return cls.parse_raw(f.read())
+            return cls.model_validate_json(f.read())
 
     def to_json_file(self, filename: str, indent=4) -> None:
         with open(filename, "w") as f:
-            f.write(self.json(indent=indent, ensure_ascii=False))
+            f.write(self.model_dump_json(indent=indent))
 
-    @root_validator(allow_reuse=True)
-    def validate_template(cls, values: Dict[str, Any]):
-        t = values.get("template")
-        if t is None:
-            raise ValueError("Template must be provided")
-        template: Example = t
-        exs = values.get("examples")
-        if exs is None:
-            raise ValueError("Examples must be provided")
-        examples: List[Example] = exs
-
-        _input = values.get("input_parameters")
-        if _input is None:
-            raise ValueError("Input parameters must be provided")
-        input_parameters: List[ParameterInfo] = _input
-
-        _output = values.get("output_parameters")
-        if _output is None:
-            raise ValueError("Output parameters must be provided")
-        output_parameters: List[ParameterInfo] = _output
+    @model_validator(mode="after")
+    def validate_template(self):
+        input_parameters = self.input_parameters
+        output_parameters = self.output_parameters
+        template = self.template
+        examples = self.examples
 
         input_parameter_keys = {parameter.name for parameter in input_parameters}
         output_parameter_keys = {parameter.name for parameter in output_parameters}
@@ -167,7 +153,7 @@ class Prompt(DataClass):
                     f"Example output keys do not match output parameters: " f"{example.output} vs {output_parameters}"
                 )
 
-        return values
+        return self
 
     def with_examples(self, examples: List[Example]) -> "Prompt":
         """Set the examples of the prompt.
@@ -178,7 +164,7 @@ class Prompt(DataClass):
         Returns:
             A copy of the prompt with the examples set.
         """
-        return self.copy(deep=True, update={"examples": examples})
+        return self.model_copy(deep=True, update={"examples": examples})
 
     def rename_input_parameter(self, old_name: str, new_name: str) -> "Prompt":
         """Rename an input parameter.
@@ -190,7 +176,7 @@ class Prompt(DataClass):
         Returns:
             A copy of the prompt with the input parameter renamed.
         """
-        input_parameters = self.input_parameters.copy()
+        input_parameters = [param.model_copy(deep=True) for param in self.input_parameters]
         # find the parameter
         found = False
         index = -1
@@ -204,17 +190,17 @@ class Prompt(DataClass):
         input_parameters[index].name = new_name
 
         # rename in template
-        template = self.template.copy(deep=True)
+        template = self.template.model_copy(deep=True)
         template.input[new_name] = template.input.pop(old_name)
 
         # rename in examples
         examples = []
         for example in self.examples:
-            example = example.copy(deep=True)
+            example = example.model_copy(deep=True)
             example.input[new_name] = example.input.pop(old_name)
             examples.append(example)
 
-        return self.copy(
+        return self.model_copy(
             deep=True,
             update={
                 "input_parameters": input_parameters,
@@ -233,7 +219,7 @@ class Prompt(DataClass):
         Returns:
             A copy of the prompt with the output parameter renamed.
         """
-        output_parameters = self.output_parameters.copy()
+        output_parameters = [param.model_copy(deep=True) for param in self.output_parameters]
 
         # find the parameter
         found = False
@@ -248,17 +234,17 @@ class Prompt(DataClass):
         output_parameters[index].name = new_name
 
         # rename in template
-        template = self.template.copy(deep=True)
+        template = self.template.model_copy(deep=True)
         template.output[new_name] = template.output.pop(old_name)
 
         # rename in examples
         examples = []
         for example in self.examples:
-            example = example.copy(deep=True)
+            example = example.model_copy(deep=True)
             example.output[new_name] = example.output.pop(old_name)
             examples.append(example)
 
-        return self.copy(
+        return self.model_copy(
             deep=True,
             update={
                 "output_parameters": output_parameters,
@@ -337,7 +323,7 @@ def load_prompt_from_json_string(json_str: str) -> Prompt:
     Returns:
         The loaded prompt.
     """
-    return Prompt.parse_raw(json_str)
+    return Prompt.model_validate_json(json_str)
 
 
 def load_prompt_from_dict(d: Dict[str, Any]) -> Prompt:

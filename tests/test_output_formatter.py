@@ -106,6 +106,12 @@ key2: 'value2'""") == {
         'key2': 'value2'
     }
 
+    assert f.parse([('key1', str), ('key2', str)], """key1: value1
+key2: value2""") == {
+        'key1': 'value1',
+        'key2': 'value2'
+    }
+
     assert f.parse([('key1', str)], """key1: 'value1'""") == {
         'key1': 'value1'
     }
@@ -149,7 +155,7 @@ def test_key_value_output_formatter_parse_invalid(output_keys: List[Tuple[str, t
 
     with pytest.raises(SyntaxError):
         f.parse(output_keys, """test output parameter name: 'test output parameter value'
-test output parameter name 2:""")
+test output parameter name 2:'""")
 
 
 def test_key_value_output_formatter_parse_invalid_input():

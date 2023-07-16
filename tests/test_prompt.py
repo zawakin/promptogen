@@ -157,7 +157,7 @@ def test_prompt_from_dict_invalid():
 def test_prompt_to_dict(prompt_dict: dict):
     prompt = Prompt.from_dict(prompt_dict)
 
-    assert prompt.dict() == prompt_dict
+    assert prompt.model_dump() == prompt_dict
 
 
 def test_prompt_from_dict_parameter_mismatch(prompt_dict: dict):
@@ -182,7 +182,7 @@ def test_prompt_from_json_string(prompt_dict: dict):
 
     prompt = Prompt.from_json_string(prompt_json)
 
-    assert prompt.dict() == prompt_dict
+    assert prompt.model_dump() == prompt_dict
 
 
 def test_prompt_to_json_file(prompt_dict: dict):
@@ -192,7 +192,7 @@ def test_prompt_to_json_file(prompt_dict: dict):
         prompt.to_json_file(f.name)
 
         with open(f.name, 'r') as f2:
-            assert prompt.dict() == json.load(f2)
+            assert prompt.model_dump() == json.load(f2)
 
 
 def test_prompt_with_examples(prompt_dict: dict, other_example_dict: dict):
@@ -236,7 +236,7 @@ def test_prompt_rename_output_parameter(prompt_dict: dict):
 
 
 def test_prompt_validate_template_valid():
-    assert Prompt.validate_template({
+    Prompt.model_validate({
     'name': 'test name',
     'description': 'test description',
     'input_parameters': [
@@ -269,7 +269,7 @@ def test_prompt_validate_template_valid():
 def test_prompt_validate_template_invalid():
     # no template
     with pytest.raises(ValueError):
-        Prompt.validate_template({
+        Prompt.from_dict({
             'name': 'test name',
             'description': 'test description',
             'input_parameters': [],
@@ -279,7 +279,7 @@ def test_prompt_validate_template_invalid():
 
     # no examples
     with pytest.raises(ValueError):
-        Prompt.validate_template({
+        Prompt.from_dict({
             'name': 'test name',
             'description': 'test description',
             'input_parameters': [],
@@ -289,7 +289,7 @@ def test_prompt_validate_template_invalid():
 
     # no input parameters
     with pytest.raises(ValueError):
-        Prompt.validate_template({
+        Prompt.from_dict({
             'name': 'test name',
             'description': 'test description',
             'output_parameters': [],
@@ -299,7 +299,7 @@ def test_prompt_validate_template_invalid():
 
     # no output parameters
     with pytest.raises(ValueError):
-        Prompt.validate_template({
+        Prompt.from_dict({
             'name': 'test name',
             'description': 'test description',
             'input_parameters': [],
@@ -309,7 +309,7 @@ def test_prompt_validate_template_invalid():
 
     # invalid template input
     with pytest.raises(ValueError):
-        Prompt.validate_template({
+        Prompt.from_dict({
             'name': 'test name',
             'description': 'test description',
             'input_parameters': [
@@ -330,7 +330,7 @@ def test_prompt_validate_template_invalid():
 
     # invalid template output
     with pytest.raises(ValueError):
-        Prompt.validate_template({
+        Prompt.from_dict({
             'name': 'test name',
             'description': 'test description',
             'input_parameters': [
@@ -351,7 +351,7 @@ def test_prompt_validate_template_invalid():
 
     # invalid example input
     with pytest.raises(ValueError):
-        Prompt.validate_template({
+        Prompt.from_dict({
             'name': 'test name',
             'description': 'test description',
             'input_parameters': [
@@ -381,7 +381,7 @@ def test_prompt_validate_template_invalid():
 
     # invalid example output
     with pytest.raises(ValueError):
-        Prompt.validate_template({
+        Prompt.from_dict({
             'name': 'test name',
             'description': 'test description',
             'input_parameters': [
@@ -446,4 +446,5 @@ def test_load_prompt_from_json_string(prompt_dict: dict):
 
     prompt = load_prompt_from_json_string(prompt_json)
 
-    assert load_prompt_from_dict(prompt.dict()) == prompt_dict
+    assert prompt.model_dump() == prompt_dict
+    assert type(prompt) == Prompt

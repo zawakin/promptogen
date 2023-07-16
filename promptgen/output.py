@@ -157,7 +157,7 @@ def extract_string(s: str) -> Tuple[str, bool]:
             return "", False
 
     # If no quotes are found, return the original string.
-    return s, False
+    return s, True
 
 
 class TextOutputFormatter(OutputFormatter):
