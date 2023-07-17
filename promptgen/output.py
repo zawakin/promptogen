@@ -5,11 +5,13 @@ import re
 from abc import ABC, abstractmethod
 from ast import literal_eval
 from pprint import pformat
-from typing import Any, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Tuple
 
 from typing_extensions import TypeAlias
 
-from .format_utils import remove_code_block, with_code_block
+from promptgen.value_formatter import ValueFormatter
+
+from .format_utils import extract_string, remove_code_block, with_code_block
 
 OutputValue: TypeAlias = Dict[str, Any]
 
@@ -85,9 +87,13 @@ Be careful with the order of brackets in the json."""
 
 
 class KeyValueOutputFormatter(OutputFormatter):
+    value_formatter: ValueFormatter
+
+    def __init__(self, value_formatter: ValueFormatter = ValueFormatter()):
+        self.value_formatter = value_formatter
+
     def description(self) -> str:
-        # return ""
-        return "You should follow 'Template' format. The format is 'key: value'."
+        return ""
 
     def format(self, output: OutputValue) -> str:
         if not isinstance(output, dict):
@@ -95,11 +101,7 @@ class KeyValueOutputFormatter(OutputFormatter):
 
         s = ""
         for key, value in output.items():
-            if isinstance(value, str):
-                s += f'{key}: """{value}"""\n'
-            else:
-                pretty_value = pformat(value, indent=2, sort_dicts=False, width=160)
-                s += f"{key}: {pretty_value}\n"
+            s += f"{key}: {self.value_formatter.format(value)}\n"
 
         return s.strip()
 
@@ -139,27 +141,6 @@ class KeyValueOutputFormatter(OutputFormatter):
                 result[key] = literal_eval(s)
 
         return result
-
-
-def extract_string(s: str) -> Tuple[str, bool]:
-    quotes_flags = [
-        ("'''", re.DOTALL),
-        ('"""', re.DOTALL),
-        ("'", 0),
-        ('"', 0),
-    ]
-
-    for quote, flag in quotes_flags:
-        if not s.startswith(quote):
-            continue
-        match = re.search(f"{quote}(.*?){quote}", s, flag)
-        if match:
-            return match.group(1), True
-        else:
-            return "", False
-
-    # If no quotes are found, return the original string.
-    return s, True
 
 
 class TextOutputFormatter(OutputFormatter):

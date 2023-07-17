@@ -44,8 +44,8 @@ def test_key_value_input_formatter_format():
         'nested': {
             'test input parameter name': 'test input parameter value',
         },
-    }) == f'''test input parameter name: """test input parameter value"""
-test input parameter name 2: """test input parameter value 2"""
+    }) == f'''test input parameter name: "test input parameter value"
+test input parameter name 2: "test input parameter value 2"
 nested: {{'test input parameter name': 'test input parameter value'}}'''
 
 

@@ -3,9 +3,11 @@ from __future__ import annotations
 import json
 from abc import ABC, abstractmethod
 from pprint import pformat
-from typing import Any, Dict
+from typing import Any, Callable, Dict
 
 from typing_extensions import TypeAlias
+
+from promptgen.value_formatter import ValueFormatter
 
 from .format_utils import with_code_block
 
@@ -28,16 +30,17 @@ class JsonInputFormatter(InputFormatter):
 
 
 class KeyValueInputFormatter(InputFormatter):
+    value_formatter: ValueFormatter
+
+    def __init__(self, value_formatter: ValueFormatter = ValueFormatter()):
+        self.value_formatter = value_formatter
+
     def format(self, input: InputValue) -> str:
         if not isinstance(input, dict):
             raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
 
         s = ""
         for key, value in input.items():
-            if isinstance(value, str):
-                s += f'{key}: """{value}"""\n'
-            else:
-                pretty_value = pformat(value, indent=2, sort_dicts=False, width=160)
-                s += f"{key}: {pretty_value}\n"
+            s += f"{key}: {self.value_formatter.format(value)}\n"
 
         return s.strip()

@@ -71,7 +71,7 @@ def test_json_output_formatter_parse_invalid_json(output_keys: List[Tuple[str, t
 def test_key_value_output_formatter_description():
     f = KeyValueOutputFormatter()
 
-    assert f.description() == """You should follow 'Template' format. The format is 'key: value'."""
+    assert f.description() == ""
 
 
 def test_key_value_output_formatter_format():
@@ -80,8 +80,8 @@ def test_key_value_output_formatter_format():
     assert f.format({
         'test output parameter name': 'test output parameter value',
         'test output parameter name 2': 'test output parameter value 2'
-    }) == f'''test output parameter name: """test output parameter value"""
-test output parameter name 2: """test output parameter value 2"""'''
+    }) == f'''test output parameter name: "test output parameter value"
+test output parameter name 2: "test output parameter value 2"'''
 
 
 def test_key_value_output_formatter_format_invalid():

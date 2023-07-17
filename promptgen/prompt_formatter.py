@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import Callable
+
+from promptgen.dataclass import DataClass
+from promptgen.value_formatter import ValueFormatter
 
 from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
 from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue
@@ -32,26 +36,22 @@ class PromptFormatter(PromptFormatterInterface):
     ):
         if not isinstance(input_formatter, InputFormatter):
             raise TypeError(
-                f"Expected input_formatter to be an instance of InputFormatter, got {type(input_formatter).__name__}.\n"
-                "Usage: JsonInputFormatter() instead of JsonInputFormatter.\n"
-                "If you want to use a custom input formatter, you can subclass InputFormatter and pass an instance of\n"
-                "your subclass to the PromptFormatter constructor."
+                f"input_formatter must be an instance of InputFormatter, got {type(input_formatter).__name__}."
             )
         if not isinstance(output_formatter, OutputFormatter):
             raise TypeError(
-                f"Expected output_formatter to be an instance of OutputFormatter, got {type(output_formatter).__name__}.\n"
-                "Usage: JsonOutputFormatter() instead of JsonOutputFormatter.\n"
-                "If you want to use a custom output formatter, you can subclass OutputFormatter and pass an instance of\n"
-                "your subclass to the PromptFormatter constructor."
+                f"output_formatter must be an instance of OutputFormatter, got {type(output_formatter).__name__}."
             )
+
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter
 
     def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
         if not isinstance(input_value, dict):
-            raise TypeError(f"Expected input_value to be an instance of InputValue, got {type(input_value).__name__}.")
+            raise TypeError(f"Expected input_value to be an instance of dict, got {type(input_value).__name__}.")
         if not isinstance(prompt, Prompt):
             raise TypeError(f"Expected prompt to be an instance of Prompt, got {type(prompt).__name__}.")
+
         input_parameter_keys = {p.name for p in prompt.input_parameters}
         if input_parameter_keys != input_value.keys():
             raise ValueError(
@@ -68,9 +68,9 @@ Output:"""
     def format_prompt_without_input(self, prompt: Prompt) -> str:
         formatted_input_parameters = "\n".join(f"  - {p.name}: {p.description}" for p in prompt.input_parameters)
         formatted_output_parameters = "\n".join(f"  - {p.name}: {p.description}" for p in prompt.output_parameters)
-        formatted_template = self.format_example(prompt.template)
+        formatted_template = self._format_example(prompt.template)
         formatted_examples = (
-            "\n".join(f"Example {i+1}:\n{self.format_example(e)}\n" for i, e in enumerate(prompt.examples))
+            "\n".join(f"Example {i+1}:\n{self._format_example(e)}\n" for i, e in enumerate(prompt.examples))
             if prompt.examples
             else ""
         )
@@ -89,7 +89,7 @@ Template:
 
 {formatted_examples}"""
 
-    def format_example(self, example: Example) -> str:
+    def _format_example(self, example: Example) -> str:
         formatted_input = self.input_formatter.format(example.input)
         formatted_output = self.output_formatter.format(example.output)
         return f"Input:\n{formatted_input}\nOutput:\n{formatted_output}"
@@ -100,10 +100,12 @@ Template:
 
 
 class JsonPromptFormatter(PromptFormatter):
-    def __init__(self):
-        super().__init__(JsonInputFormatter(), JsonOutputFormatter())
+    def __init__(self, strict: bool = True):
+        super().__init__(JsonInputFormatter(), JsonOutputFormatter(strict=strict))
 
 
 class KeyValuePromptFormatter(PromptFormatter):
-    def __init__(self):
-        super().__init__(KeyValueInputFormatter(), KeyValueOutputFormatter())
+    def __init__(self, value_formatter: ValueFormatter = ValueFormatter()):
+        super().__init__(
+            KeyValueInputFormatter(value_formatter), KeyValueOutputFormatter(value_formatter=value_formatter)
+        )
