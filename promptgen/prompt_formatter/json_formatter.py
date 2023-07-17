@@ -1,5 +1,5 @@
 import json
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from promptgen.model.input_formatter import InputFormatter, InputValue
 from promptgen.model.output_formatter import OutputFormatter, OutputValue
@@ -28,7 +28,7 @@ class JsonOutputFormatter(OutputFormatter):
     """
 
     strict: bool
-    indent: int | None
+    indent: Optional[int]
 
     def __init__(self, strict: bool = True, indent: int | None = 1):
         self.strict = strict
