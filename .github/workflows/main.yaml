@@ -20,62 +20,40 @@ jobs:
         python-version: ["3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
 
+    name: Python ${{ matrix.python-version }}
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache-dependency-path: pyproject.toml
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: "./.github/actions/poetry_setup"
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: "1.5.1"
+          cache-key: "test-v1"
+          install-command: |
+              echo "Running core tests, installing dependencies with poetry..."
+              poetry install
+      - name: Run tests with pytest
+        run: |
+          poetry run pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=promptgen tests/ | tee pytest-coverage.txt
 
-    - name: Cache Poetry cache
-      id: poetry-cache
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pypoetry
-        key: poetry-cache-${{ runner.os }}-python-${{ env.python-version }}-${{ env.POETRY_VERSION }}-test-v02
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
 
-    - name: Cache Packages
-      id: poetry-packages-cache
-      uses: actions/cache@v3
-      with:
-        path: ~/.local
-        key: poetry-local-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}-v02
+      - name: Lint with flake8
+        run: |
+          poetry run flake8 promptgen
 
-    - name: Install Poetry ${{ env.POETRY_VERSION }}
-      if: steps.poetry-cache.outputs.cache-hit != 'true'
-      run: |
-        curl -sSL ${{ env.POETRY_URL }} | python - --version ${{ env.POETRY_VERSION }}
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Test with mypy
+        run: |
+          poetry run mypy promptgen
 
-    - name: Install dependencies
-      if: steps.poetry-packages-cache.outputs.cache-hit != 'true'
-      run: |
-        poetry install
+      - name: Check code formatting with Black
+        run: |
+          poetry run black --check promptgen
 
-    - name: Run tests with pytest
-      run: |
-        poetry run pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=promptgen tests/ | tee pytest-coverage.txt
-
-    - name: Pytest coverage comment
-      uses: MishaKav/pytest-coverage-comment@main
-      with:
-        pytest-coverage-path: ./pytest-coverage.txt
-        junitxml-path: ./pytest.xml
-
-    - name: Lint with flake8
-      run: |
-        poetry run flake8 promptgen
-
-    - name: Test with mypy
-      run: |
-        poetry run mypy promptgen
-
-    - name: Check code formatting with Black
-      run: |
-        poetry run black --check promptgen
-
-    - name: Check import formatting with isort
-      run: |
-        poetry run isort --check-only promptgen
+      - name: Check import formatting with isort
+        run: |
+          poetry run isort --check-only promptgen
