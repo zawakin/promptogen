@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import pytest
 from promptgen.dataclass import DataClass
 
-from promptgen.input import InputValue, JsonInputFormatter, KeyValueInputFormatter
+from promptgen import InputValue, JsonInputFormatter, KeyValueInputFormatter
 
 
 @pytest.fixture

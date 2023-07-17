@@ -5,8 +5,8 @@ from typing import Any, Dict, List, Tuple
 from pydantic import model_validator
 
 from .dataclass import DataClass
-from .input import InputValue
-from .output import OutputValue
+from .input_formatter import InputValue
+from .output_formatter import OutputValue
 
 
 class ParameterInfo(DataClass):

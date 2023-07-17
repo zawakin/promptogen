@@ -1,9 +1,7 @@
 import pytest
-from promptgen.input import InputValue, JsonInputFormatter, KeyValueInputFormatter
-from promptgen.output import JsonOutputFormatter, KeyValueOutputFormatter, OutputValue
 from promptgen.prompt import Example, ParameterInfo, Prompt
 
-from promptgen.prompt_formatter import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface
+from promptgen import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface, JsonInputFormatter, JsonOutputFormatter, KeyValueInputFormatter, KeyValueOutputFormatter
 
 
 @pytest.fixture

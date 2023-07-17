@@ -4,11 +4,9 @@ from abc import ABC, abstractmethod
 from typing import Callable
 
 from promptgen.dataclass import DataClass
-from promptgen.value_formatter import ValueFormatter
-
-from .input import InputFormatter, InputValue, JsonInputFormatter, KeyValueInputFormatter
-from .output import JsonOutputFormatter, KeyValueOutputFormatter, OutputFormatter, OutputValue
-from .prompt import Example, Prompt
+from promptgen.input_formatter import InputFormatter, InputValue
+from promptgen.output_formatter import OutputFormatter, OutputValue
+from promptgen.prompt import Example, Prompt
 
 
 class PromptFormatterInterface(ABC):
@@ -97,15 +95,3 @@ Template:
     def parse(self, prompt: Prompt, s: str) -> OutputValue:
         output_keys = prompt.get_output_keys()
         return self.output_formatter.parse(output_keys, s)
-
-
-class JsonPromptFormatter(PromptFormatter):
-    def __init__(self, strict: bool = True):
-        super().__init__(JsonInputFormatter(), JsonOutputFormatter(strict=strict))
-
-
-class KeyValuePromptFormatter(PromptFormatter):
-    def __init__(self, value_formatter: ValueFormatter = ValueFormatter()):
-        super().__init__(
-            KeyValueInputFormatter(value_formatter), KeyValueOutputFormatter(value_formatter=value_formatter)
-        )
