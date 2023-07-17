@@ -8,6 +8,10 @@ on:
   push:
     branches: [ main ]
 
+env:
+  POETRY_VERSION: "1.5.1"
+  POETRY_URL: https://install.python-poetry.org
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,16 +28,23 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache-dependency-path: pyproject.toml
-        
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
 
-    - uses: actions/cache@v3
-      id: cache
+    - name: Cache Poetry cache
+      uses: actions/cache@v3
       with:
-        path: ${{ env.pythonLocation }}
-        key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test-v03
+        path: ~/.cache/pypoetry
+        key: poetry-cache-${{ runner.os }}-python-${{ env.python-version }}-${{ hashFiles('pyproject.toml') }}-test-v01
+
+    - name: Cache Packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.local
+        key: poetry-local-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+
+    - name: Install Poetry ${{ env.POETRY_VERSION }}
+      run: |
+        curl -sSL ${{ env.POETRY_URL }} | python - --version ${{ env.POETRY_VERSION }}
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
