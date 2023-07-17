@@ -2,10 +2,8 @@ import json
 import tempfile
 from pydantic import ValidationError
 import pytest
-from promptgen.input_formatter import InputValue
-from promptgen.output_formatter import OutputValue
 
-from promptgen.prompt import Example, ParameterInfo, Prompt, load_prompt_from_dict, load_prompt_from_json_string
+from promptgen.model.prompt import Example, ParameterInfo, Prompt, load_prompt_from_json_string
 
 
 @pytest.fixture

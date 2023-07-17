@@ -2,7 +2,7 @@ from typing import List, Tuple
 from pydantic import BaseModel
 import pytest
 
-from promptgen import JsonOutputFormatter, KeyValueOutputFormatter, OutputValue
+from promptgen import JsonOutputFormatter, KeyValueOutputFormatter
 
 
 @pytest.fixture

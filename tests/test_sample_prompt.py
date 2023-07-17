@@ -1,5 +1,5 @@
 from promptgen.prompt_collection import PromptCollection
-from promptgen.prompt import Prompt, load_prompt_from_json_file
+from promptgen.model.prompt import Prompt, load_prompt_from_json_file
 
 
 def test_collection_prompts():

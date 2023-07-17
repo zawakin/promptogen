@@ -3,9 +3,9 @@ from ast import literal_eval
 from pprint import pformat
 from typing import Any, Callable, Dict, List, Tuple
 
-from promptgen.input_formatter import InputFormatter, InputValue
-from promptgen.output_formatter import OutputFormatter, OutputValue
-from promptgen.prompt_formatters.prompt_formatter import PromptFormatter
+from promptgen.model.input_formatter import InputFormatter, InputValue
+from promptgen.model.output_formatter import OutputFormatter, OutputValue
+from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
 
 
 def format_string(s: str) -> str:

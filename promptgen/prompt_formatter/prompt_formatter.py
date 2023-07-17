@@ -3,10 +3,10 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Callable
 
-from promptgen.dataclass import DataClass
-from promptgen.input_formatter import InputFormatter, InputValue
-from promptgen.output_formatter import OutputFormatter, OutputValue
-from promptgen.prompt import Example, Prompt
+from promptgen.model.dataclass import DataClass
+from promptgen.model.input_formatter import InputFormatter, InputValue
+from promptgen.model.output_formatter import OutputFormatter, OutputValue
+from promptgen.model.prompt import Example, Prompt
 
 
 class PromptFormatterInterface(ABC):

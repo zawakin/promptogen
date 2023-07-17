@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from promptgen.dataclass import DataClass
-from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptgen.model.dataclass import DataClass
+from promptgen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
 
 
 class ExtractPromptInput(DataClass):

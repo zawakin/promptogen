@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel
 import pytest
-from promptgen.dataclass import DataClass
+from promptgen.model.dataclass import DataClass
 
 from promptgen import InputValue, JsonInputFormatter, KeyValueInputFormatter
 

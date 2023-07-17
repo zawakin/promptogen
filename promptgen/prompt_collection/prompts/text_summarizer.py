@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from promptgen.dataclass import DataClass
-from promptgen.prompt import Example, ParameterInfo, Prompt
+from promptgen.model.dataclass import DataClass
+from promptgen.model.prompt import Example, ParameterInfo, Prompt
 
 
 class SummarizationInput(DataClass):

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import List
 
-from promptgen.dataclass import DataClass
-from promptgen.prompt import Example, ParameterInfo, Prompt
+from promptgen.model.dataclass import DataClass
+from promptgen.model.prompt import Example, ParameterInfo, Prompt
 
 
 class TextCategorzierInput(DataClass):

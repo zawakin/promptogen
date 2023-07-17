@@ -2,10 +2,12 @@ from __future__ import annotations
 
 __version__ = "0.1.0"
 
-from .input_formatter import InputFormatter, InputValue
-from .output_formatter import OutputFormatter, OutputValue
-from .prompt import (
+from .model import (
     Example,
+    InputFormatter,
+    InputValue,
+    OutputFormatter,
+    OutputValue,
     ParameterInfo,
     Prompt,
     create_sample_prompt,
@@ -14,14 +16,14 @@ from .prompt import (
     load_prompt_from_json_string,
 )
 from .prompt_collection import PromptCollection
-from .prompt_formatters.json_formatter import JsonInputFormatter, JsonOutputFormatter, JsonPromptFormatter
-from .prompt_formatters.key_value_formatter import (
+from .prompt_formatter.json_formatter import JsonInputFormatter, JsonOutputFormatter, JsonPromptFormatter
+from .prompt_formatter.key_value_formatter import (
     KeyValueInputFormatter,
     KeyValueOutputFormatter,
     KeyValuePromptFormatter,
 )
-from .prompt_formatters.prompt_formatter import PromptFormatter, PromptFormatterInterface
-from .prompt_formatters.text_formatter import TextOutputFormatter
+from .prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterInterface
+from .prompt_formatter.text_formatter import TextOutputFormatter
 
 __all__ = [
     # common

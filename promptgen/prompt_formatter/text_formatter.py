@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from promptgen.output_formatter import OutputFormatter, OutputValue
+from promptgen.model.output_formatter import OutputFormatter, OutputValue
 
 
 class TextOutputFormatter(OutputFormatter):

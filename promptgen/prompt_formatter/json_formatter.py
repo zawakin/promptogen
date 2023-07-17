@@ -1,9 +1,9 @@
 import json
 from typing import List, Tuple
 
-from promptgen.input_formatter import InputFormatter, InputValue
-from promptgen.output_formatter import OutputFormatter, OutputValue
-from promptgen.prompt_formatters.prompt_formatter import PromptFormatter
+from promptgen.model.input_formatter import InputFormatter, InputValue
+from promptgen.model.output_formatter import OutputFormatter, OutputValue
+from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
 
 
 class JsonPromptFormatter(PromptFormatter):

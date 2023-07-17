@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import List
 
-from promptgen.dataclass import DataClass
-from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
-from promptgen.prompts.python_code_generator import get_python_code_generator_prompt
-from promptgen.prompts.text_categorizer import get_text_categorizer_template
+from promptgen.model.dataclass import DataClass
+from promptgen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptgen.prompt_collection.prompts.python_code_generator import get_python_code_generator_prompt
+from promptgen.prompt_collection.prompts.text_categorizer import get_text_categorizer_template
 
 
 class ExampleCreatorInput(DataClass):
