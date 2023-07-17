@@ -35,7 +35,7 @@ def get_example_creator_template() -> Prompt:
         template=Example(
             input=ExampleCreatorInput(
                 prompt=create_sample_prompt("prompt"),
-            ).dict(),
+            ).to_dict(),
             output=ExampleCreatorOutput(
                 example=Example(
                     input={
@@ -45,24 +45,24 @@ def get_example_creator_template() -> Prompt:
                         "output_1": "example output 1",
                     },
                 ),
-            ).dict(),
+            ).to_dict(),
         ),
         examples=[
             Example(
                 input=ExampleCreatorInput(
-                    prompt=categorization_prompt.with_examples([]),
-                ).dict(),
+                    prompt=categorization_prompt.update(examples=[]),
+                ).to_dict(),
                 output=ExampleCreatorOutput(
                     example=categorization_prompt.examples[0],
-                ).dict(),
+                ).to_dict(),
             ),
             Example(
                 input=ExampleCreatorInput(
-                    prompt=python_code_generator_prompt.with_examples([]),
-                ).dict(),
+                    prompt=python_code_generator_prompt.update(examples=[]),
+                ).to_dict(),
                 output=ExampleCreatorOutput(
                     example=python_code_generator_prompt.examples[0],
-                ).dict(),
+                ).to_dict(),
             ),
         ],
     )

@@ -31,24 +31,6 @@ class Example(DataClass):
     input: InputValue
     output: OutputValue
 
-    @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> "Example":
-        """Create an example from a dictionary.
-
-        Args:
-            d: A dictionary containing the example's information.
-
-        Returns:
-            An example.
-
-        Raises:
-            TypeError: If the dictionary is not a dictionary.
-            ValueError: If the dictionary does not contain the required keys.
-        """
-        if not isinstance(d, dict):
-            raise TypeError(f"Expected dict, got {type(d)}")
-        return cls.model_validate(d)
-
 
 class Prompt(DataClass):
     """A prompt.
@@ -68,61 +50,6 @@ class Prompt(DataClass):
     output_parameters: List[ParameterInfo]
     template: Example
     examples: List[Example]
-
-    @classmethod
-    def from_dict(cls, d: Dict[str, Any]) -> "Prompt":
-        """Create a prompt from a dictionary.
-
-        Args:
-            d: A dictionary containing the prompt's information.
-
-        Returns:
-            A prompt.
-
-        Raises:
-            TypeError: If the dictionary is not a dictionary.
-            ValueError: If the dictionary does not contain the required keys.
-        """
-        if not isinstance(d, dict):
-            raise TypeError(f"Expected dict, got {type(d)}")
-        return cls.model_validate(d)
-
-    @classmethod
-    def from_json_string(cls, json_string: str) -> "Prompt":
-        """Create a prompt from a JSON string.
-
-        Args:
-            json_string: A JSON string containing the prompt's information.
-
-        Returns:
-            A prompt.
-
-        Raises:
-            TypeError: If the JSON string is not a string.
-            ValueError: If the JSON string is not valid JSON.
-        """
-        return cls.model_validate_json(json_string)
-
-    @classmethod
-    def from_json_file(cls, filename: str) -> "Prompt":
-        """Create a prompt from a JSON file.
-
-        Args:
-            filename: The name of the JSON file containing the prompt's information.
-
-        Returns:
-            A prompt.
-
-        Raises:
-            TypeError: If the filename is not a string.
-            ValueError: If the file does not contain valid JSON.
-        """
-        with open(filename, "r") as f:
-            return cls.model_validate_json(f.read())
-
-    def to_json_file(self, filename: str, indent=4) -> None:
-        with open(filename, "w") as f:
-            f.write(self.model_dump_json(indent=indent))
 
     @model_validator(mode="after")
     def validate_template(self):
@@ -154,17 +81,6 @@ class Prompt(DataClass):
 
         return self
 
-    def with_examples(self, examples: List[Example]) -> "Prompt":
-        """Set the examples of the prompt.
-
-        Args:
-            examples: The examples to set.
-
-        Returns:
-            A copy of the prompt with the examples set.
-        """
-        return self.model_copy(deep=True, update={"examples": examples})
-
     def rename_input_parameter(self, old_name: str, new_name: str) -> "Prompt":
         """Rename an input parameter.
 
@@ -175,7 +91,7 @@ class Prompt(DataClass):
         Returns:
             A copy of the prompt with the input parameter renamed.
         """
-        input_parameters = [param.model_copy(deep=True) for param in self.input_parameters]
+        input_parameters = [param.copy() for param in self.input_parameters]
         # find the parameter
         found = False
         index = -1
@@ -189,23 +105,20 @@ class Prompt(DataClass):
         input_parameters[index].name = new_name
 
         # rename in template
-        template = self.template.model_copy(deep=True)
+        template = self.template.copy()
         template.input[new_name] = template.input.pop(old_name)
 
         # rename in examples
         examples = []
         for example in self.examples:
-            example = example.model_copy(deep=True)
+            example = example.copy()
             example.input[new_name] = example.input.pop(old_name)
             examples.append(example)
 
-        return self.model_copy(
-            deep=True,
-            update={
-                "input_parameters": input_parameters,
-                "template": template,
-                "examples": examples,
-            },
+        return self.update(
+            input_parameters=input_parameters,
+            template=template,
+            examples=examples,
         )
 
     def rename_output_parameter(self, old_name: str, new_name: str) -> "Prompt":
@@ -218,7 +131,7 @@ class Prompt(DataClass):
         Returns:
             A copy of the prompt with the output parameter renamed.
         """
-        output_parameters = [param.model_copy(deep=True) for param in self.output_parameters]
+        output_parameters = [param.copy() for param in self.output_parameters]
 
         # find the parameter
         found = False
@@ -233,23 +146,20 @@ class Prompt(DataClass):
         output_parameters[index].name = new_name
 
         # rename in template
-        template = self.template.model_copy(deep=True)
+        template = self.template.copy()
         template.output[new_name] = template.output.pop(old_name)
 
         # rename in examples
         examples = []
         for example in self.examples:
-            example = example.model_copy(deep=True)
+            example = example.copy()
             example.output[new_name] = example.output.pop(old_name)
             examples.append(example)
 
-        return self.model_copy(
-            deep=True,
-            update={
-                "output_parameters": output_parameters,
-                "template": template,
-                "examples": examples,
-            },
+        return self.update(
+            output_parameters=output_parameters,
+            template=template,
+            examples=examples,
         )
 
     def __repr__(self) -> str:
