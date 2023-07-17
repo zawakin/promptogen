@@ -41,6 +41,8 @@ class DataClass(BaseModel):
         Returns:
             A copy of the dataclass with updated values.
         """
+        if not all((key in self.model_fields.keys() for key in kwargs.keys())):
+            raise ValueError(f"Invalid keys: {kwargs.keys()}")
         return self.model_copy(deep=True, update=kwargs)
 
     @classmethod
