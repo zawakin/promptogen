@@ -30,24 +30,27 @@ jobs:
         cache-dependency-path: pyproject.toml
 
     - name: Cache Poetry cache
+      id: poetry-cache
       uses: actions/cache@v3
       with:
         path: ~/.cache/pypoetry
-        key: poetry-cache-${{ runner.os }}-python-${{ env.python-version }}-${{ hashFiles('pyproject.toml') }}-test-v01
+        key: poetry-cache-${{ runner.os }}-python-${{ env.python-version }}-${{ env.POETRY_VERSION }}-test-v02
 
     - name: Cache Packages
+      id: poetry-packages-cache
       uses: actions/cache@v3
       with:
         path: ~/.local
-        key: poetry-local-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+        key: poetry-local-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}-v02
 
     - name: Install Poetry ${{ env.POETRY_VERSION }}
+      if: steps.poetry-cache.outputs.cache-hit != 'true'
       run: |
         curl -sSL ${{ env.POETRY_URL }} | python - --version ${{ env.POETRY_VERSION }}
         echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.poetry-packages-cache.outputs.cache-hit != 'true'
       run: |
         poetry install
 
