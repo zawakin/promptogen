@@ -30,7 +30,7 @@ class JsonOutputFormatter(OutputFormatter):
     strict: bool
     indent: Optional[int]
 
-    def __init__(self, strict: bool = True, indent: int | None = 1):
+    def __init__(self, strict: bool = True, indent: Optional[int] = 1):
         self.strict = strict
         self.indent = indent
 
