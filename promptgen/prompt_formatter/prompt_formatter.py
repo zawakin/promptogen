@@ -93,5 +93,5 @@ Template:
         return f"Input:\n{formatted_input}\nOutput:\n{formatted_output}"
 
     def parse(self, prompt: Prompt, s: str) -> OutputValue:
-        output_keys = prompt.get_output_keys()
+        output_keys = [(param.name, type(prompt.template.output[param.name])) for param in prompt.output_parameters]
         return self.output_formatter.parse(output_keys, s)

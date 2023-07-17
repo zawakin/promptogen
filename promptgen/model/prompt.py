@@ -139,8 +139,7 @@ class Prompt(DataClass):
             )
         if template.output.keys() != output_parameter_keys:
             raise ValueError(
-                f"Template output keys do not match output parameters: "
-                f"{template.output.keys()} vs {output_parameters}"
+                f"Template output keys do not match output parameters: {template.output.keys()} vs {output_parameters}"
             )
 
         for example in examples:
@@ -252,15 +251,6 @@ class Prompt(DataClass):
                 "examples": examples,
             },
         )
-
-    def get_output_keys(self) -> List[Tuple[str, type]]:
-        """Get the output keys of the prompt.
-
-        Returns:
-            The output keys of the prompt.
-        """
-        # return [param.name for param in self.output_parameters]
-        return [(param.name, type(self.template.output[param.name])) for param in self.output_parameters]
 
     def __repr__(self) -> str:
         input_parameters = "\n".join(
