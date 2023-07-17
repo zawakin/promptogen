@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-from promptgen.input import InputValue
-from promptgen.output import OutputValue
-from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptgen.model.dataclass import DataClass
+from promptgen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
 
 
-class ExtractPromptInput(InputValue):
+class ExtractPromptInput(DataClass):
     raw_text: str
 
 
-class ExtractPromptOutput(OutputValue):
+class ExtractPromptOutput(DataClass):
     extracted_prompt: Prompt
 
 

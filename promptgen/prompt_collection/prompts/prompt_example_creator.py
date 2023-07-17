@@ -2,18 +2,17 @@ from __future__ import annotations
 
 from typing import List
 
-from promptgen.input import InputValue
-from promptgen.output import OutputValue
-from promptgen.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
-from promptgen.prompts.python_code_generator import get_python_code_generator_prompt
-from promptgen.prompts.text_categorizer import get_text_categorizer_template
+from promptgen.model.dataclass import DataClass
+from promptgen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptgen.prompt_collection.prompts.python_code_generator import get_python_code_generator_prompt
+from promptgen.prompt_collection.prompts.text_categorizer import get_text_categorizer_template
 
 
-class ExampleCreatorInput(InputValue):
+class ExampleCreatorInput(DataClass):
     prompt: Prompt
 
 
-class ExampleCreatorOutput(OutputValue):
+class ExampleCreatorOutput(DataClass):
     example: Example
 
 
@@ -36,38 +35,34 @@ def get_example_creator_template() -> Prompt:
         template=Example(
             input=ExampleCreatorInput(
                 prompt=create_sample_prompt("prompt"),
-            ),
+            ).model_dump(),
             output=ExampleCreatorOutput(
                 example=Example(
-                    input=InputValue.from_dict(
-                        {
-                            "input_1": "example input 1",
-                        }
-                    ),
-                    output=OutputValue.from_dict(
-                        {
-                            "output_1": "example output 1",
-                        }
-                    ),
+                    input={
+                        "input_1": "example input 1",
+                    },
+                    output={
+                        "output_1": "example output 1",
+                    },
                 ),
-            ),
+            ).model_dump(),
         ),
         examples=[
             Example(
                 input=ExampleCreatorInput(
                     prompt=categorization_prompt.with_examples([]),
-                ),
+                ).model_dump(),
                 output=ExampleCreatorOutput(
                     example=categorization_prompt.examples[0],
-                ),
+                ).model_dump(),
             ),
             Example(
                 input=ExampleCreatorInput(
                     prompt=python_code_generator_prompt.with_examples([]),
-                ),
+                ).model_dump(),
                 output=ExampleCreatorOutput(
                     example=python_code_generator_prompt.examples[0],
-                ),
+                ).model_dump(),
             ),
         ],
     )

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pytest
-from promptgen.prompt import create_sample_prompt
+from promptgen.model.prompt import create_sample_prompt
 
 from promptgen.prompt_collection.prompt_collection import PromptCollection
 

@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-from promptgen.input import InputValue
-from promptgen.output import OutputValue
-from promptgen.prompt import Example, ParameterInfo, Prompt
+from promptgen.model.dataclass import DataClass
+from promptgen.model.prompt import Prompt
 
 
-class PythonCodeGeneratorInput(InputValue):
+class PythonCodeGeneratorInput(DataClass):
     task: str
 
 
-class PythonCodeGeneratorOutput(OutputValue):
+class PythonCodeGeneratorOutput(DataClass):
     reason: str
     code: str
 

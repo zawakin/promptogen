@@ -533,7 +533,7 @@ loader('PromptExampleCreator')
 
 ```python
 raw_req = formatter.format_prompt(prompt=loader('PromptExampleCreator'), input_value={
-    'prompt': subtask_runner.dict(),
+    'prompt': subtask_runner.model_dump(),
     'n': 3,
 })
 raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
