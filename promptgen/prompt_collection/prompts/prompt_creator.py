@@ -36,29 +36,29 @@ def get_prompt_creator_template() -> Prompt:
             input=PromptCreatorInput(
                 purpose="purpose of the prompt",
                 background="background of the prompt",
-            ).dict(),
+            ).to_dict(),
             output=PromptCreatorOutput(
                 prompt=create_sample_prompt("new prompt"),
-            ).dict(),
+            ).to_dict(),
         ),
         examples=[
             Example(
                 input=PromptCreatorInput(
                     purpose="Categorize the given text into one of the given categories.",
                     background="The given text may be a sentence, a paragraph, or a document.",
-                ).dict(),
+                ).to_dict(),
                 output=PromptCreatorOutput(
-                    prompt=categorization_prompt.with_examples([categorization_prompt.examples[0]]),
-                ).dict(),
+                    prompt=categorization_prompt.update(examples=[categorization_prompt.examples[0]]),
+                ).to_dict(),
             ),
             Example(
                 input=PromptCreatorInput(
                     purpose="Python code generator",
                     background="style: input: (task: str), output: (reason: str, code: str)",
-                ).dict(),
+                ).to_dict(),
                 output=PromptCreatorOutput(
-                    prompt=python_code_generator_prompt.with_examples([python_code_generator_prompt.examples[0]]),
-                ).dict(),
+                    prompt=python_code_generator_prompt.update(examples=[python_code_generator_prompt.examples[0]]),
+                ).to_dict(),
             ),
         ],
     )

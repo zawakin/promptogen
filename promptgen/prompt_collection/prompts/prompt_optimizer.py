@@ -28,10 +28,10 @@ def get_prompt_optimizer_template() -> Prompt:
             input=OptimizePromptInput(
                 original_prompt=create_sample_prompt("original prompt"),
                 background="background of the prompt",
-            ).dict(),
+            ).to_dict(),
             output=OptimizePromptOutput(
                 optimized_prompt=create_sample_prompt("optimized prompt"),
-            ).dict(),
+            ).to_dict(),
         ),
         examples=[],
     )

@@ -30,29 +30,29 @@ def get_text_categorizer_template() -> Prompt:
             input=TextCategorzierInput(
                 text="text",
                 categories=["category 1", "category 2"],
-            ).dict(),
+            ).to_dict(),
             output=TextCategorizerOutput(
                 category="category 1",
-            ).dict(),
+            ).to_dict(),
         ),
         examples=[
             Example(
                 input=TextCategorzierInput(
                     text="A recent study shows that regular exercise can help improve cognitive function in older adults.",
                     categories=["Health", "Science", "Technology"],
-                ).dict(),
+                ).to_dict(),
                 output=TextCategorizerOutput(
                     category="Health",
-                ).dict(),
+                ).to_dict(),
             ),
             Example(
                 input=TextCategorzierInput(
                     text="The new quantum computing system is expected to revolutionize data processing and complex calculations.",
                     categories=["Health", "Science", "Technology"],
-                ).dict(),
+                ).to_dict(),
                 output=TextCategorizerOutput(
                     category="Technology",
-                ).dict(),
+                ).to_dict(),
             ),
         ],
     )
