@@ -4,44 +4,34 @@ __version__ = "0.1.0"
 
 from .model import (
     Example,
-    InputFormatter,
-    InputValue,
-    OutputFormatter,
-    OutputValue,
     ParameterInfo,
     Prompt,
+    Value,
+    ValueFormatter,
     create_sample_prompt,
     load_prompt_from_dict,
     load_prompt_from_json_file,
     load_prompt_from_json_string,
 )
 from .prompt_collection import PromptCollection
-from .prompt_formatter.json_formatter import JsonInputFormatter, JsonOutputFormatter, JsonPromptFormatter
-from .prompt_formatter.key_value_formatter import (
-    KeyValueInputFormatter,
-    KeyValueOutputFormatter,
-    KeyValuePromptFormatter,
-)
+from .prompt_formatter.json_formatter import JsonPromptFormatter, JsonValueFormatter
+from .prompt_formatter.key_value_formatter import KeyValueFormatter, KeyValuePromptFormatter
 from .prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterInterface
-from .prompt_formatter.text_formatter import TextOutputFormatter
+from .prompt_formatter.text_formatter import TextValueFormatter
 
 __all__ = [
     # common
-    "InputValue",
-    "OutputValue",
-    "InputFormatter",
-    "OutputFormatter",
+    "Value",
+    "ValueFormatter",
     "PromptFormatter",
     # json
-    "JsonInputFormatter",
-    "JsonOutputFormatter",
+    "JsonValueFormatter",
     "JsonPromptFormatter",
     # list
-    "KeyValueInputFormatter",
-    "KeyValueOutputFormatter",
+    "KeyValueFormatter",
     "KeyValuePromptFormatter",
     # text
-    "TextOutputFormatter",
+    "TextValueFormatter",
     # prompt
     "Prompt",
     "ParameterInfo",

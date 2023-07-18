@@ -1,5 +1,3 @@
-from .input_formatter import InputFormatter, InputValue
-from .output_formatter import OutputFormatter, OutputValue
 from .prompt import (
     Example,
     ParameterInfo,
@@ -9,13 +7,12 @@ from .prompt import (
     load_prompt_from_json_file,
     load_prompt_from_json_string,
 )
+from .value_formatter import Value, ValueFormatter
 
 __all__ = [
     # common
-    "InputValue",
-    "OutputValue",
-    "InputFormatter",
-    "OutputFormatter",
+    "Value",
+    "ValueFormatter",
     # prompt
     "Prompt",
     "ParameterInfo",

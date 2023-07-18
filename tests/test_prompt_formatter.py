@@ -1,13 +1,13 @@
 import pytest
 from promptgen.model.prompt import Example, ParameterInfo, Prompt
 
-from promptgen import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface, JsonInputFormatter, JsonOutputFormatter, KeyValueInputFormatter, KeyValueOutputFormatter
+from promptgen import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface, JsonValueFormatter, KeyValueFormatter
 
 
 @pytest.fixture
 def json_prompt_formatter():
-    input_formatter = JsonInputFormatter()
-    output_formatter = JsonOutputFormatter(indent=None)
+    input_formatter = JsonValueFormatter(indent=None)
+    output_formatter = JsonValueFormatter(indent=None)
     return PromptFormatter(input_formatter=input_formatter, output_formatter=output_formatter)
 
 
@@ -59,8 +59,8 @@ def prompt():
 
 
 def test_prompt_formatter_init_invalid():
-    input_formatter = JsonInputFormatter()
-    output_formatter = JsonOutputFormatter(indent=None)
+    input_formatter = JsonValueFormatter()
+    output_formatter = JsonValueFormatter(indent=None)
     with pytest.raises(TypeError):
         PromptFormatter(input_formatter=object(), output_formatter=object()) # type: ignore
 
@@ -186,12 +186,12 @@ def test_prompt_formatter_parse(json_prompt_formatter: PromptFormatterInterface,
 def test_json_prompt_formatter():
     f = JsonPromptFormatter()
 
-    assert type(f.input_formatter) == JsonInputFormatter
-    assert type(f.output_formatter) == JsonOutputFormatter
+    assert type(f.input_formatter) == JsonValueFormatter
+    assert type(f.output_formatter) == JsonValueFormatter
 
 
 def test_key_value_prompt_formatter():
     f = KeyValuePromptFormatter()
 
-    assert type(f.input_formatter) == KeyValueInputFormatter
-    assert type(f.output_formatter) == KeyValueOutputFormatter
+    assert type(f.input_formatter) == KeyValueFormatter
+    assert type(f.output_formatter) == KeyValueFormatter

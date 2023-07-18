@@ -1,17 +1,14 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Callable
 
-from promptgen.model.dataclass import DataClass
-from promptgen.model.input_formatter import InputFormatter, InputValue
-from promptgen.model.output_formatter import OutputFormatter, OutputValue
 from promptgen.model.prompt import Example, Prompt
+from promptgen.model.value_formatter import Value, ValueFormatter
 
 
 class PromptFormatterInterface(ABC):
     @abstractmethod
-    def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
+    def format_prompt(self, prompt: Prompt, input_value: Value) -> str:
         pass  # pragma: no cover
 
     @abstractmethod
@@ -19,24 +16,24 @@ class PromptFormatterInterface(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def parse(self, prompt: Prompt, output: str) -> OutputValue:
+    def parse(self, prompt: Prompt, output: str) -> Value:
         pass  # pragma: no cover
 
 
 class PromptFormatter(PromptFormatterInterface):
-    input_formatter: InputFormatter
-    output_formatter: OutputFormatter
+    input_formatter: ValueFormatter
+    output_formatter: ValueFormatter
 
     def __init__(
         self,
-        input_formatter: InputFormatter,
-        output_formatter: OutputFormatter,
+        input_formatter: ValueFormatter,
+        output_formatter: ValueFormatter,
     ):
-        if not isinstance(input_formatter, InputFormatter):
+        if not isinstance(input_formatter, ValueFormatter):
             raise TypeError(
-                f"input_formatter must be an instance of InputFormatter, got {type(input_formatter).__name__}."
+                f"input_formatter must be an instance of ValueFormatter, got {type(input_formatter).__name__}."
             )
-        if not isinstance(output_formatter, OutputFormatter):
+        if not isinstance(output_formatter, ValueFormatter):
             raise TypeError(
                 f"output_formatter must be an instance of OutputFormatter, got {type(output_formatter).__name__}."
             )
@@ -44,7 +41,7 @@ class PromptFormatter(PromptFormatterInterface):
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter
 
-    def format_prompt(self, prompt: Prompt, input_value: InputValue) -> str:
+    def format_prompt(self, prompt: Prompt, input_value: Value) -> str:
         if not isinstance(input_value, dict):
             raise TypeError(f"Expected input_value to be an instance of dict, got {type(input_value).__name__}.")
         if not isinstance(prompt, Prompt):
@@ -92,6 +89,6 @@ Template:
         formatted_output = self.output_formatter.format(example.output)
         return f"Input:\n{formatted_input}\nOutput:\n{formatted_output}"
 
-    def parse(self, prompt: Prompt, s: str) -> OutputValue:
+    def parse(self, prompt: Prompt, s: str) -> Value:
         output_keys = [(param.name, type(prompt.template.output[param.name])) for param in prompt.output_parameters]
         return self.output_formatter.parse(output_keys, s)

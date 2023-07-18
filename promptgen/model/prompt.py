@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 from pydantic import model_validator
 
 from .dataclass import DataClass
-from .input_formatter import InputValue
-from .output_formatter import OutputValue
+from .value_formatter import Value
 
 
 class ParameterInfo(DataClass):
@@ -28,8 +27,8 @@ class Example(DataClass):
         output: The output of the prompt.
     """
 
-    input: InputValue
-    output: OutputValue
+    input: Value
+    output: Value
 
 
 class Prompt(DataClass):
