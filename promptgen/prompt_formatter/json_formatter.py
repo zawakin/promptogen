@@ -1,25 +1,16 @@
 import json
 from typing import List, Optional, Tuple
 
-from promptgen.model.input_formatter import InputFormatter, InputValue
-from promptgen.model.output_formatter import OutputFormatter, OutputValue
+from promptgen.model.value_formatter import Value, ValueFormatter
 from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
 
 
 class JsonPromptFormatter(PromptFormatter):
     def __init__(self, strict: bool = True):
-        super().__init__(JsonInputFormatter(), JsonOutputFormatter(strict=strict))
+        super().__init__(JsonValueFormatter(), JsonValueFormatter(strict=strict))
 
 
-class JsonInputFormatter(InputFormatter):
-    def format(self, input: InputValue) -> str:
-        if not isinstance(input, dict):
-            raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
-
-        return with_code_block("json", json.dumps(input, ensure_ascii=False))
-
-
-class JsonOutputFormatter(OutputFormatter):
+class JsonValueFormatter(ValueFormatter):
     """The json output formatter.
 
     Args:
@@ -40,7 +31,7 @@ class JsonOutputFormatter(OutputFormatter):
         return """Output a JSON-formatted string without outputting any other strings.
 Be careful with the order of brackets in the json."""
 
-    def format(self, output: OutputValue) -> str:
+    def format(self, value: Value) -> str:
         """Format the output value into a string.
 
         Args:
@@ -52,12 +43,12 @@ Be careful with the order of brackets in the json."""
         Returns:
             str: The formatted output.
         """
-        if not isinstance(output, dict):
-            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
+        if not isinstance(value, dict):
+            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(value).__name__}.")
 
-        return with_code_block("json", json.dumps(output, ensure_ascii=False, indent=self.indent))
+        return with_code_block("json", json.dumps(value, ensure_ascii=False, indent=self.indent))
 
-    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> OutputValue:
+    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> Value:
         output = output.strip()
 
         if self.strict:

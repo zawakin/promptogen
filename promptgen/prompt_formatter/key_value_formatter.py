@@ -3,8 +3,7 @@ from ast import literal_eval
 from pprint import pformat
 from typing import Any, Callable, Dict, List, Tuple
 
-from promptgen.model.input_formatter import InputFormatter, InputValue
-from promptgen.model.output_formatter import OutputFormatter, OutputValue
+from promptgen.model.value_formatter import Value, ValueFormatter
 from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
 
 
@@ -22,7 +21,7 @@ default_type_formatter: Dict[type, Callable[[Any], str]] = {
 }
 
 
-class ValueFormatter:
+class KeyValueValueFormatter:
     type_formatter: Dict[type, Callable[[Any], str]]
 
     def __init__(self, type_formatter: Dict[type, Callable[[Any], str]] = {}):
@@ -39,51 +38,32 @@ class ValueFormatter:
 
 
 class KeyValuePromptFormatter(PromptFormatter):
-    def __init__(self, value_formatter: ValueFormatter = ValueFormatter()):
-        super().__init__(
-            KeyValueInputFormatter(value_formatter), KeyValueOutputFormatter(value_formatter=value_formatter)
-        )
+    def __init__(self, value_formatter: KeyValueValueFormatter = KeyValueValueFormatter()):
+        super().__init__(KeyValueFormatter(value_formatter), KeyValueFormatter(value_formatter=value_formatter))
 
 
-class KeyValueInputFormatter(InputFormatter):
-    value_formatter: ValueFormatter
+class KeyValueFormatter(ValueFormatter):
+    value_formatter: KeyValueValueFormatter
 
-    def __init__(self, value_formatter: ValueFormatter = ValueFormatter()):
-        self.value_formatter = value_formatter
-
-    def format(self, input: InputValue) -> str:
-        if not isinstance(input, dict):
-            raise TypeError(f"Expected input to be an instance of InputValue, got {type(input).__name__}.")
-
-        s = ""
-        for key, value in input.items():
-            s += f"{key}: {self.value_formatter.format(value)}\n"
-
-        return s.strip()
-
-
-class KeyValueOutputFormatter(OutputFormatter):
-    value_formatter: ValueFormatter
-
-    def __init__(self, value_formatter: ValueFormatter = ValueFormatter()):
+    def __init__(self, value_formatter: KeyValueValueFormatter = KeyValueValueFormatter()):
         self.value_formatter = value_formatter
 
     def description(self) -> str:
         return ""
 
-    def format(self, output: OutputValue) -> str:
-        if not isinstance(output, dict):
-            raise TypeError(f"Expected output to be an instance of OutputValue, got {type(output).__name__}.")
+    def format(self, value: Value) -> str:
+        if not isinstance(value, dict):
+            raise TypeError(f"Expected value to be an instance of dict, got {type(value).__name__}.")
 
         s = ""
-        for key, value in output.items():
+        for key, value in value.items():
             s += f"{key}: {self.value_formatter.format(value)}\n"
 
         return s.strip()
 
-    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> OutputValue:
+    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> Value:
         if not isinstance(output, str):
-            raise TypeError(f"Expected formatted_str to be a str, got {type(output).__name__}.")
+            raise TypeError(f"Expected s to be a str, got {type(output).__name__}.")
 
         for key, _ in output_keys:
             if key not in output:

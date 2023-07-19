@@ -2,7 +2,7 @@ from typing import List, Tuple
 from pydantic import BaseModel
 import pytest
 
-from promptgen import JsonOutputFormatter, KeyValueOutputFormatter
+from promptgen import JsonValueFormatter, KeyValueFormatter
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def output_keys() -> List[Tuple[str, type]]:
 
 
 def test_json_output_formatter_format():
-    f = JsonOutputFormatter(indent=None)
+    f = JsonValueFormatter(indent=None)
 
     assert f.format({
         'test output parameter name': 'test output parameter value',
@@ -33,14 +33,14 @@ def test_json_output_formatter_format():
 
 
 def test_json_output_formater_format_invalid():
-    f = JsonOutputFormatter()
+    f = JsonValueFormatter()
 
     with pytest.raises(TypeError):
         f.format(10)  # type: ignore
 
 
 def test_json_output_formatter_parse():
-    f = JsonOutputFormatter()
+    f = JsonValueFormatter()
     output_keys = [
         ('test output parameter name', str),
         ('test output parameter name 2', str)
@@ -54,14 +54,14 @@ def test_json_output_formatter_parse():
 
 
 def test_json_output_formatter_parse_no_code_block(output_keys: List[Tuple[str, type]]):
-    f = JsonOutputFormatter()
+    f = JsonValueFormatter()
 
     with pytest.raises(ValueError):
         f.parse(output_keys, """{"test output parameter name": "test output parameter value", "test output parameter name 2": "test output parameter value 2"}""")
 
 
 def test_json_output_formatter_parse_invalid_json(output_keys: List[Tuple[str, type]]):
-    f = JsonOutputFormatter()
+    f = JsonValueFormatter()
 
     with pytest.raises(ValueError):
         f.parse(output_keys, """```json
@@ -69,13 +69,13 @@ def test_json_output_formatter_parse_invalid_json(output_keys: List[Tuple[str, t
 
 
 def test_key_value_output_formatter_description():
-    f = KeyValueOutputFormatter()
+    f = KeyValueFormatter()
 
     assert f.description() == ""
 
 
 def test_key_value_output_formatter_format():
-    f = KeyValueOutputFormatter()
+    f = KeyValueFormatter()
 
     assert f.format({
         'test output parameter name': 'test output parameter value',
@@ -85,14 +85,14 @@ test output parameter name 2: "test output parameter value 2"'''
 
 
 def test_key_value_output_formatter_format_invalid():
-    f = KeyValueOutputFormatter()
+    f = KeyValueFormatter()
 
     with pytest.raises(TypeError):
         f.format(10)  # type: ignore
 
 
 def test_key_value_output_formatter_parse(output_keys: List[Tuple[str, type]]):
-    f = KeyValueOutputFormatter()
+    f = KeyValueFormatter()
 
     assert f.parse(output_keys, """test output parameter name: 'test output parameter value'
 test output parameter name 2: 'test output parameter value 2'""") == {
@@ -143,7 +143,7 @@ key2: value2""") == {
 
 
 def test_key_value_output_formatter_parse_syntax_error(output_keys: List[Tuple[str, type]]):
-    f = KeyValueOutputFormatter()
+    f = KeyValueFormatter()
 
     with pytest.raises(SyntaxError):
         f.parse(output_keys, """test output parameter name: 'test output parameter value'
@@ -151,7 +151,7 @@ test output parameter name 2: 'test output parameter value 2""")
 
 
 def test_key_value_output_formatter_parse_invalid(output_keys: List[Tuple[str, type]]):
-    f = KeyValueOutputFormatter()
+    f = KeyValueFormatter()
 
     with pytest.raises(SyntaxError):
         f.parse(output_keys, """test output parameter name: 'test output parameter value'
@@ -159,7 +159,7 @@ test output parameter name 2:'""")
 
 
 def test_key_value_output_formatter_parse_invalid_input():
-    f = KeyValueOutputFormatter()
+    f = KeyValueFormatter()
 
     with pytest.raises(TypeError):
         f.parse(1) # type: ignore
