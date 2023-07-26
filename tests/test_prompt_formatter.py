@@ -77,6 +77,7 @@ def test_prompt_formatter_format_prompt(json_prompt_formatter: PromptFormatterIn
         'test input parameter name 2': 'sample value 2'
     }
     assert json_prompt_formatter.format_prompt(prompt=prompt, input_value=input_value) == f"""test description
+
 Output a JSON-formatted string without outputting any other strings.
 Be careful with the order of brackets in the json.
 
@@ -137,6 +138,7 @@ def test_prompt_formatter_format_prompt_invalid(json_prompt_formatter: PromptFor
 
 def test_prompt_formatter_format_prompt_without_input(json_prompt_formatter: PromptFormatterInterface, prompt: Prompt):
     assert json_prompt_formatter.format_prompt_without_input(prompt) == f"""test description
+
 Output a JSON-formatted string without outputting any other strings.
 Be careful with the order of brackets in the json.
 

@@ -16,8 +16,9 @@ from .model import (
 from .prompt_collection import PromptCollection
 from .prompt_formatter.json_formatter import JsonPromptFormatter, JsonValueFormatter
 from .prompt_formatter.key_value_formatter import KeyValueFormatter, KeyValuePromptFormatter
-from .prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterInterface
+from .prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig, PromptFormatterInterface
 from .prompt_formatter.text_formatter import TextValueFormatter
+from .prompt_transformer.reasoning_prompt_transformer import ExplanationGenerator, ReasoningPromptTransformer
 
 __all__ = [
     # common
@@ -36,6 +37,7 @@ __all__ = [
     "Prompt",
     "ParameterInfo",
     "Example",
+    "PromptFormatterConfig",
     "PromptFormatterInterface",
     "create_sample_prompt",
     # load
@@ -43,4 +45,7 @@ __all__ = [
     "load_prompt_from_json_file",
     "load_prompt_from_json_string",
     "PromptCollection",
+    # prompt transformer
+    "ExplanationGenerator",
+    "ReasoningPromptTransformer",
 ]

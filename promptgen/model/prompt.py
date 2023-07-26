@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from pydantic import model_validator
 
@@ -192,13 +192,39 @@ Output Parameters:
         Returns:
             A string representation of the prompt.
         """
-        input_str = ", ".join(
-            [f"{param.name}: {type(self.template.input[param.name]).__name__}" for param in self.input_parameters]
+        return f"{self.name}: {self.function_signature()}"
+
+    def input_signature(self) -> str:
+        """Return a string representation of the prompt's input.
+
+        Returns:
+            A string representation of the prompt's input.
+        """
+        return (
+            "("
+            + ", ".join(
+                [f"{param.name}: {type(self.template.input[param.name]).__name__}" for param in self.input_parameters]
+            )
+            + ")"
         )
-        output_str = ", ".join(
-            [f"{param.name}: {type(self.template.output[param.name]).__name__}" for param in self.output_parameters]
+
+    def output_signature(self) -> str:
+        """Return a string representation of the prompt's output.
+
+        Returns:
+            A string representation of the prompt's output.
+        """
+        return (
+            "("
+            + ", ".join(
+                [f"{param.name}: {type(self.template.output[param.name]).__name__}" for param in self.output_parameters]
+            )
+            + ")"
         )
-        return f"{self.name}: ({input_str}) -> ({output_str})"
+
+    def function_signature(self) -> str:
+        """Return a string representation of the prompt."""
+        return f"{self.input_signature()} -> {self.output_signature()}"
 
 
 def load_prompt_from_json_file(filename: str) -> Prompt:

@@ -4,7 +4,7 @@ from pprint import pformat
 from typing import Any, Callable, Dict, List, Tuple
 
 from promptgen.model.value_formatter import Value, ValueFormatter
-from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
+from promptgen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
 
 
 def format_string(s: str) -> str:
@@ -38,8 +38,17 @@ class KeyValueValueFormatter:
 
 
 class KeyValuePromptFormatter(PromptFormatter):
-    def __init__(self, value_formatter: KeyValueValueFormatter = KeyValueValueFormatter()):
-        super().__init__(KeyValueFormatter(value_formatter), KeyValueFormatter(value_formatter=value_formatter))
+    def __init__(
+        self,
+        *,
+        config: PromptFormatterConfig = PromptFormatterConfig(),
+        value_formatter: KeyValueValueFormatter = KeyValueValueFormatter(),
+    ):
+        super().__init__(
+            input_formatter=KeyValueFormatter(value_formatter),
+            output_formatter=KeyValueFormatter(value_formatter=value_formatter),
+            config=config,
+        )
 
 
 class KeyValueFormatter(ValueFormatter):
@@ -103,8 +112,8 @@ def extract_string(s: str) -> Tuple[str, bool]:
     quotes_flags = [
         ("'''", re.DOTALL),
         ('"""', re.DOTALL),
-        ("'", 0),
-        ('"', 0),
+        ("'", re.DOTALL),
+        ('"', re.DOTALL),
     ]
 
     for quote, flag in quotes_flags:
