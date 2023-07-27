@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import Callable
 
 from promptgen.model.prompt import Example, ParameterInfo, Prompt
@@ -17,7 +18,17 @@ Based on these verification results and reasons, we select the most appropriate 
 Therefore, our final conclusion is "...". We believe this resolves the problem initially posed as "..."."""
 
 
-class ExplanationGenerator:
+class ExplanationGeneratorInterface(ABC):
+    @abstractmethod
+    def generate(self, prompt: Prompt, input_value: Value, output_value: Value) -> Value:
+        pass # pragma: no cover
+
+    @abstractmethod
+    def get_reasoning_template(self) -> str:
+        pass # pragma: no cover
+
+
+class ExplanationGenerator(ExplanationGeneratorInterface):
     def __init__(
         self, *, generate_llm_response: Callable[[str], str], explanation_template: str = DEFAULT_EXPLANATION_TEMPLATE
     ):
@@ -58,11 +69,14 @@ class ExplanationGenerator:
             examples=[],
         )
 
+    def get_reasoning_template(self) -> str:
+        return self.reasoning_template
+
 
 class ReasoningPromptTransformer:
-    explanation_generator: ExplanationGenerator
+    explanation_generator: ExplanationGeneratorInterface
 
-    def __init__(self, explanation_generator: ExplanationGenerator):
+    def __init__(self, explanation_generator: ExplanationGeneratorInterface):
         self.explanation_generator = explanation_generator
 
     def transform_prompt(self, prompt: Prompt) -> Prompt:
@@ -86,7 +100,7 @@ class ReasoningPromptTransformer:
             template=Example(
                 input=prompt.template.input,
                 output={
-                    "reasoning": self.explanation_generator.reasoning_template,
+                    "reasoning": self.explanation_generator.get_reasoning_template(),
                     **prompt.template.output,
                 },
             ),

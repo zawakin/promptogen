@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import pytest
 from promptgen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptgen.model.value_formatter import Value
 
 from promptgen.prompt_collection.prompt_collection import PromptCollection
-from promptgen.prompt_transformer.reasoning_prompt_transformer import ExplanationGenerator
+from promptgen.prompt_transformer.reasoning_prompt_transformer import ExplanationGenerator, ExplanationGeneratorInterface, ReasoningPromptTransformer
 
 
 @pytest.fixture
@@ -106,3 +107,40 @@ Output:"""
     resp = explanation_generator.generate(prompt, input_value, output_value)
 
     assert resp == {'reasoning': generated_reasoning}
+
+
+def test_reasoning_prompt_transformer_transform_prompt(prompt: Prompt):
+    generated_reasoning = 'Generated reasoning'
+    explanation_template = 'Explanation Template'
+    def generate_llm_response(s: str):
+        return generated_reasoning
+
+    explanation_generator = ExplanationGenerator(generate_llm_response=generate_llm_response, explanation_template=explanation_template)
+    prompt_transformer = ReasoningPromptTransformer(explanation_generator=explanation_generator)
+
+    prompt_with_reasoning = prompt_transformer.transform_prompt(prompt)
+    assert prompt_with_reasoning == Prompt(
+        name=prompt.name,
+        description=prompt.description,
+        input_parameters=prompt.input_parameters,
+        output_parameters=[
+            ParameterInfo(name='reasoning', description='Reasoning for the output'),
+        ] + prompt.output_parameters,
+        template=Example(
+            input=prompt.template.input,
+            output={
+                'reasoning': explanation_template,
+                **prompt.template.output,
+            },
+        ),
+        examples=[
+            prompt.examples[0].update(output={
+                'reasoning': generated_reasoning,
+                **prompt.examples[0].output,
+            }),
+            prompt.examples[1].update(output={
+                'reasoning': generated_reasoning,
+                **prompt.examples[1].output,
+            }),
+        ],
+    )
