@@ -6,7 +6,7 @@ from promptgen.prompt_formatter.key_value_formatter import KeyValueFormatter
 from promptgen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
 from promptgen.prompt_formatter.text_formatter import TextValueFormatter
 
-DEFAULT_REASONING_TEMPLATE = """First, we clearly define the problem. The issue we are facing is "...". Next, we deeply analyze this problem, understanding its elements, background, and impact. From our analysis, the points we should focus on are "...".
+DEFAULT_EXPLANATION_TEMPLATE = """First, we clearly define the problem. The issue we are facing is "...". Next, we deeply analyze this problem, understanding its elements, background, and impact. From our analysis, the points we should focus on are "...".
 
 Then, we formulate hypotheses for problem-solving. There are several possible solutions, but first, let's put forward our first hypothesis as "...". Also, let's consider "...", as our second hypothesis. The reasons why we think each of these hypotheses could be effective are "...".
 
@@ -18,8 +18,9 @@ Therefore, our final conclusion is "...". We believe this resolves the problem i
 
 
 class ExplanationGenerator:
-    def __init__(self, *, generate_llm_response: Callable[[str], str]):
+    def __init__(self, *, generate_llm_response: Callable[[str], str], explanation_template: str = DEFAULT_EXPLANATION_TEMPLATE):
         self.generate_llm_response = generate_llm_response
+        self.reasoning_template = explanation_template
 
     def generate(self, prompt: Prompt, input_value: Value, output_value: Value) -> Value:
         config = PromptFormatterConfig(
@@ -44,7 +45,7 @@ class ExplanationGenerator:
         ]
         template = Example(
             input={**prompt.template.input, **prompt.template.output},
-            output={"reasoning": DEFAULT_REASONING_TEMPLATE},
+            output={"reasoning": self.reasoning_template},
         )
         return Prompt(
             name=name,
@@ -83,7 +84,7 @@ class ReasoningPromptTransformer:
             template=Example(
                 input=prompt.template.input,
                 output={
-                    "reasoning": DEFAULT_REASONING_TEMPLATE,
+                    "reasoning": self.explanation_generator.reasoning_template,
                     **prompt.template.output,
                 },
             ),
