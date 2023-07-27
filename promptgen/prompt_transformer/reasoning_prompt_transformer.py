@@ -18,7 +18,9 @@ Therefore, our final conclusion is "...". We believe this resolves the problem i
 
 
 class ExplanationGenerator:
-    def __init__(self, *, generate_llm_response: Callable[[str], str], explanation_template: str = DEFAULT_EXPLANATION_TEMPLATE):
+    def __init__(
+        self, *, generate_llm_response: Callable[[str], str], explanation_template: str = DEFAULT_EXPLANATION_TEMPLATE
+    ):
         self.generate_llm_response = generate_llm_response
         self.reasoning_template = explanation_template
 
