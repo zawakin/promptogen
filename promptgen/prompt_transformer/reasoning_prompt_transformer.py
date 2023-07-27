@@ -21,11 +21,11 @@ Therefore, our final conclusion is "...". We believe this resolves the problem i
 class ExplanationGeneratorInterface(ABC):
     @abstractmethod
     def generate(self, prompt: Prompt, input_value: Value, output_value: Value) -> Value:
-        pass # pragma: no cover
+        pass  # pragma: no cover
 
     @abstractmethod
     def get_reasoning_template(self) -> str:
-        pass # pragma: no cover
+        pass  # pragma: no cover
 
 
 class ExplanationGenerator(ExplanationGeneratorInterface):
