@@ -2,12 +2,14 @@ import json
 from typing import List, Optional, Tuple
 
 from promptgen.model.value_formatter import Value, ValueFormatter
-from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
+from promptgen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
 
 
 class JsonPromptFormatter(PromptFormatter):
-    def __init__(self, strict: bool = True):
-        super().__init__(JsonValueFormatter(), JsonValueFormatter(strict=strict))
+    def __init__(self, *, config: PromptFormatterConfig = PromptFormatterConfig(), strict: bool = True):
+        super().__init__(
+            input_formatter=JsonValueFormatter(), output_formatter=JsonValueFormatter(strict=strict), config=config
+        )
 
 
 class JsonValueFormatter(ValueFormatter):
