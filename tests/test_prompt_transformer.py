@@ -106,7 +106,7 @@ Output:"""
     }
     resp = explanation_generator.generate(prompt, input_value, output_value)
 
-    assert resp == {'reasoning': generated_reasoning}
+    assert resp == generated_reasoning
 
 
 def test_reasoning_prompt_transformer_transform_prompt(prompt: Prompt):

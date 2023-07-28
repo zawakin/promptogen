@@ -26,7 +26,6 @@ class PromptFormatterConfig(DataClass):
     show_formatter_description: bool = True
     show_parameter_info: bool = True
     show_template: bool = True
-    show_examples: bool = True
 
 
 class PromptFormatter(PromptFormatterInterface):
@@ -86,8 +85,7 @@ Output:"""
         if self.config.show_template:
             ss.append(f"Template:\n{self._format_example(prompt.template)}")
 
-        if self.config.show_examples:
-            ss.append(self._format_examples(prompt.examples))
+        ss.append(self._format_examples(prompt.examples))
 
         return "\n\n".join(s for s in ss if s)
 

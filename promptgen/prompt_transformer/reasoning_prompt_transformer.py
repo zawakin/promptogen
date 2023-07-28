@@ -20,7 +20,7 @@ Therefore, our final conclusion is "...". We believe this resolves the problem i
 
 class ExplanationGeneratorInterface(ABC):
     @abstractmethod
-    def generate(self, prompt: Prompt, input_value: Value, output_value: Value) -> Value:
+    def generate(self, prompt: Prompt, input_value: Value, output_value: Value) -> str:
         pass  # pragma: no cover
 
     @abstractmethod
@@ -35,7 +35,7 @@ class ExplanationGenerator(ExplanationGeneratorInterface):
         self.generate_llm_response = generate_llm_response
         self.reasoning_template = explanation_template
 
-    def generate(self, prompt: Prompt, input_value: Value, output_value: Value) -> Value:
+    def generate(self, prompt: Prompt, input_value: Value, output_value: Value) -> str:
         config = PromptFormatterConfig(
             show_formatter_description=False,
             show_parameter_info=False,
@@ -47,7 +47,7 @@ class ExplanationGenerator(ExplanationGeneratorInterface):
         raw_req = f.format_prompt(reasoning_prompt, {**input_value, **output_value})
         raw_resp = self.generate_llm_response(raw_req)
         resp = f.parse(reasoning_prompt, raw_resp)
-        return resp
+        return resp["reasoning"]
 
     def make_reasoning_prompt(self, prompt: Prompt) -> Prompt:
         name = "PromptExplanationGenerator"
@@ -82,11 +82,11 @@ class ReasoningPromptTransformer:
     def transform_prompt(self, prompt: Prompt) -> Prompt:
         examples_with_reasoning = []
         for example in prompt.examples:
-            resp = self.explanation_generator.generate(prompt, example.input, example.output)
+            reason = self.explanation_generator.generate(prompt, example.input, example.output)
             example_with_reasoning = Example(
                 input=example.input,
                 output={
-                    "reasoning": resp["reasoning"],
+                    "reasoning": reason,
                     **example.output,
                 },
             )
