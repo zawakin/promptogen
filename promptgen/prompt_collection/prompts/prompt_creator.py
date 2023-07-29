@@ -7,7 +7,7 @@ from promptgen.prompt_collection.prompts.text_categorizer import get_text_catego
 
 
 class PromptCreatorInput(DataClass):
-    purpose: str
+    description: str
     background: str
 
 
@@ -23,7 +23,7 @@ def get_prompt_creator_template() -> Prompt:
         name="PromptCreator",
         description="Create a prompt from the given purpose. Consider background information that is necessary to understand the purpose.",
         input_parameters=[
-            ParameterInfo(name="purpose", description="purpose of the prompt"),
+            ParameterInfo(name="description", description="description of the prompt"),
             ParameterInfo(name="background", description="background of the prompt"),
         ],
         output_parameters=[
@@ -34,7 +34,7 @@ def get_prompt_creator_template() -> Prompt:
         ],
         template=Example(
             input=PromptCreatorInput(
-                purpose="purpose of the prompt",
+                description="description of the prompt",
                 background="background of the prompt",
             ).to_dict(),
             output=PromptCreatorOutput(
@@ -44,7 +44,7 @@ def get_prompt_creator_template() -> Prompt:
         examples=[
             Example(
                 input=PromptCreatorInput(
-                    purpose="Categorize the given text into one of the given categories.",
+                    description="Categorize the given text",
                     background="The given text may be a sentence, a paragraph, or a document.",
                 ).to_dict(),
                 output=PromptCreatorOutput(
@@ -53,7 +53,7 @@ def get_prompt_creator_template() -> Prompt:
             ),
             Example(
                 input=PromptCreatorInput(
-                    purpose="Python code generator",
+                    description="Generate Python code based on the given task",
                     background="style: input: (task: str), output: (reason: str, code: str)",
                 ).to_dict(),
                 output=PromptCreatorOutput(

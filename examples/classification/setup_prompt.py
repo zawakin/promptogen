@@ -1,17 +1,14 @@
-from base import make_json_path
+from examples.base import make_json_path
 
 from examples.llm.openai_util import generate_text_by_text_openai_api
-from examples.tweet_eval_emotion.dataset_loader import TweetEvalEmotionDataset
+from examples.classification.dataset_loader import TweetEvalEmotionDataset
 
 import promptgen as pg
 
 
-def setup_base_prompt() -> pg.Prompt:
+def setup_base_prompt(input_value: pg.Value) -> pg.Prompt:
     # ref. https://huggingface.co/datasets/tweet_eval
-    resp = prompt_runner.run_prompt(collection['PromptCreator'], {
-        'purpose': "Classify emotion of tweet; (text: str) -> (emotion: str); 'emotion' must be one of anger, joy, optimism, sadness.",
-        'background': "add examples of these four emotions",
-    })
+    resp = prompt_runner.run_prompt(collection['PromptCreator'], input_value=input_value)
     return pg.Prompt.from_dict(resp['prompt'])
 
 
@@ -28,15 +25,19 @@ if __name__ == '__main__':
     prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
     collection = pg.PromptCollection(load_predefined=True)
 
-    # create base prompt without reasoning
-    emotion_classifier = setup_base_prompt()
-
     # load dataset
-    # train_examples = TweetEvalEmotionDataset(seed=43).load_train_dataset()
+    dataset = TweetEvalEmotionDataset(seed=43)
+    train_examples = dataset.load_train_dataset()
+
+    # create base prompt without reasoning
+    classfier_prompt = setup_base_prompt({
+        'description': dataset.attributes.description,
+        'background': dataset.attributes.background,
+    })
     # emotion_classifier = emotion_classifier.update(examples=train_examples)
 
-    emotion_classifier.to_json_file(make_json_path('tweet_eval_emotion_classifier.json'))
+    classfier_prompt.to_json_file(make_json_path(dataset.attributes.name + '.json'))
 
     # create prompt with reasoning
-    emotion_classifier_reasoning = setup_reasoning_prompt(emotion_classifier)
-    emotion_classifier_reasoning.to_json_file(make_json_path('tweet_eval_emotion_classifier_with_reason.json'))
+    classfier_prompt_with_reasoning = setup_reasoning_prompt(classfier_prompt)
+    classfier_prompt_with_reasoning.to_json_file(make_json_path(dataset.attributes.name + '_with_reason.json'))
