@@ -7,7 +7,10 @@ from .model import (
     Example,
     ParameterInfo,
     Prompt,
+    PromptRunner,
     TextBasedLLM,
+    TextBasedLLMWrapper,
+    TextBasedPromptRunner,
     Value,
     ValueFormatter,
     create_sample_prompt,
@@ -39,6 +42,7 @@ __all__ = [
     # llm
     "LLM",
     "TextBasedLLM",
+    "TextBasedLLMWrapper",
     # prompt
     "Prompt",
     "ParameterInfo",
@@ -54,4 +58,7 @@ __all__ = [
     # prompt transformer
     "LLMReasoningExtractor",
     "PromptWithReasoningTransformer",
+    # prompt runner
+    "PromptRunner",
+    "TextBasedPromptRunner",
 ]

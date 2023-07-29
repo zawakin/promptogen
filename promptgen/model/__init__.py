@@ -1,4 +1,4 @@
-from .llm import LLM, TextBasedLLM
+from .llm import LLM, TextBasedLLM, TextBasedLLMWrapper
 from .prompt import (
     Example,
     ParameterInfo,
@@ -8,6 +8,7 @@ from .prompt import (
     load_prompt_from_json_file,
     load_prompt_from_json_string,
 )
+from .prompt_runner import PromptRunner, TextBasedPromptRunner
 from .value_formatter import Value, ValueFormatter
 
 __all__ = [
@@ -26,4 +27,8 @@ __all__ = [
     # llm
     "LLM",
     "TextBasedLLM",
+    "TextBasedLLMWrapper",
+    # prompt runner
+    "PromptRunner",
+    "TextBasedPromptRunner",
 ]

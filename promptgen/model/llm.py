@@ -17,8 +17,8 @@ class TextBasedLLM(LLM):
 
 
 class TextBasedLLMWrapper(TextBasedLLM):
-    def __init__(self, *, generate_llm_response: Callable[[str], str]):
-        self.generate_llm_response = generate_llm_response
+    def __init__(self, *, generate_text_by_text: Callable[[str], str]):
+        self.generate_text_by_text = generate_text_by_text
 
     def generate(self, prompt: str) -> str:
-        return self.generate_llm_response(prompt)
+        return self.generate_text_by_text(prompt)
