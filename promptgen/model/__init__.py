@@ -1,3 +1,4 @@
+from .llm import LLM, TextBasedLLM
 from .prompt import (
     Example,
     ParameterInfo,
@@ -22,4 +23,7 @@ __all__ = [
     "load_prompt_from_dict",
     "load_prompt_from_json_file",
     "load_prompt_from_json_string",
+    # llm
+    "LLM",
+    "TextBasedLLM",
 ]

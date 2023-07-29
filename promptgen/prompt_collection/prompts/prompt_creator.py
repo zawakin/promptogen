@@ -21,7 +21,7 @@ def get_prompt_creator_template() -> Prompt:
 
     return Prompt(
         name="PromptCreator",
-        description="Create a prompt from the given purpose. Don't create an example with the input purpose. Instead, create an example with a different purpose. Consider background information that is necessary to understand the purpose.",
+        description="Create a prompt from the given purpose. Consider background information that is necessary to understand the purpose.",
         input_parameters=[
             ParameterInfo(name="purpose", description="purpose of the prompt"),
             ParameterInfo(name="background", description="background of the prompt"),
