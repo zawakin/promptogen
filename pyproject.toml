@@ -46,6 +46,8 @@ python-dotenv = "0.21.1"
 ipykernel = "^6.23.1"
 jupyter = "^1.0.0"
 datasets = "^2.13.0"
+tenacity = "^8.2.2"
+colorama = "^0.4.6"
 
 [tool.black]
 line-length = 120
