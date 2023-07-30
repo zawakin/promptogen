@@ -4,7 +4,11 @@ from pprint import pformat
 from typing import Any, Callable, Dict, List, Tuple
 
 from promptgen.model.value_formatter import Value, ValueFormatter
-from promptgen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
+from promptgen.prompt_formatter.prompt_formatter import (
+    PromptFormatter,
+    PromptFormatterConfig,
+    convert_dataclass_to_dict,
+)
 
 
 def format_string(s: str) -> str:
@@ -63,6 +67,8 @@ class KeyValueFormatter(ValueFormatter):
     def format(self, value: Value) -> str:
         if not isinstance(value, dict):
             raise TypeError(f"Expected value to be an instance of dict, got {type(value).__name__}.")
+
+        value = convert_dataclass_to_dict(value)
 
         s = ""
         for key, value in value.items():
