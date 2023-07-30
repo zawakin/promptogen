@@ -1,11 +1,33 @@
+import time
 from typing import List
-# from tenacity import retry, stop_after_attempt
-from examples.base import make_json_path
-from examples.llm.openai_util import generate_text_by_text_openai_api
-from examples.classification.dataset_loader import TweetEvalEmotionDataset
+
+import typer
 
 import promptgen as pg
-import time
+
+# from tenacity import retry, stop_after_attempt
+from examples.base import make_json_path
+from examples.classification.dataset_loader import DatasetLoader, IMDbSentimentDataset, TweetEvalEmotionDataset
+from examples.llm.openai_util import generate_text_by_text_openai_api
+
+app = typer.Typer(add_completion=True)
+
+
+@app.command("tweet_eval_emotion")
+def run_tweet_eval_emotion():
+    dataset = TweetEvalEmotionDataset(seed=43)
+    benchmark_by_dataset(dataset)
+
+
+@app.command("imdb_sentiment")
+def run_imdb_sentiment():
+    dataset = IMDbSentimentDataset(seed=43)
+    benchmark_by_dataset(dataset)
+
+
+formatter = pg.KeyValuePromptFormatter()
+llm = pg.TextBasedLLMWrapper(generate_text_by_text=lambda s: generate_text_by_text_openai_api(s, "gpt-3.5-turbo"))
+prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
 
 
 def run_benchmark_prompt(prompt_to_test: pg.Prompt, test_examples: List[pg.Example], output_key: str):
@@ -17,12 +39,12 @@ def run_benchmark_prompt(prompt_to_test: pg.Prompt, test_examples: List[pg.Examp
 
         # @retry(stop=stop_after_attempt(2))
         def f() -> pg.Value:
-            return prompt_runner.run_prompt(prompt_to_test,  example.input)
+            return prompt_runner.run_prompt(prompt_to_test, example.input)
 
         try:
             resp = f()
         except Exception as e:
-            print(f'Error: {e}; skipping...')
+            print(f"Error: {e}; skipping...")
             total += 1
             continue
 
@@ -34,20 +56,22 @@ def run_benchmark_prompt(prompt_to_test: pg.Prompt, test_examples: List[pg.Examp
         if got == expected:
             correct += 1
         else:
-            print(f'got {got} expected {expected}, input: {example.input}')
+            print(f"got {got} expected {expected}, input: {example.input}")
 
-        print(f'Total: {total}, Correct: {correct}, Accuracy: {correct/total}')
+        print(f"Total: {total}, Correct: {correct}, Accuracy: {correct/total}")
 
 
-if __name__ == '__main__':
-    formatter = pg.KeyValuePromptFormatter()
-    llm = pg.TextBasedLLMWrapper(generate_text_by_text=lambda s: generate_text_by_text_openai_api(s, 'gpt-3.5-turbo'))
-    prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
+def benchmark_by_dataset(dataset: DatasetLoader):
+    # dataset = TweetEvalEmotionDataset(seed=43)
+    dataset = IMDbSentimentDataset(seed=43)
 
-    dataset = TweetEvalEmotionDataset(seed=43)
-
-    prompt_to_test = pg.Prompt.from_json_file(make_json_path(dataset.attributes.name + '_with_reason.json'))
+    prompt_to_test = pg.Prompt.from_json_file(make_json_path(dataset.attributes.name + ".json"))
+    # prompt_to_test = pg.Prompt.from_json_file(make_json_path(dataset.attributes.name + '_with_reason.json'))
 
     test_examples = dataset.load_test_dataset()
 
     run_benchmark_prompt(prompt_to_test, test_examples, dataset.attributes.output_key)
+
+
+if __name__ == "__main__":
+    app()
