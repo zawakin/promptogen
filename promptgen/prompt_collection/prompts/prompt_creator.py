@@ -21,20 +21,23 @@ def get_prompt_creator_template() -> Prompt:
 
     return Prompt(
         name="PromptCreator",
-        description="Create a prompt from the given purpose. Consider background information that is necessary to understand the purpose.",
+        description="Create a prompt from the given description and background. Use the given description as the prompt description as is. Consider background information to make the prompt more specific.",
         input_parameters=[
-            ParameterInfo(name="description", description="description of the prompt"),
+            ParameterInfo(
+                name="description",
+                description="description of the prompt; this will be used as the prompt description as is",
+            ),
             ParameterInfo(name="background", description="background of the prompt"),
         ],
         output_parameters=[
             ParameterInfo(
                 name="prompt",
-                description="prompt created from the given purpose. Is has 'name', 'description', 'input_parameters', 'output_parameters', 'template', and 'examples'.",
+                description="A prompt which has 'name', 'description', 'input_parameters', 'output_parameters', 'template', and 'examples'.",
             ),
         ],
         template=Example(
             input=PromptCreatorInput(
-                description="description of the prompt",
+                description="description of sample prompt",
                 background="background of the prompt",
             ).to_dict(),
             output=PromptCreatorOutput(
@@ -44,7 +47,7 @@ def get_prompt_creator_template() -> Prompt:
         examples=[
             Example(
                 input=PromptCreatorInput(
-                    description="Categorize the given text",
+                    description=categorization_prompt.description,
                     background="The given text may be a sentence, a paragraph, or a document.",
                 ).to_dict(),
                 output=PromptCreatorOutput(
@@ -53,7 +56,7 @@ def get_prompt_creator_template() -> Prompt:
             ),
             Example(
                 input=PromptCreatorInput(
-                    description="Generate Python code based on the given task",
+                    description=python_code_generator_prompt.description,
                     background="style: input: (task: str), output: (reason: str, code: str)",
                 ).to_dict(),
                 output=PromptCreatorOutput(

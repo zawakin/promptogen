@@ -274,7 +274,7 @@ def create_sample_prompt(suffix: str) -> Prompt:
     """
     return Prompt(
         name=f"sample-{suffix}",
-        description="A sample prompt.",
+        description="description of sample prompt",
         input_parameters=[
             ParameterInfo(name="input1", description="The first input parameter."),
             ParameterInfo(name="input2", description="The second input parameter."),
