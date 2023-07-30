@@ -9,6 +9,7 @@ from .prompt import (
     load_prompt_from_json_string,
 )
 from .prompt_runner import PromptRunner, TextBasedPromptRunner
+from .reasoning_extractor import ReasoningTemplate
 from .value_formatter import Value, ValueFormatter
 
 __all__ = [
@@ -31,4 +32,6 @@ __all__ = [
     # prompt runner
     "PromptRunner",
     "TextBasedPromptRunner",
+    # reasoning
+    "ReasoningTemplate",
 ]

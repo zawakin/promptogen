@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Callable, Optional
 
+from promptgen.model.dataclass import DataClass
 from promptgen.model.llm import LLM, TextBasedLLM
 from promptgen.model.prompt import Example, ParameterInfo, Prompt
 from promptgen.model.prompt_transformer import PromptTransformer
-from promptgen.model.reasoning_extractor import ExampleReasoning, ReasoningExtractor
+from promptgen.model.reasoning_extractor import ExampleReasoning, ReasoningExtractor, ReasoningTemplate
 from promptgen.model.value_formatter import Value
 from promptgen.prompt_formatter.key_value_formatter import KeyValueFormatter
 from promptgen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
@@ -23,11 +24,19 @@ Based on these verification results and reasons, we select the most appropriate 
 Therefore, our final conclusion is "...". We believe this resolves the problem initially posed as "..."."""
 
 
-class ReasoningGeneratorPromptTransformer(PromptTransformer):
-    reasoning_template: str
+class SimpleReasoningTemplate(ReasoningTemplate):
+    template: str = DEFAULT_REASONING_TEMPLATE
 
-    def __init__(self, *, reasoning_template: str = DEFAULT_REASONING_TEMPLATE):
-        self.reasoning_template = reasoning_template
+
+class DetailedReasoningTemplate(ReasoningTemplate):
+    template: str = DETAILED_REASONING_TEMPLATE
+
+
+class ReasoningGeneratorPromptTransformer(PromptTransformer):
+    reasoning_template: ReasoningTemplate
+
+    def __init__(self, *, reasoning_template: str):
+        self.reasoning_template = ReasoningTemplate(template=reasoning_template)
 
     def transform_prompt(self, prompt: Prompt) -> Prompt:
         name = "PromptReasoningGenerator"
@@ -38,7 +47,7 @@ class ReasoningGeneratorPromptTransformer(PromptTransformer):
         ]
         template = Example(
             input={**prompt.template.input, **prompt.template.output},
-            output={"reasoning": self.reasoning_template},
+            output={"reasoning": self.reasoning_template.template},
         )
         return Prompt(
             name=name,
@@ -58,7 +67,7 @@ class LLMReasoningExtractor(ReasoningExtractor):
         self,
         *,
         text_based_llm: TextBasedLLM,
-        reasoning_template: str = DEFAULT_REASONING_TEMPLATE,
+        reasoning_template: str,
     ):
         self.text_based_llm = text_based_llm
         self.reasoning_template = reasoning_template
@@ -79,5 +88,5 @@ class LLMReasoningExtractor(ReasoningExtractor):
         resp = f.parse(reasoning_prompt, raw_resp)
         return ExampleReasoning(reasoning=resp["reasoning"])
 
-    def get_reasoning_template(self) -> str:
-        return self.reasoning_template
+    def get_reasoning_template(self) -> ReasoningTemplate:
+        return ReasoningTemplate(template=self.reasoning_template)

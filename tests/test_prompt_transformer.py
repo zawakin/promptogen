@@ -56,7 +56,8 @@ def prompt():
 
 
 def test_reasoning_generator_prompt_transformer_transform_prompt(prompt: Prompt):
-    prompt_transformer = ReasoningGeneratorPromptTransformer()
+    reasoning_template = 'This is because ... So the answer is ...'
+    prompt_transformer = ReasoningGeneratorPromptTransformer(reasoning_template=reasoning_template)
 
     reasoning_prompt = prompt_transformer.transform_prompt(prompt)
 
@@ -111,14 +112,14 @@ Output:"""
 
 def test_reasoning_prompt_transformer_transform_prompt(prompt: Prompt):
     generated_reasoning = 'Generated reasoning'
-    explanation_template = 'Explanation Template'
+    reasoning_template = 'Explanation Template'
     def generate_llm_response(s: str):
         return generated_reasoning
 
     text_based_llm = TextBasedLLMWrapper(generate_text_by_text=generate_llm_response)
 
-    explanation_generator = LLMReasoningExtractor(text_based_llm=text_based_llm, reasoning_template=explanation_template)
-    prompt_transformer = PromptWithReasoningTransformer(explanation_generator=explanation_generator)
+    reasoning_extractor = LLMReasoningExtractor(text_based_llm=text_based_llm, reasoning_template=reasoning_template)
+    prompt_transformer = PromptWithReasoningTransformer(reasoning_extractor=reasoning_extractor)
 
     prompt_with_reasoning = prompt_transformer.transform_prompt(prompt)
     assert prompt_with_reasoning == Prompt(
@@ -131,7 +132,7 @@ def test_reasoning_prompt_transformer_transform_prompt(prompt: Prompt):
         template=Example(
             input=prompt.template.input,
             output={
-                'reasoning': explanation_template,
+                'reasoning': reasoning_template,
                 **prompt.template.output,
             },
         ),

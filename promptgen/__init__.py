@@ -8,6 +8,7 @@ from .model import (
     ParameterInfo,
     Prompt,
     PromptRunner,
+    ReasoningTemplate,
     TextBasedLLM,
     TextBasedLLMWrapper,
     TextBasedPromptRunner,
@@ -61,4 +62,6 @@ __all__ = [
     # prompt runner
     "PromptRunner",
     "TextBasedPromptRunner",
+    # reasoning
+    "ReasoningTemplate",
 ]

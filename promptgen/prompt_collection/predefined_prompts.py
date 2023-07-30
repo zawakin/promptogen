@@ -10,6 +10,7 @@ from .prompts import (
     PromptOptimizerPrompt,
     PythonCodeGeneratorPrompt,
     TextCategorizerPrompt,
+    TextCondenserPrompt,
     TextSummarizerPrompt,
 )
 
@@ -22,6 +23,7 @@ def load_predefined_prompts() -> List[Prompt]:
         ExampleCreatorPrompt(),
         PromptOptimizerPrompt(),
         PythonCodeGeneratorPrompt(),
+        TextCondenserPrompt(),
     ]
 
     return prompts

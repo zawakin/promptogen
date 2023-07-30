@@ -10,6 +10,10 @@ class ExampleReasoning(DataClass):
     reasoning: str
 
 
+class ReasoningTemplate(DataClass):
+    template: str
+
+
 class ReasoningExtractor(ABC):
     """Extracts reasoning from a prompt."""
 
@@ -18,5 +22,5 @@ class ReasoningExtractor(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def get_reasoning_template(self) -> str:
+    def get_reasoning_template(self) -> ReasoningTemplate:
         pass  # pragma: no cover

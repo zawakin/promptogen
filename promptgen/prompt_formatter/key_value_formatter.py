@@ -11,13 +11,13 @@ from promptgen.prompt_formatter.prompt_formatter import (
 )
 
 
-def format_string(s: str) -> str:
+def format_string(s: str, quote_for_single_line: str = '"') -> str:
     # escape double quotes
     s = s.replace('"', '\\"')
 
     if "\n" in s:
         return f'"""{s}"""'
-    return f'"{s}"'
+    return f"{quote_for_single_line}{s}{quote_for_single_line}"
 
 
 default_type_formatter: Dict[type, Callable[[Any], str]] = {
@@ -26,16 +26,15 @@ default_type_formatter: Dict[type, Callable[[Any], str]] = {
 
 
 class KeyValueValueFormatter:
-    type_formatter: Dict[type, Callable[[Any], str]]
+    quote_for_single_line: str = '"'
 
-    def __init__(self, type_formatter: Dict[type, Callable[[Any], str]] = {}):
-        self.type_formatter = {**default_type_formatter, **type_formatter}
+    def __init__(self, quote_for_single_line: str = '"'):
+        self.quote_for_single_line = quote_for_single_line
 
     def format(self, value: Any) -> str:
-        if type(value) in self.type_formatter:
-            return self.type_formatter[type(value)](value)
-        else:
-            return pformat(value, indent=2, sort_dicts=False, width=160)
+        if isinstance(value, str):
+            return format_string(value, self.quote_for_single_line)
+        return pformat(value, indent=2, sort_dicts=False, width=160)
 
     def parse(self, value: Any) -> Any:
         return value
@@ -46,11 +45,10 @@ class KeyValuePromptFormatter(PromptFormatter):
         self,
         *,
         config: PromptFormatterConfig = PromptFormatterConfig(),
-        value_formatter: KeyValueValueFormatter = KeyValueValueFormatter(),
     ):
         super().__init__(
-            input_formatter=KeyValueFormatter(value_formatter),
-            output_formatter=KeyValueFormatter(value_formatter=value_formatter),
+            input_formatter=KeyValueFormatter(KeyValueValueFormatter()),
+            output_formatter=KeyValueFormatter(KeyValueValueFormatter(quote_for_single_line='"""')),
             config=config,
         )
 

@@ -2,8 +2,9 @@ import promptgen as pg
 from examples.llm.openai_util import generate_text_by_text_openai_api
 from promptgen.prompt_collection import PromptCreatorPrompt
 
-formatter = pg.KeyValuePromptFormatter()
 llm = pg.TextBasedLLMWrapper(generate_text_by_text=lambda s: generate_text_by_text_openai_api(s, "gpt-3.5-turbo"))
+
+formatter = pg.KeyValuePromptFormatter()
 prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
 
 prompt_creator_prompt = PromptCreatorPrompt()
@@ -29,11 +30,11 @@ input_value = {
 output_value = prompt_runner.run_prompt(context_qa_prompt, input_value=input_value)
 
 print(output_value["answer"])
-# e.g.) The fox jumps over the lazy dog.
+# -> The fox jumps over the lazy dog.
 
 # Generate reasoning for the answer
 reasoning_extractor = pg.LLMReasoningExtractor(
-    text_based_llm=llm, reasoning_template="This is because ... So the answer is ..."
+    text_based_llm=llm, reasoning_template="This is because ... So the answer is ...",
 )
 
 print(
@@ -45,4 +46,4 @@ print(
         ),
     ).reasoning
 )
-# e.g.) This is because the input text "context" provides the information that the quick brown fox jumps over the lazy dog. The input question "question" asks what the fox jumps over. Therefore, the answer is "The fox jumps over the lazy dog" which is derived directly from the context information.
+# -> This is because the input text "context" provides the information that the quick brown fox jumps over the lazy dog. The input question "question" asks what the fox jumps over. Therefore, the answer is "The fox jumps over the lazy dog" which is derived directly from the context information.
