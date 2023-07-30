@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 from promptgen.model.dataclass import DataClass
 from promptgen.model.prompt import Example, Prompt
-from promptgen.model.value_formatter import Value
 
 
 class ExampleReasoning(DataClass):

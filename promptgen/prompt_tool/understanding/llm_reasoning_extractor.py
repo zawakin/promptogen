@@ -10,7 +10,9 @@ from promptgen.prompt_formatter.key_value_formatter import KeyValueFormatter
 from promptgen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
 from promptgen.prompt_formatter.text_formatter import TextValueFormatter
 
-DEFAULT_REASONING_TEMPLATE = """First, we clearly define the problem. The issue we are facing is "...". Next, we deeply analyze this problem, understanding its elements, background, and impact. From our analysis, the points we should focus on are "...".
+DEFAULT_REASONING_TEMPLATE = """This is because ... So the answer is ..."""
+
+DETAILED_REASONING_TEMPLATE = """First, we clearly define the problem. The issue we are facing is "...". Next, we deeply analyze this problem, understanding its elements, background, and impact. From our analysis, the points we should focus on are "...".
 
 Then, we formulate hypotheses for problem-solving. There are several possible solutions, but first, let's put forward our first hypothesis as "...". Also, let's consider "...", as our second hypothesis. The reasons why we think each of these hypotheses could be effective are "...".
 
@@ -56,10 +58,10 @@ class LLMReasoningExtractor(ReasoningExtractor):
         self,
         *,
         text_based_llm: TextBasedLLM,
-        explanation_template: str = DEFAULT_REASONING_TEMPLATE,
+        reasoning_template: str = DEFAULT_REASONING_TEMPLATE,
     ):
         self.text_based_llm = text_based_llm
-        self.reasoning_template = explanation_template
+        self.reasoning_template = reasoning_template
 
     def generate_reasoning(self, prompt: Prompt, example: Example) -> ExampleReasoning:
         transformer = ReasoningGeneratorPromptTransformer(reasoning_template=self.reasoning_template)

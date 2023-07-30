@@ -8,8 +8,9 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.organization = os.getenv("OPENAI_ORG_ID")
 
-from colorama import Fore, Style, init
+from colorama import Fore, init
 
+# initialize colorama for colored output
 init(autoreset=True)
 
 

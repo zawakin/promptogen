@@ -94,7 +94,7 @@ Output:"""
         return generated_reasoning
     llm = TextBasedLLMWrapper(generate_text_by_text=generate_llm_response)
 
-    explanation_generator = LLMReasoningExtractor(text_based_llm=llm, explanation_template=explanation_template)
+    explanation_generator = LLMReasoningExtractor(text_based_llm=llm, reasoning_template=explanation_template)
 
     input_value = {
         'test input parameter name': 'input1',
@@ -117,7 +117,7 @@ def test_reasoning_prompt_transformer_transform_prompt(prompt: Prompt):
 
     text_based_llm = TextBasedLLMWrapper(generate_text_by_text=generate_llm_response)
 
-    explanation_generator = LLMReasoningExtractor(text_based_llm=text_based_llm, explanation_template=explanation_template)
+    explanation_generator = LLMReasoningExtractor(text_based_llm=text_based_llm, reasoning_template=explanation_template)
     prompt_transformer = PromptWithReasoningTransformer(explanation_generator=explanation_generator)
 
     prompt_with_reasoning = prompt_transformer.transform_prompt(prompt)
