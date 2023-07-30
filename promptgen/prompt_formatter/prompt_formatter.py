@@ -3,6 +3,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List
 
+from pydantic import BaseModel
+
 from promptgen.model.dataclass import DataClass
 from promptgen.model.prompt import Example, ParameterInfo, Prompt
 from promptgen.model.value_formatter import Value, ValueFormatter
@@ -103,3 +105,16 @@ Output:"""
     def parse(self, prompt: Prompt, s: str) -> Value:
         output_keys = [(param.name, type(prompt.template.output[param.name])) for param in prompt.output_parameters]
         return self.output_formatter.parse(output_keys, s)
+
+
+def convert_dataclass_to_dict(value: Value) -> Value:
+    if isinstance(value, dict):
+        return {k: convert_dataclass_to_dict(v) for k, v in value.items()}
+    elif isinstance(value, list):
+        return [convert_dataclass_to_dict(v) for v in value]
+    elif isinstance(value, DataClass):
+        return value.to_dict()
+    elif isinstance(value, BaseModel):
+        return value.model_dump()
+    else:
+        return value

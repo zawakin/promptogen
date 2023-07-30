@@ -4,65 +4,55 @@ from typing import List
 
 from promptgen.model.dataclass import DataClass
 from promptgen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
-from promptgen.prompt_collection.prompts.python_code_generator import get_python_code_generator_prompt
-from promptgen.prompt_collection.prompts.text_categorizer import get_text_categorizer_template
+from promptgen.prompt_collection.prompts.python_code_generator import PythonCodeGeneratorPrompt
+from promptgen.prompt_collection.prompts.text_categorizer import TextCategorizerPrompt
 
 
-class ExampleCreatorInput(DataClass):
-    prompt: Prompt
-
-
-class ExampleCreatorOutput(DataClass):
-    example: Example
-
-
-def get_example_creator_template() -> Prompt:
-    categorization_prompt = get_text_categorizer_template()
-    python_code_generator_prompt = get_python_code_generator_prompt()
-
-    return Prompt(
-        name="PromptExampleCreator",
-        description="Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space.",
-        input_parameters=[
-            ParameterInfo(name="prompt", description="prompt"),
-        ],
-        output_parameters=[
-            ParameterInfo(
-                name="example",
-                description="detailed example of the prompt. Please add an example with scattered inputs and outputs in semantic space. Specific example is better than general examples.",
-            ),
-        ],
-        template=Example(
-            input=ExampleCreatorInput(
-                prompt=create_sample_prompt("prompt"),
-            ).to_dict(),
-            output=ExampleCreatorOutput(
-                example=Example(
-                    input={
-                        "input_1": "example input 1",
-                    },
-                    output={
-                        "output_1": "example output 1",
-                    },
-                ),
-            ).to_dict(),
+class ExampleCreatorPrompt(Prompt):
+    name: str = "PromptExampleCreator"
+    description: str = "Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space."
+    input_parameters: List[ParameterInfo] = [
+        ParameterInfo(
+            name="prompt",
+            description="prompt",
         ),
-        examples=[
-            Example(
-                input=ExampleCreatorInput(
-                    prompt=categorization_prompt.update(examples=[]),
-                ).to_dict(),
-                output=ExampleCreatorOutput(
-                    example=categorization_prompt.examples[0],
-                ).to_dict(),
+    ]
+    output_parameters: List[ParameterInfo] = [
+        ParameterInfo(
+            name="example",
+            description="detailed example of the prompt. Please add an example with scattered inputs and outputs in semantic space. Specific example is better than general examples.",
+        ),
+    ]
+    template: Example = Example(
+        input={
+            "prompt": create_sample_prompt("prompt"),
+        },
+        output={
+            "example": Example(
+                input={
+                    "input_1": "example input 1",
+                },
+                output={
+                    "output_1": "example output 1",
+                },
             ),
-            Example(
-                input=ExampleCreatorInput(
-                    prompt=python_code_generator_prompt.update(examples=[]),
-                ).to_dict(),
-                output=ExampleCreatorOutput(
-                    example=python_code_generator_prompt.examples[0],
-                ).to_dict(),
-            ),
-        ],
+        },
     )
+    examples: List[Example] = [
+        Example(
+            input={
+                "prompt": TextCategorizerPrompt(examples=[]),
+            },
+            output={
+                "example": TextCategorizerPrompt().examples[0],
+            },
+        ),
+        Example(
+            input={
+                "prompt": PythonCodeGeneratorPrompt(examples=[]),
+            },
+            output={
+                "example": PythonCodeGeneratorPrompt().examples[0],
+            },
+        ),
+    ]

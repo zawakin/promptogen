@@ -1,43 +1,47 @@
 #%%jj
-import promptgen as pg
+from promptgen import ParameterInfo, Prompt, Example, KeyValuePromptFormatter
+# These objects can be also imported by the following:
+# import promptgen as pg
+# e.g. pg.ParameterInfo, pg.Prompt, pg.Example, pg.KeyValuePromptFormatter
 
-summarizer = pg.Prompt(
+summarizer = Prompt(
     name="Text Summarizer and Keyword Extractor",
     description="Summarize text and extract keywords.",
     input_parameters=[
-        pg.ParameterInfo(name="text", description="Text to summarize"),
+        ParameterInfo(name="text", description="Text to summarize"),
     ],
     output_parameters=[
-        pg.ParameterInfo(name="summary", description="Summary of text"),
-        pg.ParameterInfo(name="keywords", description="Keywords extracted from text"),
+        ParameterInfo(name="summary", description="Summary of text"),
+        ParameterInfo(name="keywords", description="Keywords extracted from text"),
     ],
-    template=pg.Example(
-        input=pg.InputValue(text="This is a sample text to summarize."),
-        output=pg.OutputValue(
-            summary="This is a summary of the text.",
-            keywords=["sample", "text", "summarize"],
-        ),
+    template=Example(
+        input={'text': "This is a sample text to summarize."},
+        output={
+            'summary': "This is a summary of the text.",
+            'keywords': ["sample", "text", "summarize"],
+        },
     ),
     examples=[
-        pg.Example(
-            input=pg.InputValue(text="One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."),
-            output=pg.OutputValue(
-                summary="A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
-                keywords=["friends", "park", "sports", "memories"],
-            )
+        Example(
+            input={
+                'text': "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."},
+            output={
+                'summary': "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
+                'keywords': ["friends", "park", "sports", "memories"],
+            },
         )
     ],
 )
 
-formatter = pg.KeyValuePromptFormatter()
+formatter = KeyValuePromptFormatter()
 
-
-# formatter = pg.JsonPromptFormatter()
 
 print(formatter.format_prompt_without_input(summarizer))
 # %%
 
-input_value = pg.InputValue(text="In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.")
+input_value = {
+    'text': "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.",
+}
 print(formatter.format_prompt(summarizer, input_value))
 
 # %%
@@ -47,7 +51,7 @@ import openai
 import os
 
 from dotenv import load_dotenv
-load_dotenv('../../.env')
+load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.organization = os.getenv("OPENAI_ORG_ID")
@@ -64,7 +68,6 @@ def generate_chat_stream_response(prompt: str, model: str):
 def generate_llm_response(prompt: str, model: str):
     s = ''
     for delta in generate_chat_stream_response(prompt, model):
-        # print(delta, end='')
         s += delta
     return s
 

@@ -3,9 +3,15 @@ from __future__ import annotations
 __version__ = "0.1.0"
 
 from .model import (
+    LLM,
     Example,
     ParameterInfo,
     Prompt,
+    PromptRunner,
+    ReasoningTemplate,
+    TextBasedLLM,
+    TextBasedLLMWrapper,
+    TextBasedPromptRunner,
     Value,
     ValueFormatter,
     create_sample_prompt,
@@ -18,7 +24,8 @@ from .prompt_formatter.json_formatter import JsonPromptFormatter, JsonValueForma
 from .prompt_formatter.key_value_formatter import KeyValueFormatter, KeyValuePromptFormatter
 from .prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig, PromptFormatterInterface
 from .prompt_formatter.text_formatter import TextValueFormatter
-from .prompt_transformer.reasoning_prompt_transformer import ExplanationGenerator, ReasoningPromptTransformer
+from .prompt_tool.transformation.prompt_with_reasoning import PromptWithReasoningTransformer
+from .prompt_tool.understanding.llm_reasoning_extractor import LLMReasoningExtractor
 
 __all__ = [
     # common
@@ -33,6 +40,10 @@ __all__ = [
     "KeyValuePromptFormatter",
     # text
     "TextValueFormatter",
+    # llm
+    "LLM",
+    "TextBasedLLM",
+    "TextBasedLLMWrapper",
     # prompt
     "Prompt",
     "ParameterInfo",
@@ -46,6 +57,11 @@ __all__ = [
     "load_prompt_from_json_string",
     "PromptCollection",
     # prompt transformer
-    "ExplanationGenerator",
-    "ReasoningPromptTransformer",
+    "LLMReasoningExtractor",
+    "PromptWithReasoningTransformer",
+    # prompt runner
+    "PromptRunner",
+    "TextBasedPromptRunner",
+    # reasoning
+    "ReasoningTemplate",
 ]

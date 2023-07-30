@@ -2,7 +2,11 @@ import json
 from typing import List, Optional, Tuple
 
 from promptgen.model.value_formatter import Value, ValueFormatter
-from promptgen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
+from promptgen.prompt_formatter.prompt_formatter import (
+    PromptFormatter,
+    PromptFormatterConfig,
+    convert_dataclass_to_dict,
+)
 
 
 class JsonPromptFormatter(PromptFormatter):
@@ -47,6 +51,8 @@ Be careful with the order of brackets in the json."""
         """
         if not isinstance(value, dict):
             raise TypeError(f"Expected output to be an instance of OutputValue, got {type(value).__name__}.")
+
+        value = convert_dataclass_to_dict(value)
 
         return with_code_block("json", json.dumps(value, ensure_ascii=False, indent=self.indent))
 
