@@ -1,8 +1,8 @@
+from examples.llm.openai_util import OpenAITextBasedLLM
 import promptgen as pg
-from examples.llm.openai_util import generate_text_by_text_openai_api
 from promptgen.prompt_collection import PromptCreatorPrompt
 
-llm = pg.TextBasedLLMWrapper(generate_text_by_text=lambda s: generate_text_by_text_openai_api(s, "gpt-3.5-turbo"))
+llm = OpenAITextBasedLLM(model="gpt-3.5-turbo")
 
 formatter = pg.KeyValuePromptFormatter()
 prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)

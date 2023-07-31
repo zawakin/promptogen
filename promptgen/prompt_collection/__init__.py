@@ -1,4 +1,4 @@
-from .prompt_collection import PromptCollection
+from .prompt_collection import PromptCollection, PredefinedPromptCollection
 from .prompts import (
     ExampleCreatorPrompt,
     PromptCreatorPrompt,
@@ -10,6 +10,7 @@ from .prompts import (
 
 __all__ = [
     "PromptCollection",
+    "PredefinedPromptCollection",
     # prompts
     "PromptCreatorPrompt",
     "TextCategorizerPrompt",

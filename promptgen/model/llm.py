@@ -18,6 +18,7 @@ class TextBasedLLM(LLM, ABC):
 
 class TextBasedLLMWrapper(TextBasedLLM):
     """Text-based language model wrapper.
+    It wraps a function that generates text by the given text.
 
     Args:
         generate_text_by_text: (input_text: str) -> (output_text: str)
@@ -25,6 +26,8 @@ class TextBasedLLMWrapper(TextBasedLLM):
     """
 
     def __init__(self, *, generate_text_by_text: Callable[[str], str]):
+        if not callable(generate_text_by_text):
+            raise TypeError("generate_text_by_text must be callable")
         self.generate_text_by_text = generate_text_by_text
 
     def generate(self, input_text: str) -> str:

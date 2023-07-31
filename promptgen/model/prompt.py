@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from pydantic import model_validator
 
@@ -61,7 +61,7 @@ class Prompt(DataClass):
         output_parameter_keys = {parameter.name for parameter in output_parameters}
         if template.input.keys() != input_parameter_keys:
             raise ValueError(
-                f"Template input keys do not match input parameters: " f"{template.input} vs {input_parameters}"
+                f"Template input keys do not match input parameters: " f"{template.input.keys()} vs {input_parameters}"
             )
         if template.output.keys() != output_parameter_keys:
             raise ValueError(
@@ -71,11 +71,11 @@ class Prompt(DataClass):
         for example in examples:
             if example.input.keys() != input_parameter_keys:
                 raise ValueError(
-                    f"Example input keys do not match input parameters: " f"{example.input} vs {input_parameters}"
+                    f"Example input keys do not match input parameters: " f"{example.input.keys()} vs {input_parameters}"
                 )
             if example.output.keys() != output_parameter_keys:
                 raise ValueError(
-                    f"Example output keys do not match output parameters: " f"{example.output} vs {output_parameters}"
+                    f"Example output keys do not match output parameters: " f"{example.output.keys()} vs {output_parameters}"
                 )
 
         return self

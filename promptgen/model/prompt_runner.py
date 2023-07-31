@@ -7,12 +7,16 @@ from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
 
 
 class PromptRunner(ABC):
+    """A prompt runner is responsible for running a prompt and returning the result."""
+
     @abstractmethod
     def run_prompt(self, prompt: Prompt, input_value: Value) -> Value:
         pass  # pragma: no cover
 
 
 class TextBasedPromptRunner(PromptRunner):
+    """A text-based prompt runner is responsible for running a prompt and returning the result."""
+
     def __init__(self, llm: TextBasedLLM, formatter: PromptFormatter):
         self.text_based_llm = llm
         self.formatter = formatter
