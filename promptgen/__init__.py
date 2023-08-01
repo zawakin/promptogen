@@ -19,7 +19,7 @@ from .model import (
     load_prompt_from_json_file,
     load_prompt_from_json_string,
 )
-from .prompt_collection import PromptCollection
+from .prompt_collection import PredefinedPromptCollection, PromptCollection
 from .prompt_formatter.json_formatter import JsonPromptFormatter, JsonValueFormatter
 from .prompt_formatter.key_value_formatter import KeyValueFormatter, KeyValuePromptFormatter
 from .prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig, PromptFormatterInterface
@@ -56,6 +56,7 @@ __all__ = [
     "load_prompt_from_json_file",
     "load_prompt_from_json_string",
     "PromptCollection",
+    "PredefinedPromptCollection",
     # prompt transformer
     "LLMReasoningExtractor",
     "PromptWithReasoningTransformer",

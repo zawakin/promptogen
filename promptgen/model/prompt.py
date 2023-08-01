@@ -163,18 +163,7 @@ class Prompt(DataClass):
             examples=examples,
         )
 
-    def __repr__(self) -> str:
-        input_parameter_names = [param.name for param in self.input_parameters]
-        output_parameter_names = [param.name for param in self.output_parameters]
-        return f"{self.__class__.__name__}(name={self.name!r}, description='{self.description[:20]}...', input_parameter_names={input_parameter_names!r}, output_parameter_names={output_parameter_names!r}, examples_count={len(self.examples)})"
-
-    def __str__(self) -> str:
-        """Return a string representation of the prompt.
-
-        Returns:
-            A string representation of the prompt.
-        """
-
+    def summary(self) -> str:
         def section_header(title):
             return f"\n{title}\n" + "-" * len(title)
 
@@ -198,6 +187,19 @@ class Prompt(DataClass):
         examples_count = f"{section_header('Examples Count')}\n{len(self.examples)}"
 
         return f"{signature}\n" f"{description}\n" f"{input_parameters}\n" f"{output_parameters}\n" f"{examples_count}"
+
+    def __repr__(self) -> str:
+        input_parameter_names = [param.name for param in self.input_parameters]
+        output_parameter_names = [param.name for param in self.output_parameters]
+        return f"{self.__class__.__name__}(name={self.name!r}, description='{self.description[:20]}...', input_parameter_names={input_parameter_names!r}, output_parameter_names={output_parameter_names!r}, examples_count={len(self.examples)})"
+
+    def __str__(self) -> str:
+        """Return a string representation of the prompt.
+
+        Returns:
+            A string representation of the prompt.
+        """
+        return self.summary()
 
     def input_signature(self) -> str:
         """Return a string representation of the prompt's input.
