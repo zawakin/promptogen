@@ -60,6 +60,8 @@ class ReasoningGeneratorPromptTransformer(PromptTransformer):
 
 
 class LLMReasoningExtractor(ReasoningExtractor):
+    """Reasoning extractor that uses a text-based LLM."""
+
     text_based_llm: TextBasedLLM
     reasoning_template: str
 
@@ -69,10 +71,26 @@ class LLMReasoningExtractor(ReasoningExtractor):
         text_based_llm: TextBasedLLM,
         reasoning_template: str,
     ):
+        """Initialize a LLMReasoningExtractor.
+
+        Args:
+            text_based_llm: The text-based LLM to use. It must be an instance of a class that inherits from TextBasedLLM.
+            reasoning_template(str):
+                The reasoning template to use. Defaults to DEFAULT_REASONING_TEMPLATE.
+        """
         self.text_based_llm = text_based_llm
         self.reasoning_template = reasoning_template
 
     def generate_reasoning(self, prompt: Prompt, example: Example) -> ExampleReasoning:
+        """Generate reasoning for the given prompt and example.
+
+        Args:
+            prompt: The prompt to generate reasoning for.
+            example: The example to generate reasoning for.
+
+        Returns:
+            (ExampleReasoning): The generated reasoning.
+        """
         transformer = ReasoningGeneratorPromptTransformer(reasoning_template=self.reasoning_template)
 
         config = PromptFormatterConfig(
@@ -88,5 +106,5 @@ class LLMReasoningExtractor(ReasoningExtractor):
         resp = f.parse(reasoning_prompt, raw_resp)
         return ExampleReasoning(reasoning=resp["reasoning"])
 
-    def get_reasoning_template(self) -> ReasoningTemplate:
-        return ReasoningTemplate(template=self.reasoning_template)
+    def get_reasoning_template(self) -> str:
+        return self.reasoning_template

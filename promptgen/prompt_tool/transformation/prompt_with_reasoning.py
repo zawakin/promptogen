@@ -24,7 +24,7 @@ class PromptWithReasoningTransformer(PromptTransformer):
             template=Example(
                 input=prompt.template.input,
                 output={
-                    "reasoning": self.reasoning_extractor.get_reasoning_template().template,
+                    "reasoning": self.reasoning_extractor.get_reasoning_template(),
                     **prompt.template.output,
                 },
             ),

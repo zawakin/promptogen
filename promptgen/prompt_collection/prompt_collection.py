@@ -9,6 +9,8 @@ from .predefined_prompts import load_predefined_prompts
 
 
 class PromptCollection(DataClass):
+    """Collection of prompts."""
+
     prompts: Dict[str, Prompt] = {}
 
     def __repr__(self) -> str:
@@ -40,4 +42,6 @@ class PromptCollection(DataClass):
 
 
 class PredefinedPromptCollection(PromptCollection):
+    """Collection of predefined prompts."""
+
     prompts: Dict[str, Prompt] = {prompt.name: prompt for prompt in load_predefined_prompts()}
