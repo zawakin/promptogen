@@ -5,6 +5,7 @@ from examples.base import make_json_path
 from examples.classification.dataset_loader import DatasetLoader, IMDbSentimentDataset, TweetEvalEmotionDataset
 from examples.llm.openai_util import OpenAITextBasedLLM
 from promptgen.prompt_collection import PromptCreatorPrompt
+from promptgen.prompt_tool import LLMReasoningExtractor, PromptWithReasoningTransformer
 
 app = typer.Typer()
 
@@ -33,10 +34,10 @@ def setup_base_prompt(input_value: pg.Value) -> pg.Prompt:
 
 
 def setup_reasoning_prompt(prompt: pg.Prompt) -> pg.Prompt:
-    reasoning_extractor = pg.LLMReasoningExtractor(
+    reasoning_extractor = LLMReasoningExtractor(
         text_based_llm=llm, reasoning_template="This is because ... So the answer is ..."
     )
-    reasoning_transformer = pg.PromptWithReasoningTransformer(reasoning_extractor)
+    reasoning_transformer = PromptWithReasoningTransformer(reasoning_extractor)
     prompt_with_reasoning = reasoning_transformer.transform_prompt(prompt)
     return prompt_with_reasoning
 

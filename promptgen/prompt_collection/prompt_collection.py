@@ -40,6 +40,11 @@ class PromptCollection(DataClass):
 
         return f"{prompt_details}"
 
+    @classmethod
+    def load_predefined(cls) -> PromptCollection:
+        """Load the prompt collection."""
+        return PredefinedPromptCollection()
+
 
 class PredefinedPromptCollection(PromptCollection):
     """Collection of predefined prompts."""

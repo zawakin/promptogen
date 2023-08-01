@@ -8,7 +8,6 @@ import promptgen as pg
 # from tenacity import retry, stop_after_attempt
 from examples.base import make_json_path
 from examples.classification.dataset_loader import DatasetLoader, IMDbSentimentDataset, TweetEvalEmotionDataset
-
 from examples.llm.openai_util import OpenAITextBasedLLM
 
 app = typer.Typer(add_completion=True)

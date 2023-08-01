@@ -30,13 +30,17 @@ def generate_chat_completion(text: str, model: str, verbose=True) -> str:
         print(Fore.BLUE + "-- input --")
         print(Fore.BLUE + text)
     resp = openai.ChatCompletion.create(
-        model=model, messages=[{"role": "user", "content": text}], max_tokens=2048, timeout=5, stream=True,
+        model=model,
+        messages=[{"role": "user", "content": text}],
+        max_tokens=2048,
+        timeout=5,
+        stream=True,
     )
     if verbose:
         print(Fore.GREEN + "-- output --")
     raw_resp = ""
     for chunk in resp:
-        chunk_content = chunk['choices'][0]['delta'].get('content', '')
+        chunk_content = chunk["choices"][0]["delta"].get("content", "")
         raw_resp += chunk_content
 
         if verbose:
@@ -45,4 +49,3 @@ def generate_chat_completion(text: str, model: str, verbose=True) -> str:
         print()
 
     return raw_resp
-
