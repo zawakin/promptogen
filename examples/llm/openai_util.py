@@ -17,11 +17,12 @@ init(autoreset=True)
 
 
 class OpenAITextBasedLLM(TextBasedLLM):
-    def __init__(self, model: str):
+    def __init__(self, model: str, verbose=True):
         self.model = model
+        self.verbose = verbose
 
-    def generate_text_by_text(self, text: str, verbose=True) -> str:
-        return generate_chat_completion(text, self.model, verbose=verbose)
+    def generate(self, text: str) -> str:
+        return generate_chat_completion(text, self.model, verbose=self.verbose)
 
 
 def generate_chat_completion(text: str, model: str, verbose=True) -> str:
