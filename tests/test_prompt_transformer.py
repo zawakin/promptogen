@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import pytest
-from promptgen.model.llm import TextBasedLLMWrapper
+from promptgen.model.llm import FunctionBasedTextLLM
 from promptgen.model.prompt import Example, ParameterInfo, Prompt
 from promptgen.model.reasoning_extractor import ExampleReasoning
 from promptgen.prompt_tool.transformation.prompt_with_reasoning import PromptWithReasoningTransformer
-from promptgen.prompt_tool.understanding.llm_reasoning_extractor import LLMReasoningExtractor, ReasoningGeneratorPromptTransformer
+from promptgen.prompt_tool.understanding.llm_reasoning_extractor import TextLLMReasoningExtractor, ReasoningGeneratorPromptTransformer
 
 
 @pytest.fixture
@@ -93,9 +93,9 @@ test output parameter name 2: "output2"
 Output:"""
 
         return generated_reasoning
-    llm = TextBasedLLMWrapper(generate_text_by_text=generate_llm_response)
+    llm = FunctionBasedTextLLM(generate_text_by_text=generate_llm_response)
 
-    explanation_generator = LLMReasoningExtractor(text_based_llm=llm, reasoning_template=explanation_template)
+    explanation_generator = TextLLMReasoningExtractor(text_llm=llm, reasoning_template=explanation_template)
 
     input_value = {
         'test input parameter name': 'input1',
@@ -116,9 +116,9 @@ def test_reasoning_prompt_transformer_transform_prompt(prompt: Prompt):
     def generate_llm_response(s: str):
         return generated_reasoning
 
-    text_based_llm = TextBasedLLMWrapper(generate_text_by_text=generate_llm_response)
+    text_llm = FunctionBasedTextLLM(generate_text_by_text=generate_llm_response)
 
-    reasoning_extractor = LLMReasoningExtractor(text_based_llm=text_based_llm, reasoning_template=reasoning_template)
+    reasoning_extractor = TextLLMReasoningExtractor(text_llm=text_llm, reasoning_template=reasoning_template)
     prompt_transformer = PromptWithReasoningTransformer(reasoning_extractor=reasoning_extractor)
 
     prompt_with_reasoning = prompt_transformer.transform_prompt(prompt)

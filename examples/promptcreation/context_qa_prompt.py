@@ -1,12 +1,12 @@
 import promptgen as pg
 from examples.llm.openai_util import OpenAITextBasedLLM
 from promptgen.prompt_collection import PromptCreatorPrompt
-from promptgen.prompt_tool import LLMReasoningExtractor
+from promptgen.prompt_tool import TextLLMReasoningExtractor
 
 llm = OpenAITextBasedLLM(model="gpt-3.5-turbo")
 
 formatter = pg.KeyValuePromptFormatter()
-prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 prompt_creator_prompt = PromptCreatorPrompt()
 
@@ -21,7 +21,7 @@ def setup_context_qa_prompt() -> pg.Prompt:
 
 
 context_qa_prompt = setup_context_qa_prompt()
-print(context_qa_prompt.to_dict())
+print(context_qa_prompt)
 
 input_value = {
     "context": "The quick brown fox jumps over the lazy dog.",
@@ -33,9 +33,9 @@ output_value = prompt_runner.run_prompt(context_qa_prompt, input_value=input_val
 print(output_value["answer"])
 # -> The fox jumps over the lazy dog.
 
-# Generate reasoning for the answer
-reasoning_extractor = LLMReasoningExtractor(
-    text_based_llm=llm,
+# Generate reasoning for the answer. This is done by using the LLMReasoningExtractor.
+reasoning_extractor = TextLLMReasoningExtractor(
+    text_llm=llm,
     reasoning_template="This is because ... So the answer is ...",
 )
 

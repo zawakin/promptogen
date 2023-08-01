@@ -1,4 +1,4 @@
-from .llm import LLM, TextBasedLLM, TextBasedLLMWrapper
+from .llm import LLM, FunctionBasedTextLLM, TextLLM
 from .prompt import (
     Example,
     ParameterInfo,
@@ -8,7 +8,7 @@ from .prompt import (
     load_prompt_from_json_file,
     load_prompt_from_json_string,
 )
-from .prompt_runner import PromptRunner, TextBasedPromptRunner
+from .prompt_runner import PromptRunner, TextLLMPromptRunner
 from .reasoning_extractor import ReasoningTemplate
 from .value_formatter import Value, ValueFormatter
 
@@ -27,11 +27,11 @@ __all__ = [
     "load_prompt_from_json_string",
     # llm
     "LLM",
-    "TextBasedLLM",
-    "TextBasedLLMWrapper",
+    "TextLLM",
+    "FunctionBasedTextLLM",
     # prompt runner
     "PromptRunner",
-    "TextBasedPromptRunner",
+    "TextLLMPromptRunner",
     # reasoning
     "ReasoningTemplate",
 ]

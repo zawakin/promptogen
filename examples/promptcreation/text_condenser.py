@@ -1,14 +1,14 @@
 import promptgen as pg
 from examples.llm.openai_util import OpenAITextBasedLLM
 from promptgen.prompt_collection import PromptCreatorPrompt
-from promptgen.prompt_tool import LLMReasoningExtractor
+from promptgen.prompt_tool import TextLLMReasoningExtractor
 
 llm = OpenAITextBasedLLM(model="gpt-3.5-turbo")
 smart_llm = OpenAITextBasedLLM(model="gpt-4")
 
 formatter = pg.KeyValuePromptFormatter()
-prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
-smart_prompt_runner = pg.TextBasedPromptRunner(llm=smart_llm, formatter=formatter)
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
+smart_prompt_runner = pg.TextLLMPromptRunner(llm=smart_llm, formatter=formatter)
 
 prompt_creator_prompt = PromptCreatorPrompt()
 
@@ -37,8 +37,8 @@ print(output_value["shorter_text"])
 # # -> The fox jumps over the lazy dog.
 
 # Generate reasoning for the answer
-reasoning_extractor = LLMReasoningExtractor(
-    text_based_llm=llm,
+reasoning_extractor = TextLLMReasoningExtractor(
+    text_llm=llm,
     reasoning_template="This is because ... So the answer is ...",
 )
 

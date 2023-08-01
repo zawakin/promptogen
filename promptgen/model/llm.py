@@ -8,22 +8,22 @@ class LLM(ABC):
     pass  # pragma: no cover
 
 
-class TextBasedLLM(LLM, ABC):
-    """Language model interface that generates text."""
+class TextLLM(LLM, ABC):
+    """Language model interface that generates text from text."""
 
     @abstractmethod
     def generate(self, input_text: str) -> str:
         pass  # pragma: no cover
 
 
-class TextBasedLLMWrapper(TextBasedLLM):
+class FunctionBasedTextLLM(TextLLM):
     """Text-based language model wrapper.
     It wraps a function that generates text by the given text.
     """
 
     _gen: Callable[[str], str]
 
-    def __init__(self, *, generate_text_by_text: Callable[[str], str]):
+    def __init__(self, generate_text_by_text: Callable[[str], str]):
         """Initialize a TextBasedLLMWrapper.
 
         Args:

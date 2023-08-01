@@ -3,7 +3,7 @@ import os
 import openai
 from dotenv import load_dotenv
 
-from promptgen.model.llm import TextBasedLLM
+from promptgen.model.llm import TextLLM
 
 load_dotenv()
 
@@ -16,7 +16,7 @@ from colorama import Fore, init
 init(autoreset=True)
 
 
-class OpenAITextBasedLLM(TextBasedLLM):
+class OpenAITextBasedLLM(TextLLM):
     def __init__(self, model: str, verbose=True):
         self.model = model
         self.verbose = verbose

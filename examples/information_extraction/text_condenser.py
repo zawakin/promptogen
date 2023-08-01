@@ -1,20 +1,20 @@
 import promptgen as pg
 from examples.llm.openai_util import OpenAITextBasedLLM
 from promptgen.prompt_collection.prompts.text_condenser import TextCondenserPrompt
-from promptgen.prompt_tool import LLMReasoningExtractor, PromptWithReasoningTransformer
+from promptgen.prompt_tool import PromptWithReasoningTransformer, TextLLMReasoningExtractor
 
 llm = OpenAITextBasedLLM(model="gpt-3.5-turbo-16k")
 
 formatter = pg.KeyValuePromptFormatter()
-prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 
 text_condenser_prompt = TextCondenserPrompt()
 
 
 def setup_reasoning_prompt(prompt: pg.Prompt) -> pg.Prompt:
-    reasoning_extractor = LLMReasoningExtractor(
-        text_based_llm=llm, reasoning_template="This is because ... So the answer is ..."
+    reasoning_extractor = TextLLMReasoningExtractor(
+        text_llm=llm, reasoning_template="This is because ... So the answer is ..."
     )
     reasoning_transformer = PromptWithReasoningTransformer(reasoning_extractor)
     prompt_with_reasoning = reasoning_transformer.transform_prompt(prompt)

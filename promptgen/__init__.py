@@ -5,12 +5,12 @@ __version__ = "0.1.0"
 
 from .model import (
     Example,
+    FunctionBasedTextLLM,
     ParameterInfo,
     Prompt,
     PromptRunner,
-    TextBasedLLM,
-    TextBasedLLMWrapper,
-    TextBasedPromptRunner,
+    TextLLM,
+    TextLLMPromptRunner,
     Value,
 )
 from .prompt_formatter import (
@@ -23,8 +23,8 @@ from .prompt_formatter import (
 
 __all__ = [
     # llm
-    "TextBasedLLM",
-    "TextBasedLLMWrapper",
+    "TextLLM",
+    "FunctionBasedTextLLM",
     # prompt formatter
     "JsonPromptFormatter",
     "KeyValuePromptFormatter",
@@ -38,5 +38,5 @@ __all__ = [
     "PromptFormatterInterface",
     # prompt runner
     "PromptRunner",
-    "TextBasedPromptRunner",
+    "TextLLMPromptRunner",
 ]

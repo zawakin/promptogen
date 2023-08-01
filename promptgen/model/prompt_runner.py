@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from promptgen.model.llm import TextBasedLLM
+from promptgen.model.llm import TextLLM
 from promptgen.model.prompt import Prompt
 from promptgen.model.value_formatter import Value
 from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
@@ -14,17 +14,17 @@ class PromptRunner(ABC):
         pass  # pragma: no cover
 
 
-class TextBasedPromptRunner(PromptRunner):
+class TextLLMPromptRunner(PromptRunner):
     """A text-based prompt runner is responsible for running a prompt and returning the result."""
 
-    def __init__(self, llm: TextBasedLLM, formatter: PromptFormatter):
+    def __init__(self, llm: TextLLM, formatter: PromptFormatter):
         """Initialize a TextBasedPromptRunner.
 
         Args:
             llm: The LLM to use. It must be an instance of TextBasedLLM.
             formatter: The prompt formatter to use. It must be an instance of PromptFormatter.
         """
-        self.text_based_llm = llm
+        self.text_llm = llm
         self.formatter = formatter
 
     def run_prompt(self, prompt: Prompt, input_value: Value) -> Value:
@@ -35,6 +35,6 @@ class TextBasedPromptRunner(PromptRunner):
             input_value: The input value to use. It must be an instance of Value, which is a dict.
         """
         raw_req = self.formatter.format_prompt(prompt, input_value)
-        raw_resp = self.text_based_llm.generate(raw_req)
+        raw_resp = self.text_llm.generate(raw_req)
         resp = self.formatter.parse(prompt, raw_resp)
         return resp
