@@ -28,7 +28,7 @@ class TextBasedLLMWrapper(TextBasedLLM):
     def __init__(self, *, generate_text_by_text: Callable[[str], str]):
         if not callable(generate_text_by_text):
             raise TypeError("generate_text_by_text must be callable")
-        self.generate_text_by_text = generate_text_by_text
+        self._gen = generate_text_by_text
 
     def generate(self, input_text: str) -> str:
-        return self.generate_text_by_text(input_text)
+        return self._gen(input_text)

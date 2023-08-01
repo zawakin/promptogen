@@ -71,11 +71,13 @@ class Prompt(DataClass):
         for example in examples:
             if example.input.keys() != input_parameter_keys:
                 raise ValueError(
-                    f"Example input keys do not match input parameters: " f"{example.input.keys()} vs {input_parameters}"
+                    f"Example input keys do not match input parameters: "
+                    f"{example.input.keys()} vs {input_parameters}"
                 )
             if example.output.keys() != output_parameter_keys:
                 raise ValueError(
-                    f"Example output keys do not match output parameters: " f"{example.output.keys()} vs {output_parameters}"
+                    f"Example output keys do not match output parameters: "
+                    f"{example.output.keys()} vs {output_parameters}"
                 )
 
         return self
@@ -162,29 +164,9 @@ class Prompt(DataClass):
         )
 
     def __repr__(self) -> str:
-        input_parameters = "\n".join(
-            [
-                f"    - {param.name} ({type(self.template.input[param.name]).__name__}): {param.description}"
-                for param in self.input_parameters
-            ]
-        )
-        output_parameters = "\n".join(
-            [
-                f"    - {param.name} ({type(self.template.output[param.name]).__name__}): {param.description}"
-                for param in self.output_parameters
-            ]
-        )
-        s = f"""Prompt: {self.name}
-
-{self.description}
-
-Input Parameters:
-{input_parameters}
-
-Output Parameters:
-{output_parameters}
-"""
-        return s
+        input_parameter_names = [param.name for param in self.input_parameters]
+        output_parameter_names = [param.name for param in self.output_parameters]
+        return f"{self.__class__.__name__}(name={self.name!r}, description='{self.description[:20]}...', input_parameter_names={input_parameter_names!r}, output_parameter_names={output_parameter_names!r}, examples_count={len(self.examples)})"
 
     def __str__(self) -> str:
         """Return a string representation of the prompt.
@@ -192,7 +174,30 @@ Output Parameters:
         Returns:
             A string representation of the prompt.
         """
-        return f"{self.name}: {self.function_signature()}"
+
+        def section_header(title):
+            return f"\n{title}\n" + "-" * len(title)
+
+        input_params_str = "\n".join(
+            [
+                f"- {param.name} ({type(self.template.input[param.name]).__name__}): {param.description}"
+                for param in self.input_parameters
+            ]
+        )
+        output_params_str = "\n".join(
+            [
+                f"- {param.name} ({type(self.template.output[param.name]).__name__}): {param.description}"
+                for param in self.output_parameters
+            ]
+        )
+
+        signature = f"{self.name}: {self.function_signature()}"
+        description = f"{section_header('Description')}\n{self.description}"
+        input_parameters = f"{section_header('Input Parameters')}\n{input_params_str}"
+        output_parameters = f"{section_header('Output Parameters')}\n{output_params_str}"
+        examples_count = f"{section_header('Examples Count')}\n{len(self.examples)}"
+
+        return f"{signature}\n" f"{description}\n" f"{input_parameters}\n" f"{output_parameters}\n" f"{examples_count}"
 
     def input_signature(self) -> str:
         """Return a string representation of the prompt's input.

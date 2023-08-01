@@ -1,4 +1,4 @@
-from .prompt_collection import PromptCollection, PredefinedPromptCollection
+from .prompt_collection import PredefinedPromptCollection, PromptCollection
 from .prompts import (
     ExampleCreatorPrompt,
     PromptCreatorPrompt,
