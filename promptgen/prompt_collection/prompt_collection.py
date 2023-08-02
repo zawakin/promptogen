@@ -1,39 +1,52 @@
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict
 
+from promptgen.model.dataclass import DataClass
 from promptgen.model.prompt import Prompt
 
 from .predefined_prompts import load_predefined_prompts
 
 
-class PromptCollection(Dict[str, Prompt]):
-    def __init__(self, load_predefined: bool = True):
-        self.__dict__.update({})
-        if load_predefined:
-            for prompt in load_predefined_prompts():
-                self.add_prompt(prompt)
+class PromptCollection(DataClass):
+    """Collection of prompts."""
 
-    def get_prompt(self, name: str) -> Prompt:
-        return self.__getitem__(name)
+    prompts: Dict[str, Prompt] = {}
 
-    def list_prompts(self) -> List[str]:
-        return list(self.keys())
+    def __repr__(self) -> str:
+        prompt_names = list(self.prompts.keys())[:20]
+        return f"{self.__class__.__name__}(prompt_names={prompt_names!r})"
 
-    def add_prompt(self, prompt: Prompt):
-        if not isinstance(prompt, Prompt):
-            raise Exception("Prompt must be an instance of Prompt")
-        self.__setitem__(prompt.name, prompt)
+    def __str__(self) -> str:
+        return self.summary()
 
-    def __str__(self):
-        s = ""
-        s += "<PromptCollection>\n"
-        s += f"Number of prompts: {len(self)}\n\n"
-        s += "Prompts:\n"
-        for _, prompt in self.items():
-            s += f"- {prompt.__str__()}\n"
+    def summary(self) -> str:
+        def section_header(title):
+            return f"\n{title}\n" + "-" * len(title)
 
-        return s
+        prompt_overview = section_header("Prompts Overview")
+        for name, prompt in self.prompts.items():
+            prompt_overview += f"\n  {name}: {prompt.function_signature()}"
 
-    def __repr__(self):
-        return self.__str__()
+        return f"{prompt_overview}\n\nUse 'details()' method to view full details of each prompt."
+
+    def details(self) -> str:
+        def section_header(title):
+            return f"\n{title}\n" + "-" * len(title)
+
+        prompt_details = section_header("Prompts Details")
+        for name, prompt in self.prompts.items():
+            prompt_details += f"\n{name}: {prompt.description}\n"
+
+        return f"{prompt_details}"
+
+    @classmethod
+    def load_predefined(cls) -> PromptCollection:
+        """Load the prompt collection."""
+        return PredefinedPromptCollection()
+
+
+class PredefinedPromptCollection(PromptCollection):
+    """Collection of predefined prompts."""
+
+    prompts: Dict[str, Prompt] = {prompt.name: prompt for prompt in load_predefined_prompts()}

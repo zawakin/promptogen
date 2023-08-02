@@ -22,5 +22,5 @@ class ReasoningExtractor(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def get_reasoning_template(self) -> ReasoningTemplate:
+    def get_reasoning_template(self) -> str:
         pass  # pragma: no cover

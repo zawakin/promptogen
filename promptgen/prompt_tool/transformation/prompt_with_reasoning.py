@@ -4,12 +4,24 @@ from promptgen.model.reasoning_extractor import ReasoningExtractor
 
 
 class PromptWithReasoningTransformer(PromptTransformer):
+    """A prompt transformer that adds reasoning to the prompt."""
+
     reasoning_extractor: ReasoningExtractor
 
     def __init__(self, reasoning_extractor: ReasoningExtractor):
+        """Initialize a PromptWithReasoningTransformer.
+
+        Args:
+            reasoning_extractor (ReasoningExtractor): The reasoning extractor to use.
+        """
         self.reasoning_extractor = reasoning_extractor
 
     def transform_prompt(self, prompt: Prompt) -> Prompt:
+        """Transform the given prompt.
+
+        Args:
+            prompt (Prompt): The prompt to transform.
+        """
         new_examples = []
         for example in prompt.examples:
             reasoning = self.reasoning_extractor.generate_reasoning(prompt, example)
@@ -24,7 +36,7 @@ class PromptWithReasoningTransformer(PromptTransformer):
             template=Example(
                 input=prompt.template.input,
                 output={
-                    "reasoning": self.reasoning_extractor.get_reasoning_template().template,
+                    "reasoning": self.reasoning_extractor.get_reasoning_template(),
                     **prompt.template.output,
                 },
             ),

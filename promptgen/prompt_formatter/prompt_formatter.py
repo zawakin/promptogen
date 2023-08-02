@@ -11,6 +11,8 @@ from promptgen.model.value_formatter import Value, ValueFormatter
 
 
 class PromptFormatterInterface(ABC):
+    """Interface for formatting a prompt and parsing the output of the prompt."""
+
     @abstractmethod
     def format_prompt(self, prompt: Prompt, input_value: Value) -> str:
         pass  # pragma: no cover
@@ -25,12 +27,31 @@ class PromptFormatterInterface(ABC):
 
 
 class PromptFormatterConfig(DataClass):
+    """Configuration for formatting a prompt.
+
+    Attributes:
+        show_formatter_description (bool): Whether to show the description of the formatter.
+        show_parameter_info (bool): Whether to show the parameter info of the prompt.
+        show_template (bool): Whether to show the template of the prompt.
+    """
+
     show_formatter_description: bool = True
     show_parameter_info: bool = True
     show_template: bool = True
 
 
 class PromptFormatter(PromptFormatterInterface):
+    """Format a prompt and parse the output of the prompt.
+
+    Args:
+        input_formatter (ValueFormatter): Formatter for input.
+        output_formatter (ValueFormatter): Formatter for output.
+        config (PromptFormatterConfig, optional): Configuration for formatting. Defaults to PromptFormatterConfig().
+
+    Raises:
+        TypeError: If input_formatter or output_formatter is not an instance of ValueFormatter.
+    """
+
     input_formatter: ValueFormatter
     output_formatter: ValueFormatter
     config: PromptFormatterConfig
@@ -56,6 +77,19 @@ class PromptFormatter(PromptFormatterInterface):
         self.config = config
 
     def format_prompt(self, prompt: Prompt, input_value: Value) -> str:
+        """Format a prompt with the given input value.
+
+        Args:
+            prompt (Prompt): Prompt to format.
+            input_value (Value): Input value to format.
+
+        Returns:
+            str: Formatted prompt.
+
+        Raises:
+            TypeError: If input_value is not an instance of dict.
+            TypeError: If prompt is not an instance of Prompt.
+        """
         if not isinstance(input_value, dict):
             raise TypeError(f"Expected input_value to be an instance of dict, got {type(input_value).__name__}.")
         if not isinstance(prompt, Prompt):
@@ -74,6 +108,17 @@ Input:
 Output:"""
 
     def format_prompt_without_input(self, prompt: Prompt) -> str:
+        """Format a prompt without input.
+
+        Args:
+            prompt (Prompt): Prompt to format.
+
+        Returns:
+            str: Formatted prompt.
+
+        Raises:
+            TypeError: If prompt is not an instance of Prompt.
+        """
         # use config to determine what to show
 
         ss = [prompt.description]
@@ -103,11 +148,21 @@ Output:"""
         return "\n".join(f"  - {p.name}: {p.description}" for p in parameters)
 
     def parse(self, prompt: Prompt, s: str) -> Value:
+        """Parse the output of the prompt.
+
+        Args:
+            prompt (Prompt): Prompt to parse.
+            s (str): Output of the prompt.
+
+        Returns:
+            Value: Parsed output.
+        """
         output_keys = [(param.name, type(prompt.template.output[param.name])) for param in prompt.output_parameters]
         return self.output_formatter.parse(output_keys, s)
 
 
 def convert_dataclass_to_dict(value: Value) -> Value:
+    """Convert a dataclass to a dict recursively."""
     if isinstance(value, dict):
         return {k: convert_dataclass_to_dict(v) for k, v in value.items()}
     elif isinstance(value, list):

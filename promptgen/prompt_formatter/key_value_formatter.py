@@ -54,15 +54,30 @@ class KeyValuePromptFormatter(PromptFormatter):
 
 
 class KeyValueFormatter(ValueFormatter):
+    """Format a value as a key-value pair.
+
+    The value is formatted as a string using the given value_formatter.
+    """
+
     value_formatter: KeyValueValueFormatter
 
     def __init__(self, value_formatter: KeyValueValueFormatter = KeyValueValueFormatter()):
+        """Initialize a KeyValueFormatter.
+
+        Args:
+            value_formatter: The value formatter to use. Defaults to KeyValueValueFormatter().
+        """
         self.value_formatter = value_formatter
 
     def description(self) -> str:
         return ""
 
     def format(self, value: Value) -> str:
+        """Format the given value as a key-value pair.
+
+        Args:
+            value: The value to format. It must be an instance of dict.
+        """
         if not isinstance(value, dict):
             raise TypeError(f"Expected value to be an instance of dict, got {type(value).__name__}.")
 
@@ -75,6 +90,15 @@ class KeyValueFormatter(ValueFormatter):
         return s.strip()
 
     def parse(self, output_keys: List[Tuple[str, type]], output: str) -> Value:
+        """Parse the given output as a key-value pair.
+
+        Args:
+            output_keys: The keys to parse from the output.
+            output: The output to parse.
+
+        Returns:
+            The parsed output as a dict.
+        """
         if not isinstance(output, str):
             raise TypeError(f"Expected s to be a str, got {type(output).__name__}.")
 
@@ -113,6 +137,10 @@ class KeyValueFormatter(ValueFormatter):
 
 
 def extract_string(s: str) -> Tuple[str, bool]:
+    """Extract a string from the given string.
+    If the given string starts with a quote, extract the string enclosed by the quote.
+    Otherwise, return the original string.
+    """
     quotes_flags = [
         ("'''", re.DOTALL),
         ('"""', re.DOTALL),

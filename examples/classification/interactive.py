@@ -4,15 +4,15 @@ from typing import List
 import typer
 
 import promptgen as pg
-from examples.base import make_json_path
+from examples.base import make_output_path
 from examples.classification.dataset_loader import DatasetLoader, IMDbSentimentDataset, TweetEvalEmotionDataset
-from examples.llm.openai_util import generate_text_by_text_openai_api
+from examples.llm.openai_util import OpenAITextBasedLLM
 
 app = typer.Typer(add_completion=True)
 
 formatter = pg.KeyValuePromptFormatter()
-llm = pg.TextBasedLLMWrapper(generate_text_by_text=lambda s: generate_text_by_text_openai_api(s, "gpt-3.5-turbo"))
-prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
+llm = OpenAITextBasedLLM("gpt-3.5-turbo")
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 
 @app.command("tweet_eval_emotion")
@@ -28,7 +28,7 @@ def run_imdb_sentiment():
 
 
 def run_prompt_interactively(dataset: DatasetLoader):
-    prompt_to_test = pg.Prompt.from_json_file(make_json_path(dataset.attributes.name + "_with_reason.json"))
+    prompt_to_test = pg.Prompt.from_json_file(make_output_path(dataset.attributes.name + "_with_reason.json"))
     input_key = dataset.attributes.input_key
     output_key = dataset.attributes.output_key
 

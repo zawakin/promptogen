@@ -1,11 +1,11 @@
 import promptgen as pg
-from examples.llm.openai_util import generate_text_by_text_openai_api
+from examples.llm.openai_util import OpenAITextBasedLLM
 from promptgen.prompt_collection import PromptCreatorPrompt
 
-llm = pg.TextBasedLLMWrapper(generate_text_by_text=lambda s: generate_text_by_text_openai_api(s, "gpt-3.5-turbo"))
+llm = OpenAITextBasedLLM(model="gpt-3.5-turbo")
 
 formatter = pg.KeyValuePromptFormatter()
-prompt_runner = pg.TextBasedPromptRunner(llm=llm, formatter=formatter)
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 prompt_creator_prompt = PromptCreatorPrompt()
 
@@ -26,7 +26,9 @@ input_value = {
     "text": "The quick brown fox jumps over the lazy dog.",
 }
 
-output_value = pg.TextBasedPromptRunner(llm=llm, formatter=formatter).run_prompt(language_translator_prompt, input_value=input_value)
+output_value = pg.TextLLMPromptRunner(llm=llm, formatter=formatter).run_prompt(
+    language_translator_prompt, input_value=input_value
+)
 
 print(output_value["translated_text"])
 # -> "速い茶色のキツネはのんびりした犬を飛び越えます。"
