@@ -12,6 +12,8 @@ PromptGenは以下の機能を提供します:
 
 PromptGenは、例えばOpenAIのGPT-3.5やGPT-4などの大規模言語モデルを利用する際の、プロンプトの生成と管理を効率化します。これにより、ユーザーはプロンプトの作成や管理に関する手間を軽減し、より多くの時間をモデルとの対話や、その結果の解析に費やすことができます。
 
+![PromptGenの概要](/ja/images/overview.png)
+
 ## 動作環境
 
 - Python 3.8 以上
@@ -32,8 +34,11 @@ import promptgen as pg
 
 まずは、簡単なプロンプトを作成してみましょう。このクイックスタートガイドでは、テキストを入力として受け取り、そのテキストの要約文とキーワードを出力するプロンプトを作成します。
 
+つまり、 `(text: str) -> (summary: str, keywords: List[str])` という関数を実現するプロンプトを作成します。
+
 PromptGenには、プロンプトを表現するためのデータクラス(`pg.Prompt`)が用意されています。
 このデータクラスを使って、プロンプトを作成します。
+このデータクラスは `pydantic.BaseModel` を継承しています。
 
 プロンプトを作成するには、以下の情報が必要です。
 
@@ -51,8 +56,6 @@ PromptGenには、プロンプトを表現するためのデータクラス(`pg.
 これらの情報を使って、プロンプトを作成します。
 
 ```python
-import promptgen as pg
-
 summarizer = pg.Prompt(
     name="Text Summarizer and Keyword Extractor",
     description="Summarize text and extract keywords.",
@@ -64,19 +67,20 @@ summarizer = pg.Prompt(
         pg.ParameterInfo(name="keywords", description="Keywords extracted from text"),
     ],
     template=pg.Example(
-        input=pg.InputValue(text="This is a sample text to summarize."),
-        output=pg.OutputValue(
-            summary="This is a summary of the text.",
-            keywords=["sample", "text", "summarize"],
-        ),
+        input={'text': "This is a sample text to summarize."},
+        output={
+            'summary': "This is a summary of the text.",
+            'keywords': ["sample", "text", "summarize"],
+        },
     ),
     examples=[
         pg.Example(
-            input=pg.InputValue(text="One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."),
-            output=pg.OutputValue(
-                summary="A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
-                keywords=["friends", "park", "sports", "memories"],
-            )
+            input={
+                'text': "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."},
+            output={
+                'summary': "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
+                'keywords': ["friends", "park", "sports", "memories"],
+            },
         )
     ],
 )
@@ -90,7 +94,8 @@ PromptGenでは、プロンプトを文字列にするためのフォーマッ�
 
 ここでは、入出力変数のキーとバリューを `key: value` の形式で出力する `KeyValuePromptFormatter` というフォーマッターを使用します。
 
-入力パラメータなしで文字列にフォーマットするには、`format_prompt_without_input` メソッドを使用します。
+入力パラメータなしで文字列にフォーマットするには、フォーマッターの `format_prompt_without_input` メソッドを使用します。
+このメソッドは、プロンプトとフォーマッターを引数に取り、プロンプトを文字列にフォーマットします。
 
 ```python
 formatter = pg.KeyValuePromptFormatter()
@@ -100,9 +105,7 @@ print(formatter.format_prompt_without_input(summarizer))
 コンソール出力:
 
 ```console
-You are an AI named "Text Summarizer and Keyword Extractor".
 Summarize text and extract keywords.
-You should follow 'Template' format. The format is 'key: value'.
 
 Input Parameters:
   - text: Text to summarize
@@ -113,16 +116,16 @@ Output Parameters:
 
 Template:
 Input:
-text: 'This is a sample text to summarize.'
+text: "This is a sample text to summarize."
 Output:
-summary: 'This is a summary of the text.'
+summary: """This is a summary of the text."""
 keywords: ['sample', 'text', 'summarize']
 
 Example 1:
 Input:
-text: 'One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together.'
+text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
-summary: 'A group of friends enjoyed an afternoon playing sports and making memories at a local park.'
+summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
 keywords: ['friends', 'park', 'sports', 'memories']
 ```
 
@@ -130,21 +133,21 @@ keywords: ['friends', 'park', 'sports', 'memories']
 
 続いて、プロンプトを入力パラメータありで文字列にフォーマットしてみましょう。
 
-入力パラメータは、`InputValue` クラスのインスタンスを使用して指定します。
+入力パラメータは、 `dict` を使用して指定します。
 
 プロンプトを入力パラメータ込みで文字列にフォーマットするには、`format_prompt` メソッドを使用します。
 
 ```python
-input_value = pg.InputValue(text="In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.")
+input_value = {
+    'text': "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.",
+}
 print(formatter.format_prompt(summarizer, input_value))
 ```
 
 コンソール出力:
 
 ```console
-You are an AI named "Text Summarizer and Keyword Extractor".
 Summarize text and extract keywords.
-You should follow 'Template' format. The format is 'key: value'.
 
 Input Parameters:
   - text: Text to summarize
@@ -155,22 +158,22 @@ Output Parameters:
 
 Template:
 Input:
-text: 'This is a sample text to summarize.'
+text: "This is a sample text to summarize."
 Output:
-summary: 'This is a summary of the text.'
+summary: """This is a summary of the text."""
 keywords: ['sample', 'text', 'summarize']
 
 Example 1:
 Input:
-text: 'One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together.'
+text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
-summary: 'A group of friends enjoyed an afternoon playing sports and making memories at a local park.'
+summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
 keywords: ['friends', 'park', 'sports', 'memories']
 
 --------
 
 Input:
-text: 'In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.'
+text: "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
 Output:
 ```
 
@@ -184,65 +187,60 @@ Output:
 
 ```python
 import openai
-openai.api_key = "<your-api-key>"
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.organization = os.getenv("OPENAI_ORG_ID")
+
 
 def generate_chat_stream_response(prompt: str, model: str):
         resp = openai.ChatCompletion.create(model=model, messages=[
             {'role': 'user', 'content': prompt}
         ], stream=True, max_tokens=2048)
         for chunk in resp:
-            yield chunk['choices'][0]['delta'].get('content', '')
+            yield chunk['choices'][0]['delta'].get('content', '') # type: ignore
 
 
-def generate_llm_response(prompt: str, model: str):
+def generate_text_by_text(prompt: str, model: str):
     s = ''
     for delta in generate_chat_stream_response(prompt, model):
-        print(delta, end='') # you can see the progress
         s += delta
     return s
+```
 
+
+
+```python
 raw_req = formatter.format_prompt(summarizer, input_value)
-raw_resp = generate_llm_response(raw_req, 'gpt-3.5-turbo')
-
+raw_resp = generate_text_by_text(raw_req, model='gpt-3.5-turbo')
 print(raw_resp)
 ```
 
 コンソール出力:
 
+
 ```console
-summary: 'Software developers collaborate on projects using version control systems to create and maintain efficient code and solve implementation and user requirement issues.'
-keywords: ['software engineering', 'developers', 'collaborate', 'version control systems', 'efficient code', 'implementation', 'user requirements', 'system optimization']
+summary: """Software developers collaborate using version control systems like Git to create and maintain efficient code and solve implementation and optimization issues."""
+keywords: ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'evolving user requirements', 'system optimization']
 ```
 
 ## 出力をPythonオブジェクトに変換する
 
 続いて、出力をPythonオブジェクトに変換してみましょう。
-`formatter.parse` メソッドを使用することで、出力をPythonオブジェクトに変換できます。
-
+`formatter.parse` メソッドを使用することで、LLMからの出力文字列をプロンプトの出力パラメータを用いてパースできます。パースの結果はPythonの `dict` に格納されます。
 
 ```python
-summarized_resp = formatter.parse(raw_resp)
-print('summary:')
-print(f'{summarized_resp["summary"]}')
-print('keywords:')
-for keyword in summarized_resp["keywords"]:
-    print(f'  - {keyword}')
+summarized_resp = formatter.parse(summarizer, raw_resp)
+print(summarized_resp)
 ```
 
 コンソール出力:
 
 ```console
-summary:
-Software developers collaborate on projects using version control systems to create and maintain efficient code and solve implementation and user requirement issues.
-keywords:
-  - software engineering
-  - developers
-  - collaborate
-  - version control systems
-  - efficient code
-  - implementation
-  - user requirements
-  - system optimization
+{'summary': 'Software developers collaborate using version control systems like Git to create and maintain efficient code and solve implementation and optimization issues.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'evolving user requirements', 'system optimization']}
 ```
 
 ## まとめ

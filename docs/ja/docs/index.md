@@ -69,15 +69,41 @@ summarizer = pg.Prompt(
         pg.ParameterInfo(name="summary", description="Summary of text"),
     ],
     template=pg.Example(
-        input=pg.InputValue(text="This is a sample text to summarize."),
-        output=pg.OutputValue(
-            summary="This is a summary of the text.",
-        ),
+        input={
+            "text": "This is a sample text to summarize.",
+        },
+        output={
+            "summary": "This is a summary of the text.",
+        }
     ),
     examples=[
         # few-shots examples
     ],
 )
+
+print(summarizer)
+```
+
+コンソール出力:
+
+```console
+Text Summarizer: (text: str) -> (summary: str)
+
+Description
+-----------
+Summarize text.
+
+Input Parameters
+----------------
+- text (str): Text to summarize
+
+Output Parameters
+-----------------
+- summary (str): Summary of text
+
+Examples Count
+--------------
+0
 ```
 
 ### プロンプトのフォーマット
@@ -86,7 +112,7 @@ PromptGenでは様々な形式のフォーマットをサポートしていま�
 
 - `key: value`形式
 - JSON形式
-- コードブロック形式
+- 単一テキスト形式
 - etc.
 
 ここでは、`key: value`形式のフォーマットを使用します。
@@ -94,16 +120,16 @@ PromptGenでは様々な形式のフォーマットをサポートしていま�
 ```python
 formatter = pg.KeyValuePromptFormatter()
 
-input_value = pg.InputValue(text="In the realm of software engineering, ...")
+input_value = {
+    "text": "In the realm of software engineering, ...",
+}
 print(formatter.format_prompt(summarizer, input_value))
 ```
 
 コンソール出力:
 
 ```console
-You are an AI named "Text Summarizer".
 Summarize text.
-You should follow 'Template' format. The format is 'key: value'.
 
 Input Parameters:
   - text: Text to summarize
@@ -170,7 +196,7 @@ summarizer = pg.Prompt.from_json_file("summarizer.json")
 ## 制限事項
 
 - PromptGenのアップデートに伴い、json出力したプロンプトの互換性が失われる可能性があります。
-- 動作検証に使用した大規模言語モデルは、OpenAI Chat API の `gpt-3.5-turbo`, `gpt-4` です。その他の大規模言語モデルでは動作検証を行っていません。特に、パーサーが正しく動作しないケースがある可能性があるため、ご注意ください。
+- 動作検証に使用した大規模言語モデルは、OpenAI Chat API の `gpt-3.5-turbo`, `gpt-4` や Meta の `Llama 2` です。その他の大規模言語モデルでは動作検証を行っていません。特に、パーサーが正しく動作しないケースがある可能性があるため、ご注意ください。
 
 ## コントリビューション
 

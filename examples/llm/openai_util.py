@@ -16,7 +16,7 @@ from colorama import Fore, init
 init(autoreset=True)
 
 
-class OpenAITextBasedLLM(TextLLM):
+class OpenAITextLLM(TextLLM):
     def __init__(self, model: str, verbose=True):
         self.model = model
         self.verbose = verbose
