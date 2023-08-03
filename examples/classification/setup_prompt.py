@@ -3,7 +3,7 @@ import typer
 import promptgen as pg
 from examples.base import make_output_path
 from examples.classification.dataset_loader import DatasetLoader, IMDbSentimentDataset, TweetEvalEmotionDataset
-from examples.llm.openai_util import OpenAITextBasedLLM
+from examples.llm.openai_util import OpenAITextLLM
 from promptgen.prompt_collection import PromptCreatorPrompt
 from promptgen.prompt_tool import PromptWithReasoningTransformer, TextLLMReasoningExtractor
 
@@ -23,7 +23,7 @@ def run_imdb_sentiment():
 
 
 formatter = pg.KeyValuePromptFormatter()
-llm = OpenAITextBasedLLM(model="gpt-3.5-turbo")
+llm = OpenAITextLLM(model="gpt-3.5-turbo")
 prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 prompt_creator_prompt = PromptCreatorPrompt()
 

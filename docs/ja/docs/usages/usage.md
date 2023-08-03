@@ -1,632 +1,189 @@
 # 使い方
 
+最も基本的な使い方は以下の通りです。
+
+1. 使用するLLMを定義する
+1. プロンプトの要件を定義する
+1. PromptCreator でプロンプトを自動生成する
+1. PromptRunner でプロンプトを実行する
+
+## インポート
+    
 ```python
 import promptgen as pg
 ```
 
+## LLMの定義
+
+Large Language Model(LLM) とは、テキストを生成するための大規模な言語モデルのことです。PromptGen では、LLMを定義するためのクラスを提供しています。
+
+
+`pg.TextLLM` は抽象クラスであり、`generate` メソッドを実装する必要があります。
+
 
 ```python
-collection = pg.PromptCollection(load_predefined=True)
+class YourTextLLM(pg.TextLLM):
+    def __init__(self, model: str):
+        self.model = model
 
+    def generate(self, text: str) -> str:
+        # Generate text using your LLM
+        return generated_text
 ```
-
-## Setup for LLM (OpenAI ChatGPT API here)
-
 
 ```python
-from colorama import Fore
-
-import openai
-import os
-
-from dotenv import load_dotenv
-
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.organization = os.getenv("OPENAI_ORG_ID")
-
-def completion(prompt: str, model: str):
-        resp = openai.ChatCompletion.create(model=model, messages=[
-            {'role': 'user', 'content': prompt}
-        ], stream=True, max_tokens=2048)
-        for chunk in resp:
-            yield chunk['choices'][0]['delta'].get('content', '')
-
-def get_llm_response(prompt: str, model: str = 'gpt-3.5-turbo'):
-    s = ''
-    print(Fore.LIGHTBLACK_EX)
-    for delta in completion(prompt, model):
-        print(delta, end='')
-        s += delta
-    print(Fore.BLACK)
-    return s
+llm = YourTextLLM(model='your-model')
 ```
 
+このように抽象クラスを継承したクラスを定義することで、独自のLLMを定義することができます。
+
+より簡単にLLMを定義するために、 `(text: str) -> (generated_text: str)` のような関数を渡すこともできます。
+`FunctionBasedTextLLM` クラスは、このような関数をラップしたLLMを定義するためのクラスです。
+
+```python
+def generator_func(text: str) -> str:
+    # Generate text using your LLM
+    return generated_text
+
+llm = pg.FunctionBasedTextLLM(generator_func)
+```
+
+## PromptFormatter の定義
+
+PromptFormatter は、プロンプトを文字列にフォーマットするためのクラスです。PromptGen では、様々な形式のフォーマッターをサポートしています。
 
 ```python
 formatter = pg.KeyValuePromptFormatter()
-
-def run(prompt: pg.Prompt, input_value: pg.InputValue) -> pg.OutputValue:
-    raw_req = formatter.format_prompt(prompt=prompt, input_value=input_value)
-    raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
-    return formatter.parse(raw_resp)
 ```
 
+## PromptRunner の定義
+
+PromptRunner は、プロンプトを実行するためのクラスです。
+
+`run_prompt` メソッドは、以下のように定義されています。
 
 ```python
-prompt_creator = collection['PromptCreator']
+def run_prompt(self, prompt: Prompt, input_value: Value) -> Value:
+    """Run the given prompt and return the result.
 
-prompt_creator
+    Args:
+        prompt: The prompt to run. It must be an instance of Prompt.
+        input_value: The input value to use. It must be an instance of Value, which is a dict.
+    """
+    raw_req = self.formatter.format_prompt(prompt, input_value)
+    raw_resp = self.text_llm.generate(raw_req)
+    resp = self.formatter.parse(prompt, raw_resp)
+    return resp
+```
+
+つまり、`run_prompt` メソッドは、プロンプトと入力パラメータを受け取り、LLMを用いてプロンプトを実行し、出力を返すメソッドです。
+
+```python
+prompt_runner = pg.PromptRunner(llm, formatter)
 ```
 
 
+## プロンプトを作成する
 
+ここでは、 `PromptCreatorPrompt` を用いてプロンプトを自動生成する方法を紹介します。
 
-```json
-{
-    "name": "PromptCreator",
-    "description": "Create a prompt from the given purpose. Don't create an example with the input purpose. Instead, create an example with a different purpose. Consider background information that is necessary to understand the purpose.",
-    "input_parameters": [
-        {
-            "name": "purpose",
-            "description": "purpose of the prompt"
-        },
-        {
-            "name": "background",
-            "description": "background of the prompt"
-        }
-    ],
-    "output_parameters": [
-        {
-            "name": "prompt",
-            "description": "prompt created from the given purpose. Is has 'name', 'description', 'input_parameters', 'output_parameters', 'template', and 'examples'."
-        }
-    ],
-    "template": {
-        "input": {
-            "purpose": "purpose of the prompt",
-            "background": "background of the prompt"
-        },
-        "output": {
-            "prompt": {
-                "name": "sample-new prompt",
-                "description": "A sample prompt.",
-                "input_parameters": [
-                    {
-                        "name": "input1",
-                        "description": "The first input parameter."
-                    },
-                    {
-                        "name": "input2",
-                        "description": "The second input parameter."
-                    }
-                ],
-                "output_parameters": [
-                    {
-                        "name": "output1",
-                        "description": "The first output parameter."
-                    },
-                    {
-                        "name": "output2",
-                        "description": "The second output parameter."
-                    }
-                ],
-                "template": {
-                    "input": {
-                        "input1": "Hello, world!",
-                        "input2": "Hello, world!"
-                    },
-                    "output": {
-                        "output1": "Hello, world!",
-                        "output2": "Hello, world!"
-                    }
-                },
-                "examples": [
-                    {
-                        "input": {
-                            "input1": "Hello, world!",
-                            "input2": "Hello, world!"
-                        },
-                        "output": {
-                            "output1": "Hello, world!",
-                            "output2": "Hello, world!"
-                        }
-                    },
-                    {
-                        "input": {
-                            "input1": "Hello, world!",
-                            "input2": "Hello, world!"
-                        },
-                        "output": {
-                            "output1": "Hello, world!",
-                            "output2": "Hello, world!"
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    "examples": [
-        {
-            "input": {
-                "purpose": "Categorize the given text into one of the given categories.",
-                "background": "The given text may be a sentence, a paragraph, or a document."
-            },
-            "output": {
-                "prompt": {
-                    "name": "TextCategorizer",
-                    "description": "Categorize the given text",
-                    "input_parameters": [
-                        {
-                            "name": "text",
-                            "description": "The text to be categorized"
-                        },
-                        {
-                            "name": "categories",
-                            "description": "The categories to categorize the text into"
-                        }
-                    ],
-                    "output_parameters": [
-                        {
-                            "name": "category",
-                            "description": "The category the text belongs to"
-                        },
-                        {
-                            "name": "found",
-                            "description": "Whether the category was found in the text"
-                        }
-                    ],
-                    "template": {
-                        "input": {
-                            "text": "text",
-                            "categories": [
-                                "category 1",
-                                "category 2"
-                            ]
-                        },
-                        "output": {
-                            "category": "category 1",
-                            "found": true
-                        }
-                    },
-                    "examples": []
-                }
-            }
-        },
-        {
-            "input": {
-                "purpose": "Summarize the given text.",
-                "background": "The given text may be the part of the document."
-            },
-            "output": {
-                "prompt": {
-                    "name": "TextSummarizer",
-                    "description": "Summarize the text into a shorter text.",
-                    "input_parameters": [
-                        {
-                            "name": "text",
-                            "description": "text to summarize"
-                        }
-                    ],
-                    "output_parameters": [
-                        {
-                            "name": "summary",
-                            "description": "summary of the text"
-                        }
-                    ],
-                    "template": {
-                        "input": {
-                            "text": "text"
-                        },
-                        "output": {
-                            "summary": "summary"
-                        }
-                    },
-                    "examples": []
-                }
-            }
-        }
-    ]
+```python
+from promptgen.prompt_collection import PromptCreatorPrompt
+
+prompt_creator_prompt = PromptCreatorPrompt()
+
+print(prompt_creator_prompt)
+```
+
+```console
+PromptCreator: (description: str, background: str) -> (prompt: Prompt)
+
+Description
+-----------
+Create a prompt from the given description and background. Use the given description as the prompt description as is. Consider background information to make the prompt more specific.
+
+Input Parameters
+----------------
+- description (str): description of the prompt; this will be used as the prompt description as is
+- background (str): background of the prompt
+
+Output Parameters
+-----------------
+- prompt (Prompt): A prompt which has 'name', 'description', 'input_parameters', 'output_parameters', 'template', and 'examples'.
+
+Examples Count
+--------------
+2
+```
+
+`PromptCreatorPrompt` は、プロンプトを生成するためのプロンプトです。このプロンプトの入力パラメータとして、プロンプトの説明と背景情報を渡すことで、プロンプトを自動生成することができます。
+
+実際にプロンプトを生成してみましょう。
+
+```python
+input_value = {
+    "description": "Answer the question for the given context.",
+    "background": "(context: str, question: str) -> (answer: str)",
 }
+resp = prompt_runner.run_prompt(prompt_creator_prompt, input_value=input_value)
 ```
 
-
-
+`resp` は `dict` 型のオブジェクトなので、 `Prompt` クラスのインスタンスに変換してみましょう。
 
 ```python
-
-resp = run(prompt_creator, pg.InputValue(purpose='Split a task into subtasks', background='style: (task: str) -> (reason: str, subtasks: list[str])'))
+context_qa_prompt = pg.Prompt.from_dict(resp["prompt"])
 ```
 
-```
-prompt: {'name': 'TaskSplitter', 'description': 'Split a task into subtasks', 'input_parameters': [{'name': 'task', 'description': 'Task to be split into subtasks'}], 'output_parameters': [{'name': 'reason', 'description': 'Reason for splitting the task'}, {'name': 'subtasks', 'description': 'List of subtasks after splitting the task'}], 'template': {'input': {'task': 'task'}, 'output': {'reason': 'reason', 'subtasks': ['subtask 1', 'subtask 2'] }}, 'examples': [{'input': {'task': 'Write a research paper'}, 'output': {'reason': 'To make it more manageable.', 'subtasks': ['Research the topic', 'Gather sources', 'Write a draft', 'Revise and Edit', 'Format the paper'] }}, {'input': {'task': 'Plan a vacation'}, 'output': {'reason': 'To plan more effectively.', 'subtasks': ['Decide on a location', 'Determine a budget', 'Book travel arrangements', 'Plan activities'] }}]}
-```
-
-
+このように自動生成したプロンプトの中身を確認し、場合によっては修正することで、より良いプロンプトを作成することができます。
+一度 json 形式に変換し、テキストエディタで編集することも可能です。
 
 ```python
-task_splitter = pg.load_prompt_from_dict(resp.prompt)
-task_splitter
+context_qa_prompt.to_json_file("context_qa_prompt.json")
 ```
 
-
-
-
-    {
-        "name": "TaskSplitter",
-        "description": "Split a task into subtasks",
-        "input_parameters": [
-            {
-                "name": "task",
-                "description": "Task to be split into subtasks"
-            }
-        ],
-        "output_parameters": [
-            {
-                "name": "reason",
-                "description": "Reason for splitting the task"
-            },
-            {
-                "name": "subtasks",
-                "description": "List of subtasks after splitting the task"
-            }
-        ],
-        "template": {
-            "input": {
-                "task": "task"
-            },
-            "output": {
-                "reason": "reason",
-                "subtasks": [
-                    "subtask 1",
-                    "subtask 2"
-                ]
-            }
-        },
-        "examples": [
-            {
-                "input": {
-                    "task": "Write a research paper"
-                },
-                "output": {
-                    "reason": "To make it more manageable.",
-                    "subtasks": [
-                        "Research the topic",
-                        "Gather sources",
-                        "Write a draft",
-                        "Revise and Edit",
-                        "Format the paper"
-                    ]
-                }
-            },
-            {
-                "input": {
-                    "task": "Plan a vacation"
-                },
-                "output": {
-                    "reason": "To plan more effectively.",
-                    "subtasks": [
-                        "Decide on a location",
-                        "Determine a budget",
-                        "Book travel arrangements",
-                        "Plan activities"
-                    ]
-                }
-            }
-        ]
-    }
-
-
-
+編集したプロンプトを読み込みます。
 
 ```python
-class TaskSplitterInput(pg.InputValue):
-    task: str
-
-class TaskSplitterOutput(pg.OutputValue):
-    reason: str
-    subtasks: list[str]
+context_qa_prompt = pg.Prompt.from_json_file("context_qa_prompt.json")
 ```
 
+## プロンプトを実行する
+
+プロンプトを実行してみましょう。
 
 ```python
-resp = run(task_splitter, TaskSplitterInput(task='write a book'))
-```
-
-    [90m
-    reason: 'To break down the project into manageable steps.'
-    subtasks: ['Brainstorm ideas for book', 'Create an outline', 'Write first draft of each chapter', 'Revise and edit each chapter', 'Finalize book structure and content', 'Proofread and format for publication'][30m
-
-
-
-```python
-subtasksResp = TaskSplitterOutput.from_dataclass(resp)
-```
-
-
-```python
-subtasksResp.reason
-
-```
-
-
-
-
-    'To break down the project into manageable steps.'
-
-
-
-
-```python
-subtasksResp.subtasks
-```
-
-
-
-
-    ['Brainstorm ideas for book',
-     'Create an outline',
-     'Write first draft of each chapter',
-     'Revise and edit each chapter',
-     'Finalize book structure and content',
-     'Proofread and format for publication']
-
-
-
-
-```python
-print(task_splitter)
-```
-
-    TaskSplitter: (task) -> (subtasks)
-
-
-
-```python
-subtasksResp.subtasks
-```
-
-
-
-
-    ['Choose a genre/topic for the book',
-     'Research and gather information on the topic',
-     'Create an outline for the book',
-     'Write the first draft',
-     'Revise and edit the book',
-     'Get feedback and make necessary changes',
-     'Design and format the book',
-     'Publish the book']
-
-
-
-
-```python
-run(task_splitter, TaskSplitterInput(task='Write a book'))
-```
-
-
-```python
-
-```
-
-
-```python
-raw_req = formatter.format_prompt(prompt=prompt_creator, input_value={
-   'purpose': 'Split a task into subtasks',
-#     'background': '',
-#     'purpose': 'Score how you can answer the question by given context with reasoning',
-#     'background': 'score should be integer 0 to 100. output parameters should be "reason" and "score" keeping this order.',
-})
-print(raw_req)
-```
-
-
-    ---------------------------------------------------------------------------
-
-    ValueError                                Traceback (most recent call last)
-
-    Cell In[10], line 1
-    ----> 1 raw_req = formatter.format_prompt(prompt=prompt_creator, input_value={
-          2    'purpose': 'Split a task into subtasks',
-          3 #     'background': '',
-          4 #     'purpose': 'Score how you can answer the question by given context with reasoning',
-          5 #     'background': 'score should be integer 0 to 100. output parameters should be "reason" and "score" keeping this order.',
-          6 })
-          7 print(raw_req)
-
-
-    File ~/go/src/github.com/zawakin/promptgen/promptgen/prompt_formatter.py:54, in PromptFormatter.format_prompt(self, prompt, input_value)
-         52             raise TypeError(f"Expected prompt to be an instance of Prompt, got {type(prompt).__name__}.")
-         53         if prompt.input_parameters.keys() != input_value.keys():
-    ---> 54             raise ValueError(
-         55                 f"Expected input_value to have the same keys as prompt.input_parameters, got {input_value.keys()}; wanted {prompt.input_parameters.keys()}."
-         56             )
-         57         formatted_input = self.input_formatter.format(input_value)
-         58         return f"""{self.format_prompt_without_input(prompt)}
-         59 --------
-         60 
-         61 Input:
-         62 {formatted_input}
-         63 Output:"""
-
-
-    ValueError: Expected input_value to have the same keys as prompt.input_parameters, got dict_keys(['purpose']); wanted dict_keys(['purpose', 'background']).
-
-
-
-```python
-raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
-```
-
-    [90m
-    prompt: {'name': 'TaskSplitter', 'description': 'Split a task into subtasks', 'input_parameters': {'task': {'description': 'The task to be split'}, 'num_subtasks': {'description': 'The number of subtasks to split the task into'}}, 'output_parameters': {'subtasks': {'description': 'The subtasks that the task was split into'}}, 'template': {'input': {'task': 'task description', 'num_subtasks': 2}, 'output': {'subtasks': ['subtask 1', 'subtask 2']}}, 'examples': []}[30m
-
-
-
-```python
-contextual_question_score = pg.load_prompt_from_dict( formatter.parse(raw_resp)['prompt'])
-contextual_question_score
-```
-
-
-```python
-key_value_formatter = pg.KeyValuePromptFormatter()
-raw_req = key_value_formatter.format_prompt(contextual_question_score, {
-    'question': '水とは何？',
-    'context': '熱中症には、水を飲むのが大事です',
-})
-print(raw_req)
-
-raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
-```
-
-
-```python
-task_splitter = pg.load_prompt_from_dict( formatter.parse(raw_resp)['prompt'])
-task_splitter
-```
-
-
-```python
-print(raw_req)
-```
-
-
-```python
-raw_req = formatter.format_prompt(task_splitter, {
-    'task_desciption': 'Write a "hello, world" program in Python',
-    'subtask_count': 5,
-})
-
-raw_resp = get_llm_response(raw_req)
-```
-
-
-```python
-raw_
-```
-
-
-```python
-subtasks = formatter.parse(raw_resp)['subtasks']
-```
-
-
-```python
-subtasks
-```
-
-
-```python
-raw_req = formatter.format_prompt(prompt=prompt_creator, input_value={
-    'purpose': 'Receive subtask and generate Python program using given context',
-    'background': 'The name of the output parameter generated should be "code". Context should be dict type.',
-})
-raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
-subtask_runner = pg.load_prompt_from_dict( formatter.parse(raw_resp)['prompt'])
-```
-
-
-```python
-loader('PromptExampleCreator')
-```
-
-
-```python
-raw_req = formatter.format_prompt(prompt=loader('PromptExampleCreator'), input_value={
-    'prompt': subtask_runner.model_dump(),
-    'n': 3,
-})
-raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
-subtask_runner_examples = formatter.parse(raw_resp)['examples']
-```
-
-
-```python
-subtask_runner = subtask_runner.with_examples(subtask_runner_examples)
-```
-
-
-```python
-code_formatter = pg.PromptFormatter(output_formatter=pg.CodeOutputFormatter('python'))
-```
-
-
-```python
-subtask_context = {
-    'ultimate_task': 'Write a "hello, world" program in Python',
-    'subtasks': [{'subtask': subtask, 'status': 'not started', 'result': ''} for subtask in subtasks],
+input_value = {
+    "context": "The quick brown fox jumps over the lazy dog.",
+    "question": "What does the fox jump over?",
 }
 
-for i in range(3):
-    subtask = subtasks[i]
-    raw_req = code_formatter.format_prompt(prompt=subtask_runner, input_value={
-        'subtask': subtask,
-        'context': subtask_context,
-    })
-    raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
+output_value = prompt_runner.run_prompt(context_qa_prompt, input_value=input_value)
 
-    subtask_context['subtasks'][i] = {
-        'subtask': subtask,
-        'status': 'done',
-        'result': raw_resp,
-    }
-    if i+1 < len(subtasks):
-        subtask_context['subtasks'][i+1]['status'] = 'in progress',
-    print(raw_resp)
+print(output_value["answer"])
 ```
 
-
-```python
-subtasks
+```console
+the lazy dog
 ```
 
+## 追加機能：回答の理由を生成する
 
 ```python
-subtask_context = {
-}
-```
+from promptgen.prompt_tool import TextLLMReasoningExtractor
 
+reasoning_extractor = TextLLMReasoningExtractor(
+    text_llm=llm,
+    reasoning_template="This is because ... So the answer is ...",
+)
 
-```python
-raw_req = code_formatter.format_prompt(prompt=subtask_runner, input_value={
-    'subtask': subtasks['subtasks'][1],
-    'context': subtask_context,
-})
-raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
-code_formatter.parse(raw_resp)['code']
-```
-
-
-```python
-raw_req
-```
-
-
-```python
-subtask_context['task_history'].append({
-            'subtask': subtasks['subtasks'][1],
-            'result': raw_resp,
-})
-```
-
-
-```python
-subtask_context
-```
-
-
-```python
-raw_req = code_formatter.format_prompt(prompt=subtask_runner, input_value={
-    'subtask': subtasks['subtasks'][2],
-    'context': subtask_context,
-})
-raw_resp = get_llm_response(raw_req, model='gpt-3.5-turbo')
-code_formatter.parse(raw_resp)['code']
-```
-
-
-```python
-print(raw_req)
+print(
+    reasoning_extractor.generate_reasoning(
+        prompt=context_qa_prompt,
+        example=pg.Example(
+            input=input_value,
+            output=output_value,
+        ),
+    ).reasoning
+)
+# -> This is because the input text "context" provides the information that the quick brown fox jumps over the lazy dog. The input question "question" asks what the fox jumps over. Therefore, the answer is "The fox jumps over the lazy dog" which is derived directly from the context information.
 ```

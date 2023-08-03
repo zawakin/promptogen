@@ -9,3 +9,11 @@
 ```console
 $ pip install promptgen
 ```
+
+## 動作確認
+
+```python
+import promptgen as pg
+
+print(pg.__version__)
+```

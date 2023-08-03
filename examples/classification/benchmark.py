@@ -8,7 +8,7 @@ import promptgen as pg
 # from tenacity import retry, stop_after_attempt
 from examples.base import make_output_path
 from examples.classification.dataset_loader import DatasetLoader, IMDbSentimentDataset, TweetEvalEmotionDataset
-from examples.llm.openai_util import OpenAITextBasedLLM
+from examples.llm.openai_util import OpenAITextLLM
 
 app = typer.Typer(add_completion=True)
 
@@ -26,7 +26,7 @@ def run_imdb_sentiment():
 
 
 formatter = pg.KeyValuePromptFormatter()
-llm = OpenAITextBasedLLM(model="gpt-3.5-turbo-16k")
+llm = OpenAITextLLM(model="gpt-3.5-turbo-16k")
 prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 

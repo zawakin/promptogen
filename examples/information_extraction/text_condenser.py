@@ -1,9 +1,9 @@
 import promptgen as pg
-from examples.llm.openai_util import OpenAITextBasedLLM
+from examples.llm.openai_util import OpenAITextLLM
 from promptgen.prompt_collection.prompts.text_condenser import TextCondenserPrompt
 from promptgen.prompt_tool import PromptWithReasoningTransformer, TextLLMReasoningExtractor
 
-llm = OpenAITextBasedLLM(model="gpt-3.5-turbo-16k")
+llm = OpenAITextLLM(model="gpt-3.5-turbo-16k")
 
 formatter = pg.KeyValuePromptFormatter()
 prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
