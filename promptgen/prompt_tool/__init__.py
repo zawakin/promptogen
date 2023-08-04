@@ -1,5 +1,5 @@
-from .transformation.prompt_with_reasoning import PromptWithReasoningTransformer
-from .understanding.llm_reasoning_extractor import TextLLMReasoningExtractor
+from .transformation import PromptWithReasoningTransformer
+from .understanding import TextLLMReasoningExtractor
 
 __all__ = [
     "PromptWithReasoningTransformer",

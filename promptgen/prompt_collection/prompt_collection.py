@@ -36,17 +36,11 @@ class PromptCollection(DataClass):
 
         prompt_details = section_header("Prompts Details")
         for name, prompt in self.prompts.items():
-            prompt_details += f"\n{name}: {prompt.description}\n"
+            prompt_details += f"\n  {name}: {prompt.description}\n"
 
         return f"{prompt_details}"
 
     @classmethod
     def load_predefined(cls) -> PromptCollection:
         """Load the prompt collection."""
-        return PredefinedPromptCollection()
-
-
-class PredefinedPromptCollection(PromptCollection):
-    """Collection of predefined prompts."""
-
-    prompts: Dict[str, Prompt] = {prompt.name: prompt for prompt in load_predefined_prompts()}
+        return cls(prompts={prompt.name: prompt for prompt in load_predefined_prompts()})
