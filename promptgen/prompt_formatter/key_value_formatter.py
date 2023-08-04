@@ -20,26 +20,6 @@ def format_string(s: str, quote_for_single_line: str = '"') -> str:
     return f"{quote_for_single_line}{s}{quote_for_single_line}"
 
 
-default_type_formatter: Dict[type, Callable[[Any], str]] = {
-    str: format_string,
-}
-
-
-class KeyValueValueFormatter:
-    quote_for_single_line: str = '"'
-
-    def __init__(self, quote_for_single_line: str = '"'):
-        self.quote_for_single_line = quote_for_single_line
-
-    def format(self, value: Any) -> str:
-        if isinstance(value, str):
-            return format_string(value, self.quote_for_single_line)
-        return pformat(value, indent=2, sort_dicts=False, width=160)
-
-    def parse(self, value: Any) -> Any:
-        return value
-
-
 class KeyValuePromptFormatter(PromptFormatter):
     def __init__(
         self,
@@ -47,8 +27,8 @@ class KeyValuePromptFormatter(PromptFormatter):
         config: PromptFormatterConfig = PromptFormatterConfig(),
     ):
         super().__init__(
-            input_formatter=KeyValueFormatter(KeyValueValueFormatter()),
-            output_formatter=KeyValueFormatter(KeyValueValueFormatter(quote_for_single_line='"""')),
+            input_formatter=KeyValueFormatter(),
+            output_formatter=KeyValueFormatter(quote_for_single_line='"""'),
             config=config,
         )
 
@@ -59,15 +39,16 @@ class KeyValueFormatter(ValueFormatter):
     The value is formatted as a string using the given value_formatter.
     """
 
-    value_formatter: KeyValueValueFormatter
+    # value_formatter: KeyValueValueFormatter
+    quote_for_single_line: str = '"'
 
-    def __init__(self, value_formatter: KeyValueValueFormatter = KeyValueValueFormatter()):
+    def __init__(self, quote_for_single_line: str = '"'):
         """Initialize a KeyValueFormatter.
 
         Args:
-            value_formatter: The value formatter to use. Defaults to KeyValueValueFormatter().
+            quote_for_single_line: The quote to use for a single line string.
         """
-        self.value_formatter = value_formatter
+        self.quote_for_single_line = quote_for_single_line
 
     def description(self) -> str:
         return ""
@@ -85,7 +66,12 @@ class KeyValueFormatter(ValueFormatter):
 
         s = ""
         for key, value in value.items():
-            s += f"{key}: {self.value_formatter.format(value)}\n"
+            _s = ''
+            if isinstance(value, str):
+                _s = format_string(value, self.quote_for_single_line)
+            else:
+                _s = pformat(value, indent=2, sort_dicts=False, width=160)
+            s += f"{key}: {_s}\n"
 
         return s.strip()
 
@@ -101,10 +87,6 @@ class KeyValueFormatter(ValueFormatter):
         """
         if not isinstance(output, str):
             raise TypeError(f"Expected s to be a str, got {type(output).__name__}.")
-
-        for key, _ in output_keys:
-            if key not in output:
-                raise ValueError(f"Expected output to have key {key}.")
 
         if len(output_keys) == 0:
             raise ValueError("Expected output_keys to have at least one key.")
