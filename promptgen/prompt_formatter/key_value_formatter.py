@@ -66,7 +66,7 @@ class KeyValueFormatter(ValueFormatter):
 
         s = ""
         for key, value in value.items():
-            _s = ''
+            _s = ""
             if isinstance(value, str):
                 _s = format_string(value, self.quote_for_single_line)
             else:
