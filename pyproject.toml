@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 name = "promptgen"
 version = "0.0.1"
 description = ""
-authors = ["zawakin(Yuki Miyake) <zawawahoge@gmail.com>"]
+authors = ["zawakin <zawawahoge@gmail.com>"]
 license = "MIT"
 classifiers = [
     "Programming Language :: Python",
