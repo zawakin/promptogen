@@ -10,10 +10,6 @@ class ExampleReasoning(DataClass):
     reasoning: str
 
 
-class ReasoningTemplate(DataClass):
-    template: str
-
-
 class ReasoningExtractor(ABC):
     """Extracts reasoning from a prompt."""
 

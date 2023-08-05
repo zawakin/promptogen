@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 
+from promptgen.model.dataclass import DataClass
 from promptgen.model.llm import TextLLM
 from promptgen.model.prompt import Example, ParameterInfo, Prompt
 from promptgen.model.prompt_transformer import PromptTransformer
-from promptgen.model.reasoning_extractor import ExampleReasoning, ReasoningExtractor, ReasoningTemplate
+from promptgen.model.reasoning_extractor import ExampleReasoning, ReasoningExtractor
 from promptgen.prompt_formatter.key_value_formatter import KeyValueFormatter
 from promptgen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
 from promptgen.prompt_formatter.text_formatter import TextValueFormatter
@@ -19,6 +20,10 @@ After that, we will concretely verify these hypotheses. When we tried "...", the
 Based on these verification results and reasons, we select the most appropriate solution. Our analysis concluded that "..." is the most effective means.
 
 Therefore, our final conclusion is "...". We believe this resolves the problem initially posed as "..."."""
+
+
+class ReasoningTemplate(DataClass):
+    template: str
 
 
 class SimpleReasoningTemplate(ReasoningTemplate):
@@ -66,7 +71,7 @@ class TextLLMReasoningExtractor(ReasoningExtractor):
         self,
         *,
         text_llm: TextLLM,
-        reasoning_template: str,
+        reasoning_template: str = DEFAULT_REASONING_TEMPLATE,
     ):
         """Initialize a TextLLMReasoningExtractor.
 
