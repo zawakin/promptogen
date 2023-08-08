@@ -1,5 +1,7 @@
 # PromptGen
 
+<a href="/" target="_blank"><img src="/ja/img/logo-bg-white.svg" style="width: 80%; padding-left: 10%;"></a>
+
 ----
 
 ドキュメンテーション: https://promptgen.zawakin.dev/ja/
@@ -9,7 +11,6 @@
 クイックスタートガイドは[こちら](quickstart.md)
 
 ----
-
 
 ## PromptGenについて
 

@@ -55,8 +55,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: https://promptgen.zawakin.dev/https://localhost.svg
-  favicon: https://promptgen.zawakin.dev/https://localhost/favicon.png
+  logo: http://localhost:8008/ja/img/icon-white.svg
+  favicon: http://localhost:8008/ja/img/icon-black.svg
   icon:
     logo: logo
   language: ja
