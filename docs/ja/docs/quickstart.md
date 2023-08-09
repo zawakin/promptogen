@@ -12,7 +12,7 @@ PromptGenは以下の機能を提供します:
 
 PromptGenは、例えばOpenAIのGPT-3.5やGPT-4などの大規模言語モデルを利用する際の、プロンプトの生成と管理を効率化します。これにより、ユーザーはプロンプトの作成や管理に関する手間を軽減し、より多くの時間をモデルとの対話や、その結果の解析に費やすことができます。
 
-![PromptGenの概要](/ja/images/overview.png)
+![PromptGenの概要](/ja/img/overview.png)
 
 ## 動作環境
 

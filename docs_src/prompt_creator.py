@@ -1,4 +1,6 @@
 import promptgen as pg
 
-collection = pg.PromptCollection(load_predefined=True)
+from promptgen.prompt_collection import PromptCollection
+
+collection = PromptCollection(load_predefined=True)
 print(collection)

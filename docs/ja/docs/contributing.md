@@ -15,13 +15,14 @@ https://python-poetry.org/docs/#installation
 ```bash
 $ git clone https://github.com/zawakin/promptgen.git
 $ cd promptgen
+$ poetry env use 3.8 # 仮想環境の作成
 $ poetry install --with docs
 ```
 
 ### テストの実行
 
 ```bash
-$ poetry run pytest -vv
+$ ./scripts/test.sh
 ```
 
 ## ドキュメントのビルド
