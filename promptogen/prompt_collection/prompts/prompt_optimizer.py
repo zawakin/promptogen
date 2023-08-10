@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import List
 
-from promptgen.model.dataclass import DataClass
-from promptgen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptogen.model.dataclass import DataClass
+from promptogen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
 
 
 class OptimizePromptInput(DataClass):

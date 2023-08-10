@@ -5,7 +5,7 @@
 この例では、 `PromptCreator` を使って、「Pythonコードジェネレータ」プロンプトを作成します。
 
 ```python
-import promptgen as pg
+import promptogen as pg
 prompt_creator = collection['PromptCreator']
 prompt_creator
 ```

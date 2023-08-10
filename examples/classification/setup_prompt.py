@@ -1,11 +1,11 @@
 import typer
 
-import promptgen as pg
+import promptogen as pg
 from examples.base import make_output_path
 from examples.classification.dataset_loader import DatasetLoader, IMDbSentimentDataset, TweetEvalEmotionDataset
 from examples.llm.openai_util import OpenAITextLLM
-from promptgen.prompt_collection import PromptCreatorPrompt
-from promptgen.prompt_tool import PromptWithReasoningTransformer, TextLLMReasoningExtractor
+from promptogen.prompt_collection import PromptCreatorPrompt
+from promptogen.prompt_tool import PromptWithReasoningTransformer, TextLLMReasoningExtractor
 
 app = typer.Typer()
 

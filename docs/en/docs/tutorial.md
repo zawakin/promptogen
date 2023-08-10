@@ -1,5 +1,5 @@
 ```python
-import promptgen as pg
+import promptogen as pg
 ```
 
 
@@ -434,7 +434,7 @@ print(raw_req)
           7 print(raw_req)
 
 
-    File ~/go/src/github.com/zawakin/promptgen/promptgen/prompt_formatter.py:54, in PromptFormatter.format_prompt(self, prompt, input_value)
+    File ~/go/src/github.com/zawakin/promptogen/promptogen/prompt_formatter.py:54, in PromptFormatter.format_prompt(self, prompt, input_value)
          52             raise TypeError(f"Expected prompt to be an instance of Prompt, got {type(prompt).__name__}.")
          53         if prompt.input_parameters.keys() != input_value.keys():
     ---> 54             raise ValueError(

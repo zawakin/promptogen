@@ -3,7 +3,7 @@ from typing import Dict, List
 from datasets import DatasetDict, load_dataset
 from pydantic import BaseModel
 
-import promptgen as pg
+import promptogen as pg
 
 
 class DatasetAttributes(BaseModel):

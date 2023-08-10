@@ -4,7 +4,7 @@
 
 ## 環境構築
 
-PromptGenの開発ではPython 3.8以上を使用します。
+PromptoGenの開発ではPython 3.8以上を使用します。
 
 ### Poetryのインストール
 
@@ -13,8 +13,8 @@ https://python-poetry.org/docs/#installation
 ### リポジトリのクローンと依存パッケージのインストール
 
 ```bash
-$ git clone https://github.com/zawakin/promptgen.git
-$ cd promptgen
+$ git clone https://github.com/zawakin/promptogen.git
+$ cd promptogen
 $ poetry env use 3.8 # 仮想環境の作成
 $ poetry install --with docs
 ```

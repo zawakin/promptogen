@@ -1,12 +1,12 @@
 # 「タスク分割プロンプト」を自動生成してみよう
 
-PromptGenには、いくつかのプロンプトが事前に定義されています。これらのプロンプトの中に、プロンプトを自動生成するプロンプトがあります。
+PromptoGenには、いくつかのプロンプトが事前に定義されています。これらのプロンプトの中に、プロンプトを自動生成するプロンプトがあります。
 
 
-PromptGenでは、プロンプトのモデルそのものも入出力パラメータとして扱うことができます。これにより、プロンプトを自動生成するプロンプトを作成することができます。
+PromptoGenでは、プロンプトのモデルそのものも入出力パラメータとして扱うことができます。これにより、プロンプトを自動生成するプロンプトを作成することができます。
 
 ```python
-import promptgen as pg
+import promptogen as pg
 collection = pg.PromptCollection(load_predefined=True)
 print(collection)
 ```
@@ -143,7 +143,7 @@ def generate_llm_response(prompt: str, model: str) -> str:
 ## 入出力パラメータの型定義
 
 `PromptCreator` プロンプトを使って、 `TaskSplitter` プロンプトを生成します。
-PromptGenでは入出力データを `dict` で扱うことができますが、ここでは `PromptCreator` プロンプトの入出力パラメータの型を定義してみましょう。
+PromptoGenでは入出力データを `dict` で扱うことができますが、ここでは `PromptCreator` プロンプトの入出力パラメータの型を定義してみましょう。
 
 ```python
 class PromptCreatorInput(pg.InputValue):

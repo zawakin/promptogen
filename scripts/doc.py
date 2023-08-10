@@ -56,11 +56,11 @@ def complete_existing_lang(incomplete: str):
 
 def get_base_lang_config(lang: str):
     en_config = get_en_config()
-    promptgen_url_base = "https://promptgen.zawakin.dev/"
+    promptogen_url_base = "https://promptogen.zawakin.dev/"
     new_config = en_config.copy()
     new_config["site_url"] = en_config["site_url"] + f"{lang}/"
-    new_config["theme"]["logo"] = promptgen_url_base + en_config["theme"]["logo"]
-    new_config["theme"]["favicon"] = promptgen_url_base + en_config["theme"]["favicon"]
+    new_config["theme"]["logo"] = promptogen_url_base + en_config["theme"]["logo"]
+    new_config["theme"]["favicon"] = promptogen_url_base + en_config["theme"]["favicon"]
     new_config["theme"]["language"] = lang
     new_config["nav"] = en_config["nav"][:2]
     # extra_css = []
@@ -69,7 +69,7 @@ def get_base_lang_config(lang: str):
     #     if css.startswith("http"):
     #         extra_css.append(css)
     #     else:
-    #         extra_css.append(promptgen_url_base + css)
+    #         extra_css.append(promptogen_url_base + css)
     # new_config["extra_css"] = extra_css
 
     # extra_js = []
@@ -78,7 +78,7 @@ def get_base_lang_config(lang: str):
     #     if js.startswith("http"):
     #         extra_js.append(js)
     #     else:
-    #         extra_js.append(promptgen_url_base + js)
+    #         extra_js.append(promptogen_url_base + js)
     # new_config["extra_javascript"] = extra_js
     return new_config
 

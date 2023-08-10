@@ -7,13 +7,13 @@
 ## インストール
 
 ```console
-$ pip install promptgen
+$ pip install promptogen
 ```
 
 ## 動作確認
 
 ```python
-import promptgen as pg
+import promptogen as pg
 
 print(pg.__version__)
 ```

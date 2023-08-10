@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import pytest
-from promptgen.model.llm import FunctionBasedTextLLM
-from promptgen.model.prompt import Example, ParameterInfo, Prompt
-from promptgen.model.reasoning_extractor import ExampleReasoning
-from promptgen.prompt_tool.transformation.prompt_with_reasoning import PromptWithReasoningTransformer
-from promptgen.prompt_tool.understanding.llm_reasoning_extractor import TextLLMReasoningExtractor, ReasoningGeneratorPromptTransformer
+from promptogen.model.llm import FunctionBasedTextLLM
+from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.reasoning_extractor import ExampleReasoning
+from promptogen.prompt_tool.transformation.prompt_with_reasoning import PromptWithReasoningTransformer
+from promptogen.prompt_tool.understanding.llm_reasoning_extractor import TextLLMReasoningExtractor, ReasoningGeneratorPromptTransformer
 
 
 @pytest.fixture

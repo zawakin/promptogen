@@ -1,6 +1,6 @@
-from promptgen.model.prompt import Example, ParameterInfo, Prompt
-from promptgen.model.prompt_transformer import PromptTransformer
-from promptgen.model.reasoning_extractor import ReasoningExtractor
+from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt_transformer import PromptTransformer
+from promptogen.model.reasoning_extractor import ReasoningExtractor
 
 
 class PromptWithReasoningTransformer(PromptTransformer):

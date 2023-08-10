@@ -1,8 +1,8 @@
 import pytest
-from promptgen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import Example, ParameterInfo, Prompt
 
-from promptgen import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface
-from promptgen.prompt_formatter import JsonValueFormatter, KeyValueFormatter
+from promptogen import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface
+from promptogen.prompt_formatter import JsonValueFormatter, KeyValueFormatter
 
 
 @pytest.fixture

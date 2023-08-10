@@ -1,12 +1,12 @@
 from typing import List, Tuple
 from pydantic import BaseModel
 import pytest
-from promptgen.model.llm import FunctionBasedTextLLM
-from promptgen.model.prompt_runner import TextLLMPromptRunner
-from promptgen.prompt_collection.prompts.text_summarizer import TextSummarizerPrompt
+from promptogen.model.llm import FunctionBasedTextLLM
+from promptogen.model.prompt_runner import TextLLMPromptRunner
+from promptogen.prompt_collection.prompts.text_summarizer import TextSummarizerPrompt
 
-from promptgen.prompt_formatter import JsonValueFormatter, KeyValueFormatter
-from promptgen.prompt_formatter.key_value_formatter import KeyValuePromptFormatter
+from promptogen.prompt_formatter import JsonValueFormatter, KeyValueFormatter
+from promptogen.prompt_formatter.key_value_formatter import KeyValuePromptFormatter
 
 
 @pytest.fixture

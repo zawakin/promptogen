@@ -5,9 +5,9 @@ from typing import List
 
 from pydantic import BaseModel
 
-from promptgen.model.dataclass import DataClass
-from promptgen.model.prompt import Example, ParameterInfo, Prompt
-from promptgen.model.value_formatter import Value, ValueFormatter
+from promptogen.model.dataclass import DataClass
+from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.value_formatter import Value, ValueFormatter
 
 
 class PromptFormatterInterface(ABC):

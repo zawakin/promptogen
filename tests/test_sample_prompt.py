@@ -1,4 +1,4 @@
-from promptgen.model.prompt import Prompt, load_prompt_from_json_file
+from promptogen.model.prompt import Prompt, load_prompt_from_json_file
 
 
 def test_load_prompts_from_json_file():

@@ -1,8 +1,8 @@
 # %%
-import promptgen as pg
-from promptgen import Example, ParameterInfo, Prompt
-from promptgen.model.dataclass import DataClass
-from promptgen.prompt_collection import ExampleCreatorPrompt
+import promptogen as pg
+from promptogen import Example, ParameterInfo, Prompt
+from promptogen.model.dataclass import DataClass
+from promptogen.prompt_collection import ExampleCreatorPrompt
 
 # %%
 formatter = pg.KeyValuePromptFormatter()

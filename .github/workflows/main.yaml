@@ -34,7 +34,7 @@ jobs:
               poetry install
       - name: Run tests with pytest
         run: |
-          poetry run pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=promptgen tests/ | tee pytest-coverage.txt
+          poetry run pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=promptogen tests/ | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
@@ -44,16 +44,16 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          poetry run flake8 promptgen
+          poetry run flake8 promptogen
 
       - name: Test with mypy
         run: |
-          poetry run mypy promptgen
+          poetry run mypy promptogen
 
       - name: Check code formatting with Black
         run: |
-          poetry run black --check promptgen
+          poetry run black --check promptogen
 
       - name: Check import formatting with isort
         run: |
-          poetry run isort --check-only promptgen
+          poetry run isort --check-only promptogen

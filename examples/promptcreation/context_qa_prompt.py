@@ -1,7 +1,7 @@
-import promptgen as pg
+import promptogen as pg
 from examples.llm.openai_util import OpenAITextLLM
-from promptgen.prompt_collection import PromptCreatorPrompt
-from promptgen.prompt_tool import TextLLMReasoningExtractor
+from promptogen.prompt_collection import PromptCreatorPrompt
+from promptogen.prompt_tool import TextLLMReasoningExtractor
 
 llm = OpenAITextLLM(model="gpt-3.5-turbo")
 
