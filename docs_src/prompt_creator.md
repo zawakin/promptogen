@@ -1,12 +1,12 @@
 # プロンプトを自動生成してみよう
 
-PromptGenには、いくつかのプロンプトが事前に定義されています。これらのプロンプトの中に、プロンプトを自動生成するプロンプトがあります。
+PromptoGenには、いくつかのプロンプトが事前に定義されています。これらのプロンプトの中に、プロンプトを自動生成するプロンプトがあります。
 
 
-PromptGenでは、プロンプトのモデルそのものも入出力パラメータとして扱うことができます。これにより、プロンプトを自動生成するプロンプトを作成することができます。
+PromptoGenでは、プロンプトのモデルそのものも入出力パラメータとして扱うことができます。これにより、プロンプトを自動生成するプロンプトを作成することができます。
 
 ```python
-import promptgen as pg
+import promptogen as pg
 collection = pg.PromptCollection(load_predefined=True)
 print(collection)
 ```

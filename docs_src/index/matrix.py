@@ -1,4 +1,4 @@
-import promptgen as pg
+import promptogen as pg
 
 formatters = [
     pg.KeyValuePromptFormatter(),

@@ -10,12 +10,12 @@
 ## インポート
     
 ```python
-import promptgen as pg
+import promptogen as pg
 ```
 
 ## LLMの定義
 
-Large Language Model(LLM) とは、テキストを生成するための大規模な言語モデルのことです。PromptGen では、LLMを定義するためのクラスを提供しています。
+Large Language Model(LLM) とは、テキストを生成するための大規模な言語モデルのことです。PromptoGen では、LLMを定義するためのクラスを提供しています。
 
 
 `pg.TextLLM` は抽象クラスであり、`generate` メソッドを実装する必要があります。
@@ -50,7 +50,7 @@ llm = pg.FunctionBasedTextLLM(generator_func)
 
 ## PromptFormatter の定義
 
-PromptFormatter は、プロンプトを文字列にフォーマットするためのクラスです。PromptGen では、様々な形式のフォーマッターをサポートしています。
+PromptFormatter は、プロンプトを文字列にフォーマットするためのクラスです。PromptoGen では、様々な形式のフォーマッターをサポートしています。
 
 ```python
 formatter = pg.KeyValuePromptFormatter()
@@ -88,7 +88,7 @@ prompt_runner = pg.PromptRunner(llm, formatter)
 ここでは、 `PromptCreatorPrompt` を用いてプロンプトを自動生成する方法を紹介します。
 
 ```python
-from promptgen.prompt_collection import PromptCreatorPrompt
+from promptogen.prompt_collection import PromptCreatorPrompt
 
 prompt_creator_prompt = PromptCreatorPrompt()
 
@@ -169,7 +169,7 @@ the lazy dog
 ## 追加機能：回答の理由を生成する
 
 ```python
-from promptgen.prompt_tool import TextLLMReasoningExtractor
+from promptogen.prompt_tool import TextLLMReasoningExtractor
 
 reasoning_extractor = TextLLMReasoningExtractor(
     text_llm=llm,

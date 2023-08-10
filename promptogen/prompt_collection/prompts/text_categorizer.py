@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
-from promptgen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import Example, ParameterInfo, Prompt
 
 
 class TextCategorizerPrompt(Prompt):

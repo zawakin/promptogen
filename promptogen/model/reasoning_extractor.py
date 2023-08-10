@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from promptgen.model.dataclass import DataClass
-from promptgen.model.prompt import Example, Prompt
+from promptogen.model.dataclass import DataClass
+from promptogen.model.prompt import Example, Prompt
 
 
 class ExampleReasoning(DataClass):

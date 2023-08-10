@@ -1,5 +1,5 @@
 #%%jj
-import promptgen as pg
+import promptogen as pg
 
 summarizer = pg.Prompt(
     name="Text Summarizer and Keyword Extractor",

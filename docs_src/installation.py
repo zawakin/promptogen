@@ -1,3 +1,3 @@
-import promptgen as pg
+import promptogen as pg
 
 print(pg.__version__)

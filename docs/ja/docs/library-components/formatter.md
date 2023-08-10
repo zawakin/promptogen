@@ -6,7 +6,7 @@
 フォーマッターをカスタマイズすることで、出力を変更することができます。
 
 ```python
-import promptgen as pg
+import promptogen as pg
 
 summarizer = pg.Prompt(
     name="Text Summarizer",

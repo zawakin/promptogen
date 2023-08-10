@@ -1,8 +1,8 @@
 import json
 from typing import List, Optional, Tuple
 
-from promptgen.model.value_formatter import Value, ValueFormatter
-from promptgen.prompt_formatter.prompt_formatter import (
+from promptogen.model.value_formatter import Value, ValueFormatter
+from promptogen.prompt_formatter.prompt_formatter import (
     PromptFormatter,
     PromptFormatterConfig,
     convert_dataclass_to_dict,

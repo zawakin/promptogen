@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from promptgen.model.llm import TextLLM
-from promptgen.model.prompt import Prompt
-from promptgen.model.value_formatter import Value
-from promptgen.prompt_formatter.prompt_formatter import PromptFormatter
+from promptogen.model.llm import TextLLM
+from promptogen.model.prompt import Prompt
+from promptogen.model.value_formatter import Value
+from promptogen.prompt_formatter.prompt_formatter import PromptFormatter
 
 
 class PromptRunner(ABC):

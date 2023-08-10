@@ -3,8 +3,8 @@ from ast import literal_eval
 from pprint import pformat
 from typing import Any, Callable, Dict, List, Tuple
 
-from promptgen.model.value_formatter import Value, ValueFormatter
-from promptgen.prompt_formatter.prompt_formatter import (
+from promptogen.model.value_formatter import Value, ValueFormatter
+from promptogen.prompt_formatter.prompt_formatter import (
     PromptFormatter,
     PromptFormatterConfig,
     convert_dataclass_to_dict,

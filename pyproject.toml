@@ -3,7 +3,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "promptgen"
+name = "promptogen"
 version = "0.0.1"
 description = ""
 authors = ["zawakin <zawawahoge@gmail.com>"]
@@ -17,7 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
 ]
 readme = "README.md"
-packages = [{ include = "promptgen" }]
+packages = [{ include = "promptogen" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"

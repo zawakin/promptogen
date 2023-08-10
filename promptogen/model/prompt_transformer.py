@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from promptgen.model.prompt import Prompt
+from promptogen.model.prompt import Prompt
 
 
 class PromptTransformer(ABC):

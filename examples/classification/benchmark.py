@@ -3,7 +3,7 @@ from typing import List
 
 import typer
 
-import promptgen as pg
+import promptogen as pg
 
 # from tenacity import retry, stop_after_attempt
 from examples.base import make_output_path

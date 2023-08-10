@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-from promptgen.prompt_collection.prompt_collection import PromptCollection
-from promptgen.prompt_collection.prompts.text_categorizer import TextCategorizerPrompt
-from promptgen.prompt_collection.prompts.text_summarizer import TextSummarizerPrompt
+from promptogen.prompt_collection.prompt_collection import PromptCollection
+from promptogen.prompt_collection.prompts.text_categorizer import TextCategorizerPrompt
+from promptogen.prompt_collection.prompts.text_summarizer import TextSummarizerPrompt
 
 
 def test_prompt_collection():

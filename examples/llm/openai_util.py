@@ -3,7 +3,7 @@ import os
 import openai
 from dotenv import load_dotenv
 
-from promptgen.model.llm import TextLLM
+from promptogen.model.llm import TextLLM
 
 load_dotenv()
 

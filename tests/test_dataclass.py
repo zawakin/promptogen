@@ -1,5 +1,5 @@
 import pytest
-from promptgen.model.dataclass import DataClass
+from promptogen.model.dataclass import DataClass
 
 
 class TmpDataClass(DataClass):

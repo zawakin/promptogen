@@ -3,7 +3,7 @@ import tempfile
 from pydantic import ValidationError
 import pytest
 
-from promptgen.model.prompt import Example, ParameterInfo, Prompt, load_prompt_from_json_string
+from promptogen.model.prompt import Example, ParameterInfo, Prompt, load_prompt_from_json_string
 
 
 @pytest.fixture

@@ -4,7 +4,7 @@ set -eu
 
 cd "$(dirname "$0")/.."
 
-TARGET_DIR="promptgen"
+TARGET_DIR="promptogen"
 
 poetry run flake8 "${TARGET_DIR}"
 poetry run mypy "${TARGET_DIR}"
