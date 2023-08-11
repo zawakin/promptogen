@@ -3,7 +3,7 @@ import tempfile
 from pydantic import ValidationError
 import pytest
 
-from promptogen.model.prompt import Example, ParameterInfo, Prompt, load_prompt_from_json_string
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt, load_prompt_from_json_string
 
 
 @pytest.fixture
@@ -107,7 +107,7 @@ def test_prompt_from_dict(prompt_dict: dict):
                 description='test output parameter description 2',
             ),
         ],
-        template=Example(
+        template=IOExample(
             input={
                 'test input parameter name': 'test input parameter value',
                 'test input parameter name 2': 'test input parameter value 2'
@@ -118,7 +118,7 @@ def test_prompt_from_dict(prompt_dict: dict):
             },
         ),
         examples=[
-            Example(
+            IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value',
                     'test input parameter name 2': 'example test input parameter value 2'
@@ -128,7 +128,7 @@ def test_prompt_from_dict(prompt_dict: dict):
                     'test output parameter name 2': 'example test output parameter value 2'
                 },
             ),
-            Example(
+            IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value 3',
                     'test input parameter name 2': 'example test input parameter value 4'
@@ -196,10 +196,10 @@ def test_prompt_to_json_file(prompt_dict: dict):
 def test_prompt_with_examples(prompt_dict: dict, other_example_dict: dict):
     prompt = Prompt.from_dict(prompt_dict)
 
-    got = prompt.update(examples=[Example.from_dict(other_example_dict)])
+    got = prompt.update(examples=[IOExample.from_dict(other_example_dict)])
 
     assert type(got.examples) == list
-    assert type(got.examples[0]) == Example
+    assert type(got.examples[0]) == IOExample
     assert got.examples[0].input == other_example_dict['input']
     assert got.examples[0].output == other_example_dict['output']
 
@@ -243,7 +243,7 @@ def test_prompt_validate_template_valid():
     'output_parameters': [
         ParameterInfo(name='test output parameter name', description='test output parameter description')
     ],
-    'template': Example(
+    'template': IOExample(
         input={
             'test input parameter name': 'example test input parameter value',
         },
@@ -252,7 +252,7 @@ def test_prompt_validate_template_valid():
         },
     ),
     'examples': [
-        Example(
+        IOExample(
             input={
                 'test input parameter name': 'example test input parameter value',
             },
@@ -316,7 +316,7 @@ def test_prompt_validate_template_invalid():
             'output_parameters': [
                 ParameterInfo(name='test output parameter name', description='test output parameter description')
             ],
-            'template': Example(
+            'template': IOExample(
                 # missing input parameter
                 input={},
                 output={
@@ -337,7 +337,7 @@ def test_prompt_validate_template_invalid():
             'output_parameters': [
                 ParameterInfo(name='test output parameter name', description='test output parameter description')
             ],
-            'template': Example(
+            'template': IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value',
                 },
@@ -358,7 +358,7 @@ def test_prompt_validate_template_invalid():
             'output_parameters': [
                 ParameterInfo(name='test output parameter name', description='test output parameter description')
             ],
-            'template': Example(
+            'template': IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value',
                 },
@@ -367,7 +367,7 @@ def test_prompt_validate_template_invalid():
                 },
             ),
             'examples': [
-                Example(
+                IOExample(
                     # missing input parameter
                     input={},
                     output={
@@ -388,7 +388,7 @@ def test_prompt_validate_template_invalid():
             'output_parameters': [
                 ParameterInfo(name='test output parameter name', description='test output parameter description')
             ],
-            'template': Example(
+            'template': IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value',
                 },
@@ -397,7 +397,7 @@ def test_prompt_validate_template_invalid():
                 },
             ),
             'examples': [
-                Example(
+                IOExample(
                     input={
                         'test input parameter name': 'example test input parameter value',
                     },

@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List
 
 from promptogen.model.dataclass import DataClass
-from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 
 
 class TextSummarizerPrompt(Prompt):
@@ -21,7 +21,7 @@ class TextSummarizerPrompt(Prompt):
             description="summary of the text",
         ),
     ]
-    template: Example = Example(
+    template: IOExample = IOExample(
         input={
             "text": "text",
         },
@@ -29,8 +29,8 @@ class TextSummarizerPrompt(Prompt):
             "summary": "summary",
         },
     )
-    examples: List[Example] = [
-        Example(
+    examples: List[IOExample] = [
+        IOExample(
             input={
                 "text": """Once upon a time, in a world filled with wonder and whimsy, there existed a small, peculiar village named Eldorina. This village was unlike any other, for it was inhabited by a variety of magical creatures, each with their own unique talents and quirks.
 
@@ -44,7 +44,7 @@ One day, a mysterious wanderer arrived in Eldorina. His name was Vesper, and he 
                 "summary": "In the magical village of Eldorina, inhabited by various magical creatures, a grand library managed by an ancient dragon named Biblios stands at the heart of the village. The residents live in harmony, each contributing their unique talents. One day, a mysterious wanderer named Vesper, a collector of stories, arrives in the village, causing an eclipse and leaving the villagers curious and cautious.",
             },
         ),
-        Example(
+        IOExample(
             input={
                 "text": """**Astonishing Discovery: Underground City Found Beneath Local Park**
 

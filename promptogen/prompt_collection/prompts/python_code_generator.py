@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List
 
 from promptogen.model.dataclass import DataClass
-from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 
 
 class PythonCodeGeneratorPrompt(Prompt):
@@ -16,7 +16,7 @@ class PythonCodeGeneratorPrompt(Prompt):
         ParameterInfo(name="reason", description="Reason for the generated Python code"),
         ParameterInfo(name="code", description="Python code generated to complete the task"),
     ]
-    template: Example = Example(
+    template: IOExample = IOExample(
         input={
             "task": "task",
         },
@@ -25,8 +25,8 @@ class PythonCodeGeneratorPrompt(Prompt):
             "code": "code",
         },
     )
-    examples: List[Example] = [
-        Example(
+    examples: List[IOExample] = [
+        IOExample(
             input={
                 "task": "Create a function that calculates the factorial of a number",
             },

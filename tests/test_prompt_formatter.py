@@ -1,5 +1,5 @@
 import pytest
-from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 
 from promptogen import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface
 from promptogen.prompt_formatter import JsonValueFormatter, KeyValueFormatter
@@ -25,7 +25,7 @@ def prompt():
             ParameterInfo(name="test output parameter name", description='test output parameter description'),
             ParameterInfo(name="test output parameter name 2", description='test output parameter description 2'),
         ],
-        template=Example(
+        template=IOExample(
             input={
                 'test input parameter name': 'test input parameter value',
                 'test input parameter name 2': 'test input parameter value 2'
@@ -36,7 +36,7 @@ def prompt():
             },
         ),
         examples=[
-            Example(
+            IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value',
                     'test input parameter name 2': 'example test input parameter value 2'
@@ -46,7 +46,7 @@ def prompt():
                     'test output parameter name 2': 'example test output parameter value 2'
                 },
             ),
-            Example(
+            IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value 3',
                     'test input parameter name 2': 'example test input parameter value 4'

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List
 
-from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 
 
 class TextCategorizerPrompt(Prompt):
@@ -15,7 +15,7 @@ class TextCategorizerPrompt(Prompt):
     output_parameters: List[ParameterInfo] = [
         ParameterInfo(name="category", description="The category the text belongs to"),
     ]
-    template: Example = Example(
+    template: IOExample = IOExample(
         input={
             "text": "text",
             "categories": ["category 1", "category 2"],
@@ -24,8 +24,8 @@ class TextCategorizerPrompt(Prompt):
             "category": "category 1",
         },
     )
-    examples: List[Example] = [
-        Example(
+    examples: List[IOExample] = [
+        IOExample(
             input={
                 "text": "A recent study shows that regular exercise can help improve cognitive function in older adults.",
                 "categories": ["Health", "Science", "Technology"],
@@ -34,7 +34,7 @@ class TextCategorizerPrompt(Prompt):
                 "category": "Health",
             },
         ),
-        Example(
+        IOExample(
             input={
                 "text": "The new quantum computing system is expected to revolutionize data processing and complex calculations.",
                 "categories": ["Health", "Science", "Technology"],

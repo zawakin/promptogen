@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 from promptogen.model.llm import FunctionBasedTextLLM
-from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 from promptogen.model.reasoning_extractor import ExampleReasoning
 from promptogen.prompt_tool.transformation.prompt_with_reasoning import PromptWithReasoningTransformer
 from promptogen.prompt_tool.understanding.llm_reasoning_extractor import TextLLMReasoningExtractor, ReasoningGeneratorPromptTransformer
@@ -21,7 +21,7 @@ def prompt():
             ParameterInfo(name="test output parameter name", description='test output parameter description'),
             ParameterInfo(name="test output parameter name 2", description='test output parameter description 2'),
         ],
-        template=Example(
+        template=IOExample(
             input={
                 'test input parameter name': 'test input parameter value',
                 'test input parameter name 2': 'test input parameter value 2'
@@ -32,7 +32,7 @@ def prompt():
             },
         ),
         examples=[
-            Example(
+            IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value',
                     'test input parameter name 2': 'example test input parameter value 2'
@@ -42,7 +42,7 @@ def prompt():
                     'test output parameter name 2': 'example test output parameter value 2'
                 },
             ),
-            Example(
+            IOExample(
                 input={
                     'test input parameter name': 'example test input parameter value 3',
                     'test input parameter name 2': 'example test input parameter value 4'
@@ -105,7 +105,7 @@ Output:"""
         'test output parameter name': 'output1',
         'test output parameter name 2': 'output2'
     }
-    resp = explanation_generator.generate_reasoning(prompt, Example(input=input_value, output=output_value))
+    resp = explanation_generator.generate_reasoning(prompt, IOExample(input=input_value, output=output_value))
 
     assert resp == ExampleReasoning(reasoning=generated_reasoning)
 
@@ -129,7 +129,7 @@ def test_reasoning_prompt_transformer_transform_prompt(prompt: Prompt):
         output_parameters=[
             ParameterInfo(name='reasoning', description='Reasoning for the output'),
         ] + prompt.output_parameters,
-        template=Example(
+        template=IOExample(
             input=prompt.template.input,
             output={
                 'reasoning': reasoning_template,

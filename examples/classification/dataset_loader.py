@@ -31,11 +31,11 @@ class DatasetLoader:
         self.attributes = attributes
         self.label_map = label_map
 
-    def load_dataset(self, mode: str, size: int) -> List[pg.Example]:
+    def load_dataset(self, mode: str, size: int) -> List[pg.IOExample]:
         data = self.dataset[mode].shuffle(seed=self.seed)[:size]
 
         examples = [
-            pg.Example(
+            pg.IOExample(
                 input={self.attributes.input_key: text}, output={self.attributes.output_key: self.label_map[label]}
             )
             for text, label in zip(data["text"], data["label"])
@@ -43,10 +43,10 @@ class DatasetLoader:
 
         return examples
 
-    def load_train_dataset(self) -> List[pg.Example]:
+    def load_train_dataset(self) -> List[pg.IOExample]:
         return self.load_dataset("train", self.train_size)
 
-    def load_test_dataset(self) -> List[pg.Example]:
+    def load_test_dataset(self) -> List[pg.IOExample]:
         return self.load_dataset("test", self.test_size)
 
 

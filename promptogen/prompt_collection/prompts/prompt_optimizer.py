@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List
 
 from promptogen.model.dataclass import DataClass
-from promptogen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt, create_sample_prompt
 
 
 class OptimizePromptInput(DataClass):
@@ -25,7 +25,7 @@ class PromptOptimizerPrompt(Prompt):
     output_parameters: List[ParameterInfo] = [
         ParameterInfo(name="optimized_prompt", description="optimized prompt"),
     ]
-    template: Example = Example(
+    template: IOExample = IOExample(
         input={
             "original_prompt": create_sample_prompt("original prompt"),
             "background": "background of the prompt",
@@ -34,4 +34,4 @@ class PromptOptimizerPrompt(Prompt):
             "optimized_prompt": create_sample_prompt("optimized prompt"),
         },
     )
-    examples: List[Example] = []
+    examples: List[IOExample] = []
