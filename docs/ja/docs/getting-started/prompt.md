@@ -106,3 +106,104 @@ summarizer = pg.Prompt(
     ],
 )
 ```
+
+## プロンプトの表示
+
+作成したプロンプトは、`print` 関数で表示することができます。
+
+```python
+print(summarizer)
+```
+
+```text
+Text Summarizer and Keyword Extractor: (text: str) -> (summary: str, keywords: list)
+
+Description
+-----------
+Summarize text and extract keywords.
+
+Input Parameters
+----------------
+- text (str): Text to summarize
+
+Output Parameters
+-----------------
+- summary (str): Summary of text
+- keywords (list): Keywords extracted from text
+```
+
+## プロンプトの保存
+
+作成したプロンプトは、`Prompt.to_json_file` メソッドで保存することができます。
+
+```python
+summarizer.to_json_file("summarizer.json")
+```
+
+## プロンプトの読み込み
+
+保存したプロンプトは、`Prompt.from_json_file` メソッドで読み込むことができます。
+
+```python
+summarizer = pg.Prompt.from_json_file("summarizer.json")
+```
+
+## JSON形式でのプロンプトの表現
+
+`Prompt` は pydantic の `BaseModel` を継承しているため、`Prompt.model_dump_json` メソッドで JSON 形式で表現することができます。
+
+```python
+print(summarizer.model_dump_json(indent=4))
+```
+
+```json
+{
+    "name": "Text Summarizer and Keyword Extractor",
+    "description": "Summarize text and extract keywords.",
+    "input_parameters": [
+        {
+            "name": "text",
+            "description": "Text to summarize"
+        }
+    ],
+    "output_parameters": [
+        {
+            "name": "summary",
+            "description": "Summary of text"
+        },
+        {
+            "name": "keywords",
+            "description": "Keywords extracted from text"
+        }
+    ],
+    "template": {
+        "input": {
+            "text": "This is a sample text to summarize."
+        },
+        "output": {
+            "summary": "This is a summary of the text.",
+            "keywords": [
+                "sample",
+                "text",
+                "summarize"
+            ]
+        }
+    },
+    "examples": [
+        {
+            "input": {
+                "text": "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+            },
+            "output": {
+                "summary": "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
+                "keywords": [
+                    "friends",
+                    "park",
+                    "sports",
+                    "memories"
+                ]
+            }
+        }
+    ]
+}
+```

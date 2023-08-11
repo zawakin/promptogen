@@ -7,16 +7,21 @@ nav:
 - はじめに:
   - インストール: getting-started/installation.md
   - クイックスタート: getting-started/quickstart.md
-  - モデル:
+  - 基本モデルを理解しよう:
+    - Value: getting-started/value.md
     - Prompt: getting-started/prompt.md
-    - PromptFormatter: getting-started/prompt_formatter.md
+  - 使い方:
+    - Valueをフォーマットする: getting-started/format-value.md
+    - Valueをパースする: getting-started/parse-value.md
+    - Promptをフォーマットする: getting-started/format-prompt.md
+    - Prompt出力をパースする: getting-started/parse-prompt-output.md
+  - 便利な機能:
+    - TextLLM: getting-started/text-llm.md
+    - PromptRunnerを使う: getting-started/prompt-runner.md
     - フォーマッター: usages/usage.md
   - コンセプト:
     - コンセプト: concepts/concept.md
-  - コンポーネント:
-    - フォーマッター: library-components/formatter.md
-    - パーサー: library-components/parser.md
-- 使用例:
+- 応用例:
   - プロンプト自動生成:
     - タスク分割: examples/task_splitter.md
     - コード生成: examples/code_generator.md
@@ -58,7 +63,7 @@ theme:
     text: Roboto
     code: Roboto Mono
   logo: /ja/img/icon-white.svg
-  favicon: /ja/img/favicon-32x32.png
+  favicon: /ja/img/favicon.png
   icon:
     logo: logo
   language: ja
