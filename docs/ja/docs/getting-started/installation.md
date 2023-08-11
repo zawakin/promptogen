@@ -17,3 +17,7 @@ import promptogen as pg
 
 print(pg.__version__)
 ```
+
+## クイックスタート
+
+[クイックスタートガイド](../quickstart)を参照してください。

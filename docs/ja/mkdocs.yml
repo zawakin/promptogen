@@ -4,22 +4,24 @@ repo_url: https://github.com/zawakin/promptogen
 edit_uri: edit/main/docs/ja/docs/
 nav:
 - PromptoGen: index.md
-- クイックスタートガイド: quickstart.md
-- インストール方法: installation.md
-- 使い方:
-  - 使い方: usages/usage.md
-- コンセプト: concepts/concept.md
-- コンポーネント:
-  - フォーマッター: library-components/formatter.md
-  - パーサー: library-components/parser.md
+- はじめに:
+  - インストール: getting-started/installation.md
+  - クイックスタート: getting-started/quickstart.md
+  - モデル:
+    - Prompt: getting-started/prompt.md
+    - PromptFormatter: getting-started/prompt_formatter.md
+    - フォーマッター: usages/usage.md
+  - コンセプト:
+    - コンセプト: concepts/concept.md
+  - コンポーネント:
+    - フォーマッター: library-components/formatter.md
+    - パーサー: library-components/parser.md
 - 使用例:
   - プロンプト自動生成:
     - タスク分割: examples/task_splitter.md
     - コード生成: examples/code_generator.md
 - コントリビューションガイド: contributing.md
-- 言語(Language):
-  - en: /
-  - ja: /ja/
+- 言語(Language): language.md
 theme:
   name: material
   theme:
@@ -38,7 +40,7 @@ theme:
     # - content.tabs.link
     - content.tooltips
     # - header.autohide
-    # - navigation.expand
+    - navigation.expand
     - navigation.footer
     - navigation.indexes
     # - navigation.instant
@@ -55,8 +57,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: http://localhost:8008/ja/img/icon-white.svg
-  favicon: http://localhost:8008/ja/img/icon-black.svg
+  logo: /ja/img/icon-white.svg
+  favicon: /ja/img/favicon-32x32.png
   icon:
     logo: logo
   language: ja
