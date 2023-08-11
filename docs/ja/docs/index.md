@@ -69,7 +69,7 @@ summarizer = pg.Prompt(
     output_parameters=[
         pg.ParameterInfo(name="summary", description="Summary of text"),
     ],
-    template=pg.Example(
+    template=pg.IOExample(
         input={
             "text": "This is a sample text to summarize.",
         },

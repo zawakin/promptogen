@@ -11,7 +11,7 @@ summarizer = pg.Prompt(
         pg.ParameterInfo(name="summary", description="Summary of text"),
         pg.ParameterInfo(name="keywords", description="Keywords extracted from text"),
     ],
-    template=pg.Example(
+    template=pg.IOExample(
         input={'text': "This is a sample text to summarize."},
         output={
             'summary': "This is a summary of the text.",
@@ -19,7 +19,7 @@ summarizer = pg.Prompt(
         },
     ),
     examples=[
-        pg.Example(
+        pg.IOExample(
             input={
                 'text': "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."},
             output={
