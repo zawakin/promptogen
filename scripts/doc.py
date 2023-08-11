@@ -82,7 +82,7 @@ def new_lang(lang: str = typer.Argument(..., callback=lang_callback)):
     en_index_content = en_index_path.read_text(encoding="utf-8")
     new_index_content = f"{missing_translation_snippet}\n\n{en_index_content}"
     new_index_path.write_text(new_index_content, encoding="utf-8")
-    typer.secho(f"Successfully initialized: {new_path}", color=typer.colors.GREEN)
+    typer.secho(f"Successfully initialized: {new_path}", fg=typer.colors.GREEN)
     update_languages()
 
 
@@ -117,7 +117,7 @@ def build_lang(
     subprocess.run(["mkdocs", "build", "--site-dir", build_site_dist_path], check=True)
     shutil.copytree(build_site_dist_path, dist_path, dirs_exist_ok=True)
     os.chdir(current_dir)
-    typer.secho(f"Successfully built docs for: {lang}", color=typer.colors.GREEN)
+    typer.secho(f"Successfully built docs for: {lang}")
 
 
 index_sponsors_template = """
@@ -173,7 +173,7 @@ def verify_readme() -> None:
     readme_content = readme_path.read_text("utf-8")
     if generated_content != readme_content:
         typer.secho(
-            "README.md outdated from the latest index.md", color=typer.colors.RED
+            "README.md outdated from the latest index.md",
         )
         raise typer.Abort()
     typer.echo("Valid README ✅")
