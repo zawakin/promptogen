@@ -93,14 +93,23 @@ Input:
 text: "This is a sample text to summarize."
 Output:
 summary: """This is a summary of the text."""
-keywords: ['sample', 'text', 'summarize']
+keywords: [
+ "sample",
+ "text",
+ "summarize"
+]
 
 Example 1:
 Input:
 text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
 summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: ['friends', 'park', 'sports', 'memories']
+keywords: [
+ "friends",
+ "park",
+ "sports",
+ "memories"
+]
 ```
 
 ## プロンプトを入力パラメータありで文字列にフォーマットする
@@ -135,14 +144,23 @@ Input:
 text: "This is a sample text to summarize."
 Output:
 summary: """This is a summary of the text."""
-keywords: ['sample', 'text', 'summarize']
+keywords: [
+ "sample",
+ "text",
+ "summarize"
+]
 
 Example 1:
 Input:
 text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
 summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: ['friends', 'park', 'sports', 'memories']
+keywords: [
+ "friends",
+ "park",
+ "sports",
+ "memories"
+]
 
 --------
 
@@ -205,8 +223,19 @@ print(raw_resp)
 
 
 ```console
-summary: """Software developers collaborate using version control systems like Git to create and maintain efficient code and solve implementation and optimization issues."""
-keywords: ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'evolving user requirements', 'system optimization']
+summary: """Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements."""
+keywords: [
+ "software engineering",
+ "developers",
+ "collaborate",
+ "projects",
+ "version control systems",
+ "Git",
+ "code",
+ "implementation complexities",
+ "user requirements",
+ "system optimization"
+]
 ```
 
 ## 出力をPythonオブジェクトに変換する
@@ -222,7 +251,7 @@ print(summarized_resp)
 コンソール出力:
 
 ```console
-{'summary': 'Software developers collaborate using version control systems like Git to create and maintain efficient code and solve implementation and optimization issues.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'evolving user requirements', 'system optimization']}
+{'summary': 'Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'user requirements', 'system optimization']}
 ```
 
 この出力は、LLM出力の文字列をパースした結果である `dict` です。

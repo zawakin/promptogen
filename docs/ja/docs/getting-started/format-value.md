@@ -20,7 +20,11 @@ print(value_formatter.format(value))
 
 ```console
 summary: "This is a summary of the text."
-keywords: ['sample', 'text', 'summarize']
+keywords: [
+ "sample",
+ "text",
+ "summarize"
+]
 ```
 
 ### 例: `JsonValueFormatter`

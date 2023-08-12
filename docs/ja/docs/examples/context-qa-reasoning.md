@@ -3,6 +3,10 @@
 
 そのような推論を生成するためには、 `TextLLMReasoningExtractor` を使用します。
 
+## ソースコード
+
+[context-qa.py (GitHub)](https://github.com/zawakin/promptogen/tree/742485c4690788d2866635bcd3b5eda580cf5b1a/examples/promptcreation/context_qa_prompt.py)
+
 ## 準備
 
 `openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。

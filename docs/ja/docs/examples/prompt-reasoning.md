@@ -1,7 +1,11 @@
 このページでは、既存のプロンプトを、推論を出力するように変換する方法を説明します。
 
-`openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。
-同じディレクトリの `openai_util.py` にそれらを定義しておくと、`import` できます。
+## ソースコード
+
+[context-qa-reasoning.py (GitHub)](https://github.com/zawakin/promptogen/tree/742485c4690788d2866635bcd3b5eda580cf5b1a/examples/promptcreation/context_qa_prompt_reasoning.py)
+
+
+## PromptTransformer
 
 `PromptWithReasoningTransformer` は、プロンプトの出力に推論を追加するための `PromptTransformer` です。
 
@@ -24,6 +28,9 @@ class PromptTransformer(ABC):
 
 オリジナルプロンプトの `IOExample` に対する推論過程の出力を `TextLLMReasoningExtractor` で生成します([詳細](context-qa-reasoning.md))。
 
+
+`openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。
+同じディレクトリの `openai_util.py` にそれらを定義しておくと、`import` できます。
 
 ```python
 import promptogen as pg

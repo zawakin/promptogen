@@ -41,14 +41,23 @@ Input:
 text: "This is a sample text to summarize."
 Output:
 summary: """This is a summary of the text."""
-keywords: ['sample', 'text', 'summarize']
+keywords: [
+ "sample",
+ "text",
+ "summarize"
+]
 
 Example 1:
 Input:
 text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
 summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: ['friends', 'park', 'sports', 'memories']
+keywords: [
+ "friends",
+ "park",
+ "sports",
+ "memories"
+]
 ```
 
 ### 例: JsonPromptFormatter
@@ -204,14 +213,23 @@ Input:
 text: "This is a sample text to summarize."
 Output:
 summary: """This is a summary of the text."""
-keywords: ['sample', 'text', 'summarize']
+keywords: [
+ "sample",
+ "text",
+ "summarize"
+]
 
 Example 1:
 Input:
 text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
 summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: ['friends', 'park', 'sports', 'memories']
+keywords: [
+ "friends",
+ "park",
+ "sports",
+ "memories"
+]
 
 --------
 
@@ -220,8 +238,30 @@ text: "In the realm of software engineering, developers often collaborate on pro
 Output:
 ```
 
+## 表示項目を変更する
 
-```console
-summary: """Software developers collaborate using version control systems like Git to create and maintain efficient code and solve implementation and optimization issues."""
-keywords: ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'evolving user requirements', 'system optimization']
+`pg.PromptFormatterConfig` を使用して、表示項目を変更することができます。
+
+```python
+class PromptFormatterConfig(DataClass):
+    """Configuration for formatting a prompt.
+
+    Attributes:
+        show_formatter_description (bool): Whether to show the description of the formatter.
+        show_parameter_info (bool): Whether to show the parameter info of the prompt.
+        show_template (bool): Whether to show the template of the prompt.
+    """
+
+    show_formatter_description: bool = True
+    show_parameter_info: bool = True
+    show_template: bool = True
+```
+
+たとえば、 `Input Parameters` や `Output Parameters` といったパラメータの情報をフォーマットしたくない場合、以下のように指定します。
+
+```python
+config = PromptFormatterConfig(
+  show_parameter_info=False
+)
+formatter = pg.KeyValueFormatter(config)
 ```

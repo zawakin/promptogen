@@ -110,7 +110,11 @@ value = {
 value_formatter: ValueFormatter = KeyValueFormatter()
 print(value_formatter.format(value))
 # summary: "This is a summary of the text."
-# keywords: ['sample', 'text', 'summarize']
+# keywords: [
+#  "sample",
+#  "text",
+#  "summarize"
+# ]
 
 parsed_value = value_formatter.parse([
     ("summary", str),
@@ -153,14 +157,23 @@ print(formatter.format_prompt_without_input(summarizer))
 # text: "This is a sample text to summarize."
 # Output:
 # summary: """This is a summary of the text."""
-# keywords: ['sample', 'text', 'summarize']
+# keywords: [
+#  "sample",
+#  "text",
+#  "summarize"
+# ]
 
 # Example 1:
 # Input:
 # text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 # Output:
 # summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-# keywords: ['friends', 'park', 'sports', 'memories']
+# keywords: [
+#  "friends",
+#  "park",
+#  "sports",
+#  "memories"
+# ]
 
 formatter = pg.JsonPromptFormatter()
 print(formatter.format_prompt_without_input(summarizer))
@@ -277,14 +290,23 @@ print(formatter.format_prompt(summarizer, input_value))
 # text: "This is a sample text to summarize."
 # Output:
 # summary: """This is a summary of the text."""
-# keywords: ['sample', 'text', 'summarize']
+# keywords: [
+#  "sample",
+#  "text",
+#  "summarize"
+# ]
 
 # Example 1:
 # Input:
 # text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 # Output:
 # summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-# keywords: ['friends', 'park', 'sports', 'memories']
+# keywords: [
+#  "friends",
+#  "park",
+#  "sports",
+#  "memories"
+# ]
 
 # --------
 

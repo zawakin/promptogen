@@ -17,6 +17,11 @@ prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 ```
 
+## ソースコード
+
+[context-qa.py (GitHub)](https://github.com/zawakin/promptogen/tree/742485c4690788d2866635bcd3b5eda580cf5b1a/examples/promptcreation/context_qa_prompt.py)
+
+
 ## プロンプトの作成
 
 `PromptCreatorPrompt` を使用して、プロンプトを作成します。
@@ -351,4 +356,3 @@ LLMからの出力:
 -- output --
 answer: """The lazy dog."""
 ```
-

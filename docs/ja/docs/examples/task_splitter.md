@@ -1,5 +1,9 @@
 このページでは、あるタスクを小さなタスクに分割するプロンプトを作成する方法を説明します。
 
+## ソースコード
+
+[task-splitter.py (GitHub)](https://github.com/zawakin/promptogen/tree/main/examples/promptcreation/task_splitter.py)
+
 ## 準備
 
 `openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。
@@ -16,7 +20,6 @@ formatter = pg.KeyValuePromptFormatter()
 prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 prompt_creator_prompt = PromptCreatorPrompt()
-
 ```
 
 ## プロンプトの作成
