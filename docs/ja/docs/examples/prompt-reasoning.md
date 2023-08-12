@@ -1,3 +1,5 @@
+このページでは、既存のプロンプトを、推論を出力するように変換する方法を説明します。
+
 `openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。
 同じディレクトリの `openai_util.py` にそれらを定義しておくと、`import` できます。
 

@@ -56,6 +56,11 @@ keywords: ['friends', 'park', 'sports', 'memories']
 `JsonPromptFormatter` というフォーマッターを使用します。
 このフォーマッターは、入出力変数のキーとバリューをJSON形式で出力します。
 
+```python
+formatter = pg.JsonPromptFormatter()
+print(formatter.format_prompt_without_input(summarizer))
+```
+
 ````console
 Summarize text and extract keywords.
 

@@ -51,7 +51,7 @@ input_value = {
     "question": "What does the fox jump over?",
 }
 output_value = {
-    "answer": "The fox jumps over the lazy dog.",
+    "answer": "The lazy dog.",
 }
 example = pg.IOExample(
     input=input_value,
@@ -71,7 +71,7 @@ Template:
 Input:
 context: "context"
 question: "question"
-answer: "answer"
+answer: "Answer"
 Output:
 This is because ... So the answer is ...
 --------
@@ -79,7 +79,7 @@ This is because ... So the answer is ...
 Input:
 context: "The quick brown fox jumps over the lazy dog."
 question: "What does the fox jump over?"
-answer: "The fox jumps over the lazy dog."
+answer: "The lazy dog."
 Output:
 ```
 
@@ -87,7 +87,7 @@ LLM出力:
 
 ```console
 -- output --
-This is because the context provided states that "The quick brown fox jumps over the lazy dog." The question asks "What does the fox jump over?" The answer can be derived from the context, as it explicitly states that the fox jumps over the lazy dog. So the answer is "The fox jumps over the lazy dog."
+This is because the question is asking for what the fox jumps over. To determine the answer, we need to look at the context. In the context, it states that the quick brown fox jumps over the lazy dog. Therefore, the answer is "The lazy dog."
 ```
 
 `"This is because ... So the answer is ..."` というテンプレートに従って、推論過程が生成されました。

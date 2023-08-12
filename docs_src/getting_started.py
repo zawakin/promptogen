@@ -291,3 +291,10 @@ print(formatter.format_prompt(summarizer, input_value))
 # Input:
 # text: "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
 # Output:
+
+formatter = pg.JsonPromptFormatter()
+
+input_value = {
+    'text': "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.",
+}
+print(formatter.format_prompt(summarizer, input_value))

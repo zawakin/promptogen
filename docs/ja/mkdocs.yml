@@ -22,6 +22,7 @@ nav:
   - コンセプト:
     - コンセプト: concepts/concept.md
 - 応用例:
+  - 応用例: examples/index.md
   - LLMとの連携:
     - OpenAITextLLM: examples/openai-text-llm.md
   - プロンプト自動生成:
