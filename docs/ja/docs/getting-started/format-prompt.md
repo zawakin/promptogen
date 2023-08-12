@@ -220,21 +220,3 @@ Output:
 summary: """Software developers collaborate using version control systems like Git to create and maintain efficient code and solve implementation and optimization issues."""
 keywords: ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'evolving user requirements', 'system optimization']
 ```
-
-## 出力をPythonオブジェクトに変換する
-
-続いて、出力をPythonオブジェクトに変換してみましょう。
-`formatter.parse` メソッドを使用することで、LLMからの出力文字列をプロンプトの出力パラメータを用いてパースできます。パースの結果はPythonの `dict` に格納されます。
-
-[Valueをパースする](parse-value.md) を参照してください。
-
-```python
-summarized_resp = formatter.parse(summarizer, raw_resp)
-print(summarized_resp)
-```
-
-コンソール出力:
-
-```console
-{'summary': 'Software developers collaborate using version control systems like Git to create and maintain efficient code and solve implementation and optimization issues.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'evolving user requirements', 'system optimization']}
-```

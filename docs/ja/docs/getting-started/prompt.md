@@ -41,6 +41,9 @@ class Prompt(DataClass):
 
 ## `ParameterInfo`
 
+`ParameterInfo` は、プロンプトの入力パラメータと出力パラメータの情報を表現するためのデータクラスです。
+パラメータの名前と説明を持ちます。
+
 ```python
 class ParameterInfo(DataClass):
     """Information about a parameter.
@@ -55,6 +58,8 @@ class ParameterInfo(DataClass):
 
 
 ## `IOExample`
+
+`IOExample` は、プロンプトの入出力の例を表現するためのデータクラスです。
 
 ```python
 Value: TypeAlias = Dict[str, Any]
@@ -109,7 +114,7 @@ summarizer = pg.Prompt(
 
 ## プロンプトの表示
 
-作成したプロンプトは、`print` 関数で表示することができます。
+作成したプロンプトの情報は、`print` 関数で表示することができます。
 
 ```python
 print(summarizer)

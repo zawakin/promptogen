@@ -1,17 +1,3 @@
-## PromptoGenとは
-
-PromptoGenはPythonライブラリで、大規模言語モデルに対するプロンプトの生成と管理を支援します。このライブラリを使用すると、プロンプトとその入出力パラメータを定義し、それらをフォーマットして文字列に変換することができます。また、大規模言語モデルからの出力を解析し、Pythonオブジェクトに変換することも可能です。
-
-PromptoGenは以下の機能を提供します:
-
-- プロンプトとその入出力パラメータの定義
-- プロンプトと入力パラメータのフォーマット（文字列化）
-- 大規模言語モデルからの出力の解析とPythonオブジェクトへの変換
-
-PromptoGenは、例えばOpenAIのGPT-3.5やGPT-4などの大規模言語モデルを利用する際の、プロンプトの生成と管理を効率化します。これにより、ユーザーはプロンプトの作成や管理に関する手間を軽減し、より多くの時間をモデルとの対話や、その結果の解析に費やすことができます。
-
-![PromptoGenの概要](/ja/img/overview.png)
-
 ## インポート
     
 ```python
@@ -173,37 +159,45 @@ Output:
 
 ここでは、OpenAI ChatGPT API を用いて、入力テキストを要約したテキストを生成してみましょう。
 
+あらかじめ、OpenAI API Key と Organization ID を環境変数に設定しておきます。
+
 ```python
 import openai
-import os
-
-from dotenv import load_dotenv
-load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.organization = os.getenv("OPENAI_ORG_ID")
 
+def generate_chat_completion(text: str, model: str) -> str:
+    resp = openai.ChatCompletion.create(
+        model=model,
+        messages=[{"role": "user", "content": text}],
+        max_tokens=2048,
+        stream=True,
+    )
+    raw_resp = ""
+    for chunk in resp:
+        chunk_content = chunk["choices"][0]["delta"].get("content", "")
+        raw_resp += chunk_content
 
-def generate_chat_stream_response(prompt: str, model: str):
-        resp = openai.ChatCompletion.create(model=model, messages=[
-            {'role': 'user', 'content': prompt}
-        ], stream=True, max_tokens=2048)
-        for chunk in resp:
-            yield chunk['choices'][0]['delta'].get('content', '') # type: ignore
+    return raw_resp
 
-
-def generate_text_by_text(prompt: str, model: str):
-    s = ''
-    for delta in generate_chat_stream_response(prompt, model):
-        s += delta
-    return s
+# TextLLMを生成する
+text_llm = pg.FunctionBasedTextLLM(
+    generate_text_by_text=lambda input_text: generate_chat_completion(input_text, "gpt-3.5-turbo"),
+)
 ```
 
+`TextLLM` は、PromptoGen で大規模言語モデルを統一的に扱うための抽象クラスです。 `pg.FunctionBasedTextLLM` は、関数を用いて大規模言語モデルからの出力を生成する `TextLLM` の実装です。
 
+続いて、プロンプトを入力パラメータ込みで文字列にフォーマットし、大規模言語モデルからの出力を生成してみましょう。
 
 ```python
+# formatterを用いてプロンプトを入力パラメータ込みで文字列にフォーマットする
 raw_req = formatter.format_prompt(summarizer, input_value)
-raw_resp = generate_text_by_text(raw_req, model='gpt-3.5-turbo')
+
+# 大規模言語モデルからの出力を生成する
+raw_resp = text_llm.generate(raw_req)
+
 print(raw_resp)
 ```
 
@@ -217,7 +211,7 @@ keywords: ['software engineering', 'developers', 'collaborate', 'projects', 'ver
 
 ## 出力をPythonオブジェクトに変換する
 
-続いて、出力をPythonオブジェクトに変換してみましょう。
+続いて、LLM出力は単なる文字列なので、Pythonオブジェクトに変換してみましょう。
 `formatter.parse` メソッドを使用することで、LLMからの出力文字列をプロンプトの出力パラメータを用いてパースできます。パースの結果はPythonの `dict` に格納されます。
 
 ```python
@@ -230,6 +224,8 @@ print(summarized_resp)
 ```console
 {'summary': 'Software developers collaborate using version control systems like Git to create and maintain efficient code and solve implementation and optimization issues.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'evolving user requirements', 'system optimization']}
 ```
+
+この出力は、LLM出力の文字列をパースした結果である `dict` です。
 
 ## まとめ
 

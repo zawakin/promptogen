@@ -7,24 +7,31 @@ nav:
 - はじめに:
   - インストール: getting-started/installation.md
   - クイックスタート: getting-started/quickstart.md
+  - PromptoGenとは: getting-started/overview.md
   - 基本モデルを理解しよう:
-    - Value: getting-started/value.md
-    - Prompt: getting-started/prompt.md
+    - Valueクラス: getting-started/value.md
+    - Promptクラス: getting-started/prompt.md
   - 使い方:
     - Valueをフォーマットする: getting-started/format-value.md
     - Valueをパースする: getting-started/parse-value.md
     - Promptをフォーマットする: getting-started/format-prompt.md
-    - Prompt出力をパースする: getting-started/parse-prompt-output.md
+    - LLM出力をパースする: getting-started/parse-prompt-output.md
   - 便利な機能:
-    - TextLLM: getting-started/text-llm.md
+    - TextLLMインターフェイス: getting-started/text-llm.md
     - PromptRunnerを使う: getting-started/prompt-runner.md
-    - フォーマッター: usages/usage.md
   - コンセプト:
     - コンセプト: concepts/concept.md
 - 応用例:
+  - LLMとの連携:
+    - OpenAITextLLM: examples/openai-text-llm.md
   - プロンプト自動生成:
+    - Context QA: examples/context-qa.md
     - タスク分割: examples/task_splitter.md
-    - コード生成: examples/code_generator.md
+  - LLM推論過程出力:
+    - 入出力の理由推論(Context QA): examples/context-qa-reasoning.md
+    - プロンプトへの推論過程付与: examples/prompt-reasoning.md
+  # - データセットベンチマーク:
+  #   - データセット: examples/dataset.md
 - コントリビューションガイド: contributing.md
 - 言語(Language): language.md
 theme:

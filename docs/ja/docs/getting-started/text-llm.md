@@ -16,11 +16,14 @@ class TextLLM(LLM, ABC):
         pass
 ```
 
+Promptogenは、具体的なLLMに依存しないように設計されています。 `TextLLM` はその代表的な例です。
 このようなインターフェースを定義することで、様々な大規模言語モデルを統一的に扱うことができます。
 
-## OpenAI API を使用した例
+## 方法1: 自作クラスを使った実装例
 
-このページでは、OpenAI API を使用した `TextLLM` の実装例を紹介します。
+### OpenAI API を使用した例
+
+OpenAI API を使用した `TextLLM` の実装例を紹介します。
 例えば、以下のような `generate_chat_completion` 関数を定義しておきます。
 
 ```python
@@ -44,14 +47,12 @@ def generate_chat_completion(text: str, model: str) -> str:
     return raw_resp
 ```
 
-## 自作クラスを使った実装例
-
 `TextLLM` クラスを継承することで、`TextLLM` を実装することができます。
 
 ```python
-from promptogen.model.llm import TextLLM
+import promptogen as pg
 
-class OpenAITextLLM(TextLLM):
+class OpenAITextLLM(pg.TextLLM):
     def __init__(self, model: str):
         self.model = model
 
@@ -59,7 +60,7 @@ class OpenAITextLLM(TextLLM):
         return generate_chat_completion(text, self.model)
 ```
 
-## FunctionBasedTextLLM
+## 方法2: FunctionBasedTextLLM
 
 `FunctionBasedTextLLM` クラスは、テキストからテキストを生成する大規模言語モデル(LLM)の実装の一つです。
 

@@ -23,6 +23,8 @@ print(parsed_value)
 {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
 ```
 
+`parsed_value` は `dict` になります。
+
 ### 例: `JsonValueFormatter`
 
 ```python
@@ -50,3 +52,5 @@ print(parsed_value)
 ```console
 {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
 ```
+
+`parsed_value` は `dict` になります。

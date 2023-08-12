@@ -1,3 +1,4 @@
+import json
 import re
 from ast import literal_eval
 from pprint import pformat
@@ -70,7 +71,7 @@ class KeyValueFormatter(ValueFormatter):
             if isinstance(value, str):
                 _s = format_string(value, self.quote_for_single_line)
             else:
-                _s = pformat(value, indent=2, sort_dicts=False, width=160)
+                _s = json.dumps(value, indent=2, sort_keys=False, ensure_ascii=False)
             s += f"{key}: {_s}\n"
 
         return s.strip()
