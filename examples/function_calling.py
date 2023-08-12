@@ -1,6 +1,6 @@
 # %%
 import promptogen as pg
-from promptogen import Example, ParameterInfo, Prompt
+from promptogen import IOExample, ParameterInfo, Prompt
 from promptogen.model.dataclass import DataClass
 from promptogen.prompt_collection import ExampleCreatorPrompt
 
@@ -16,7 +16,7 @@ function_calling_prompt = Prompt(
     output_parameters=[
         ParameterInfo(name="function", description="Function calling code generated to complete the task"),
     ],
-    template=Example(
+    template=IOExample(
         input={
             "task": "task name",
         },
@@ -36,7 +36,7 @@ function_calling_prompt = Prompt(
         },
     ),
     examples=[
-        Example(
+        IOExample(
             input={
                 "task": "Get current weather",
             },
@@ -85,7 +85,7 @@ class ExampleCreatorInput(DataClass):
 
 
 class ExampleCreatorOutput(DataClass):
-    example: pg.Example
+    example: pg.IOExample
 
 
 example_creator = ExampleCreatorPrompt()

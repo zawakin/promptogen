@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from promptogen.model.dataclass import DataClass
-from promptogen.model.prompt import Example, Prompt
+from promptogen.model.prompt import IOExample, Prompt
 
 
 class ExampleReasoning(DataClass):
@@ -14,7 +14,7 @@ class ReasoningExtractor(ABC):
     """Extracts reasoning from a prompt."""
 
     @abstractmethod
-    def generate_reasoning(self, prompt: Prompt, example: Example) -> ExampleReasoning:
+    def generate_reasoning(self, prompt: Prompt, example: IOExample) -> ExampleReasoning:
         pass  # pragma: no cover
 
     @abstractmethod

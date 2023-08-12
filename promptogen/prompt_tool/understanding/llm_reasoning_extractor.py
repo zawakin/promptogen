@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from promptogen.model.dataclass import DataClass
 from promptogen.model.llm import TextLLM
-from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 from promptogen.model.prompt_transformer import PromptTransformer
 from promptogen.model.reasoning_extractor import ExampleReasoning, ReasoningExtractor
 from promptogen.prompt_formatter.key_value_formatter import KeyValueFormatter
@@ -47,7 +47,7 @@ class ReasoningGeneratorPromptTransformer(PromptTransformer):
         output_parameters = [
             ParameterInfo(name="reasoning", description="Reasoning for the output"),
         ]
-        template = Example(
+        template = IOExample(
             input={**prompt.template.input, **prompt.template.output},
             output={"reasoning": self.reasoning_template.template},
         )
@@ -83,7 +83,7 @@ class TextLLMReasoningExtractor(ReasoningExtractor):
         self.text_llm = text_llm
         self.reasoning_template = reasoning_template
 
-    def generate_reasoning(self, prompt: Prompt, example: Example) -> ExampleReasoning:
+    def generate_reasoning(self, prompt: Prompt, example: IOExample) -> ExampleReasoning:
         """Generate reasoning for the given prompt and example.
 
         Args:

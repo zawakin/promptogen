@@ -19,7 +19,7 @@ class ParameterInfo(DataClass):
     description: str
 
 
-class Example(DataClass):
+class IOExample(DataClass):
     """An few-shot example of a prompt.
 
     Attributes:
@@ -47,8 +47,8 @@ class Prompt(DataClass):
     description: str
     input_parameters: List[ParameterInfo]
     output_parameters: List[ParameterInfo]
-    template: Example
-    examples: List[Example]
+    template: IOExample
+    examples: List[IOExample]
 
     @model_validator(mode="after")
     def validate_template(self):
@@ -290,16 +290,16 @@ def create_sample_prompt(suffix: str) -> Prompt:
             ParameterInfo(name="output1", description="The first output parameter."),
             ParameterInfo(name="output2", description="The second output parameter."),
         ],
-        template=Example(
+        template=IOExample(
             input={"input1": "Hello, world!", "input2": "Hello, world!"},
             output={"output1": "Hello, world!", "output2": "Hello, world!"},
         ),
         examples=[
-            Example(
+            IOExample(
                 input={"input1": "Hello, world!", "input2": "Hello, world!"},
                 output={"output1": "Hello, world!", "output2": "Hello, world!"},
             ),
-            Example(
+            IOExample(
                 input={"input1": "Hello, world!", "input2": "Hello, world!"},
                 output={"output1": "Hello, world!", "output2": "Hello, world!"},
             ),

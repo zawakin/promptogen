@@ -30,7 +30,7 @@ llm = OpenAITextLLM(model="gpt-3.5-turbo-16k")
 prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 
-def run_benchmark_prompt(prompt_to_test: pg.Prompt, test_examples: List[pg.Example], output_key: str):
+def run_benchmark_prompt(prompt_to_test: pg.Prompt, test_examples: List[pg.IOExample], output_key: str):
     total = 0
     correct = 0
 

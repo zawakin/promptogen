@@ -42,7 +42,7 @@ reasoning_extractor = TextLLMReasoningExtractor(
 print(
     reasoning_extractor.generate_reasoning(
         prompt=context_qa_prompt,
-        example=pg.Example(
+        example=pg.IOExample(
             input=input_value,
             output=output_value,
         ),

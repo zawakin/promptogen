@@ -4,22 +4,37 @@ repo_url: https://github.com/zawakin/promptogen
 edit_uri: edit/main/docs/ja/docs/
 nav:
 - PromptoGen: index.md
-- クイックスタートガイド: quickstart.md
-- インストール方法: installation.md
-- 使い方:
-  - 使い方: usages/usage.md
-- コンセプト: concepts/concept.md
-- コンポーネント:
-  - フォーマッター: library-components/formatter.md
-  - パーサー: library-components/parser.md
-- 使用例:
+- はじめに:
+  - インストール: getting-started/installation.md
+  - クイックスタート: getting-started/quickstart.md
+  - PromptoGenとは: getting-started/overview.md
+  - 基本モデルを理解しよう:
+    - Valueクラス: getting-started/value.md
+    - Promptクラス: getting-started/prompt.md
+  - 使い方:
+    - Valueをフォーマットする: getting-started/format-value.md
+    - Valueをパースする: getting-started/parse-value.md
+    - Promptをフォーマットする: getting-started/format-prompt.md
+    - LLM出力をパースする: getting-started/parse-prompt-output.md
+  - 便利な機能:
+    - TextLLMインターフェイス: getting-started/text-llm.md
+    - PromptRunnerを使う: getting-started/prompt-runner.md
+  - コンセプト:
+    - コンセプト: concepts/concept.md
+- 応用例:
+  - 応用例: examples/index.md
+  - LLMとの連携:
+    - OpenAITextLLM: examples/openai-text-llm.md
   - プロンプト自動生成:
+    - Context QA: examples/context-qa.md
     - タスク分割: examples/task_splitter.md
-    - コード生成: examples/code_generator.md
+  - LLM推論過程出力:
+    - 入出力の理由推論(Context QA): examples/context-qa-reasoning.md
+    - プロンプトへの推論過程付与: examples/prompt-reasoning.md
+  # - データセットベンチマーク:
+  #   - データセット: examples/dataset.md
 - コントリビューションガイド: contributing.md
-- 言語(Language):
-  - en: /
-  - ja: /ja/
+- 言語(Language): language.md
 theme:
   name: material
   theme:
@@ -38,7 +53,7 @@ theme:
     # - content.tabs.link
     - content.tooltips
     # - header.autohide
-    # - navigation.expand
+    - navigation.expand
     - navigation.footer
     - navigation.indexes
     # - navigation.instant
@@ -55,8 +70,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: http://localhost:8008/ja/img/icon-white.svg
-  favicon: http://localhost:8008/ja/img/icon-black.svg
+  logo: /ja/img/icon-white.svg
+  favicon: /ja/img/favicon.png
   icon:
     logo: logo
   language: ja

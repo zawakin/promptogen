@@ -45,7 +45,7 @@ reasoning_extractor = TextLLMReasoningExtractor(
 print(
     reasoning_extractor.generate_reasoning(
         prompt=text_condenser_prompt,
-        example=pg.Example(
+        example=pg.IOExample(
             input=input_value,
             output=output_value,
         ),

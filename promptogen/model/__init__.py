@@ -1,6 +1,6 @@
 from .llm import LLM, FunctionBasedTextLLM, TextLLM
 from .prompt import (
-    Example,
+    IOExample,
     ParameterInfo,
     Prompt,
     create_sample_prompt,
@@ -18,7 +18,7 @@ __all__ = [
     # prompt
     "Prompt",
     "ParameterInfo",
-    "Example",
+    "IOExample",
     "create_sample_prompt",
     # load
     "load_prompt_from_dict",

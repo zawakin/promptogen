@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import List
 
 from promptogen.model.dataclass import DataClass
-from promptogen.model.prompt import Example, ParameterInfo, Prompt, create_sample_prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt, create_sample_prompt
 from promptogen.prompt_collection.prompts.python_code_generator import PythonCodeGeneratorPrompt
 from promptogen.prompt_collection.prompts.text_categorizer import TextCategorizerPrompt
 
@@ -24,7 +24,7 @@ class PromptCreatorPrompt(Prompt):
             description="A prompt which has 'name', 'description', 'input_parameters', 'output_parameters', 'template', and 'examples'.",
         ),
     ]
-    template: Example = Example(
+    template: IOExample = IOExample(
         input={
             "description": "description of sample prompt",
             "background": "background of the prompt",
@@ -33,8 +33,8 @@ class PromptCreatorPrompt(Prompt):
             "prompt": create_sample_prompt("new prompt"),
         },
     )
-    examples: List[Example] = [
-        Example(
+    examples: List[IOExample] = [
+        IOExample(
             input={
                 "description": TextCategorizerPrompt().description,
                 "background": "The given text may be a sentence, a paragraph, or a document.",
@@ -43,7 +43,7 @@ class PromptCreatorPrompt(Prompt):
                 "prompt": TextCategorizerPrompt(examples=[TextCategorizerPrompt().examples[0]]),
             },
         ),
-        Example(
+        IOExample(
             input={
                 "description": PythonCodeGeneratorPrompt().description,
                 "background": "style: input: (task: str), output: (reason: str, code: str)",

@@ -16,7 +16,7 @@ from .prompts import (
 
 
 def load_predefined_prompts() -> List[Prompt]:
-    prompts = [
+    prompts: List[Prompt] = [
         PromptCreatorPrompt(),
         TextCategorizerPrompt(),
         TextSummarizerPrompt(),

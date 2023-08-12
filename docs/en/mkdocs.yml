@@ -1,39 +1,121 @@
 site_name: PromptoGen
-site_url: https://promptogen.zawakin.dev/ja/en/
+site_url: https://promptogen.zawakin.dev/
 repo_url: https://github.com/zawakin/promptogen
+edit_uri: edit/main/docs/en/docs/
 nav:
 - PromptoGen: index.md
-- Languages:
-  - ja: /
-  - en: /en/
-- Tutorial:
-  - tutorial.md
-- Introduction:
-  - introduction/hello.md
+- クイックスタートガイド: quickstart.md
+- インストール方法: installation.md
+- 使い方:
+  - 使い方: usages/usage.md
+- コンセプト: concepts/concept.md
+- コンポーネント:
+  - フォーマッター: library-components/formatter.md
+  - パーサー: library-components/parser.md
+- 使用例:
+  - プロンプト自動生成:
+    - タスク分割: examples/task_splitter.md
+    - コード生成: examples/code_generator.md
+- コントリビューションガイド: contributing.md
+- 言語(Language):
+  - en: /
+  - ja: /ja/
 theme:
   name: material
+  theme:
+  palette:
+    - scheme: default
+      primary: black
+      accent: black
+    - scheme: slate
+      primary: indigo
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    # - content.tabs.link
+    - content.tooltips
+    # - header.autohide
+    # - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    # - navigation.instant
+    # - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
   font:
     text: Roboto
-  logo: https://promptogen.zawakin.dev/https://promptogen.zawakin.dev/https://localhost.svg
-  favicon: https://promptogen.zawakin.dev/https://promptogen.zawakin.dev/https://localhost/favicon.png
-  language: en
+    code: Roboto Mono
+  logo: http://localhost:8008/ja/img/icon-white.svg
+  favicon: http://localhost:8008/ja/img/icon-black.svg
+  icon:
+    logo: logo
+  language: ja
 markdown_extensions:
-- admonition: null
-- codehilite: null
-- pymdownx.keys: null
-- pymdownx.highlight:
-    anchor_linenums: true
-    line_spans: __span
-    pygments_lang_class: true
-- pymdownx.inlinehilite: null
-- pymdownx.snippets: null
-- pymdownx.superfences: null
+  # - admonition: null
+  # - codehilite: null
+  # - pymdownx.keys: null
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  # - pymdownx.inlinehilite: null
+  # - pymdownx.snippets: null
+  - pymdownx.superfences: null
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  # - pymdownx.emoji:
+  #     emoji_generator: !!python/name:materialx.emoji.to_svg
+  #     emoji_index: !!python/name:materialx.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  # - pymdownx.superfences:
+  #     custom_fences:
+  #       - name: mermaid
+  #         class: mermaid
+  #         format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
 extra:
   social:
   - icon: fontawesome/brands/twitter
-    link: https://twitter.com/fastapi
+    link: https://twitter.com/zawawahoge
   alternate:
   - link: /
     name: en - English
-  - link: /en/
-    name: en
+  - link: /ja/
+    name: ja - 日本語

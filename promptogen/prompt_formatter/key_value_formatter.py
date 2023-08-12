@@ -1,3 +1,4 @@
+import json
 import re
 from ast import literal_eval
 from pprint import pformat
@@ -41,14 +42,16 @@ class KeyValueFormatter(ValueFormatter):
 
     # value_formatter: KeyValueValueFormatter
     quote_for_single_line: str = '"'
+    use_json_dumps: bool = True
 
-    def __init__(self, quote_for_single_line: str = '"'):
+    def __init__(self, quote_for_single_line: str = '"', use_json_dumps: bool = True):
         """Initialize a KeyValueFormatter.
 
         Args:
             quote_for_single_line: The quote to use for a single line string.
         """
         self.quote_for_single_line = quote_for_single_line
+        self.use_json_dumps = use_json_dumps
 
     def description(self) -> str:
         return ""
@@ -70,7 +73,10 @@ class KeyValueFormatter(ValueFormatter):
             if isinstance(value, str):
                 _s = format_string(value, self.quote_for_single_line)
             else:
-                _s = pformat(value, indent=2, sort_dicts=False, width=160)
+                if self.use_json_dumps:
+                    _s = json.dumps(value, indent=1, sort_keys=False, ensure_ascii=False)
+                else:
+                    _s = pformat(value, indent=2, sort_dicts=False, width=160)
             s += f"{key}: {_s}\n"
 
         return s.strip()

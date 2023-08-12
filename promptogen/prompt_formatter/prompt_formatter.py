@@ -6,7 +6,7 @@ from typing import List
 from pydantic import BaseModel
 
 from promptogen.model.dataclass import DataClass
-from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 from promptogen.model.value_formatter import Value, ValueFormatter
 
 
@@ -136,10 +136,10 @@ Output:"""
 
         return "\n\n".join(s for s in ss if s)
 
-    def _format_examples(self, examples: List[Example]) -> str:
+    def _format_examples(self, examples: List[IOExample]) -> str:
         return "\n".join(f"Example {i+1}:\n{self._format_example(e)}\n" for i, e in enumerate(examples))
 
-    def _format_example(self, example: Example) -> str:
+    def _format_example(self, example: IOExample) -> str:
         formatted_input = self.input_formatter.format(example.input)
         formatted_output = self.output_formatter.format(example.output)
         return f"Input:\n{formatted_input}\nOutput:\n{formatted_output}"

@@ -4,8 +4,8 @@ __version__ = "0.0.2"
 
 
 from .model import (
-    Example,
     FunctionBasedTextLLM,
+    IOExample,
     ParameterInfo,
     Prompt,
     PromptRunner,
@@ -33,7 +33,7 @@ __all__ = [
     "Value",
     "Prompt",
     "ParameterInfo",
-    "Example",
+    "IOExample",
     "PromptFormatterConfig",
     "PromptFormatterInterface",
     # prompt runner

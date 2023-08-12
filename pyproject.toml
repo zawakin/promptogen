@@ -48,6 +48,7 @@ jupyter = "^1.0.0"
 datasets = "^2.13.0"
 tenacity = "^8.2.2"
 colorama = "^0.4.6"
+types-pyyaml = "^6.0.12.11"
 
 [tool.black]
 line-length = 120

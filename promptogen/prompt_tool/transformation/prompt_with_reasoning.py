@@ -1,4 +1,4 @@
-from promptogen.model.prompt import Example, ParameterInfo, Prompt
+from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 from promptogen.model.prompt_transformer import PromptTransformer
 from promptogen.model.reasoning_extractor import ReasoningExtractor
 
@@ -33,7 +33,7 @@ class PromptWithReasoningTransformer(PromptTransformer):
                 ParameterInfo(name="reasoning", description="Reasoning for the output"),
                 *prompt.output_parameters,
             ],
-            template=Example(
+            template=IOExample(
                 input=prompt.template.input,
                 output={
                     "reasoning": self.reasoning_extractor.get_reasoning_template(),

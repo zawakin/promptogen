@@ -144,6 +144,7 @@ venv.bak/
 
 # mkdocs documentation
 /site
+/site_build
 /docs_build
 
 # experimantal
