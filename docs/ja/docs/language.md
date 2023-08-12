@@ -1,2 +1,2 @@
-- [en - English](/en/)
+- [en - English](/)
 - [ja - 日本語](/ja/)
