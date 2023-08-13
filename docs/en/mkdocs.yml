@@ -114,3 +114,6 @@ extra:
     name: en - English
   - link: /ja/
     name: ja - 日本語
+  analytics:
+    provider: google
+    property: G-VDGJRC9DFT
