@@ -1,0 +1,44 @@
+name: Python CI
+
+# ref. https://github.com/tiangolo/fastapi/blob/46726aa1c418ba2838187678d08860950fc0c3c3/.github/workflows/test.yml
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+env:
+  POETRY_VERSION: "1.5.1"
+  POETRY_URL: https://install.python-poetry.org
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+      fail-fast: false
+
+    name: Python ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: "./.github/actions/poetry_setup"
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: "1.5.1"
+          cache-key: "test-v1"
+          install-command: |
+              echo "Running core tests, installing dependencies with poetry..."
+              poetry install
+      - name: Build docs to site/
+        run: |
+          poetry run python ./scripts/doc.py build-all
+      - name: Deploy docs to Netlify
+        uses: netlify/actions/cli@main
+        with:
+          args: deploy --prod --dir=site/
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

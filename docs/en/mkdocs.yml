@@ -67,7 +67,7 @@ theme:
   favicon: /img/favicon.png
   icon:
     logo: logo
-  language: ja
+  language: en
 markdown_extensions:
 - pymdownx.highlight:
     anchor_linenums: true
