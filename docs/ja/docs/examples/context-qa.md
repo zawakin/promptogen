@@ -65,58 +65,10 @@ Output:
 prompt: {
  "name": "sample-new prompt",
  "description": "description of sample prompt",
- "input_parameters": [
-  {
-   "name": "input1",
-   "description": "The first input parameter."
-  },
-  {
-   "name": "input2",
-   "description": "The second input parameter."
-  }
- ],
- "output_parameters": [
-  {
-   "name": "output1",
-   "description": "The first output parameter."
-  },
-  {
-   "name": "output2",
-   "description": "The second output parameter."
-  }
- ],
- "template": {
-  "input": {
-   "input1": "Hello, world!",
-   "input2": "Hello, world!"
-  },
-  "output": {
-   "output1": "Hello, world!",
-   "output2": "Hello, world!"
-  }
- },
- "examples": [
-  {
-   "input": {
-    "input1": "Hello, world!",
-    "input2": "Hello, world!"
-   },
-   "output": {
-    "output1": "Hello, world!",
-    "output2": "Hello, world!"
-   }
-  },
-  {
-   "input": {
-    "input1": "Hello, world!",
-    "input2": "Hello, world!"
-   },
-   "output": {
-    "output1": "Hello, world!",
-    "output2": "Hello, world!"
-   }
-  }
- ]
+ "input_parameters": (...省略)
+ "output_parameters": (...省略)
+ "template": "...",
+ "examples": [...]
 }
 
 Example 1:
@@ -127,49 +79,10 @@ Output:
 prompt: {
  "name": "TextCategorizer",
  "description": "Categorize the given text",
- "input_parameters": [
-  {
-   "name": "text",
-   "description": "The text to be categorized"
-  },
-  {
-   "name": "categories",
-   "description": "The categories to categorize the text into"
-  }
- ],
- "output_parameters": [
-  {
-   "name": "category",
-   "description": "The category the text belongs to"
-  }
- ],
- "template": {
-  "input": {
-   "text": "text",
-   "categories": [
-    "category 1",
-    "category 2"
-   ]
-  },
-  "output": {
-   "category": "category 1"
-  }
- },
- "examples": [
-  {
-   "input": {
-    "text": "A recent study shows that regular exercise can help improve cognitive function in older adults.",
-    "categories": [
-     "Health",
-     "Science",
-     "Technology"
-    ]
-   },
-   "output": {
-    "category": "Health"
-   }
-  }
- ]
+ "input_parameters": (...省略)
+ "output_parameters": (...省略)
+ "template": "...",
+ "examples": [...]
 }
 
 Example 2:
@@ -180,42 +93,10 @@ Output:
 prompt: {
  "name": "PythonCodeGenerator",
  "description": "Generate Python code based on the given task",
- "input_parameters": [
-  {
-   "name": "task",
-   "description": "The task for which Python code needs to be generated"
-  }
- ],
- "output_parameters": [
-  {
-   "name": "reason",
-   "description": "Reason for the generated Python code"
-  },
-  {
-   "name": "code",
-   "description": "Python code generated to complete the task"
-  }
- ],
- "template": {
-  "input": {
-   "task": "task"
-  },
-  "output": {
-   "reason": "reason",
-   "code": "code"
-  }
- },
- "examples": [
-  {
-   "input": {
-    "task": "Create a function that calculates the factorial of a number"
-   },
-   "output": {
-    "reason": "Factorial function is a common use case in Python programming",
-    "code": "def factorial(n):\n    if n == 0:\n        return 1\n    else:\n        return n * factorial(n-1)"
-   }
-  }
- ]
+ "input_parameters": (...省略)
+ "output_parameters": (...省略)
+ "template": "...",
+ "examples": [...]
 }
 
 --------

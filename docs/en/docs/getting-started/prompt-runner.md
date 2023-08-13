@@ -55,7 +55,11 @@ Additionally, the prompt to execute is the `summarizer` prompt, as created in th
 ```python
 import promptogen as pg
 
-text_llm = pg.OpenAITextLLM("gpt-3.5-turbo")
+
+class OpenAITextLLM(pg.TextLLM):
+    # ...
+
+text_llm = OpenAITextLLM("gpt-3.5-turbo")
 formatter = pg.KeyValuePromptFormatter()
 
 runner = pg.TextLLMPromptRunner(text_llm, formatter)

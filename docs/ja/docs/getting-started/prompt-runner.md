@@ -55,7 +55,10 @@ class TextLLMPromptRunner(PromptRunner):
 ```python
 import promptogen as pg
 
-text_llm = pg.OpenAITextLLM("gpt-3.5-turbo")
+class OpenAITextLLM(pg.TextLLM):
+    # 省略
+
+text_llm = OpenAITextLLM("gpt-3.5-turbo")
 formatter = pg.KeyValuePromptFormatter()
 
 runner = pg.TextLLMPromptRunner(text_llm, formatter)

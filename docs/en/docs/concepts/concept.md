@@ -2,7 +2,7 @@
 
 ## Modularization
 
-PrompGen separates the process of converting between Python objects and text strings from the process of communicating with the LLM.
+PromptoGen separates the process of converting between Python objects and text strings from the process of communicating with the LLM.
 
 This modular design makes it easier for PromptoGen to adapt to changes without affecting its core functionalities, even if the LLM evolves or changes.
 

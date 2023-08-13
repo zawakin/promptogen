@@ -27,7 +27,7 @@ nav:
     - OpenAITextLLM: examples/openai-text-llm.md
   - プロンプト自動生成:
     - Context QA: examples/context-qa.md
-    - タスク分割: examples/task_splitter.md
+    - タスク分割: examples/task-splitter.md
   - LLM推論過程出力:
     - 入出力の理由推論(Context QA): examples/context-qa-reasoning.md
     - プロンプトへの推論過程付与: examples/prompt-reasoning.md

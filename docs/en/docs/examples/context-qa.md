@@ -20,22 +20,23 @@ prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 [context-qa.py (GitHub)](https://github.com/zawakin/promptogen/tree/742485c4690788d2866635bcd3b5eda580cf5b1a/examples/promptcreation/context_qa_prompt.py)
 
-## Creating the Prompt
+## Creating Prompts
 
-Using `PromptCreatorPrompt`, we will create a prompt.
+Use `PromptCreatorPrompt` to create prompts.
 
-This prompt takes `description` and `background` as input and outputs `prompt`.
+This prompt takes `description` and `background` as inputs and outputs `prompt`.
 
 ```python
 prompt_creator_prompt = PromptCreatorPrompt()
 
 def setup_context_qa_prompt() -> pg.Prompt:
     input_value = {
-        "description": "Answer the question based on the given context.",
+        "description": "Answer the question for the given context.",
         "background": "(context: str, question: str) -> (answer: str)",
     }
     resp = prompt_runner.run_prompt(prompt_creator_prompt, input_value=input_value)
     return pg.Prompt.from_dict(resp["prompt"])
+
 
 context_qa_prompt = setup_context_qa_prompt()
 ```
@@ -44,7 +45,7 @@ Input to LLM:
 
 ```console
 -- input --
-Create a prompt from the given description and background. Use the provided description as the prompt's description directly. Use background information to make the prompt more specific.
+Create a prompt from the given description and background. Use the given description as the prompt description as is. Consider background information to make the prompt more specific.
 
 Input Parameters:
   - description: description of the prompt; this will be used as the prompt description as is
@@ -61,58 +62,10 @@ Output:
 prompt: {
  "name": "sample-new prompt",
  "description": "description of sample prompt",
- "input_parameters": [
-  {
-   "name": "input1",
-   "description": "The first input parameter."
-  },
-  {
-   "name": "input2",
-   "description": "The second input parameter."
-  }
- ],
- "output_parameters": [
-  {
-   "name": "output1",
-   "description": "The first output parameter."
-  },
-  {
-   "name": "output2",
-   "description": "The second output parameter."
-  }
- ],
- "template": {
-  "input": {
-   "input1": "Hello, world!",
-   "input2": "Hello, world!"
-  },
-  "output": {
-   "output1": "Hello, world!",
-   "output2": "Hello, world!"
-  }
- },
- "examples": [
-  {
-   "input": {
-    "input1": "Hello, world!",
-    "input2": "Hello, world!"
-   },
-   "output": {
-    "output1": "Hello, world!",
-    "output2": "Hello, world!"
-   }
-  },
-  {
-   "input": {
-    "input1": "Hello, world!",
-    "input2": "Hello, world!"
-   },
-   "output": {
-    "output1": "Hello, world!",
-    "output2": "Hello, world!"
-   }
-  }
- ]
+ "input_parameters": (...omitted)
+ "output_parameters": (...omitted)
+ "template": "...",
+ "examples": [...]
 }
 
 Example 1:
@@ -123,49 +76,10 @@ Output:
 prompt: {
  "name": "TextCategorizer",
  "description": "Categorize the given text",
- "input_parameters": [
-  {
-   "name": "text",
-   "description": "The text to be categorized"
-  },
-  {
-   "name": "categories",
-   "description": "The categories to categorize the text into"
-  }
- ],
- "output_parameters": [
-  {
-   "name": "category",
-   "description": "The category the text belongs to"
-  }
- ],
- "template": {
-  "input": {
-   "text": "text",
-   "categories": [
-    "category 1",
-    "category 2"
-   ]
-  },
-  "output": {
-   "category": "category 1"
-  }
- },
- "examples": [
-  {
-   "input": {
-    "text": "A recent study shows that regular exercise can help improve cognitive function in older adults.",
-    "categories": [
-     "Health",
-     "Science",
-     "Technology"
-    ]
-   },
-   "output": {
-    "category": "Health"
-   }
-  }
- ]
+ "input_parameters": (...omitted)
+ "output_parameters": (...omitted)
+ "template": "...",
+ "examples": [...]
 }
 
 Example 2:
@@ -176,51 +90,20 @@ Output:
 prompt: {
  "name": "PythonCodeGenerator",
  "description": "Generate Python code based on the given task",
- "input_parameters": [
-  {
-   "name": "task",
-   "description": "The task for which Python code needs to be generated"
-  }
- ],
- "output_parameters": [
-  {
-   "name": "reason",
-   "description": "Reason for the generated Python code"
-  },
-  {
-   "name": "code",
-   "description": "Python code generated to complete the task"
-  }
- ],
- "template": {
-  "input": {
-   "task": "task"
-  },
-  "output": {
-   "reason": "reason",
-   "code": "code"
-  }
- },
- "examples": [
-  {
-   "input": {
-    "task": "Create a function that calculates the factorial of a number"
-   },
-   "output": {
-    "reason": "Factorial function is a common use case in Python programming",
-    "code": "def factorial(n):\n    if n == 0:\n        return 1\n    else:\n        return n * factorial(n-1)"
-   }
-  }
- ]
+ "input_parameters": (...omitted)
+ "output_parameters": (...omitted)
+ "template": "...",
+ "examples": [...]
 }
 
 --------
 
 Input:
-description: "Answer the question based on the given context."
+description: "Answer the question for the given context."
 background: "(context: str, question: str) -> (answer: str)"
 Output:
 ```
+
 
 Output from LLM:
 

@@ -4,7 +4,7 @@ repo_url: https://github.com/zawakin/promptogen
 edit_uri: edit/main/docs/en/docs/
 nav:
 - PromptoGen: index.md
-- Introduction:
+- Getting Started:
   - Installation: getting-started/installation.md
   - Quick Start: getting-started/quickstart.md
   - What is PromptoGen?: getting-started/overview.md
@@ -27,7 +27,7 @@ nav:
     - OpenAITextLLM: examples/openai-text-llm.md
   - Auto-prompt Generation:
     - Context QA: examples/context-qa.md
-    - Task Splitting: examples/task_splitter.md
+    - Task Splitting: examples/task-splitter.md
   - LLM Inference Process Output:
     - Reasoning for Input/Output (Context QA): examples/context-qa-reasoning.md
     - Adding Reasoning Process to Prompt: examples/prompt-reasoning.md
