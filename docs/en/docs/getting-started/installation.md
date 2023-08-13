@@ -20,4 +20,4 @@ print(pg.__version__)
 
 ## Quick Start
 
-Please refer to the [Quick Start Guide](../quickstart).
+Please refer to the [Quick Start Guide](quickstart).

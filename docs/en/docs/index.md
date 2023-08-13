@@ -301,7 +301,7 @@ summarizer = pg.Prompt.from_json_file("summarizer.json")
 
 ## Quick Start Guide
 
-Please refer to the [Quick Start Guide](quickstart.md).
+Please refer to the [Quick Start Guide](getting-started/quickstart.md).
 
 ## Application Examples
 
