@@ -27,7 +27,7 @@ jobs:
         uses: "./.github/actions/poetry_setup"
         with:
           python-version: ${{ matrix.python-version }}
-          poetry-version: "1.5.1"
+          poetry-version: ${{ env.POETRY_VERSION }}
           cache-key: "test-v1"
           install-command: |
               echo "Running core tests, installing dependencies with poetry..."

@@ -11,34 +11,37 @@ on:
 env:
   POETRY_VERSION: "1.5.1"
   POETRY_URL: https://install.python-poetry.org
+  PYTHON_VERSION: "3.11"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
-      fail-fast: false
-
-    name: Python ${{ matrix.python-version }}
+    name: Deploy docs
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: "./.github/actions/poetry_setup"
         with:
-          python-version: ${{ matrix.python-version }}
-          poetry-version: "1.5.1"
+          python-version: ${{ env.PYTHON_VERSION }}
+          poetry-version: ${{ env.POETRY_VERSION }}
           cache-key: "test-v1"
           install-command: |
               echo "Running core tests, installing dependencies with poetry..."
-              poetry install
+              poetry install --with docs
       - name: Build docs to site/
         run: |
           poetry run python ./scripts/doc.py build-all
-      - name: Deploy docs to Netlify
-        uses: netlify/actions/cli@main
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2.0
         with:
-          args: deploy --prod --dir=site/
+          publish-dir: './site'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
