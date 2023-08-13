@@ -1,14 +1,14 @@
-[TextLLMインターフェイス](../getting-started/text-llm.md)を使用して、OpenAI APIを使用してTextLLMを実装する方法を説明します。
+This guide explains how to implement the TextLLM using the OpenAI API with the [TextLLM Interface](../getting-started/text-llm.md).
 
-## 必要なライブラリをインストールする
+## Installing Required Libraries
 
 ```console
 pip install promptogen openai python-dotenv colorama
 ```
 
-## 環境変数を設定する
+## Setting Environment Variables
 
-`.env` を作成します。この辺りの設定は[OpenAI API](https://platform.openai.com/docs/api-reference/introduction)  を参考にしてください。
+Create a `.env` file. Please refer to the [OpenAI API](https://platform.openai.com/docs/api-reference/introduction) for details on setting this up.
 
 ```shell
 # .env
@@ -16,9 +16,9 @@ OPENAI_API_KEY=<your-openai-api-key>
 OPENAI_ORG_ID=<your-openai-org-id>
 ```
 
-## OpenAI API を使用して TextLLM を実装する
+## Implementing TextLLM using the OpenAI API
 
-`colorama` は、ターミナル上で色付きの文字を表示するために使用しています。
+We use `colorama` to display colored text on the terminal.
 
 ```python
 import os
@@ -71,7 +71,7 @@ class OpenAITextLLM(TextLLM):
         return raw_resp
 ```
 
-## 使い方
+## How to Use
 
 ```python
 text_llm = OpenAITextLLM(model="gpt-3.5-turbo")

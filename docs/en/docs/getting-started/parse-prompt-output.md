@@ -1,18 +1,16 @@
-`PromptFormatter` は、LLMから返ってきた出力文字列から `Value` をパースするメソッドを提供します。
+`PromptFormatter` provides methods to parse a `Value` from the output string returned by the LLM.
 
-内部では　`ValueFormatter` を使用しているため、詳細は [Valueをパースする](parse-value.md) を参照してください。
+Internally, it uses the `ValueFormatter`, so for more details, refer to [Parsing the Value](parse-value.md).
 
+`PromptFormatter` has a parameter named `output_formatter` of type `ValueFormatter`. This parameter is used to convert a `Value` to the output string from LLM and vice versa.
 
-`PromptFormatter` は `output_formatter` という `ValueFormatter` 型のパラメータを持ちます。このパラメータは、 `Value` をLLMからの出力文字列に変換したり、LLMからの出力文字列を `Value` に変換するために使用されます。
+## Converting Output to a Python Object
 
-## 出力をPythonオブジェクトに変換する
+Let's try converting the output to a Python object. Using the `formatter.parse` method, you can parse the output string from the LLM using the output parameters of the prompt. The result of the parsing is stored in a Python `dict`.
 
-出力をPythonオブジェクトに変換してみましょう。
-`formatter.parse` メソッドを使用することで、LLMからの出力文字列をプロンプトの出力パラメータを用いてパースできます。パースの結果はPythonの `dict` に格納されます。
+The prompt named `summarizer` used on this page was created in [Prompt Example](prompt.md) and has two output parameters, `summary` and `keywords`.
 
-このページで使用する `summarizer` という名前のプロンプトは [Promptの例](prompt.md) で作成したもので、 `summary` と `keywords` という2つの出力パラメータを持ちます。
-
-もし、 parse時に `summary` または `keywords`　が見つからなかった場合は `ValueError` 、無効な文法があった場合は `SyntaxError` が発生します。
+If `summary` or `keywords` are not found during parsing, a `ValueError` occurs, and if there is an invalid syntax, a `SyntaxError` will be raised.
 
 ```python
 import promptogen as pg
@@ -25,7 +23,7 @@ summarized_resp = formatter.parse(summarizer, raw_resp)
 print(summarized_resp)
 ```
 
-コンソール出力:
+Console Output:
 
 ```console
 {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}

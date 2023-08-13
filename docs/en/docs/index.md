@@ -4,63 +4,59 @@
 
 ----
 
-ドキュメンテーション: https://promptogen.zawakin.dev/
+Documentation: https://promptogen.zawakin.dev/
 
-ソースコード: https://github.com/zawakin/promptogen
+Source Code: https://github.com/zawakin/promptogen
 
-クイックスタートガイドは[こちら](getting-started/quickstart.md)。
+For the Quick Start Guide, click [here](getting-started/quickstart.md).
 
 ----
 
-## PromptoGenについて
+## 📘 About PromptoGen
 
-### プロジェクトのビジョン
+### 💡 Project Vision
 
-PromptoGenはPythonオブジェクトと大規模言語モデルのテキスト出力間の変換に専念します。これにより、大規模言語モデルとの直接的な通信を気にすることなく、ユーザーはプロンプトの生成と解析に集中できます。
+PromptoGen facilitates the conversion between text outputs of large language models and Python objects. This allows developers to concentrate on prompt generation and analysis without the need to directly interact with these expansive language models.
 
-### 解決する問題
-大規模言語モデルの利用に際して、多くのライブラリがモデルとの通信からテキストの生成、パースまで幅広い機能を包括しています。その結果、必要な機能を取り出したり、一部の機能をカスタマイズしたりするのが困難になっています。
+### ❌ Problem Being Solved
 
-### ソリューション
+A multitude of libraries exist that handle everything from interfacing with vast language models to text generation and interpretation. However, these all-in-one solutions can hinder the ability to customize specific functionalities.
 
-この問題を解決するために、PromptoGenは"ドメインモデルと文字列との変換"という具体的な部分に焦点を当てています。つまり、大規模言語モデルとの直接的な通信を考慮せずに、次のような特定の役割に集中できます：
+### ✅ Solution
 
-1. 大規模言語モデルへのコマンドを表現するためのデータクラスを定義します。
-1. プロンプトや入力データを任意のフォーマットの文字列に変換するフォーマッターを提供します。
-1. 大規模言語モデルからのテキスト出力を適切な出力データに変換（パース）します。
+PromptoGen serves as a linguistic translation tool to simplify interactions with LLMs (Large Language Models). It offers unique features such as:
 
-このアプローチにより、PromptoGenは独立して機能し、新しい大規模言語モデルや通信ライブラリが登場した際にも影響を受けることなく、その機能を続けることが可能です。
+1. **Use of the `Prompt` Data Class**:
+  
+    - This data class has been structured to outline the fundamental details and format for liaising with an LLM.
+    - Each `Prompt` encompasses the name of the prompt, a description, details on input & output parameters, and specific examples of its application.
 
-### ユーザーにとってのメリット
+2. **Generation of Prompt Strings and Decoding Outputs using `PromptFormatter`**:
+    
+    - The `PromptFormatter` accepts a `Prompt` alongside an input value, transforming them into a string prompt that the LLM can interpret.
+    - It also modifies the textual response from the LLM into a Python data format (primarily dictionaries) based on the specifics of the associated `Prompt`.
 
-1. **モジュール性**: PromptoGenは特定の部分（文字列とドメインモデルの変換）に特化しているため、他の大規模言語モデルや通信ライブラリと自由に組み合わせて使用できます。このようなモジュール性は、ユーザーが自分のニーズに最適なソリューションを構築する柔軟性を提供します。
+### 🌟 Benefits to Users
 
-1. **拡張性**: PromptoGenはユーザーが自分のフォーマッターとパーサーを定義し、追加することが可能です。これにより、特定のプロジェクトやユースケースに最適化された変換ロジックを実装することが可能になります。
+1. **Modularity**: The liberty to integrate with other models or software.
+2. **Extensibility**: The capability to incorporate custom formatters and interpreters.
+3. **Independence**: Stability regardless of alterations in emerging language models or libraries.
+4. **Maintainability**: Hassle-free management and troubleshooting.
+5. **Development Efficiency**: Enables focus on creation without fretting about liaising with expansive language models.
 
-1. **独立性**: PromptoGenは大規模言語モデルや通信ライブラリに依存せず、これらがどのように進化してもその機能は影響を受けません。これにより、新しいモデルやライブラリが登場した際にも、既存のコードを大幅に書き換える必要がなく、安心して使用を続けることが可能です。
-
-1. **メンテナンス性**: PromptoGenのソースコードは、特定の部分に焦点を絞った設計により、他の全機能を含むライブラリよりも管理が容易です。このため、問題が発生した場合のトラブルシューティングが簡単になり、また新しい機能の追加も容易になります。
-
-1. **開発効率**: PromptoGenを使用することで、開発者は大規模言語モデルとの通信や他の複雑な処理について心配することなく、プロンプトの生成と解析に集中できます。これにより、より高品質なアプリケーションをより短時間で開発することが可能になります。
-
-
-## 動作環境
-
-Python 3.8 以上
-
-## インストール
+## Installation
 ```console
 $ pip install promptogen
 ```
 
-## インポート
+## Importing
 ```python
 import promptogen as pg
 ```
 
-## 使い方
+## How to Use
 
-### プロンプトの作成
+### Creating Prompts
 
 ```python
 import promptogen as pg
@@ -69,87 +65,85 @@ summarizer = pg.Prompt(
     name="Text Summarizer and Keyword Extractor",
     description="Summarize text and extract keywords.",
     input_parameters=[
-        pg.ParameterInfo(name="text", description="Text to summarize"),
+        pg.ParameterInfo(name="text", description="Text to be summarized"),
     ],
     output_parameters=[
-        pg.ParameterInfo(name="summary", description="Summary of text"),
-        pg.ParameterInfo(name="keywords", description="Keywords extracted from text"),
+        pg.ParameterInfo(name="summary", description="Summarized text"),
+        pg.ParameterInfo(name="keywords", description="Extracted keywords from the text"),
     ],
     template=pg.IOExample(
-        input={'text': "This is a sample text to summarize."},
+        input={'text': "This is a sample text for summarization."},
         output={
             'summary': "This is a summary of the text.",
-            'keywords': ["sample", "text", "summarize"],
+            'keywords': ["sample", "text", "summarization"],
         },
     ),
     examples=[
         pg.IOExample(
             input={
-                'text': "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."},
+                'text': "One sunny afternoon, a group of friends opted to meet at the nearby park to indulge in various sports and activities. They engaged in soccer, badminton, and basketball, reveling in the joy of camaraderie and crafting unforgettable moments together."},
             output={
-                'summary': "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
-                'keywords': ["friends", "park", "sports", "memories"],
+                'summary': "A bunch of friends relished an afternoon of sports and bonding at a neighborhood park.",
+                'keywords': ["friends", "park", "sports", "moments"],
             },
         )
     ],
 )
 ```
 
-### プロンプトのフォーマット
+### Prompt Format
 
-`Prompt` クラスのインスタンスを実際にLLMに送信するために、文字列に変換する必要があります。PromptoGenでは、`pg.PromptFormatter`を使用して、プロンプトを任意の形式の文字列に変換することができます。
+To send an instance of the `Prompt` class to the LLM (Large Language Model) in actual use, you need to convert it into a string. With PromptoGen, you can use `pg.PromptFormatter` to convert the prompt into a string in any desired format.
 
-PromptoGenでは様々な形式のフォーマットをサポートしています。
+PromptoGen supports various formatting styles:
 
-- `key: value`形式
-- JSON形式
+- `key: value` format
+- JSON format
 - etc.
 
-### KeyValue形式フォーマット基本構造
+### Basic Structure of KeyValue Format
 
-KeyValue形式のプロンプトフォーマットは、以下のような基本的な構造を持ちます。
-パラメータ情報やテンプレートを表示するかどうかは `PromptFormatterConfig` で設定できます。
+The KeyValue prompt format has the following basic structure. Whether to display parameter information or templates can be set with `PromptFormatterConfig`.
 
 ```
-<プロンプト説明>
+<Prompt Description>
 
 Input Parameters:
-  - <入力パラメーター1の説明>
-  - <入力パラメーター2の説明>
+  - <Description of Input Parameter 1>
+  - <Description of Input Parameter 2>
   - ...
 
 Output Parameters:
-    - <出力パラメーター1の説明>
-    - <出力パラメーター2の説明>
+    - <Description of Output Parameter 1>
+    - <Description of Output Parameter 2>
     - ...
 
 Template:
 Input:
-<入力パラメーター1の名前>: <入力パラメーター1の例>
-<入力パラメーター2の名前>: <入力パラメーター2の例>
+<Name of Input Parameter 1>: <Example of Input Parameter 1>
+<Name of Input Parameter 2>: <Example of Input Parameter 2>
 ...
 Output:
-<出力パラメーター1の名前>: <出力パラメーター1の例>
-<出力パラメーター2の名前>: <出力パラメーター2の例>
+<Name of Output Parameter 1>: <Example of Output Parameter 1>
+<Name of Output Parameter 2>: <Example of Output Parameter 2>
 ...
 
 Example 1:
 Input:
-<入力パラメーター1の名前>: <入力パラメーター1の値>
-<入力パラメーター2の名前>: <入力パラメーター2の値>
+<Name of Input Parameter 1>: <Value of Input Parameter 1>
+<Name of Input Parameter 2>: <Value of Input Parameter 2>
 ...
 Output:
-<出力パラメーター1の名前>: <出力パラメーター1の値>
-<出力パラメーター2の名前>: <出力パラメーター2の値>
+<Name of Output Parameter 1>: <Value of Output Parameter 1>
+<Name of Output Parameter 2>: <Value of Output Parameter 2>
 ...
 
 ...
 ```
 
+To use the `key: value` format for the prompt, use the `pg.KeyValuePromptFormatter`.
 
-`key: value` 形式のプロンプトのフォーマットを使用するには、`pg.KeyValuePromptFormatter`を使用します。
-
-`formatter.format_prompt` メソッドを使用して、プロンプトとそれに対する入力を文字列に変換できます。
+By using the `formatter.format_prompt` method, you can convert the prompt and its corresponding input into a string.
 
 ```python
 formatter = pg.KeyValuePromptFormatter()
@@ -160,8 +154,7 @@ input_value = {
 print(formatter.format_prompt(summarizer, input_value))
 ```
 
-
-コンソール出力:
+Console output:
 
 ```console
 Summarize text and extract keywords.
@@ -177,14 +170,14 @@ Template:
 Input:
 text: "This is a sample text to summarize."
 Output:
-summary: """This is a summary of the text."""
+summary: "This is a summary of the text."
 keywords: ['sample', 'text', 'summarize']
 
 Example 1:
 Input:
 text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
-summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
+summary: "A group of friends enjoyed an afternoon playing sports and making memories at a local park."
 keywords: ['friends', 'park', 'sports', 'memories']
 
 --------
@@ -194,10 +187,9 @@ text: "In the realm of software engineering, ..."
 Output:
 ```
 
+### JSON Format for Prompt
 
-### JSON形式のプロンプトのフォーマット
-
-`pg.JsonPromptFormatter`を使用すると、プロンプトとその入力をJSON形式の文字列に変換できます。
+Using `pg.JsonPromptFormatter`, you can convert the prompt and its input into a JSON-formatted string.
 
 ```python
 formatter = pg.JsonPromptFormatter()
@@ -207,6 +199,8 @@ input_value = {
 }
 print(formatter.format_prompt(summarizer, input_value))
 ```
+
+Console output:
 
 ````console
 Summarize text and extract keywords.
@@ -266,16 +260,16 @@ Input:
 Output:
 ````
 
-### 大規模言語モデルからの出力のパース
+### Parsing Outputs from Large Language Models
 
-さきほどのプロンプト文字列を入力として、大規模言語モデル(GPT-3.5, GPT-4など)から出力を得ます。
+After receiving the prompt string as input, you obtain an output from a large language model (like GPT-3.5, GPT-4).
 
 ```console
 summary: "This is a summary of the text."
 keywords: ['sample', 'text', 'summarize']
 ```
 
-この出力をパースします。
+You can parse this output as:
 
 ```python
 formatter = pg.KeyValuePromptFormatter()
@@ -286,46 +280,46 @@ summarized_resp = formatter.parse(summarizer, raw_resp)
 print(summarized_resp)
 ```
 
-コンソール出力:
+Console output:
 
 ```console
 {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
 ```
 
-### プロンプトの保存
+### Saving the Prompt
 
 ```python
 summarizer.to_json_file("summarizer.json")
 ```
 
-### プロンプトの読み込み
+### Loading the Prompt
 
 ```python
 summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
 
 
-## クイックスタートガイド
+## Quick Start Guide
 
-[クイックスタートガイド](quickstart.md)を参照してください。
+Please refer to the [Quick Start Guide](quickstart.md).
 
-## 応用例
+## Application Examples
 
-[応用例](examples/index.md)を参照してください。
+Refer to [Application Examples](examples/index.md).
 
-## 依存ライブラリ
+## Dependent Libraries
 
-- [Pydantic](https://docs.pydantic.dev/latest/) ... データクラスの定義に使用
+- [Pydantic](https://docs.pydantic.dev/latest/) ... Used for defining data classes
 
-## 制限事項
+## Limitations
 
-- PromptoGenのアップデートに伴い、json出力したプロンプトの互換性が失われる可能性があります。
-- 動作検証に使用した大規模言語モデルは、OpenAI Chat API の `gpt-3.5-turbo`, `gpt-4` や Meta の `Llama 2` です。その他の大規模言語モデルでは動作検証を行っていません。特に、パーサーが正しく動作しないケースがある可能性があるため、ご注意ください。
+- With updates to PromptoGen, compatibility with prompts outputted in JSON may be lost.
+- The large language models tested for operation are OpenAI's `gpt-3.5-turbo`, `gpt-4`, and Meta's `Llama 2`. Other large language models have not been tested for operation. In particular, there may be cases where the parser does not work correctly, so please be cautious.
 
-## コントリビューション
+## Contribution
 
-バグの報告、新機能の提案、プルリクエスト等は大歓迎です！詳しくは[コントリビューション](contributing.md)をご覧ください。
+Bug reports, proposals for new features, pull requests, etc., are all welcome! For more details, please see [Contribution](contributing.md).
 
-## ライセンス
+## License
 
-MITライセンス
+MIT License

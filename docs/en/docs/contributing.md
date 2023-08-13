@@ -1,40 +1,41 @@
-# コントリビューションガイド
+# Contribution Guide
 
-バグの報告、新機能の提案、プルリクエスト等は大歓迎です！
+Bug reports, new feature proposals, pull requests, etc. are highly welcome!
 
-## 環境構築
+## Setting Up the Environment
 
-PromptoGenの開発ではPython 3.8以上を使用します。
+Python 3.8 or higher is used for the development of PromptoGen.
 
-### Poetryのインストール
+### Installing Poetry
 
 https://python-poetry.org/docs/#installation
 
-### リポジトリのクローンと依存パッケージのインストール
+### Cloning the Repository and Installing Dependencies
 
 ```bash
 $ git clone https://github.com/zawakin/promptogen.git
 $ cd promptogen
-$ poetry env use 3.8 # 仮想環境の作成
+$ poetry env use 3.8 # Create a virtual environment
 $ poetry install --with docs
 ```
 
-### テストの実行
+### Running Tests
 
 ```bash
 $ ./scripts/test.sh
 ```
 
-## ドキュメントのビルド
+## Building the Documentation
 
 ```bash
 $ poetry run python ./scripts/docs.py build-all
 ```
 
-## ドキュメントのプレビュー
+## Previewing the Documentation
 
 ```bash
 $ poetry run python ./scripts/docs.py live <lang>
 ```
 
-`<lang>` には `ja` または `en` を指定します。
+For `<lang>`, specify either `ja` (Japanese) or `en` (English).
+```

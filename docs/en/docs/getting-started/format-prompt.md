@@ -1,30 +1,29 @@
 ## PromptFormatter
 
-PromptoGenでは、プロンプトを文字列にするためのフォーマッターを柔軟に作成できます。
+In PromptoGen, you can flexibly create formatters to turn prompts into strings.
 
-`PromptFormatter` を理解するために、 [Valueをフォーマットする](format-value.md) と [Valueをパースする](parse-value.md) を参照してください。
+To understand `PromptFormatter`, please refer to [Formatting Values](format-value.md) and [Parsing Values](parse-value.md).
 
-## プロンプトを入力パラメータなしで文字列にフォーマットする
+## Formatting a prompt into a string without input parameters
 
-このページで使用する `summarizer` という名前のプロンプトは [Promptの例](prompt.md) で作成したものです。
+The prompt named `summarizer` used on this page was created in [Prompt Examples](prompt.md).
 
-入力パラメータなしで文字列にフォーマットするには、フォーマッターの `format_prompt_without_input` メソッドを使用します。
-このメソッドは、プロンプトとフォーマッターを引数に取り、プロンプトを文字列にフォーマットします。
+To format a string without input parameters, use the formatter's `format_prompt_without_input` method. This method takes the prompt and the formatter as arguments and formats the prompt into a string.
 
-### 例: KeyValuePromptFormatter
+### Example: KeyValuePromptFormatter
 
-`KeyValuePromptFormatter` というフォーマッターを使用します。
-このフォーマッターは、入出力変数のキーとバリューを `key: value` の形式で出力します。
+We will use the `KeyValuePromptFormatter`.
+This formatter outputs the keys and values of the input/output variables in the form of `key: value`.
 
-- 入力パラメータは `KeyValueFormatter` を使用してフォーマットされます。
-- 出力パラメータは `KeyValueFormatter` を使用してフォーマットされます。
+- Input parameters are formatted using `KeyValueFormatter`.
+- Output parameters are also formatted using `KeyValueFormatter`.
 
 ```python
 formatter = pg.KeyValuePromptFormatter()
 print(formatter.format_prompt_without_input(summarizer))
 ```
 
-コンソール出力:
+Console output:
 
 ```console
 Summarize text and extract keywords.
@@ -33,8 +32,8 @@ Input Parameters:
   - text: Text to summarize
 
 Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
+  - summary: Summary of the text
+  - keywords: Keywords extracted from the text
 
 Template:
 Input:
@@ -49,7 +48,7 @@ keywords: [
 
 Example 1:
 Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+text: "One sunny afternoon, a group of friends gathered at a nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
 summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
 keywords: [
@@ -60,17 +59,19 @@ keywords: [
 ]
 ```
 
-### 例: JsonPromptFormatter
+### Example: JsonPromptFormatter
 
-`JsonPromptFormatter` というフォーマッターを使用します。
-このフォーマッターは、入出力変数のキーとバリューをJSON形式で出力します。
+We will use the `JsonPromptFormatter`.
+This formatter outputs the keys and values of the input/output variables in JSON format.
 
 ```python
 formatter = pg.JsonPromptFormatter()
 print(formatter.format_prompt_without_input(summarizer))
 ```
 
-````console
+Console output:
+
+```console
 Summarize text and extract keywords.
 
 Output a JSON-formatted string without outputting any other strings.
@@ -80,8 +81,8 @@ Input Parameters:
   - text: Text to summarize
 
 Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
+  - summary: Summary of the text
+  - keywords: Keywords extracted from the text
 
 Template:
 Input:
@@ -104,7 +105,7 @@ Example 1:
 Input:
 ```json
 {
- "text": "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+ "text": "One sunny afternoon, a group of friends gathered at a nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 }```
 Output:
 ```json
@@ -117,12 +118,11 @@ Output:
   "memories"
  ]
 }```
-````
+```
 
-### 例: カスタムフォーマッター
+### Example: Custom Formatter
 
-`PromptFormatter` に入力フォーマッターと出力フォーマッターを指定することで、カスタムフォーマッターを作成できます。
-この例では、`KeyValueFormatter` を入力フォーマッターとして、`JsonValueFormatter` を出力フォーマッターとして使用します。
+By specifying an input formatter and output formatter to `PromptFormatter`, you can create a custom formatter. In this example, we use `KeyValueFormatter` as the input formatter and `JsonValueFormatter` as the output formatter.
 
 ```python
 from promptogen.prompt_formatter import KeyValueFormatter, JsonValueFormatter
@@ -134,9 +134,9 @@ formatter = pg.PromptFormatter(
 print(formatter.format_prompt_without_input(summarizer))
 ```
 
-コンソール出力:
+Console output:
 
-````console
+```console
 Summarize text and extract keywords.
 
 Output a JSON-formatted string without outputting any other strings.
@@ -146,8 +146,8 @@ Input Parameters:
   - text: Text to summarize
 
 Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
+  - summary: Summary of the text
+  - keywords: Keywords extracted from the text
 
 Template:
 Input:
@@ -158,14 +158,14 @@ Output:
  "summary": "This is a summary of the text.",
  "keywords": [
   "sample",
-  "text",
-  "summarize"
+ "text",
+ "summarize"
  ]
 }```
 
 Example 1:
 Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+text: "One sunny afternoon, a group of friends gathered at a nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
 ```json
 {
@@ -177,26 +177,26 @@ Output:
   "memories"
  ]
 }```
-````
+```
 
-## プロンプトを入力パラメータありで文字列にフォーマットする
+## Formatting a prompt into a string with input parameters
 
-続いて、プロンプトを入力パラメータありで文字列にフォーマットしてみましょう。
+Next, let's try formatting a prompt into a string with input parameters.
 
-プロンプトを入力パラメータ込みで文字列にフォーマットするには、`format_prompt` メソッドを使用します。
+To format a prompt into a string with input parameters, use the `format_prompt` method.
 
-入力パラメータは、 `pg.Value` つまり  `dict` を `format_prompt` メソッドに渡すことで指定できます。
+Input parameters can be specified by passing a `pg.Value` (i.e., a `dict`) to the `format_prompt` method.
 
 ```python
 formatter = pg.KeyValuePromptFormatter()
 
 input_value = {
-    'text': "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.",
+    'text': "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to produce and maintain well-structured, efficient code, and address challenges that emerge from implementation complexities, changing user requirements, and system optimization.",
 }
 print(formatter.format_prompt(summarizer, input_value))
 ```
 
-コンソール出力:
+Console output:
 
 ```console
 Summarize text and extract keywords.
@@ -205,8 +205,8 @@ Input Parameters:
   - text: Text to summarize
 
 Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
+  - summary: Summary of the text
+  - keywords: Keywords extracted from the text
 
 Template:
 Input:
@@ -221,7 +221,7 @@ keywords: [
 
 Example 1:
 Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+text: "One sunny afternoon, a group of friends gathered at a nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
 Output:
 summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
 keywords: [
@@ -234,22 +234,21 @@ keywords: [
 --------
 
 Input:
-text: "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
-Output:
+text: "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to produce and maintain well-structured, efficient code, and address challenges that emerge from implementation complexities, changing user requirements, and system optimization."
 ```
 
-## 表示項目を変更する
+## Modifying Display Items
 
-`pg.PromptFormatterConfig` を使用して、表示項目を変更することができます。
+You can modify the display items using `pg.PromptFormatterConfig`.
 
 ```python
 class PromptFormatterConfig(DataClass):
     """Configuration for formatting a prompt.
 
     Attributes:
-        show_formatter_description (bool): Whether to show the description of the formatter.
-        show_parameter_info (bool): Whether to show the parameter info of the prompt.
-        show_template (bool): Whether to show the template of the prompt.
+        show_formatter_description (bool): Whether to display the description of the formatter.
+        show_parameter_info (bool): Whether to display the parameter info of the prompt.
+        show_template (bool): Whether to display the template of the prompt.
     """
 
     show_formatter_description: bool = True
@@ -257,7 +256,7 @@ class PromptFormatterConfig(DataClass):
     show_template: bool = True
 ```
 
-たとえば、 `Input Parameters` や `Output Parameters` といったパラメータの情報をフォーマットしたくない場合、以下のように指定します。
+For instance, if you don't want to format information like `Input Parameters` or `Output Parameters`, you specify it as follows:
 
 ```python
 config = PromptFormatterConfig(

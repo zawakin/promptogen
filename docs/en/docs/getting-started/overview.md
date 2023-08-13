@@ -1,13 +1,13 @@
-## PromptoGenとは
+## What is PromptoGen?
 
-PromptoGenはPythonライブラリで、大規模言語モデルに対するプロンプトの生成と管理を支援します。このライブラリを使用すると、プロンプトとその入出力パラメータを定義し、それらをフォーマットして文字列に変換することができます。また、大規模言語モデルからの出力を解析し、Pythonオブジェクトに変換することも可能です。
+PromptoGen is a Python library that assists in generating and managing prompts for large language models. By using this library, you can define prompts and their input/output parameters, format them, and convert them into strings. Moreover, you can parse the output from large language models and convert it into Python objects.
 
-PromptoGenは以下の機能を提供します:
+PromptoGen offers the following features:
 
-- プロンプトとその入出力パラメータの定義
-- プロンプトと入力パラメータのフォーマット（文字列化）
-- 大規模言語モデルからの出力の解析とPythonオブジェクトへの変換
+- Definition of prompts and their input/output parameters
+- Formatting of prompts and input parameters (conversion to strings)
+- Parsing the output from large language models and converting to Python objects
 
-PromptoGenは、大規模言語モデルを利用する際の、プロンプトの生成と管理を効率化します。これにより、ユーザーはプロンプトの作成や管理に関する手間を軽減し、より多くの時間をモデルとの対話や、その結果の解析に費やすことができます。
+PromptoGen streamlines the generation and management of prompts when utilizing large language models. This reduces the effort users have to put into creating and managing prompts, allowing them to spend more time interacting with the model and analyzing its results.
 
-![PromptoGenの概要](/img/promptogen_overview.png)
+![Overview of PromptoGen](/img/promptogen_overview.png)

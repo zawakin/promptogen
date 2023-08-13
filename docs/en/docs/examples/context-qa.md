@@ -1,9 +1,8 @@
-このページでは、コンテキストと質問を入力として受け取り、回答を出力するプロンプトを作成する方法を説明します。
+This page explains how to create a prompt that takes a context and a question as input and outputs an answer.
 
-## 準備
+## Setup
 
-`openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。
-同じディレクトリの `openai_util.py` にそれらを定義しておくと、`import` できます。
+`openai_util.OpenAITextLLM` is the `TextLLM` defined on the [OpenAITextLLM page](openai-text-llm.md) (see also: [TextLLM](../getting-started/text-llm.md)). If you define them in the same directory's `openai_util.py`, you can `import` them.
 
 ```python
 import promptogen as pg
@@ -17,38 +16,35 @@ prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 ```
 
-## ソースコード
+## Source Code
 
 [context-qa.py (GitHub)](https://github.com/zawakin/promptogen/tree/742485c4690788d2866635bcd3b5eda580cf5b1a/examples/promptcreation/context_qa_prompt.py)
 
+## Creating the Prompt
 
-## プロンプトの作成
+Using `PromptCreatorPrompt`, we will create a prompt.
 
-`PromptCreatorPrompt` を使用して、プロンプトを作成します。
-
-このプロンプトは　`description` と `background` を入力として受け取り、`prompt` を出力します。
+This prompt takes `description` and `background` as input and outputs `prompt`.
 
 ```python
 prompt_creator_prompt = PromptCreatorPrompt()
 
-
 def setup_context_qa_prompt() -> pg.Prompt:
     input_value = {
-        "description": "Answer the question for the given context.",
+        "description": "Answer the question based on the given context.",
         "background": "(context: str, question: str) -> (answer: str)",
     }
     resp = prompt_runner.run_prompt(prompt_creator_prompt, input_value=input_value)
     return pg.Prompt.from_dict(resp["prompt"])
 
-
 context_qa_prompt = setup_context_qa_prompt()
 ```
 
-LLMへの入力:
+Input to LLM:
 
 ```console
 -- input --
-Create a prompt from the given description and background. Use the given description as the prompt description as is. Consider background information to make the prompt more specific.
+Create a prompt from the given description and background. Use the provided description as the prompt's description directly. Use background information to make the prompt more specific.
 
 Input Parameters:
   - description: description of the prompt; this will be used as the prompt description as is
@@ -221,12 +217,12 @@ prompt: {
 --------
 
 Input:
-description: "Answer the question for the given context."
+description: "Answer the question based on the given context."
 background: "(context: str, question: str) -> (answer: str)"
 Output:
 ```
 
-LLMからの出力:
+Output from LLM:
 
 ```console
 -- output --
@@ -272,7 +268,7 @@ prompt: {
 }
 ```
 
-## 作成したプロンプト情報の確認
+## Verifying the Created Prompt Information
 
 ```python
 print(context_qa_prompt)
@@ -283,7 +279,7 @@ QuestionAnswering: (context: str, question: str) -> (answer: str)
 
 Description
 -----------
-Answer the question for the given context.
+Answer the question based on the given context.
 
 Input Parameters
 ----------------
@@ -299,9 +295,9 @@ Examples Count
 1
 ```
 
-## Context QA プロンプトの実行
+## Running the Context QA Prompt
 
-Context QA プロンプトを実行してみます。
+Let's run the Context QA prompt.
 
 ```python
 input_value = {
@@ -315,11 +311,11 @@ print(output_value["answer"])
 # -> The lazy dog.
 ```
 
-LLMへの入力:
+Input to LLM:
 
 ```console
 -- input --
-Answer the question for the given context.
+Answer the question based on the given context.
 
 Input Parameters:
   - context: The context in which the question needs to be answered
@@ -350,7 +346,7 @@ question: "What does the fox jump over?"
 Output:
 ```
 
-LLMからの出力:
+Output from LLM:
 
 ```console
 -- output --

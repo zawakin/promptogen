@@ -1,19 +1,19 @@
-もし読んでいない場合、先に [はじめに](../getting-started/installation.md) を読むことをおすすめします。
+If you haven't read it yet, it's recommended to read [Getting Started](../getting-started/installation.md) first.
 
-PromptoGen は、軽量ライブラリではありますが、シンプルなデータクラスでプロンプトを表現してるため、抽象的な操作を簡単に行うことができます。
+While PromptoGen is a lightweight library, it represents prompts with simple data classes, making it easy to perform abstract operations.
 
-以下に、その一部を紹介します。
+Below are some of its features:
 
-### プロンプトの生成
+### Prompt Creation
 
 - [Context QA](context-qa.md)
-- [タスク分割](task-splitter.md)
+- [Task Splitting](task-splitter.md)
 
-### LLM推論の生成
+### Generating LLM Inferences
 
-- [入出力の理由推論(Context QA)](context-qa-reasoning.md)
-- [プロンプトへの推論過程付与](prompt-reasoning.md)
+- [Input/Output Reasoning (Context QA)](context-qa-reasoning.md)
+- [Adding Inferential Processes to the Prompt](prompt-reasoning.md)
 
-## より詳細なドキュメント
+## More Detailed Documentation
 
-[examples(GitHub)](https://github.com/zawakin/promptogen/tree/main/examples) には、より詳細な例があります。
+You can find more detailed examples at [examples(GitHub)](https://github.com/zawakin/promptogen/tree/main/examples).

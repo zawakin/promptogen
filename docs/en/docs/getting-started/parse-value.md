@@ -1,7 +1,6 @@
-フォーマットと同様に `ValueFormatter` を使用して、文字列から`Value`をパースすることができます。
+Similarly to formatting, you can use `ValueFormatter` to parse a string into a `Value`.
 
-
-### 例: `KeyValueFormatter`
+### Example: `KeyValueFormatter`
 
 ```python
 from promptogen.prompt_formatter import KeyValueFormatter
@@ -17,15 +16,15 @@ parsed_value = value_formatter.parse([
 print(parsed_value)
 ```
 
-出力:
+Output:
 
 ```console
 {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
 ```
 
-`parsed_value` は `dict` になります。
+`parsed_value` will be a `dict`.
 
-### 例: `JsonValueFormatter`
+### Example: `JsonValueFormatter`
 
 ```python
 from promptogen.prompt_formatter import JsonValueFormatter
@@ -47,10 +46,10 @@ parsed_value = value_formatter.parse([
 print(parsed_value)
 ```
 
-出力:
+Output:
 
 ```console
 {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
 ```
 
-`parsed_value` は `dict` になります。
+`parsed_value` will be a `dict`.

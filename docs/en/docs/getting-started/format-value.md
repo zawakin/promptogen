@@ -1,8 +1,8 @@
-`ValueFormatter`は、`Value`の値を文字列に変換し、出力をパースするためのクラスです。
+`ValueFormatter` is a class used to convert a `Value` into a string and to parse the output.
 
-### 例: `KeyValueFormatter`
+### Example: `KeyValueFormatter`
 
-`KeyValueFormatter` は、`Value`をキーと値のペアのリストに変換します。
+`KeyValueFormatter` converts a `Value` into a list of key-value pairs.
 
 ```python
 from promptogen.prompt_formatter import KeyValueFormatter
@@ -16,7 +16,7 @@ value = {
 print(value_formatter.format(value))
 ```
 
-出力:
+Output:
 
 ```console
 summary: "This is a summary of the text."
@@ -27,9 +27,9 @@ keywords: [
 ]
 ```
 
-### 例: `JsonValueFormatter`
+### Example: `JsonValueFormatter`
 
-`json.dumps` を使用した `JsonValueFormatter` は、`Value`を整形されたJSON文字列に変換します。
+Using `json.dumps`, `JsonValueFormatter` converts a `Value` into a formatted JSON string.
 
 ```python
 from promptogen.prompt_formatter import JsonValueFormatter
@@ -43,7 +43,7 @@ value = {
 print(value_formatter.format(value))
 ```
 
-出力:
+Output:
 
 ````console
 ```json
@@ -54,12 +54,13 @@ print(value_formatter.format(value))
   "text",
   "summarize"
  ]
-}```
+}
+```
 ````
 
-## さらに詳しく
+## In More Detail
 
-`ValueFormatter` は抽象クラスであり、`KeyValueFormatter`と`JsonValueFormatter`は、`ValueFormatter`を継承しています。
+`ValueFormatter` is an abstract class, and both `KeyValueFormatter` and `JsonValueFormatter` inherit from `ValueFormatter`.
 
 ```python
 # from promptogen.model.value_formatter import ValueFormatter
@@ -78,8 +79,6 @@ class ValueFormatter(ABC):
         pass
 ```
 
+## In Conclusion
 
-## さいごに
-
-普段は、`ValueFormatter`を直接使用することはなく、 `PromptFormatter`を使用します。
-しかし、概念を理解するために、`ValueFormatter`を使用してプロンプトをフォーマットする方法を説明しました。
+Usually, you won't use `ValueFormatter` directly but will utilize `PromptFormatter`. However, for the sake of understanding the concept, we explained how to format prompts using `ValueFormatter`.

@@ -1,33 +1,31 @@
-## インポート
+## Import
     
 ```python
 import promptogen as pg
 ```
 
-## 簡単なプロンプトを作成する
+## Create a Simple Prompt
 
-まずは、簡単なプロンプトを作成してみましょう。このクイックスタートガイドでは、テキストを入力として受け取り、そのテキストの要約文とキーワードを出力するプロンプトを作成します。
+First, let's create a simple prompt. In this quickstart guide, we'll create a prompt that takes a text as input and outputs its summary and keywords.
 
-つまり、 `(text: str) -> (summary: str, keywords: List[str])` という関数を実現するプロンプトを作成します。
+In other words, we will create a prompt that realizes the function `(text: str) -> (summary: str, keywords: List[str])`.
 
-PromptoGenには、プロンプトを表現するためのデータクラス(`pg.Prompt`)が用意されています。
-このデータクラスを使って、プロンプトを作成します。
-このデータクラスは `pydantic.BaseModel` を継承しています。
+PromptoGen provides a data class (`pg.Prompt`) to represent prompts.
+Using this data class, we'll create the prompt.
+This data class inherits from `pydantic.BaseModel`.
 
-プロンプトを作成するには、以下の情報が必要です。
+To create a prompt, the following information is needed:
 
+| Item                       | Argument Name                | Type                                      |
+|----------------------------|-----------------------------|------------------------------------------|
+| Prompt Name                | `name`                      | `str`                                    |
+| Prompt Description         | `description`               | `str`                                    |
+| List of Input Parameters   | `input_parameters`          | `List[pg.ParameterInfo]`                 |
+| List of Output Parameters  | `output_parameters`         | `List[pg.ParameterInfo]`                 |
+| I/O Template               | `template`                  | `pg.IOExample`                           |
+| List of I/O Examples       | `examples`                  | `List[pg.IOExample]`                     |
 
-| 項目                  | 引数名                           | 型                                      |
-|-----------------------|--------------------------------|---------------------------------------|
-| プロンプトの名前          | `name`                          | `str`                                  |
-| プロンプトの説明          | `description`                  | `str`                                  |
-| 入力パラメータのリスト      | `input_parameters`              | `List[pg.ParameterInfo]`               |
-| 出力パラメータのリスト      | `output_parameters`             | `List[pg.ParameterInfo]`               |
-| 入出力のテンプレート      | `template`                      | `pg.IOExample`                           |
-| 入出力の例のリスト        | `examples`                      | `List[pg.IOExample]`                     |
-
-
-これらの情報を使って、プロンプトを作成します。
+Using this information, let's create a prompt.
 
 ```python
 summarizer = pg.Prompt(
@@ -60,23 +58,23 @@ summarizer = pg.Prompt(
 )
 ```
 
-## プロンプトを入力パラメータなしで文字列にフォーマットする
+## Format the Prompt to String without Input Parameters
 
-まずは、プロンプトを入力パラメータなしで文字列にフォーマットしてみましょう。
+First, let's format the prompt to a string without input parameters.
 
-PromptoGenでは、プロンプトを文字列にするためのフォーマッターを柔軟に作成できます。
+In PromptoGen, you can flexibly create formatters to turn prompts into strings.
 
-ここでは、入出力変数のキーとバリューを `key: value` の形式で出力する `KeyValuePromptFormatter` というフォーマッターを使用します。
+Here, we use a formatter named `KeyValuePromptFormatter` which outputs the input-output variables in the form `key: value`.
 
-入力パラメータなしで文字列にフォーマットするには、フォーマッターの `format_prompt_without_input` メソッドを使用します。
-このメソッドは、プロンプトとフォーマッターを引数に取り、プロンプトを文字列にフォーマットします。
+To format the prompt to a string without input parameters, use the `format_prompt_without_input` method.
+This method takes the prompt and formatter as arguments and formats the prompt into a string.
 
 ```python
 formatter = pg.KeyValuePromptFormatter()
 print(formatter.format_prompt_without_input(summarizer))
 ```
 
-コンソール出力:
+Console Output:
 
 ```console
 Summarize text and extract keywords.
@@ -112,13 +110,13 @@ keywords: [
 ]
 ```
 
-## プロンプトを入力パラメータありで文字列にフォーマットする
+## Format the Prompt to String with Input Parameters
 
-続いて、プロンプトを入力パラメータありで文字列にフォーマットしてみましょう。
+Next, let's format the prompt to a string with input parameters.
 
-入力パラメータは、 `dict` を使用して指定します。
+Input parameters are specified using a `dict`.
 
-プロンプトを入力パラメータ込みで文字列にフォーマットするには、`format_prompt` メソッドを使用します。
+To format the prompt to a string with input parameters, use the `format_prompt` method.
 
 ```python
 input_value = {
@@ -127,7 +125,7 @@ input_value = {
 print(formatter.format_prompt(summarizer, input_value))
 ```
 
-コンソール出力:
+Console Output:
 
 ```console
 Summarize text and extract keywords.
@@ -150,34 +148,20 @@ keywords: [
  "summarize"
 ]
 
-Example 1:
-Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
-Output:
-summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: [
- "friends",
- "park",
- "sports",
- "memories"
-]
-
---------
-
 Input:
 text: "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
 Output:
 ```
 
-## 大規模言語モデルを用いて出力を生成する
+## Generating Output Using Large Language Models
 
-続いて、大規模言語モデルからの出力を生成してみましょう。
+Next, let's try generating output from a large language model.
 
-このライブラリでは、大規模言語モデルからの出力を生成するための機能は提供していませんが、OpenAI ChatGPT API などを用いることで実現できます。
+This library does not provide functionality to generate output from large language models, but it can be achieved using the OpenAI ChatGPT API.
 
-ここでは、OpenAI ChatGPT API を用いて、入力テキストを要約したテキストを生成してみましょう。
+Here, using the OpenAI ChatGPT API, let's generate a summarized text from the input text.
 
-あらかじめ、OpenAI API Key と Organization ID を環境変数に設定しておきます。
+In advance, set the OpenAI API Key and Organization ID as environment variables.
 
 ```python
 import openai
@@ -199,28 +183,27 @@ def generate_chat_completion(text: str, model: str) -> str:
 
     return raw_resp
 
-# TextLLMを生成する
+# Create TextLLM
 text_llm = pg.FunctionBasedTextLLM(
     generate_text_by_text=lambda input_text: generate_chat_completion(input_text, "gpt-3.5-turbo"),
 )
 ```
 
-`TextLLM` は、PromptoGen で大規模言語モデルを統一的に扱うための抽象クラスです。 `pg.FunctionBasedTextLLM` は、関数を用いて大規模言語モデルからの出力を生成する `TextLLM` の実装です。
+`TextLLM` is an abstract class in PromptoGen to uniformly handle large language models. `pg.FunctionBasedTextLLM` is an implementation of `TextLLM` that generates output from large language models using a function.
 
-続いて、プロンプトを入力パラメータ込みで文字列にフォーマットし、大規模言語モデルからの出力を生成してみましょう。
+Next, let's format the prompt with input parameters into a string and generate output from the large language model.
 
 ```python
-# formatterを用いてプロンプトを入力パラメータ込みで文字列にフォーマットする
+# Use the formatter to format the prompt into a string with input parameters
 raw_req = formatter.format_prompt(summarizer, input_value)
 
-# 大規模言語モデルからの出力を生成する
+# Generate output from the large language model
 raw_resp = text_llm.generate(raw_req)
 
 print(raw_resp)
 ```
 
-コンソール出力:
-
+Console Output:
 
 ```console
 summary: """Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements."""
@@ -238,36 +221,35 @@ keywords: [
 ]
 ```
 
-## 出力をPythonオブジェクトに変換する
+## Convert the Output to a Python Object
 
-続いて、LLM出力は単なる文字列なので、Pythonオブジェクトに変換してみましょう。
-`formatter.parse` メソッドを使用することで、LLMからの出力文字列をプロンプトの出力パラメータを用いてパースできます。パースの結果はPythonの `dict` に格納されます。
+Next, since the LLM output is just a string, let's convert it to a Python object. By using the `formatter.parse` method, you can parse the output string from the LLM using the output parameters of the prompt. The parsing result is stored in a Python `dict`.
 
 ```python
 summarized_resp = formatter.parse(summarizer, raw_resp)
 print(summarized_resp)
 ```
 
-コンソール出力:
+Console Output:
 
 ```console
 {'summary': 'Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'user requirements', 'system optimization']}
 ```
 
-この出力は、LLM出力の文字列をパースした結果である `dict` です。
+This output is a `dict` that is the result of parsing the LLM output string.
 
-## まとめ
+## Conclusion
 
-以上、PromptoGen の基本的な使い方を紹介しました。
+We've introduced the basic usage of PromptoGen.
 
-ここまでの流れは、以下のようになります。
+The flow introduced here is as follows:
 
-1. プロンプトを定義する
-2. フォーマッターを定義する
-3. フォーマッターを使って、プロンプトと入力パラメータを文字列にフォーマットする
-4. 大規模言語モデルを用いて、出力を生成する
-5. 出力をPythonオブジェクトに変換する
+1. Define the prompt
+2. Define the formatter
+3. Use the formatter to format the prompt and input parameters into a string
+4. Generate output using the large language model
+5. Convert the output to a Python object
 
-ここで紹介したのはシンプルな例ではありますが、PromptoGen を用いることで、より複雑なプロンプトや入出力パラメータを簡単に扱うことができます。
+Although the example introduced here is simple, with PromptoGen, you can easily handle more complex prompts and input/output parameters.
 
-また、入力パタメータや出力パラメータとしてプロンプトそのものを指定することができるため、プロンプトを動的に生成することも可能です。
+Furthermore, you can specify the prompt itself as input or output parameters, making it possible to dynamically generate prompts.

@@ -1,8 +1,8 @@
 ## `Value`
 
-`Value` は、`Dict[str, Any]`の型エイリアスです。
+`Value` is a type alias for `Dict[str, Any]`.
 
-入力パラメータや出力パラメータの値を表すために使用されます。
+It is used to represent the values of input and output parameters.
 
 ```python
 value = {

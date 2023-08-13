@@ -1,13 +1,12 @@
-このページでは、あるタスクを小さなタスクに分割するプロンプトを作成する方法を説明します。
+This page describes how to create a prompt that splits a task into smaller subtasks.
 
-## ソースコード
+## Source Code
 
 [task-splitter.py (GitHub)](https://github.com/zawakin/promptogen/tree/main/examples/promptcreation/task_splitter.py)
 
-## 準備
+## Setup
 
-`openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。
-同じディレクトリの `openai_util.py` にそれらを定義しておくと、`import` できます。
+`openai_util.OpenAITextLLM` is the `TextLLM` defined on the [OpenAITextLLM page](openai-text-llm.md) (see also: [TextLLM](../getting-started/text-llm.md)). If you define them in the same directory's `openai_util.py`, you can `import` them.
 
 ```python
 import promptogen as pg
@@ -22,8 +21,7 @@ prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 prompt_creator_prompt = PromptCreatorPrompt()
 ```
 
-## プロンプトの作成
-
+## Creating the Prompt
 
 ```python
 def setup_task_splitter_prompt() -> pg.Prompt:
@@ -57,7 +55,7 @@ print(task_splitter_prompt)
 # 1
 ```
 
-## プロンプトの実行
+## Running the Prompt
 
 ```python
 

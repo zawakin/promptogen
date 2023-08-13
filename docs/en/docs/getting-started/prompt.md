@@ -1,20 +1,19 @@
 ## `Prompt`
 
-PromptoGenには、プロンプトを表現するためのデータクラス(`pg.Prompt`)が用意されています。
-このデータクラスを使って、プロンプトを作成します。
-このデータクラスは `pydantic.BaseModel` を継承しています。
+In PromptoGen, there is a data class (`pg.Prompt`) prepared to represent prompts.
+Using this data class, you can create prompts.
+This data class inherits from `pydantic.BaseModel`.
 
-プロンプトを作成するには、以下の情報が必要です。
+To create a prompt, the following information is required.
 
-
-| 項目                  | 引数名                           | 型                                      |
+| Item                   | Argument Name                  | Type                                  |
 |-----------------------|--------------------------------|---------------------------------------|
-| プロンプトの名前          | `name`                          | `str`                                  |
-| プロンプトの説明          | `description`                  | `str`                                  |
-| 入力パラメータのリスト      | `input_parameters`              | `List[pg.ParameterInfo]`               |
-| 出力パラメータのリスト      | `output_parameters`             | `List[pg.ParameterInfo]`               |
-| 入出力のテンプレート      | `template`                      | `pg.IOExample`                           |
-| 入出力の例のリスト        | `examples`                      | `List[pg.IOExample]`                     |
+| Prompt name            | `name`                         | `str`                                 |
+| Prompt description     | `description`                  | `str`                                 |
+| List of input parameters | `input_parameters`           | `List[pg.ParameterInfo]`              |
+| List of output parameters | `output_parameters`          | `List[pg.ParameterInfo]`              |
+| Input-output template    | `template`                   | `pg.IOExample`                        |
+| List of input-output examples | `examples`              | `List[pg.IOExample]`                  |
 
 
 ```python
@@ -24,10 +23,10 @@ class Prompt(DataClass):
     Attributes:
         name: The name of the prompt.
         description: A description of the prompt.
-        input_parameters: The parameter information of the prompt's input.
-        output_parameters: The parameter information of the prompt's output.
+        input_parameters: The parameter information for the prompt's input.
+        output_parameters: The parameter information for the prompt's output.
         template: An example of the prompt.
-        examples: A list of examples of the prompt.
+        examples: A list of examples for the prompt.
     """
 
     name: str
@@ -41,8 +40,7 @@ class Prompt(DataClass):
 
 ## `ParameterInfo`
 
-`ParameterInfo` は、プロンプトの入力パラメータと出力パラメータの情報を表現するためのデータクラスです。
-パラメータの名前と説明を持ちます。
+`ParameterInfo` is a data class designed to represent the information of input and output parameters of the prompt. It holds the name and description of the parameter.
 
 ```python
 class ParameterInfo(DataClass):
@@ -59,25 +57,24 @@ class ParameterInfo(DataClass):
 
 ## `IOExample`
 
-`IOExample` は、プロンプトの入出力の例を表現するためのデータクラスです。
+`IOExample` is a data class designed to represent examples of a prompt's input and output.
 
 ```python
 Value: TypeAlias = Dict[str, Any]
 
 class IOExample(DataClass):
-    """An few-shot example of a prompt.
+    """A few-shot example of a prompt.
 
     Attributes:
-        input: The input to the prompt.
-        output: The output of the prompt.
+        input: The input for the prompt.
+        output: The output from the prompt.
     """
 
     input: Value # dict[str, Any]
     output: Value # dict[str, Any]
 ```
 
-
-これらの情報を使って、プロンプトを作成します。
+Using the above information, you can create a prompt.
 
 ```python
 import promptogen as pg
@@ -112,9 +109,9 @@ summarizer = pg.Prompt(
 )
 ```
 
-## プロンプトの表示
+## Displaying the Prompt
 
-作成したプロンプトの情報は、`print` 関数で表示することができます。
+You can display the information of the created prompt using the `print` function.
 
 ```python
 print(summarizer)
@@ -137,25 +134,25 @@ Output Parameters
 - keywords (list): Keywords extracted from text
 ```
 
-## プロンプトの保存
+## Saving the Prompt
 
-作成したプロンプトは、`Prompt.to_json_file` メソッドで保存することができます。
+You can save the created prompt using the `Prompt.to_json_file` method.
 
 ```python
 summarizer.to_json_file("summarizer.json")
 ```
 
-## プロンプトの読み込み
+## Loading the Prompt
 
-保存したプロンプトは、`Prompt.from_json_file` メソッドで読み込むことができます。
+You can load a saved prompt using the `Prompt.from_json_file` method.
 
 ```python
 summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
 
-## JSON形式でのプロンプトの表現
+## Representing the Prompt in JSON Format
 
-`Prompt` は pydantic の `BaseModel` を継承しているため、`Prompt.model_dump_json` メソッドで JSON 形式で表現することができます。
+Since `Prompt` inherits from pydantic's `BaseModel`, you can represent it in JSON format using the `Prompt.model_dump_json` method.
 
 ```python
 print(summarizer.model_dump_json(indent=4))
@@ -187,7 +184,7 @@ print(summarizer.model_dump_json(indent=4))
         },
         "output": {
             "summary": "This is a summary of the text.",
-            "keywords": [
+            'keywords': [
                 "sample",
                 "text",
                 "summarize"
@@ -201,7 +198,7 @@ print(summarizer.model_dump_json(indent=4))
             },
             "output": {
                 "summary": "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
-                "keywords": [
+                'keywords': [
                     "friends",
                     "park",
                     "sports",

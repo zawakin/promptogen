@@ -1,6 +1,6 @@
-`TextLLM` 抽象クラスは、テキストからテキストを生成する大規模言語モデル(LLM)のインターフェースです。
+The `TextLLM` abstract class is an interface for Large Language Models (LLM) that generate text from text.
 
-`TextLLM` は `generate` メソッドを持ちます。このメソッドは、テキストを受け取り、テキストを返します。
+`TextLLM` has a `generate` method. This method takes text as input and returns text.
 
 ```python
 class LLM(ABC):
@@ -16,15 +16,13 @@ class TextLLM(LLM, ABC):
         pass
 ```
 
-Promptogenは、具体的なLLMに依存しないように設計されています。 `TextLLM` はその代表的な例です。
-このようなインターフェースを定義することで、様々な大規模言語モデルを統一的に扱うことができます。
+Promptogen is designed to be independent of any specific LLM. `TextLLM` is a prime example of this. By defining such interfaces, various large language models can be handled uniformly.
 
-## 方法1: 自作クラスを使った実装例
+## Method 1: Implementation using a custom class
 
-### OpenAI API を使用した例
+### Example using the OpenAI API
 
-OpenAI API を使用した `TextLLM` の実装例を紹介します。
-例えば、以下のような `generate_chat_completion` 関数を定義しておきます。
+Here is an example of implementing `TextLLM` using the OpenAI API. For instance, you can define a function called `generate_chat_completion` as follows:
 
 ```python
 import openai
@@ -47,7 +45,7 @@ def generate_chat_completion(text: str, model: str) -> str:
     return raw_resp
 ```
 
-`TextLLM` クラスを継承することで、`TextLLM` を実装することができます。
+By inheriting the `TextLLM` class, you can implement `TextLLM`.
 
 ```python
 import promptogen as pg
@@ -60,13 +58,13 @@ class OpenAITextLLM(pg.TextLLM):
         return generate_chat_completion(text, self.model)
 ```
 
-## 方法2: FunctionBasedTextLLM
+## Method 2: FunctionBasedTextLLM
 
-`FunctionBasedTextLLM` クラスは、テキストからテキストを生成する大規模言語モデル(LLM)の実装の一つです。
+The `FunctionBasedTextLLM` class is one of the implementations of the Large Language Model (LLM) that generates text from text.
 
-`(input_text: str) -> str` の関数を指定することで、`TextLLM` を実装することができます。
+By specifying a function of the form `(input_text: str) -> str`, you can implement `TextLLM`.
 
-クラスを自作する場合に比べて、簡単に `TextLLM` を実装することができます。
+Compared to creating a custom class, this allows you to implement `TextLLM` more easily.
 
 ```python
 text_llm = FunctionBasedTextLLM(
@@ -74,7 +72,7 @@ text_llm = FunctionBasedTextLLM(
 )
 ```
 
-## 使い方
+## How to use
 
 ```python
 text_llm = OpenAITextLLM("gpt-3.5-turbo")

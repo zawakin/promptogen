@@ -4,35 +4,35 @@ repo_url: https://github.com/zawakin/promptogen
 edit_uri: edit/main/docs/en/docs/
 nav:
 - PromptoGen: index.md
-- はじめに:
-  - インストール: getting-started/installation.md
-  - クイックスタート: getting-started/quickstart.md
-  - PromptoGenとは: getting-started/overview.md
-  - 基本モデルを理解しよう:
-    - Valueクラス: getting-started/value.md
-    - Promptクラス: getting-started/prompt.md
-  - 使い方:
-    - Valueをフォーマットする: getting-started/format-value.md
-    - Valueをパースする: getting-started/parse-value.md
-    - Promptをフォーマットする: getting-started/format-prompt.md
-    - LLM出力をパースする: getting-started/parse-prompt-output.md
-  - 便利な機能:
-    - TextLLMインターフェイス: getting-started/text-llm.md
-    - PromptRunnerを使う: getting-started/prompt-runner.md
-  - コンセプト:
-    - コンセプト: concepts/concept.md
-- 応用例:
-  - 応用例: examples/index.md
-  - LLMとの連携:
+- Introduction:
+  - Installation: getting-started/installation.md
+  - Quick Start: getting-started/quickstart.md
+  - What is PromptoGen?: getting-started/overview.md
+  - Understanding the Basic Model:
+    - Value Class: getting-started/value.md
+    - Prompt Class: getting-started/prompt.md
+  - How to Use:
+    - Format Value: getting-started/format-value.md
+    - Parse Value: getting-started/parse-value.md
+    - Format Prompt: getting-started/format-prompt.md
+    - Parse LLM Output: getting-started/parse-prompt-output.md
+  - Useful Features:
+    - TextLLM Interface: getting-started/text-llm.md
+    - Use PromptRunner: getting-started/prompt-runner.md
+  - Concepts:
+    - Concepts: concepts/concept.md
+- Application Examples:
+  - Examples: examples/index.md
+  - Collaboration with LLM:
     - OpenAITextLLM: examples/openai-text-llm.md
-  - プロンプト自動生成:
+  - Auto-prompt Generation:
     - Context QA: examples/context-qa.md
-    - タスク分割: examples/task_splitter.md
-  - LLM推論過程出力:
-    - 入出力の理由推論(Context QA): examples/context-qa-reasoning.md
-    - プロンプトへの推論過程付与: examples/prompt-reasoning.md
-- コントリビューションガイド: contributing.md
-- 言語(Language): language.md
+    - Task Splitting: examples/task_splitter.md
+  - LLM Inference Process Output:
+    - Reasoning for Input/Output (Context QA): examples/context-qa-reasoning.md
+    - Adding Reasoning Process to Prompt: examples/prompt-reasoning.md
+- Contribution Guide: contributing.md
+- Language: language.md
 theme:
   name: material
   theme: null

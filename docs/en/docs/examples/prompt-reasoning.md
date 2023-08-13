@@ -1,15 +1,14 @@
-このページでは、既存のプロンプトを、推論を出力するように変換する方法を説明します。
+On this page, we describe how to modify existing prompts to produce reasoning in their outputs.
 
-## ソースコード
+## Source Code
 
 [context-qa-reasoning.py (GitHub)](https://github.com/zawakin/promptogen/tree/742485c4690788d2866635bcd3b5eda580cf5b1a/examples/promptcreation/context_qa_prompt_reasoning.py)
 
-
 ## PromptTransformer
 
-`PromptWithReasoningTransformer` は、プロンプトの出力に推論を追加するための `PromptTransformer` です。
+`PromptWithReasoningTransformer` is a `PromptTransformer` used to add reasoning to the output of a prompt.
 
-`PromptTransformer`抽象クラスは、プロンプトからプロンプトを生成するためのクラスです。
+The `PromptTransformer` abstract class is for generating a prompt from another prompt.
 
 ```python
 class PromptTransformer(ABC):
@@ -24,13 +23,11 @@ class PromptTransformer(ABC):
         pass
 ```
 
-`PromptWithReasoningTransformer` は `(arg1, arg2, ..., argN) -> (ret1, ret2, ..., retM)` というプロンプトの出力を `(arg1, arg2, ..., argN) -> (reasoning, ret1, ret2, ..., retM)` という形に変換します。
+`PromptWithReasoningTransformer` changes the output of a prompt from `(arg1, arg2, ..., argN) -> (ret1, ret2, ..., retM)` to `(arg1, arg2, ..., argN) -> (reasoning, ret1, ret2, ..., retM)`.
 
-オリジナルプロンプトの `IOExample` に対する推論過程の出力を `TextLLMReasoningExtractor` で生成します([詳細](context-qa-reasoning.md))。
+The reasoning process for the original prompt's `IOExample` is generated using `TextLLMReasoningExtractor` ([details](context-qa-reasoning.md)).
 
-
-`openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。
-同じディレクトリの `openai_util.py` にそれらを定義しておくと、`import` できます。
+`openai_util.OpenAITextLLM` is the `TextLLM` defined on the [OpenAITextLLM page](openai-text-llm.md) (see: [TextLLM](../getting-started/text-llm.md)). If they are defined in the same directory's `openai_util.py`, you can `import` them.
 
 ```python
 import promptogen as pg
@@ -45,7 +42,6 @@ prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 prompt_creator_prompt = PromptCreatorPrompt()
 
-
 def setup_context_qa_prompt() -> pg.Prompt:
     input_value = {
         "description": "Answer the question for the given context.",
@@ -53,7 +49,6 @@ def setup_context_qa_prompt() -> pg.Prompt:
     }
     resp = prompt_runner.run_prompt(prompt_creator_prompt, input_value=input_value)
     return pg.Prompt.from_dict(resp["prompt"])
-
 
 context_qa_prompt = setup_context_qa_prompt()
 print(context_qa_prompt)
@@ -114,5 +109,4 @@ input_value = {
 output_value = prompt_runner.run_prompt(context_qa_prompt_with_reasoning, input_value=input_value)
 print(output_value)
 # {'reasoning': 'This is because the context provides information that the quick brown fox jumps over the lazy dog. The question asks what the fox jumps over. Therefore, the answer is that the fox jumps over the lazy dog.', 'answer': 'The fox jumps over the lazy dog.'}
-
 ```

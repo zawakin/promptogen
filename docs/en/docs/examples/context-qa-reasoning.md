@@ -1,16 +1,14 @@
-[Context QA](context-qa.md) では、与えられたコンテキストに対して質問に答えるプロンプトを作成しました。
-このプロンプトを元に、質問に対する答えを生成するだけでなく、ある与えられた入力と出力の組を用いて、入力から出力を導く推論過程を生成することもできます。
+In [Context QA](context-qa.md), we created a prompt to answer questions based on a given context. Based on this prompt, not only can we generate answers to questions, but we can also use a given set of input and output to generate the reasoning process that derives the output from the input.
 
-そのような推論を生成するためには、 `TextLLMReasoningExtractor` を使用します。
+To generate such reasoning, use `TextLLMReasoningExtractor`.
 
-## ソースコード
+## Source Code
 
 [context-qa.py (GitHub)](https://github.com/zawakin/promptogen/tree/742485c4690788d2866635bcd3b5eda580cf5b1a/examples/promptcreation/context_qa_prompt.py)
 
-## 準備
+## Setup
 
-`openai_util.OpenAITextLLM` は[OpenAITextLLMページ](openai-text-llm.md) で定義した `TextLLM` です（参考: [TextLLM](../getting-started/text-llm.md)）。
-同じディレクトリの `openai_util.py` にそれらを定義しておくと、`import` できます。
+`openai_util.OpenAITextLLM` is the `TextLLM` defined on the [OpenAITextLLM page](openai-text-llm.md) (refer to: [TextLLM](../getting-started/text-llm.md)). If you define them in the same directory's `openai_util.py`, you can `import` them.
 
 ```python
 import promptogen as pg
@@ -22,9 +20,9 @@ llm = OpenAITextLLM(model="gpt-3.5-turbo")
 
 ```
 
-## Context QA プロンプトの実行 (Reasoning)
+## Running the Context QA Prompt (Reasoning)
 
-もし、以下のような入出力があったとします。
+Suppose you have the following input and output:
 
 ```python
 Input:
@@ -35,14 +33,13 @@ Output:
 answer: "The fox jumps over the lazy dog."
 ```
 
-`(context, question)` の組が与えられたときに `answer` を生成する推論過程を生成することができます。
+You can generate the reasoning process for producing the `answer` from the given `(context, question)` pair.
 
+Specify the template for generating reasoning in `reasoning_template`.
 
-`reasoning_template` には、推論を生成するためのテンプレートを指定します。
+Pass the instance of the `Prompt` class and the set of input-output to the `generate_reasoning` method.
 
-`generate_reasoning` メソッドには、 `Prompt` クラスのインスタンスと、入出力の組を与えます。
-
-`context_qa_prompt` は、[Context QA](context-qa.md) で作成したプロンプトです。
+`context_qa_prompt` is the prompt created in [Context QA](context-qa.md).
 
 ```python
 reasoning_extractor = TextLLMReasoningExtractor(
@@ -65,7 +62,7 @@ reasoning = reasoning_extractor.generate_reasoning(context_qa_prompt, example)
 print(reasoning)
 ```
 
-LLM入力:
+LLM Input:
 
 ```console
 -- input --
@@ -87,11 +84,11 @@ answer: "The lazy dog."
 Output:
 ```
 
-LLM出力:
+LLM Output:
 
 ```console
 -- output --
-This is because the question is asking for what the fox jumps over. To determine the answer, we need to look at the context. In the context, it states that the quick brown fox jumps over the lazy dog. Therefore, the answer is "The lazy dog."
+This is because the question is asking what the fox jumps over. To determine the answer, we need to look at the context. In the context, it is stated that the quick brown fox jumps over the lazy dog. Therefore, the answer is "The lazy dog."
 ```
 
-`"This is because ... So the answer is ..."` というテンプレートに従って、推論過程が生成されました。
+Following the template "This is because ... So the answer is ...", the reasoning process was generated.

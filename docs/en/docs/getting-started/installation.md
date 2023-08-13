@@ -1,16 +1,16 @@
-# インストール方法
+# Installation Instructions
 
-## 動作環境
+## Operating Environment
 
-- Python 3.8 以上
+- Python 3.8 or higher
 
-## インストール
+## Installation
 
 ```console
 $ pip install promptogen
 ```
 
-## 動作確認
+## Verification of Operation
 
 ```python
 import promptogen as pg
@@ -18,6 +18,6 @@ import promptogen as pg
 print(pg.__version__)
 ```
 
-## クイックスタート
+## Quick Start
 
-[クイックスタートガイド](../quickstart)を参照してください。
+Please refer to the [Quick Start Guide](../quickstart).
