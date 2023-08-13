@@ -70,8 +70,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: /ja/img/icon-white.svg
-  favicon: /ja/img/favicon.png
+  logo: /img/icon-white.svg
+  favicon: /img/favicon.png
   icon:
     logo: logo
   language: ja
