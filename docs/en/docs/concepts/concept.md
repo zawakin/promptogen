@@ -1,28 +1,29 @@
-# コンセプト
+# Concept
 
-## モジュール化
+## Modularization
 
-PrompGen は、Pythonオブジェクトとテキスト文字列の間の変換を行うプロセスとLLMとの通信を行うプロセスを分離しています。
+PromptoGen separates the process of converting between Python objects and text strings from the process of communicating with the LLM.
 
-このモジュラーな設計は、LLMが変わったり進化したりしても、PromptoGenのコアな機能に影響を与えることなく、変化に適応しやすくなっています。
+This modular design makes it easier for PromptoGen to adapt to changes without affecting its core functionalities, even if the LLM evolves or changes.
 
-!!! note "モジュール化とは"
+!!! note "What is Modularization"
 
-    ソフトウェア設計におけるモジュール化とは、システムをより小さく、管理しやすく、互いに相互作用できる独立したコンポーネント（モジュール）に分割することを指します。このアプローチの主な利点は以下の通りです。
+    In software design, modularization refers to dividing the system into smaller, manageable, inter-operable independent components (modules). The main advantages of this approach are as follows:
 
-    1. 独立性: 各モジュールは特定のタスクを独立して処理します。これにより、一つのモジュールを変更しても他のモジュールに影響を及ぼさないため、新しい機能を追加したり、更新したりする際の潜在的なリスクや問題を最小限に抑えることができます。
+    1. Independence: Each module independently handles a specific task. This ensures that modifying one module doesn't impact others, minimizing potential risks and issues when adding or updating functionalities.
 
-    2. 再利用性: モジュールは通常、再利用可能な設計となっています。これは同じモジュールがシステムの異なる部分や他のシステムでも使用できることを意味します。これにより時間を節約し、コードの重複を減らすことができます。
+    2. Reusability: Modules are typically designed to be reusable. This means the same module can be used in different parts of a system or in other systems, saving time and reducing code duplication.
 
-    3. メンテナンス: 各モジュールは特定のタスクを処理するので、理解、更新、デバッグ、テストが容易になります。また、それぞれのモジュールは別々のチームや個々人によって開発やメンテナンスが行われることも可能です。
+    3. Maintenance: Since each module handles a specific task, understanding, updating, debugging, and testing become easier. Moreover, different teams or individuals can also develop and maintain each module.
 
-## ライブラリの小規模化
+## Keeping the Library Small
 
-PromptoGen では、ライブラリを小さく保つために、Pythonオブジェクトとテキスト文字列の間の変換に焦点を当てています。LLMと直接やり取りするロジックを含まないことで、ライブラリは軽量かつ柔軟に保たれ、他のシステムとの統合やLLMの将来の変更や進化に対応するのが容易になります。
+In PromptoGen, the focus is on converting between Python objects and text strings to keep the library small. By excluding logic that directly communicates with the LLM, the library remains lightweight and flexible, making it easier to integrate with other systems and adapt to future changes or evolution of the LLM.
 
-!!! note "ライブラリの小規模化のメリットとは"
-    小さなライブラリの利点には以下のようなものがあります。
+!!! note "Benefits of a Small Library"
 
-    1. 効率性: より小さなコードベースは理解、デバッグ、テスト、メンテナンスが容易です。
-    2. シンプルさ: 単一の明確な目的を持つライブラリは、使いやすく、他のシステムの部分との予期しない副作用や競合を引き起こす可能性が低いです。
-    3. 速度: 一般的に、小さなライブラリはより速くロードされ、実行されます。これにより全体的な時間と計算資源が節約されます。
+    The advantages of a small library include:
+
+    1. Efficiency: A smaller codebase is easier to understand, debug, test, and maintain.
+    2. Simplicity: A library with a single clear purpose is user-friendly and less likely to cause unexpected side effects or conflicts with other parts of a system.
+    3. Speed: Generally, smaller libraries load and execute faster, saving overall time and computational resources.
