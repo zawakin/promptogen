@@ -1,7 +1,7 @@
 ## Import
     
 ```python
-import promptogen as pg
+--8<-- "quickstart/quickstart.py:import"
 ```
 
 ## Create a Simple Prompt
@@ -28,34 +28,7 @@ To create a prompt, the following information is needed:
 Using this information, let's create a prompt.
 
 ```python
-summarizer = pg.Prompt(
-    name="Text Summarizer and Keyword Extractor",
-    description="Summarize text and extract keywords.",
-    input_parameters=[
-        pg.ParameterInfo(name="text", description="Text to summarize"),
-    ],
-    output_parameters=[
-        pg.ParameterInfo(name="summary", description="Summary of text"),
-        pg.ParameterInfo(name="keywords", description="Keywords extracted from text"),
-    ],
-    template=pg.IOExample(
-        input={'text': "This is a sample text to summarize."},
-        output={
-            'summary': "This is a summary of the text.",
-            'keywords': ["sample", "text", "summarize"],
-        },
-    ),
-    examples=[
-        pg.IOExample(
-            input={
-                'text': "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."},
-            output={
-                'summary': "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
-                'keywords': ["friends", "park", "sports", "memories"],
-            },
-        )
-    ],
-)
+--8<-- "quickstart/quickstart.py:summarizer"
 ```
 
 ## Format the Prompt to String without Input Parameters
@@ -70,44 +43,13 @@ To format the prompt to a string without input parameters, use the `format_promp
 This method takes the prompt and formatter as arguments and formats the prompt into a string.
 
 ```python
-formatter = pg.KeyValuePromptFormatter()
-print(formatter.format_prompt_without_input(summarizer))
+--8<-- "quickstart/quickstart.py:format_prompt_without_input"
 ```
 
 Console Output:
 
 ```console
-Summarize text and extract keywords.
-
-Input Parameters:
-  - text: Text to summarize
-
-Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
-
-Template:
-Input:
-text: "This is a sample text to summarize."
-Output:
-summary: """This is a summary of the text."""
-keywords: [
- "sample",
- "text",
- "summarize"
-]
-
-Example 1:
-Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
-Output:
-summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: [
- "friends",
- "park",
- "sports",
- "memories"
-]
+--8<-- "quickstart/output.txt:format_prompt_without_input"
 ```
 
 ## Format the Prompt to String with Input Parameters
@@ -119,38 +61,13 @@ Input parameters are specified using a `dict`.
 To format the prompt to a string with input parameters, use the `format_prompt` method.
 
 ```python
-input_value = {
-    'text': "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.",
-}
-print(formatter.format_prompt(summarizer, input_value))
+--8<-- "quickstart/quickstart.py:format_prompt"
 ```
 
 Console Output:
 
 ```console
-Summarize text and extract keywords.
-
-Input Parameters:
-  - text: Text to summarize
-
-Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
-
-Template:
-Input:
-text: "This is a sample text to summarize."
-Output:
-summary: """This is a summary of the text."""
-keywords: [
- "sample",
- "text",
- "summarize"
-]
-
-Input:
-text: "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
-Output:
+--8<-- "quickstart/output.txt:format_prompt"
 ```
 
 ## Generating Output Using Large Language Models
@@ -164,29 +81,7 @@ Here, using the OpenAI ChatGPT API, let's generate a summarized text from the in
 In advance, set the OpenAI API Key and Organization ID as environment variables.
 
 ```python
-import openai
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.organization = os.getenv("OPENAI_ORG_ID")
-
-def generate_chat_completion(text: str, model: str) -> str:
-    resp = openai.ChatCompletion.create(
-        model=model,
-        messages=[{"role": "user", "content": text}],
-        max_tokens=2048,
-        stream=True,
-    )
-    raw_resp = ""
-    for chunk in resp:
-        chunk_content = chunk["choices"][0]["delta"].get("content", "")
-        raw_resp += chunk_content
-
-    return raw_resp
-
-# Create TextLLM
-text_llm = pg.FunctionBasedTextLLM(
-    generate_text_by_text=lambda input_text: generate_chat_completion(input_text, "gpt-3.5-turbo"),
-)
+--8<-- "quickstart/quickstart.py:text_llm"
 ```
 
 `TextLLM` is an abstract class in PromptoGen to uniformly handle large language models. `pg.FunctionBasedTextLLM` is an implementation of `TextLLM` that generates output from large language models using a function.
@@ -194,31 +89,13 @@ text_llm = pg.FunctionBasedTextLLM(
 Next, let's format the prompt with input parameters into a string and generate output from the large language model.
 
 ```python
-# Use the formatter to format the prompt into a string with input parameters
-raw_req = formatter.format_prompt(summarizer, input_value)
-
-# Generate output from the large language model
-raw_resp = text_llm.generate(raw_req)
-
-print(raw_resp)
+--8<-- "quickstart/quickstart.py:generate"
 ```
 
 Console Output:
 
 ```console
-summary: """Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements."""
-keywords: [
- "software engineering",
- "developers",
- "collaborate",
- "projects",
- "version control systems",
- "Git",
- "code",
- "implementation complexities",
- "user requirements",
- "system optimization"
-]
+--8<-- "quickstart/output.txt:generate"
 ```
 
 ## Convert the Output to a Python Object
@@ -226,14 +103,13 @@ keywords: [
 Next, since the LLM output is just a string, let's convert it to a Python object. By using the `formatter.parse` method, you can parse the output string from the LLM using the output parameters of the prompt. The parsing result is stored in a Python `dict`.
 
 ```python
-summarized_resp = formatter.parse(summarizer, raw_resp)
-print(summarized_resp)
+--8<-- "quickstart/quickstart.py:parse"
 ```
 
 Console Output:
 
 ```console
-{'summary': 'Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'user requirements', 'system optimization']}
+--8<-- "quickstart/output.txt:parse"
 ```
 
 This output is a `dict` that is the result of parsing the LLM output string.

@@ -1,3 +1,5 @@
+# ref. https://github.com/tiangolo/fastapi/blob/0a8423d792bda91ab74c9c8b0021c9a9388cbd46/scripts/docs.py
+
 import json
 import logging
 import os
