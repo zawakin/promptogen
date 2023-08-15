@@ -4,25 +4,25 @@
 
 ----
 
-📄 ドキュメンテーション: https://promptogen.zawakin.dev/
+:material-file-document-alert: ドキュメンテーション: https://promptogen.zawakin.dev/
 
-🔗 ソースコード: https://github.com/zawakin/promptogen
+:material-source-repository: ソースコード: https://github.com/zawakin/promptogen
 
-🚀 クイックスタートガイドは[こちら](getting-started/installation.md)。
+:material-rocket: クイックスタートガイドは[こちら](getting-started/installation.md)。
 
 ----
 
-## 📘 PromptoGenについて
+## :material-book-multiple: PromptoGenについて
 
-### 💡 プロジェクトのビジョン
+### :material-lightbulb: プロジェクトのビジョン
 
 PromptoGenは、大規模言語モデルのテキスト出力とPythonオブジェクト間の変換を助けます。直接的な大規模言語モデルとの通信を気にせず、プロンプト生成と解析に専念できます。
 
-### ❌ 解決する問題
+### :material-thought-bubble: 解決する問題
 
 多くのライブラリは、大規模言語モデルとの通信からテキスト生成・パースまでを全て担当します。これにより、特定の機能のカスタマイズが難しくなります。
 
-### ✅ ソリューション
+### :material-check-circle: ソリューション
 
 PromptoGenは、LLM（Large Language Model）とのコミュニケーションを円滑化するための言語変換ツールとして機能します。以下の手順で動作するのがその特徴です。
 
@@ -36,7 +36,7 @@ PromptoGenは、LLM（Large Language Model）とのコミュニケーション�
     - `PromptFormatter`は`Prompt`と入力値を受け取り、これをLLMに送信できる形のプロンプト文字列に変換します。
     - また、LLMからのテキスト形式の出力を、対応する`Prompt`の情報を基にして、プログラムが扱いやすいPythonのデータ構造（特にdict）に変換します。
 
-### 🌟 ユーザーにとってのメリット
+### :material-star-shooting: ユーザーにとってのメリット
 
 1. **モジュール性**: 他のモデルやライブラリと組み合わせ自由
 1. **拡張性**: 独自のフォーマッターやパーサーを追加可能
@@ -44,7 +44,7 @@ PromptoGenは、LLM（Large Language Model）とのコミュニケーション�
 1. **メンテナンス性**: 管理・トラブルシューティングが簡単
 1. **開発効率**: 大規模言語モデルとの通信の心配なしで開発に専念
 
-## 🖥️ 動作環境
+## :material-laptop: 動作環境
 
 Python 3.8 以上
 
@@ -305,9 +305,9 @@ summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
 
 
-## はじめに
+## クイックスタートガイド
 
-[はじめに](getting-started/installation.md)を参照してください。
+[クイックスタートガイド](getting-started/quickstart.md)を参照してください。
 
 ## 応用例
 

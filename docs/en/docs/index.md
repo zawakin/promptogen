@@ -4,25 +4,25 @@
 
 ----
 
-Documentation: https://promptogen.zawakin.dev/
+:material-file-document-alert: Documentation: https://promptogen.zawakin.dev/
 
-Source Code: https://github.com/zawakin/promptogen
+:material-source-repository: Source Code: https://github.com/zawakin/promptogen
 
-For the Quick Start Guide, click [here](getting-started/installation.md).
+:material-rocket: For the Quick Start Guide, click [here](getting-started/installation.md).
 
 ----
 
-## 📘 About PromptoGen
+## :material-book-multiple: About PromptoGen
 
-### 💡 Project Vision
+### :material-lightbulb: Project Vision
 
 PromptoGen facilitates the conversion between text outputs of large language models and Python objects. This allows developers to concentrate on prompt generation and analysis without the need to directly interact with these expansive language models.
 
-### ❌ Problem Being Solved
+### :material-thought-bubble: Problem Being Solved
 
 A multitude of libraries exist that handle everything from interfacing with vast language models to text generation and interpretation. However, these all-in-one solutions can hinder the ability to customize specific functionalities.
 
-### ✅ Solution
+### :material-check-circle: Solution
 
 PromptoGen serves as a linguistic translation tool to simplify interactions with LLMs (Large Language Models). It offers unique features such as:
 
@@ -36,13 +36,17 @@ PromptoGen serves as a linguistic translation tool to simplify interactions with
     - The `PromptFormatter` accepts a `Prompt` alongside an input value, transforming them into a string prompt that the LLM can interpret.
     - It also modifies the textual response from the LLM into a Python data format (primarily dictionaries) based on the specifics of the associated `Prompt`.
 
-### 🌟 Benefits to Users
+### :material-star-shooting: Benefits to Users
 
 1. **Modularity**: The liberty to integrate with other models or software.
 2. **Extensibility**: The capability to incorporate custom formatters and interpreters.
 3. **Independence**: Stability regardless of alterations in emerging language models or libraries.
 4. **Maintainability**: Hassle-free management and troubleshooting.
 5. **Development Efficiency**: Enables focus on creation without fretting about liaising with expansive language models.
+
+## :material-laptop: Operating Environment
+
+Python 3.8 or higher
 
 ## Installation
 
@@ -302,7 +306,7 @@ summarizer = pg.Prompt.from_json_file("summarizer.json")
 
 ## Quick Start Guide
 
-Please refer to the [Quick Start Guide](getting-started/installation.md).
+Please refer to the [Quick Start Guide](getting-started/quickstart.md).
 
 ## Application Examples
 
