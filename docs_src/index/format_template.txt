@@ -1,0 +1,134 @@
+--8<-- [start:key_value_format_template]
+<Prompt Description>
+
+Input Parameters:
+  - <Description of Input Parameter 1>
+  - <Description of Input Parameter 2>
+  - ...
+
+Output Parameters:
+    - <Description of Output Parameter 1>
+    - <Description of Output Parameter 2>
+    - ...
+
+Template:
+Input:
+<Name of Input Parameter 1>: <Example of Input Parameter 1>
+<Name of Input Parameter 2>: <Example of Input Parameter 2>
+...
+Output:
+<Name of Output Parameter 1>: <Example of Output Parameter 1>
+<Name of Output Parameter 2>: <Example of Output Parameter 2>
+...
+
+Example 1:
+Input:
+<Name of Input Parameter 1>: <Value of Input Parameter 1>
+<Name of Input Parameter 2>: <Value of Input Parameter 2>
+...
+Output:
+<Name of Output Parameter 1>: <Value of Output Parameter 1>
+<Name of Output Parameter 2>: <Value of Output Parameter 2>
+...
+
+...
+
+--------
+
+Input:
+<Name of Input Parameter 1>: <Value of Input Parameter 1>
+<Name of Input Parameter 2>: <Value of Input Parameter 2>
+...
+Output:
+--8<-- [end:key_value_format_template]
+
+--8<-- [start:key_value_format_summarizer]
+Summarize text and extract keywords.
+
+Input Parameters:
+  - text: Text to summarize
+
+Output Parameters:
+  - summary: Summary of text
+  - keywords: Keywords extracted from text
+
+Template:
+Input:
+text: "This is a sample text to summarize."
+Output:
+summary: "This is a summary of the text."
+keywords: ['sample', 'text', 'summarize']
+
+Example 1:
+Input:
+text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+Output:
+summary: "A group of friends enjoyed an afternoon playing sports and making memories at a local park."
+keywords: ['friends', 'park', 'sports', 'memories']
+
+--------
+
+Input:
+text: "In the realm of software engineering, ..."
+Output:
+--8<-- [end:key_value_format_summarizer]
+
+
+--8<-- [start:json_format_summarizer]
+Summarize text and extract keywords.
+
+Output a JSON-formatted string without outputting any other strings.
+Be careful with the order of brackets in the json.
+
+Input Parameters:
+  - text: Text to summarize
+
+Output Parameters:
+  - summary: Summary of text
+  - keywords: Keywords extracted from text
+
+Template:
+Input:
+```json
+{
+ "text": "This is a sample text to summarize."
+}```
+Output:
+```json
+{
+ "summary": "This is a summary of the text.",
+ "keywords": [
+  "sample",
+  "text",
+  "summarize"
+ ]
+}```
+
+Example 1:
+Input:
+```json
+{
+ "text": "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+}```
+Output:
+```json
+{
+ "summary": "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
+ "keywords": [
+  "friends",
+  "park",
+  "sports",
+  "memories"
+ ]
+}```
+
+--------
+
+Input:
+```json
+{
+ "text": "In the realm of software engineering, ..."
+}```
+Output:
+--8<-- [end:json_format_summarizer]
+

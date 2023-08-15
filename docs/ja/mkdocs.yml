@@ -50,9 +50,9 @@ theme:
     - content.action.view
     - content.code.annotate
     - content.code.copy
-    # - content.tabs.link
+    - content.tabs.link
     - content.tooltips
-    # - header.autohide
+    - header.autohide
     - navigation.expand
     - navigation.footer
     - navigation.indexes

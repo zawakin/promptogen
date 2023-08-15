@@ -101,196 +101,167 @@ summarizer = pg.Prompt(
 
 PromptoGenでは様々な形式のフォーマットをサポートしています。
 
-- `key: value`形式
-- JSON形式
+- KeyValue形式フォーマット `key: value`
+- JSON形式フォーマット `{"key": "value"}`
 - etc.
 
-### KeyValue形式フォーマット基本構造
+### プロンプトフォーマット基本構造
 
-KeyValue形式のプロンプトフォーマットは、以下のような基本的な構造を持ちます。
-パラメータ情報やテンプレートを表示するかどうかは `PromptFormatterConfig` で設定できます。
+プロンプト文字列は、以下のような基本的な構造を持ちます。
 
-```
-<プロンプト説明>
+=== "Description"
 
-Input Parameters:
-  - <入力パラメーター1の説明>
-  - <入力パラメーター2の説明>
-  - ...
+    ```console title="Prompt Description" hl_lines="1"
+    --8<-- "index/format_template_ja.txt:key_value_format_template"
+    ```
 
-Output Parameters:
-    - <出力パラメーター1の説明>
-    - <出力パラメーター2の説明>
-    - ...
+=== "Input Parameters"
 
-Template:
-Input:
-<入力パラメーター1の名前>: <入力パラメーター1の例>
-<入力パラメーター2の名前>: <入力パラメーター2の例>
-...
-Output:
-<出力パラメーター1の名前>: <出力パラメーター1の例>
-<出力パラメーター2の名前>: <出力パラメーター2の例>
-...
+    ```console title="Input Parameters" hl_lines="3-6"
+    --8<-- "index/format_template_ja.txt:key_value_format_template"
+    ```
 
-Example 1:
-Input:
-<入力パラメーター1の名前>: <入力パラメーター1の値>
-<入力パラメーター2の名前>: <入力パラメーター2の値>
-...
-Output:
-<出力パラメーター1の名前>: <出力パラメーター1の値>
-<出力パラメーター2の名前>: <出力パラメーター2の値>
-...
+=== "Output Parameters"
 
-...
-```
+    ```console title="Output Parameters" hl_lines="8-11"
+    --8<-- "index/format_template_ja.txt:key_value_format_template"
+    ```
+
+=== "Template"
+
+    ```console title="Template" hl_lines="13-21"
+    --8<-- "index/format_template_ja.txt:key_value_format_template"
+    ```
+
+=== "Few-shot Examples"
+
+    ```console title="Few-shot Examples" hl_lines="23-33"
+    --8<-- "index/format_template_ja.txt:key_value_format_template"
+    ```
+
+=== "Input Value"
+
+    ```console title="Input Value" hl_lines="37-40"
+    --8<-- "index/format_template_ja.txt:key_value_format_template"
+    ```
 
 
 `key: value` 形式のプロンプトのフォーマットを使用するには、`pg.KeyValuePromptFormatter`を使用します。
+パラメータ情報やテンプレートを表示するかどうかは `PromptFormatterConfig` で設定できます。
 
 `formatter.format_prompt` メソッドを使用して、プロンプトとそれに対する入力を文字列に変換できます。
 
-```python
-formatter = pg.KeyValuePromptFormatter()
+=== "KeyValue形式フォーマット"
 
-input_value = {
-    "text": "In the realm of software engineering, ...",
-}
-print(formatter.format_prompt(summarizer, input_value))
-```
+    ```python hl_lines="8 13"
+    import promptogen as pg
 
+    summarizer = pg.Prompt(
+        name="Text Summarizer and Keyword Extractor",
+        # ...
+    )
 
-コンソール出力:
+    formatter = pg.KeyValuePromptFormatter()
 
-```console
-Summarize text and extract keywords.
+    input_value = {
+        "text": "In the realm of software engineering, ...",
+    }
+    print(formatter.format_prompt(summarizer, input_value))
+    ```
 
-Input Parameters:
-  - text: Text to summarize
+=== "JSON形式フォーマット"
 
-Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
+    ```python hl_lines="8 13"
+    import promptogen as pg
 
-Template:
-Input:
-text: "This is a sample text to summarize."
-Output:
-summary: """This is a summary of the text."""
-keywords: ['sample', 'text', 'summarize']
+    summarizer = pg.Prompt(
+        name="Text Summarizer and Keyword Extractor",
+        # ...
+    )
 
-Example 1:
-Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
-Output:
-summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: ['friends', 'park', 'sports', 'memories']
+    formatter = pg.JsonPromptFormatter()
 
---------
+    input_value = {
+        "text": "In the realm of software engineering, ...",
+    }
+    print(formatter.format_prompt(summarizer, input_value))
+    ```
 
-Input:
-text: "In the realm of software engineering, ..."
-Output:
-```
+<!-- <> -->
 
+=== "KeyValue形式フォーマット"
 
-### JSON形式のプロンプトのフォーマット
+    ```console title="Console Output" hl_lines="12 14-15 19 21-22 27"
+    --8<-- "index/format_template.txt:key_value_format_summarizer"
+    ```
 
-`pg.JsonPromptFormatter`を使用すると、プロンプトとその入力をJSON形式の文字列に変換できます。
+=== "JSON形式フォーマット"
 
-```python
-formatter = pg.JsonPromptFormatter()
-
-input_value = {
-    "text": "In the realm of software engineering, ...",
-}
-print(formatter.format_prompt(summarizer, input_value))
-```
-
-````console
-Summarize text and extract keywords.
-
-Output a JSON-formatted string without outputting any other strings.
-Be careful with the order of brackets in the json.
-
-Input Parameters:
-  - text: Text to summarize
-
-Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
-
-Template:
-Input:
-```json
-{
- "text": "This is a sample text to summarize."
-}```
-Output:
-```json
-{
- "summary": "This is a summary of the text.",
- "keywords": [
-  "sample",
-  "text",
-  "summarize"
- ]
-}```
-
-Example 1:
-Input:
-```json
-{
- "text": "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
-}```
-Output:
-```json
-{
- "summary": "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
- "keywords": [
-  "friends",
-  "park",
-  "sports",
-  "memories"
- ]
-}```
-
---------
-
-Input:
-```json
-{
- "text": "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
-}```
-Output:
-````
+    ````console title="Console Output" hl_lines="3-4 15-18 20-28 32-35 37-46 51-54"
+    --8<-- "index/format_template.txt:json_format_summarizer"
+    ````
 
 ### 大規模言語モデルからの出力のパース
 
 さきほどのプロンプト文字列を入力として、大規模言語モデル(GPT-3.5, GPT-4など)から出力を得ます。
 
-```console
-summary: "This is a summary of the text."
-keywords: ['sample', 'text', 'summarize']
-```
+=== "KeyValue形式フォーマット"
+    ```console title="LLM Output"
+    summary: "This is a summary of the text."
+    keywords: ['sample', 'text', 'summarize']
+    ```
 
-この出力をパースします。
+=== "JSON形式フォーマット"
 
-```python
-formatter = pg.KeyValuePromptFormatter()
+    ````console title="LLM Output"
+    ```json
+    {
+        "summary": "This is a summary of the text.",
+        "keywords": ["sample", "text", "summarize"]
+    }
+    ```
+    ````
 
-raw_resp = """summary: "This is a summary of the text."
-keywords: ['sample', 'text', 'summarize']"""
-summarized_resp = formatter.parse(summarizer, raw_resp)
-print(summarized_resp)
-```
+`formatter.parse` を使って、出力をパースしてみます。
 
-コンソール出力:
+=== "KeyValue形式フォーマット"
 
-```console
-{'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
-```
+    ```python hl_lines="3 7"
+    import promptogen as pg
+
+    formatter = pg.KeyValuePromptFormatter()
+
+    raw_resp = """summary: "This is a summary of the text."
+    keywords: ['sample', 'text', 'summarize']"""
+    summarized_resp = formatter.parse(summarizer, raw_resp)
+    print(summarized_resp)
+    ```
+
+    ```console title="Console Output"
+    {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
+    ```
+
+
+=== "JSON形式フォーマット"
+
+    ```python hl_lines="3 11"
+    import promptogen as pg
+
+    formatter = pg.JsonPromptFormatter()
+
+    raw_resp = """```json
+    {
+        "summary": "This is a summary of the text.",
+        "keywords": ["sample", "text", "summarize"]
+    }
+    ```"""
+    summarized_resp = formatter.parse(summarizer, raw_resp)
+    print(summarized_resp)
+    ```
+
+    ```console title="Console Output"
+    {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
+    ```
 
 ### プロンプトの保存
 

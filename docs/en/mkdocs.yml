@@ -48,6 +48,8 @@ theme:
   - content.action.view
   - content.code.annotate
   - content.code.copy
+  - content.tabs.link
+  - header.autohide
   - content.tooltips
   - navigation.expand
   - navigation.footer
