@@ -1,12 +1,26 @@
-name: Python CI
+name: Test
 
 # ref. https://github.com/tiangolo/fastapi/blob/46726aa1c418ba2838187678d08860950fc0c3c3/.github/workflows/test.yml
 
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - ".github/workflows/test.yml"
+
+      - "promptogen/**"
+      - "tests/**"
+      - pyproject.toml
+      - poetry.lock
   push:
     branches: [ main ]
+    paths:
+      - ".github/workflows/test.yml"
+
+      - "promptogen/**"
+      - "tests/**"
+      - pyproject.toml
+      - poetry.lock
 
 env:
   POETRY_VERSION: "1.5.1"

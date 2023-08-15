@@ -6,8 +6,13 @@ on:
   pull_request:
     branches: [ main ]
     paths:
-      - "docs/**"
       - .github/workflows/deploy-preview.yaml
+
+      - "docs/**"
+      - "docs_src/**"
+      - pyproject.toml
+      - poetry.lock
+      - scripts/doc.py
 
 env:
   POETRY_VERSION: "1.5.1"
@@ -17,7 +22,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Deploy docs
+    name: Preview Deploy to Netlify
     environment: pull request
     steps:
       - uses: actions/checkout@v3
@@ -31,8 +36,6 @@ jobs:
               echo "Running core tests, installing dependencies with poetry..."
               poetry install --with docs
       - name: Build docs to site/
-        env:
-          TEST_VAR: ${{ vars.TEST_VAR }}
         run: |
           poetry run python ./scripts/doc.py build-all
       - name: Deploy to Netlify
