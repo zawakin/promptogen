@@ -8,7 +8,7 @@ Documentation: https://promptogen.zawakin.dev/
 
 Source Code: https://github.com/zawakin/promptogen
 
-For the Quick Start Guide, click [here](getting-started/quickstart.md).
+For the Quick Start Guide, click [here](getting-started/installation.md).
 
 ----
 
@@ -45,8 +45,9 @@ PromptoGen serves as a linguistic translation tool to simplify interactions with
 5. **Development Efficiency**: Enables focus on creation without fretting about liaising with expansive language models.
 
 ## Installation
-```console
-$ pip install promptogen
+
+```sh
+pip install promptogen
 ```
 
 ## Importing
@@ -301,7 +302,7 @@ summarizer = pg.Prompt.from_json_file("summarizer.json")
 
 ## Quick Start Guide
 
-Please refer to the [Quick Start Guide](getting-started/quickstart.md).
+Please refer to the [Quick Start Guide](getting-started/installation.md).
 
 ## Application Examples
 

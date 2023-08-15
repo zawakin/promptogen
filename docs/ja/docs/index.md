@@ -8,7 +8,7 @@
 
 🔗 ソースコード: https://github.com/zawakin/promptogen
 
-🚀 クイックスタートガイドは[こちら](getting-started/quickstart.md)。
+🚀 クイックスタートガイドは[こちら](getting-started/installation.md)。
 
 ----
 
@@ -49,8 +49,8 @@ PromptoGenは、LLM（Large Language Model）とのコミュニケーション�
 Python 3.8 以上
 
 ## インストール
-```console
-$ pip install promptogen
+```sh
+pip install promptogen
 ```
 
 ## インポート
@@ -305,9 +305,9 @@ summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
 
 
-## クイックスタートガイド
+## はじめに
 
-[クイックスタートガイド](getting-started/quickstart.md)を参照してください。
+[はじめに](getting-started/installation.md)を参照してください。
 
 ## 応用例
 

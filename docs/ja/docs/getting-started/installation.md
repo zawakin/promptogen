@@ -6,8 +6,8 @@
 
 ## インストール
 
-```console
-$ pip install promptogen
+```sh
+pip install promptogen
 ```
 
 ## 動作確認

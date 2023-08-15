@@ -2,7 +2,7 @@ This guide explains how to implement the TextLLM using the OpenAI API with the [
 
 ## Installing Required Libraries
 
-```console
+```sh
 pip install promptogen openai python-dotenv colorama
 ```
 
