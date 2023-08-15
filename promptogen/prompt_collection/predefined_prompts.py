@@ -5,6 +5,7 @@ from typing import List
 from promptogen.model.prompt import Prompt
 
 from .prompts import (
+    DictTranslatorPrompt,
     ExampleCreatorPrompt,
     PromptCreatorPrompt,
     PromptOptimizerPrompt,
@@ -24,6 +25,7 @@ def load_predefined_prompts() -> List[Prompt]:
         PromptOptimizerPrompt(),
         PythonCodeGeneratorPrompt(),
         TextCondenserPrompt(),
+        DictTranslatorPrompt(),
     ]
 
     return prompts

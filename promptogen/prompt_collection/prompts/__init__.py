@@ -1,3 +1,4 @@
+from .dict_translator import DictTranslatorPrompt
 from .prompt_creator import PromptCreatorPrompt
 from .prompt_example_creator import ExampleCreatorPrompt
 from .prompt_optimizer import PromptOptimizerPrompt
@@ -14,4 +15,5 @@ __all__ = [
     "TextCategorizerPrompt",
     "TextSummarizerPrompt",
     "TextCondenserPrompt",
+    "DictTranslatorPrompt",
 ]
