@@ -6,8 +6,13 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "docs/**"
       - .github/workflows/deploy-docs.yaml
+
+      - "docs/**"
+      - "docs_src/**"
+      - pyproject.toml
+      - poetry.lock
+      - scripts/doc.py
 
 env:
   POETRY_VERSION: "1.5.1"
@@ -33,7 +38,6 @@ jobs:
       - name: Build docs to site/
         env:
           GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
-          TEST_VAR: ${{ vars.TEST_VAR }}
         run: |
           poetry run python ./scripts/doc.py build-all
       - name: Deploy to Netlify
