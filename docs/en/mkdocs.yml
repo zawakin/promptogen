@@ -77,7 +77,7 @@ markdown_extensions:
     pygments_lang_class: true
 - pymdownx.snippets:
     base_path: ../../docs_src
-    dedent_subsections: True
+    dedent_subsections: true
 - pymdownx.superfences: null
 - abbr
 - admonition
@@ -110,9 +110,9 @@ markdown_extensions:
 - pymdownx.smartsymbols
 - pymdownx.superfences:
     custom_fences:
-      - name: mermaid
-        class: mermaid
-        format: !!python/name:pymdownx.superfences.fence_code_format
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format
 - pymdownx.tabbed:
     alternate_style: true
 - pymdownx.tasklist:
@@ -131,4 +131,4 @@ extra:
     provider: google
     property: !ENV GOOGLE_ANALYTICS_KEY
 extra_css:
-  - "stylesheets/extra.css"
+- stylesheets/extra.css
