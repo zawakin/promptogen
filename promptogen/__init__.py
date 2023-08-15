@@ -4,6 +4,7 @@ __version__ = "0.0.3"
 
 
 from .model import (
+    DataClass,
     FunctionBasedTextLLM,
     IOExample,
     ParameterInfo,
@@ -22,6 +23,8 @@ from .prompt_formatter import (
 )
 
 __all__ = [
+    # dataclass
+    "DataClass",
     # llm
     "TextLLM",
     "FunctionBasedTextLLM",

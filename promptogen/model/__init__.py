@@ -1,3 +1,4 @@
+from .dataclass import DataClass
 from .llm import LLM, FunctionBasedTextLLM, TextLLM
 from .prompt import (
     IOExample,
@@ -8,11 +9,13 @@ from .prompt import (
     load_prompt_from_json_file,
     load_prompt_from_json_string,
 )
+from .prompt_interceptor import LoggingInterceptor, PromptInterceptor
 from .prompt_runner import PromptRunner, TextLLMPromptRunner
 from .value_formatter import Value, ValueFormatter
 
 __all__ = [
     # common
+    "DataClass",
     "Value",
     "ValueFormatter",
     # prompt
@@ -31,4 +34,7 @@ __all__ = [
     # prompt runner
     "PromptRunner",
     "TextLLMPromptRunner",
+    # prompt interceptor
+    "PromptInterceptor",
+    "LoggingInterceptor",
 ]

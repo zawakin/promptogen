@@ -100,6 +100,8 @@ class PromptFormatter(PromptFormatterInterface):
             raise ValueError(
                 f"Expected input_value to have the same keys as prompt.input_parameters, got {input_value.keys()}; wanted {input_parameter_keys}."
             )
+
+        input_value = {p.name: input_value[p.name] for p in prompt.input_parameters}
         return f"""{self.format_prompt_without_input(prompt)}
 --------
 
