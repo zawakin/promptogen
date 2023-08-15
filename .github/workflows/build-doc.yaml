@@ -33,6 +33,8 @@ jobs:
               echo "Running core tests, installing dependencies with poetry..."
               poetry install --with docs
       - name: Build docs to site/
+        env:
+          GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
         run: |
           poetry run python ./scripts/doc.py build-all
       - name: Deploy to Netlify

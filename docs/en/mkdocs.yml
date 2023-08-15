@@ -73,6 +73,9 @@ markdown_extensions:
     anchor_linenums: true
     line_spans: __span
     pygments_lang_class: true
+- pymdownx.snippets:
+    base_path: ../../docs_src
+    dedent_subsections: True
 - pymdownx.superfences: null
 - abbr
 - admonition
@@ -116,4 +119,6 @@ extra:
     name: ja - 日本語
   analytics:
     provider: google
-    property: G-VDGJRC9DFT
+    property: !ENV GOOGLE_ANALYTICS_KEY
+extra_css:
+  - "stylesheets/extra.css"

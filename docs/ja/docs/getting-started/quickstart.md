@@ -1,7 +1,7 @@
 ## インポート
     
 ```python
-import promptogen as pg
+--8<-- "quickstart/quickstart.py:import"
 ```
 
 ## 簡単なプロンプトを作成する
@@ -30,34 +30,7 @@ PromptoGenには、プロンプトを表現するためのデータクラス(`pg
 これらの情報を使って、プロンプトを作成します。
 
 ```python
-summarizer = pg.Prompt(
-    name="Text Summarizer and Keyword Extractor",
-    description="Summarize text and extract keywords.",
-    input_parameters=[
-        pg.ParameterInfo(name="text", description="Text to summarize"),
-    ],
-    output_parameters=[
-        pg.ParameterInfo(name="summary", description="Summary of text"),
-        pg.ParameterInfo(name="keywords", description="Keywords extracted from text"),
-    ],
-    template=pg.IOExample(
-        input={'text': "This is a sample text to summarize."},
-        output={
-            'summary': "This is a summary of the text.",
-            'keywords': ["sample", "text", "summarize"],
-        },
-    ),
-    examples=[
-        pg.IOExample(
-            input={
-                'text': "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."},
-            output={
-                'summary': "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
-                'keywords': ["friends", "park", "sports", "memories"],
-            },
-        )
-    ],
-)
+--8<-- "quickstart/quickstart.py:summarizer"
 ```
 
 ## プロンプトを入力パラメータなしで文字列にフォーマットする
@@ -72,44 +45,13 @@ PromptoGenでは、プロンプトを文字列にするためのフォーマッ�
 このメソッドは、プロンプトとフォーマッターを引数に取り、プロンプトを文字列にフォーマットします。
 
 ```python
-formatter = pg.KeyValuePromptFormatter()
-print(formatter.format_prompt_without_input(summarizer))
+--8<-- "quickstart/quickstart.py:format_prompt_without_input"
 ```
 
 コンソール出力:
 
 ```console
-Summarize text and extract keywords.
-
-Input Parameters:
-  - text: Text to summarize
-
-Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
-
-Template:
-Input:
-text: "This is a sample text to summarize."
-Output:
-summary: """This is a summary of the text."""
-keywords: [
- "sample",
- "text",
- "summarize"
-]
-
-Example 1:
-Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
-Output:
-summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: [
- "friends",
- "park",
- "sports",
- "memories"
-]
+--8<-- "quickstart/output.txt:format_prompt_without_input"
 ```
 
 ## プロンプトを入力パラメータありで文字列にフォーマットする
@@ -121,52 +63,13 @@ keywords: [
 プロンプトを入力パラメータ込みで文字列にフォーマットするには、`format_prompt` メソッドを使用します。
 
 ```python
-input_value = {
-    'text': "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization.",
-}
-print(formatter.format_prompt(summarizer, input_value))
+--8<-- "quickstart/quickstart.py:format_prompt"
 ```
 
 コンソール出力:
 
 ```console
-Summarize text and extract keywords.
-
-Input Parameters:
-  - text: Text to summarize
-
-Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
-
-Template:
-Input:
-text: "This is a sample text to summarize."
-Output:
-summary: """This is a summary of the text."""
-keywords: [
- "sample",
- "text",
- "summarize"
-]
-
-Example 1:
-Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
-Output:
-summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
-keywords: [
- "friends",
- "park",
- "sports",
- "memories"
-]
-
---------
-
-Input:
-text: "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
-Output:
+--8<-- "quickstart/output.txt:format_prompt"
 ```
 
 ## 大規模言語モデルを用いて出力を生成する
@@ -180,29 +83,7 @@ Output:
 あらかじめ、OpenAI API Key と Organization ID を環境変数に設定しておきます。
 
 ```python
-import openai
-
-openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.organization = os.getenv("OPENAI_ORG_ID")
-
-def generate_chat_completion(text: str, model: str) -> str:
-    resp = openai.ChatCompletion.create(
-        model=model,
-        messages=[{"role": "user", "content": text}],
-        max_tokens=2048,
-        stream=True,
-    )
-    raw_resp = ""
-    for chunk in resp:
-        chunk_content = chunk["choices"][0]["delta"].get("content", "")
-        raw_resp += chunk_content
-
-    return raw_resp
-
-# TextLLMを生成する
-text_llm = pg.FunctionBasedTextLLM(
-    generate_text_by_text=lambda input_text: generate_chat_completion(input_text, "gpt-3.5-turbo"),
-)
+--8<-- "quickstart/quickstart.py:text_llm"
 ```
 
 `TextLLM` は、PromptoGen で大規模言語モデルを統一的に扱うための抽象クラスです。 `pg.FunctionBasedTextLLM` は、関数を用いて大規模言語モデルからの出力を生成する `TextLLM` の実装です。
@@ -210,32 +91,14 @@ text_llm = pg.FunctionBasedTextLLM(
 続いて、プロンプトを入力パラメータ込みで文字列にフォーマットし、大規模言語モデルからの出力を生成してみましょう。
 
 ```python
-# formatterを用いてプロンプトを入力パラメータ込みで文字列にフォーマットする
-raw_req = formatter.format_prompt(summarizer, input_value)
-
-# 大規模言語モデルからの出力を生成する
-raw_resp = text_llm.generate(raw_req)
-
-print(raw_resp)
+--8<-- "quickstart/quickstart.py:generate"
 ```
 
 コンソール出力:
 
 
 ```console
-summary: """Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements."""
-keywords: [
- "software engineering",
- "developers",
- "collaborate",
- "projects",
- "version control systems",
- "Git",
- "code",
- "implementation complexities",
- "user requirements",
- "system optimization"
-]
+--8<-- "quickstart/output.txt:generate"
 ```
 
 ## 出力をPythonオブジェクトに変換する
@@ -244,14 +107,13 @@ keywords: [
 `formatter.parse` メソッドを使用することで、LLMからの出力文字列をプロンプトの出力パラメータを用いてパースできます。パースの結果はPythonの `dict` に格納されます。
 
 ```python
-summarized_resp = formatter.parse(summarizer, raw_resp)
-print(summarized_resp)
+--8<-- "quickstart/quickstart.py:parse"
 ```
 
 コンソール出力:
 
 ```console
-{'summary': 'Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'user requirements', 'system optimization']}
+--8<-- "quickstart/output.txt:parse"
 ```
 
 この出力は、LLM出力の文字列をパースした結果である `dict` です。

@@ -1,0 +1,93 @@
+--8<-- [start:format_prompt_without_input]
+Summarize text and extract keywords.
+
+Input Parameters:
+  - text: Text to summarize
+
+Output Parameters:
+  - summary: Summary of text
+  - keywords: Keywords extracted from text
+
+Template:
+Input:
+text: "This is a sample text to summarize."
+Output:
+summary: """This is a summary of the text."""
+keywords: [
+ "sample",
+ "text",
+ "summarize"
+]
+
+Example 1:
+Input:
+text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+Output:
+summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
+keywords: [
+ "friends",
+ "park",
+ "sports",
+ "memories"
+]
+--8<-- [end:format_prompt_without_input]
+
+--8<-- [start:format_prompt]
+Summarize text and extract keywords.
+
+Input Parameters:
+  - text: Text to summarize
+
+Output Parameters:
+  - summary: Summary of text
+  - keywords: Keywords extracted from text
+
+Template:
+Input:
+text: "This is a sample text to summarize."
+Output:
+summary: """This is a summary of the text."""
+keywords: [
+ "sample",
+ "text",
+ "summarize"
+]
+
+Example 1:
+Input:
+text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
+Output:
+summary: """A group of friends enjoyed an afternoon playing sports and making memories at a local park."""
+keywords: [
+ "friends",
+ "park",
+ "sports",
+ "memories"
+]
+
+--------
+
+Input:
+text: "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
+Output:
+--8<-- [end:format_prompt]
+
+--8<-- [start:generate]
+summary: """Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements."""
+keywords: [
+ "software engineering",
+ "developers",
+ "collaborate",
+ "projects",
+ "version control systems",
+ "Git",
+ "code",
+ "implementation complexities",
+ "user requirements",
+ "system optimization"
+]
+--8<-- [end:generate]
+
+--8<-- [start:parse]
+{'summary': 'Software engineers collaborate using Git to create and maintain efficient code, and address implementation issues and user requirements.', 'keywords': ['software engineering', 'developers', 'collaborate', 'projects', 'version control systems', 'Git', 'code', 'implementation complexities', 'user requirements', 'system optimization']}
+--8<-- [end:parse]
