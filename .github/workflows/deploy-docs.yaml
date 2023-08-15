@@ -1,16 +1,13 @@
-name: Python CI
+name: Build and Deploy Docs
 
 # ref. https://github.com/tiangolo/fastapi/blob/46726aa1c418ba2838187678d08860950fc0c3c3/.github/workflows/test.yml
 
 on:
-  pull_request:
-    branches: [ main ]
-    paths:
-      - "docs/**"
   push:
     branches: [ main ]
     paths:
       - "docs/**"
+      - .github/workflows/deploy-docs.yaml
 
 env:
   POETRY_VERSION: "1.5.1"
@@ -21,6 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Deploy docs
+    environment: production
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ env.PYTHON_VERSION }}
@@ -35,6 +33,7 @@ jobs:
       - name: Build docs to site/
         env:
           GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
+          TEST_VAR: ${{ vars.TEST_VAR }}
         run: |
           poetry run python ./scripts/doc.py build-all
       - name: Deploy to Netlify
