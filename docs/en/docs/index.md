@@ -19,33 +19,37 @@
 
 ### :material-lightbulb: Project Vision
 
-PromptoGen facilitates the conversion between text outputs of large language models and Python objects. This allows developers to concentrate on prompt generation and analysis without the need to directly interact with these expansive language models.
+PromptoGen is a tool that assists in the conversion between text outputs of large-scale language models and Python objects. Through its unique abstracted interface, it's designed to eliminate dependencies on direct communication with large-scale language models and allow a focus on prompt generation and analysis.
 
-### :material-thought-bubble: Problem Being Solved
+### :material-thought-bubble: Problem Being Addressed
 
-A multitude of libraries exist that handle everything from interfacing with vast language models to text generation and interpretation. However, these all-in-one solutions can hinder the ability to customize specific functionalities.
+Many libraries take on the entirety of tasks from communicating with large-scale language models to generating and parsing texts. This can make customizing specific features challenging and results in a strong dependency on a particular language model.
 
 ### :material-check-circle: Solution
 
-PromptoGen serves as a linguistic translation tool to simplify interactions with LLMs (Large Language Models). It offers unique features such as:
+PromptoGen functions as a language conversion tool for smoothing out communication with LLM (Large Language Model). At its core is the `TextLLM` interface, which ensures independence from the concrete implementations of LLMs. It works through the following procedures:
 
-1. **Use of the `Prompt` Data Class**:
-  
-    - This data class has been structured to outline the fundamental details and format for liaising with an LLM.
-    - Each `Prompt` encompasses the name of the prompt, a description, details on input & output parameters, and specific examples of its application.
+1. **Usage of `Prompt` Data Class**:
 
-2. **Generation of Prompt Strings and Decoding Outputs using `PromptFormatter`**:
-    
-    - The `PromptFormatter` accepts a `Prompt` alongside an input value, transforming them into a string prompt that the LLM can interpret.
-    - It also modifies the textual response from the LLM into a Python data format (primarily dictionaries) based on the specifics of the associated `Prompt`.
+    - This data class is intended for defining the basic information and format of prompts in communication with LLM.
+    - Each `Prompt` includes the name of the prompt, its description, information about its input-output parameters, and specific use cases.
 
-### :material-star-shooting: Benefits to Users
+2. **Ensuring Independence through the `TextLLM` Interface**:
 
-1. **Modularity**: The liberty to integrate with other models or software.
-2. **Extensibility**: The capability to incorporate custom formatters and interpreters.
-3. **Independence**: Stability regardless of alterations in emerging language models or libraries.
-4. **Maintainability**: Hassle-free management and troubleshooting.
-5. **Development Efficiency**: Enables focus on creation without fretting about liaising with expansive language models.
+    - By using the `TextLLM` interface, you can easily switch to your own language models or their versions without depending on specific LLM implementations.
+
+3. **Generating Prompt Strings and Parsing Outputs with `PromptFormatter`**:
+
+    - The `PromptFormatter` takes a `Prompt` and input values, converting them into a prompt string that can be sent to an LLM.
+    - It also transforms the text-based output from the LLM, based on the corresponding `Prompt` information, into a Python data structure that's easy to handle, especially dictionaries.
+
+### :material-star-shooting: Benefits for Users
+
+1. **Modularity**: Freely combine with other models or libraries.
+2. **Extensibility**: Can add custom formatters or parsers.
+3. **Independence**: Unaffected by new language models or libraries.
+4. **Maintainability**: Easy management and troubleshooting.
+5. **Development Efficiency**: Focus on development without worrying about communicating with large-scale language models.
 
 ## :material-laptop: Operating Environment
 
@@ -278,9 +282,65 @@ summarizer.to_json_file("summarizer.json")
 ### Loading the Prompt
 
 ```python
+import promptogen as pg
+
 summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
 
+Here's the translated text in English:
+
+### TextLLM: Flexible LLM Integration
+
+Through `pg.TextLLM`, PromptoGen achieves collaboration with a variety of large-scale language models (LLM).
+
+```python title="Implementation example of TextLLM interface"
+import promptogen as pg
+
+class YourTextLLM(pg.TextLLM):
+    def __init__(self, model: str):
+        self.model = model
+
+    def generate(self, text: str) -> str:
+        return generate_by_your_text_llm(text, self.model)
+
+text_llm = YourTextLLM(model="your-model")
+```
+
+By adopting this interface, PromptoGen can seamlessly incorporate different LLMs and their versions. Users can utilize various LLMs in a consistent manner regardless of the specific LLM.
+
+### PromptRunner: Execute Prompts Efficiently
+
+`pg.PromptRunner` supports the execution of prompts simply and efficiently.
+
+```python hl_lines="7 18" title="Prompt execution using PromptRunner"
+import promptogen as pg
+
+# Prepare an LLM that implements the `pg.TextLLM` interface
+text_llm = YourTextLLM(model="your-model")
+
+formatter = pg.KeyValuePromptFormatter()
+runner = pg.TextLLMPromptRunner(llm=text_llm, formatter=formatter)
+
+summarizer = pg.Prompt(
+    name="Text Summarizer and Keyword Extractor",
+    # ...
+)
+
+input_value = {
+    "text": "In the realm of software engineering, ...",
+}
+
+output_value = runner.run_prompt(summarizer, input_value)
+print(output_value)
+```
+
+Advantages of this tool:
+
+1. **Abstraction**: Users can execute prompts without being aware of the specific LLM implementation.
+2. **Consistency**: Changes are minimized when executing the same prompt with different LLMs.
+3. **Extensibility**: Adding new prompts or modifying existing ones is easy.
+
+`pg.PromptRunner` is a key tool for making prompt execution more intuitive and efficient using PromptoGen.
 
 ## Quick Start Guide
 
@@ -290,9 +350,13 @@ Please refer to the [Quick Start Guide](getting-started/quickstart.md).
 
 Refer to [Application Examples](examples/index.md).
 
+- Auto Prompt Generation
+- LLM I/O Inferences Generation
+- ...
+
 ## Dependent Libraries
 
-- [Pydantic](https://docs.pydantic.dev/latest/) ... Used for defining data classes
+PromptoGen only depends on [Pydantic](https://docs.pydantic.dev/latest/) to define the data class.
 
 ## Limitations
 

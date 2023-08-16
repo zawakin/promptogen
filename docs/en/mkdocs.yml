@@ -6,8 +6,8 @@ nav:
 - Home: index.md
 - Getting Started:
   - Installation: getting-started/installation.md
-  - Quick Start: getting-started/quickstart.md
   - What is PromptoGen?: getting-started/overview.md
+  - Quick Start: getting-started/quickstart.md
   - Understanding the Basic Model:
     - Value Class: getting-started/value.md
     - Prompt Class: getting-started/prompt.md
@@ -20,7 +20,7 @@ nav:
     - TextLLM Interface: getting-started/text-llm.md
     - PromptRunner Interface: getting-started/prompt-runner.md
   - Concepts:
-    - Concepts of PromptoGen ("Modularization" and "Keeping the Library Small"): concepts/concept.md
+    - Concepts: concepts/concept.md
 - Application Examples:
   - Examples: examples/index.md
   - Collaboration with LLM:

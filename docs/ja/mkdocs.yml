@@ -6,7 +6,7 @@ nav:
 - PromptoGen: index.md
 - はじめに:
   - インストール: getting-started/installation.md
-  - 概要: getting-started/overview.md
+  - PromptoGenとは: getting-started/overview.md
   - クイックスタート: getting-started/quickstart.md
   - 基本モデルを理解しよう:
     - Valueクラス: getting-started/value.md
