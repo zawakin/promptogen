@@ -1,6 +1,7 @@
 # PromptoGen
 
-<a href="/" target="_blank"><img src="img/logo-bg-white.svg" style="width: 90%; padding-left: 10%;"></a>
+<a href="/" target="_blank"><img src="img/logo-light-mode.svg#only-light" style="width: 90%; padding-left: 10%;"></a>
+<a href="/" target="_blank"><img src="img/logo-dark-mode.svg#only-dark" style="width: 90%; padding-left: 10%;"></a>
 
 ----
 

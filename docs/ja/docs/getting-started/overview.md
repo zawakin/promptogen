@@ -10,4 +10,4 @@ PromptoGenは以下の機能を提供します:
 
 PromptoGenは、大規模言語モデルを利用する際の、プロンプトの生成と管理を効率化します。これにより、ユーザーはプロンプトの作成や管理に関する手間を軽減し、より多くの時間をモデルとの対話や、その結果の解析に費やすことができます。
 
-![PromptoGenの概要](/ja/img/promptogen_overview.png)
+![PromptoGenの概要](../img/promptogen_overview.png)

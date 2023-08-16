@@ -10,4 +10,4 @@ PromptoGen offers the following features:
 
 PromptoGen streamlines the generation and management of prompts when utilizing large language models. This reduces the effort users have to put into creating and managing prompts, allowing them to spend more time interacting with the model and analyzing its results.
 
-![Overview of PromptoGen](/img/promptogen_overview.png)
+![Overview of PromptoGen](../img/promptogen_overview.png)
