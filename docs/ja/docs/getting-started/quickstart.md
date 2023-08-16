@@ -119,11 +119,7 @@ text_llm = pg.FunctionBasedTextLLM(
 ```python title="quickstart.py" hl_lines="3-7 17-18"
 --8<-- "quickstart/quickstart.py:import"
 
-# ...(省略)...
-
-text_llm = pg.FunctionBasedTextLLM(
-    # ...(省略)...
-)
+--8<-- "quickstart/quickstart.py:text_llm_omit"
 
 --8<-- "quickstart/quickstart.py:summarizer_omit"
 
@@ -143,11 +139,7 @@ text_llm = pg.FunctionBasedTextLLM(
 ```python title="quickstart.py" hl_lines="20-21"
 --8<-- "quickstart/quickstart.py:import"
 
-# ...(省略)...
-
-text_llm = pg.FunctionBasedTextLLM(
-    # ...(省略)...
-)
+--8<-- "quickstart/quickstart.py:text_llm_omit"
 
 --8<-- "quickstart/quickstart.py:summarizer_omit"
 

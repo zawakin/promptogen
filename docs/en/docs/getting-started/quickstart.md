@@ -116,11 +116,7 @@ Next, let's try formatting the prompt with input parameters and generating outpu
 ```python title="quickstart.py" hl_lines="3-7 17-18"
 --8<-- "quickstart/quickstart.py:import"
 
-# ...(omitted)...
-
-text_llm = pg.FunctionBasedTextLLM(
-    # ...(omitted)...
-)
+--8<-- "quickstart/quickstart.py:text_llm_omit"
 
 --8<-- "quickstart/quickstart.py:summarizer_omit"
 
@@ -139,11 +135,7 @@ You can parse the output string from the LLM using the `formatter.parse` method 
 ```python title="quickstart.py" hl_lines="20-21"
 --8<-- "quickstart/quickstart.py:import"
 
-# ...(omitted)...
-
-text_llm = pg.FunctionBasedTextLLM(
-    # ...(omitted)...
-)
+--8<-- "quickstart/quickstart.py:text_llm_omit"
 
 --8<-- "quickstart/quickstart.py:summarizer_omit"
 

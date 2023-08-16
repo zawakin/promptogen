@@ -25,7 +25,7 @@ nav:
   - Examples: examples/index.md
   - Collaboration with LLM:
     - OpenAITextLLM: examples/openai-text-llm.md
-  - Auto-prompt Generation:
+  - Automatic Prompt Generation:
     - Context QA: examples/context-qa.md
     - Task Splitting: examples/task-splitter.md
   - LLM Inference Process Output:
@@ -48,16 +48,24 @@ theme:
   - content.action.view
   - content.code.annotate
   - content.code.copy
-  - content.tabs.link
-  - header.autohide
+  # - content.tabs.link
+  # - header.autohide
   - content.tooltips
+
+  # navigation:
+  # ref. https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
   - navigation.expand
   - navigation.footer
   - navigation.indexes
+  # - navigation.instant
+  # TODO(zawakin): When we have many pages, we should enable this.
+  # ref. https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-pruning
+  # - navigation.prune
   - navigation.sections
   - navigation.tabs
+  # - navigation.tabs.sticky
   - navigation.top
-  - navigation.tracking
+  # - navigation.tracking
   - search.highlight
   - search.share
   - search.suggest
@@ -75,6 +83,7 @@ markdown_extensions:
     anchor_linenums: true
     line_spans: __span
     pygments_lang_class: true
+    linenums: !ENV [PYMDOWNX_HIGHLIGHT_LINENUMS, false]
 - pymdownx.snippets:
     base_path: ../../docs_src
     dedent_subsections: true
@@ -96,10 +105,6 @@ markdown_extensions:
 - pymdownx.emoji:
     emoji_generator: !!python/name:materialx.emoji.to_svg
     emoji_index: !!python/name:materialx.emoji.twemoji
-- pymdownx.highlight:
-    anchor_linenums: true
-    line_spans: __span
-    pygments_lang_class: true
 - pymdownx.inlinehilite
 - pymdownx.keys
 - pymdownx.magiclink:
@@ -120,6 +125,8 @@ markdown_extensions:
 - pymdownx.tilde
 extra:
   social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/zawakin
   - icon: fontawesome/brands/twitter
     link: https://twitter.com/zawawahoge
   alternate:
