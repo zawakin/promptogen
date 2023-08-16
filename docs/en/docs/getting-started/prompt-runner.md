@@ -1,4 +1,4 @@
-`PromptRunner` is an interface for executing prompts through `TextLLM`.
+`PromptRunner` is an interface for executing prompts.
 
 `PromptRunner` possesses a `run_prompt` method. This method takes a prompt and input, then returns the output parsed into a `Value` (which is essentially a `dict`).
 

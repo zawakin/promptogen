@@ -63,7 +63,7 @@ import promptogen as pg
 
 ## How to Use
 
-### Creating a Prompt
+### Creating your Prompt
 
 ```python
 import promptogen as pg
@@ -98,16 +98,9 @@ summarizer = pg.Prompt(
 )
 ```
 
-### Prompt Format
+### Format your Prompt as a String
 
 To send an instance of the `Prompt` class to the LLM (Large Language Model) in actual use, you need to convert it into a string. With PromptoGen, you can use `pg.PromptFormatter` to convert the prompt into a string in any desired format.
-
-PromptoGen supports various formatting styles:
-
-- KeyValue Format: `key: value`
-- JSON Format: `{"key": "value"}`
-- etc.
-
 
 #### Basic Structure of Prompt Format
 
@@ -148,6 +141,15 @@ The basic structure of the prompt format is as follows:
     ```console title="Input Value" hl_lines="37-40"
     --8<-- "index/format_template.txt:key_value_format_template"
     ```
+
+#### Various Formatting Styles
+
+PromptoGen supports various formatting styles:
+
+- KeyValue Format: `key: value`
+- JSON Format: `{"key": "value"}`
+- etc.
+
 
 To use the `key: value` format for the prompt, use the `pg.KeyValuePromptFormatter`.
  Whether to display parameter information or templates can be set with `PromptFormatterConfig`.
