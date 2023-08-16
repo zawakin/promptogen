@@ -52,8 +52,6 @@ def setup_prompts():
 
 
 setup_prompts()
-exit()
-
 
 prompts = PromptCollection.from_json_file("agi_like.json")
 
