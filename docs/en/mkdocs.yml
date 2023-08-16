@@ -82,7 +82,7 @@ theme:
     text: Roboto
     code: Roboto Mono
   logo: img/icon-white.svg
-  favicon: img/favicon-32x32.png
+  favicon: img/favicon-32x32-white.png
   icon:
     logo: logo
   language: en
