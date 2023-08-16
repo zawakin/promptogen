@@ -4,25 +4,25 @@
 
 ----
 
-Documentation: https://promptogen.zawakin.dev/
+:material-file-document-alert: Documentation: https://promptogen.zawakin.dev/
 
-Source Code: https://github.com/zawakin/promptogen
+:material-source-repository: Source Code: https://github.com/zawakin/promptogen
 
-For the Quick Start Guide, click [here](getting-started/quickstart.md).
+:material-rocket: For the Quick Start Guide, click [here](getting-started/installation.md).
 
 ----
 
-## 📘 About PromptoGen
+## :material-book-multiple: About PromptoGen
 
-### 💡 Project Vision
+### :material-lightbulb: Project Vision
 
 PromptoGen facilitates the conversion between text outputs of large language models and Python objects. This allows developers to concentrate on prompt generation and analysis without the need to directly interact with these expansive language models.
 
-### ❌ Problem Being Solved
+### :material-thought-bubble: Problem Being Solved
 
 A multitude of libraries exist that handle everything from interfacing with vast language models to text generation and interpretation. However, these all-in-one solutions can hinder the ability to customize specific functionalities.
 
-### ✅ Solution
+### :material-check-circle: Solution
 
 PromptoGen serves as a linguistic translation tool to simplify interactions with LLMs (Large Language Models). It offers unique features such as:
 
@@ -36,7 +36,7 @@ PromptoGen serves as a linguistic translation tool to simplify interactions with
     - The `PromptFormatter` accepts a `Prompt` alongside an input value, transforming them into a string prompt that the LLM can interpret.
     - It also modifies the textual response from the LLM into a Python data format (primarily dictionaries) based on the specifics of the associated `Prompt`.
 
-### 🌟 Benefits to Users
+### :material-star-shooting: Benefits to Users
 
 1. **Modularity**: The liberty to integrate with other models or software.
 2. **Extensibility**: The capability to incorporate custom formatters and interpreters.
@@ -44,9 +44,14 @@ PromptoGen serves as a linguistic translation tool to simplify interactions with
 4. **Maintainability**: Hassle-free management and troubleshooting.
 5. **Development Efficiency**: Enables focus on creation without fretting about liaising with expansive language models.
 
+## :material-laptop: Operating Environment
+
+Python 3.8 or higher
+
 ## Installation
-```console
-$ pip install promptogen
+
+```sh
+pip install promptogen
 ```
 
 ## Importing
@@ -56,7 +61,7 @@ import promptogen as pg
 
 ## How to Use
 
-### Creating Prompts
+### Creating a Prompt
 
 ```python
 import promptogen as pg
@@ -97,194 +102,167 @@ To send an instance of the `Prompt` class to the LLM (Large Language Model) in a
 
 PromptoGen supports various formatting styles:
 
-- `key: value` format
-- JSON format
+- KeyValue Format: `key: value`
+- JSON Format: `{"key": "value"}`
 - etc.
 
-### Basic Structure of KeyValue Format
 
-The KeyValue prompt format has the following basic structure. Whether to display parameter information or templates can be set with `PromptFormatterConfig`.
+#### Basic Structure of Prompt Format
 
-```
-<Prompt Description>
+The basic structure of the prompt format is as follows:
 
-Input Parameters:
-  - <Description of Input Parameter 1>
-  - <Description of Input Parameter 2>
-  - ...
+=== "Description"
 
-Output Parameters:
-    - <Description of Output Parameter 1>
-    - <Description of Output Parameter 2>
-    - ...
+    ```console title="Prompt Description" hl_lines="1"
+    --8<-- "index/format_template.txt:key_value_format_template"
+    ```
 
-Template:
-Input:
-<Name of Input Parameter 1>: <Example of Input Parameter 1>
-<Name of Input Parameter 2>: <Example of Input Parameter 2>
-...
-Output:
-<Name of Output Parameter 1>: <Example of Output Parameter 1>
-<Name of Output Parameter 2>: <Example of Output Parameter 2>
-...
+=== "Input Parameters"
 
-Example 1:
-Input:
-<Name of Input Parameter 1>: <Value of Input Parameter 1>
-<Name of Input Parameter 2>: <Value of Input Parameter 2>
-...
-Output:
-<Name of Output Parameter 1>: <Value of Output Parameter 1>
-<Name of Output Parameter 2>: <Value of Output Parameter 2>
-...
+    ```console title="Input Parameters" hl_lines="3-6"
+    --8<-- "index/format_template.txt:key_value_format_template"
+    ```
 
-...
-```
+=== "Output Parameters"
+
+    ```console title="Output Parameters" hl_lines="8-11"
+    --8<-- "index/format_template.txt:key_value_format_template"
+    ```
+
+=== "Template"
+
+    ```console title="Template" hl_lines="13-21"
+    --8<-- "index/format_template.txt:key_value_format_template"
+    ```
+
+=== "Few-shot Examples"
+
+    ```console title="Few-shot Examples" hl_lines="23-33"
+    --8<-- "index/format_template.txt:key_value_format_template"
+    ```
+
+=== "Input Value"
+
+    ```console title="Input Value" hl_lines="37-40"
+    --8<-- "index/format_template.txt:key_value_format_template"
+    ```
 
 To use the `key: value` format for the prompt, use the `pg.KeyValuePromptFormatter`.
+ Whether to display parameter information or templates can be set with `PromptFormatterConfig`.
 
 By using the `formatter.format_prompt` method, you can convert the prompt and its corresponding input into a string.
 
-```python
-formatter = pg.KeyValuePromptFormatter()
+=== "KeyValue Format for Prompt"
 
-input_value = {
-    "text": "In the realm of software engineering, ...",
-}
-print(formatter.format_prompt(summarizer, input_value))
-```
+    ```python hl_lines="8 13"
+    import promptogen as pg
 
-Console output:
+    summarizer = pg.Prompt(
+        name="Text Summarizer and Keyword Extractor",
+        # ...
+    )
 
-```console
-Summarize text and extract keywords.
+    formatter = pg.KeyValuePromptFormatter()
 
-Input Parameters:
-  - text: Text to summarize
+    input_value = {
+        "text": "In the realm of software engineering, ...",
+    }
+    print(formatter.format_prompt(summarizer, input_value))
+    ```
 
-Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
+=== "JSON Format for Prompt"
 
-Template:
-Input:
-text: "This is a sample text to summarize."
-Output:
-summary: "This is a summary of the text."
-keywords: ['sample', 'text', 'summarize']
+    ```python hl_lines="8 13"
+    import promptogen as pg
 
-Example 1:
-Input:
-text: "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
-Output:
-summary: "A group of friends enjoyed an afternoon playing sports and making memories at a local park."
-keywords: ['friends', 'park', 'sports', 'memories']
+    summarizer = pg.Prompt(
+        name="Text Summarizer and Keyword Extractor",
+        # ...
+    )
 
---------
+    formatter = pg.JsonPromptFormatter()
 
-Input:
-text: "In the realm of software engineering, ..."
-Output:
-```
+    input_value = {
+        "text": "In the realm of software engineering, ...",
+    }
+    print(formatter.format_prompt(summarizer, input_value))
+    ```
 
-### JSON Format for Prompt
+<!-- <> -->
 
-Using `pg.JsonPromptFormatter`, you can convert the prompt and its input into a JSON-formatted string.
+=== "KeyValue Format for Prompt"
 
-```python
-formatter = pg.JsonPromptFormatter()
+    ```console title="Console Output" hl_lines="12 14-15 19 21-22 27"
+    --8<-- "index/format_template.txt:key_value_format_summarizer"
+    ```
 
-input_value = {
-    "text": "In the realm of software engineering, ...",
-}
-print(formatter.format_prompt(summarizer, input_value))
-```
+=== "JSON Format for Prompt"
 
-Console output:
-
-````console
-Summarize text and extract keywords.
-
-Output a JSON-formatted string without outputting any other strings.
-Be careful with the order of brackets in the json.
-
-Input Parameters:
-  - text: Text to summarize
-
-Output Parameters:
-  - summary: Summary of text
-  - keywords: Keywords extracted from text
-
-Template:
-Input:
-```json
-{
- "text": "This is a sample text to summarize."
-}```
-Output:
-```json
-{
- "summary": "This is a summary of the text.",
- "keywords": [
-  "sample",
-  "text",
-  "summarize"
- ]
-}```
-
-Example 1:
-Input:
-```json
-{
- "text": "One sunny afternoon, a group of friends decided to gather at the nearby park to engage in various games and activities. They played soccer, badminton, and basketball, laughing and enjoying each other's company while creating unforgettable memories together."
-}```
-Output:
-```json
-{
- "summary": "A group of friends enjoyed an afternoon playing sports and making memories at a local park.",
- "keywords": [
-  "friends",
-  "park",
-  "sports",
-  "memories"
- ]
-}```
-
---------
-
-Input:
-```json
-{
- "text": "In the realm of software engineering, developers often collaborate on projects using version control systems like Git. They work together to create and maintain well-structured, efficient code, and tackle issues that arise from implementation complexities, evolving user requirements, and system optimization."
-}```
-Output:
-````
+    ````console title="Console Output" hl_lines="3-4 15-18 20-28 32-35 37-46 51-54"
+    --8<-- "index/format_template.txt:json_format_summarizer"
+    ````
 
 ### Parsing Outputs from Large Language Models
 
 After receiving the prompt string as input, you obtain an output from a large language model (like GPT-3.5, GPT-4).
 
-```console
-summary: "This is a summary of the text."
-keywords: ['sample', 'text', 'summarize']
-```
+=== "KeyValue Format for Prompt"
+    ```console title="LLM Output"
+    summary: "This is a summary of the text."
+    keywords: ['sample', 'text', 'summarize']
+    ```
+
+=== "JSON Format for Prompt"
+
+    ````console title="LLM Output"
+    ```json
+    {
+        "summary": "This is a summary of the text.",
+        "keywords": ["sample", "text", "summarize"]
+    }
+    ```
+    ````
 
 You can parse this output as:
 
-```python
-formatter = pg.KeyValuePromptFormatter()
+=== "KeyValue Format for Prompt"
 
-raw_resp = """summary: "This is a summary of the text."
-keywords: ['sample', 'text', 'summarize']"""
-summarized_resp = formatter.parse(summarizer, raw_resp)
-print(summarized_resp)
-```
+    ```python hl_lines="3 7"
+    import promptogen as pg
 
-Console output:
+    formatter = pg.KeyValuePromptFormatter()
 
-```console
-{'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
-```
+    raw_resp = """summary: "This is a summary of the text."
+    keywords: ['sample', 'text', 'summarize']"""
+    summarized_resp = formatter.parse(summarizer, raw_resp)
+    print(summarized_resp)
+    ```
+
+    ```console title="Console Output"
+    {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
+    ```
+
+
+=== "JSON Format for Prompt"
+
+    ```python hl_lines="3 11"
+    import promptogen as pg
+
+    formatter = pg.JsonPromptFormatter()
+
+    raw_resp = """```json
+    {
+        "summary": "This is a summary of the text.",
+        "keywords": ["sample", "text", "summarize"]
+    }
+    ```"""
+    summarized_resp = formatter.parse(summarizer, raw_resp)
+    print(summarized_resp)
+    ```
+
+    ```console title="Console Output"
+    {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
+    ```
 
 ### Saving the Prompt
 

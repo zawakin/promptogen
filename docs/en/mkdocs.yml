@@ -48,6 +48,8 @@ theme:
   - content.action.view
   - content.code.annotate
   - content.code.copy
+  - content.tabs.link
+  - header.autohide
   - content.tooltips
   - navigation.expand
   - navigation.footer
@@ -75,7 +77,7 @@ markdown_extensions:
     pygments_lang_class: true
 - pymdownx.snippets:
     base_path: ../../docs_src
-    dedent_subsections: True
+    dedent_subsections: true
 - pymdownx.superfences: null
 - abbr
 - admonition
@@ -91,6 +93,9 @@ markdown_extensions:
     smart_enable: all
 - pymdownx.caret
 - pymdownx.details
+- pymdownx.emoji:
+    emoji_generator: !!python/name:materialx.emoji.to_svg
+    emoji_index: !!python/name:materialx.emoji.twemoji
 - pymdownx.highlight:
     anchor_linenums: true
     line_spans: __span
@@ -103,6 +108,11 @@ markdown_extensions:
     repo: mkdocs-material
 - pymdownx.mark
 - pymdownx.smartsymbols
+- pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format
 - pymdownx.tabbed:
     alternate_style: true
 - pymdownx.tasklist:
@@ -121,4 +131,4 @@ extra:
     provider: google
     property: !ENV GOOGLE_ANALYTICS_KEY
 extra_css:
-  - "stylesheets/extra.css"
+- stylesheets/extra.css

@@ -2,7 +2,7 @@
 
 ## 必要なライブラリをインストールする
 
-```console
+```sh
 pip install promptogen openai python-dotenv colorama
 ```
 

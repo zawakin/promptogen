@@ -35,6 +35,13 @@ summarizer = pg.Prompt(
 )
 # --8<-- [end:summarizer]
 
+# --8<-- [start:summarizer_omit]
+summarizer = pg.Prompt(
+    name="Text Summarizer and Keyword Extractor",
+    # omitting description, input_parameters, output_parameters, template, and examples
+)
+# --8<-- [end:summarizer_omit]
+
 # --8<-- [start:format_prompt_without_input]
 formatter = pg.KeyValuePromptFormatter()
 print(formatter.format_prompt_without_input(summarizer))

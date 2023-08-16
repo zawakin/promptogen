@@ -1,14 +1,15 @@
-## インポート
-    
-```python
---8<-- "quickstart/quickstart.py:import"
-```
+## テキスト要約＆キーワード抽出プロンプトを作成する
 
-## 簡単なプロンプトを作成する
-
-まずは、簡単なプロンプトを作成してみましょう。このクイックスタートガイドでは、テキストを入力として受け取り、そのテキストの要約文とキーワードを出力するプロンプトを作成します。
+まずは、プロンプトを作成してみましょう。このクイックスタートガイドでは、テキストを入力として受け取り、そのテキストの要約文とキーワードを出力するプロンプトを作成します。
 
 つまり、 `(text: str) -> (summary: str, keywords: List[str])` という関数を実現するプロンプトを作成します。
+
+```mermaid
+graph TD
+    Input("text: str") --> Function["テキスト要約＆キーワード抽出"]
+    Function --> Output1("summary: str")
+    Function --> Output2("keywords: List[str]")
+```
 
 PromptoGenには、プロンプトを表現するためのデータクラス(`pg.Prompt`)が用意されています。
 このデータクラスを使って、プロンプトを作成します。
@@ -29,7 +30,9 @@ PromptoGenには、プロンプトを表現するためのデータクラス(`pg
 
 これらの情報を使って、プロンプトを作成します。
 
-```python
+```python title="quickstart.py"
+--8<-- "quickstart/quickstart.py:import"
+
 --8<-- "quickstart/quickstart.py:summarizer"
 ```
 
@@ -44,13 +47,15 @@ PromptoGenでは、プロンプトを文字列にするためのフォーマッ�
 入力パラメータなしで文字列にフォーマットするには、フォーマッターの `format_prompt_without_input` メソッドを使用します。
 このメソッドは、プロンプトとフォーマッターを引数に取り、プロンプトを文字列にフォーマットします。
 
-```python
+```python title="quickstart.py" hl_lines="8-9"
+--8<-- "quickstart/quickstart.py:import"
+
+--8<-- "quickstart/quickstart.py:summarizer_omit"
+
 --8<-- "quickstart/quickstart.py:format_prompt_without_input"
 ```
 
-コンソール出力:
-
-```console
+```console title="コンソール出力"
 --8<-- "quickstart/output.txt:format_prompt_without_input"
 ```
 
@@ -62,19 +67,40 @@ PromptoGenでは、プロンプトを文字列にするためのフォーマッ�
 
 プロンプトを入力パラメータ込みで文字列にフォーマットするには、`format_prompt` メソッドを使用します。
 
-```python
+```python title="quickstart.py" hl_lines="8-11"
+--8<-- "quickstart/quickstart.py:import"
+
+--8<-- "quickstart/quickstart.py:summarizer_omit"
+
 --8<-- "quickstart/quickstart.py:format_prompt"
 ```
 
-コンソール出力:
-
-```console
+```console hl_lines="33-37" title="コンソール出力"
 --8<-- "quickstart/output.txt:format_prompt"
 ```
 
 ## 大規模言語モデルを用いて出力を生成する
 
 続いて、大規模言語モデルからの出力を生成してみましょう。
+
+PromptoGen において、大規模言語モデルとの通信は `TextLLM` という抽象クラスを介して行います。
+
+`TextLLM` は、PromptoGen で大規模言語モデルを統一的に扱うための抽象クラスです。
+ `pg.FunctionBasedTextLLM` は、関数を用いて大規模言語モデルからの出力を生成する `TextLLM` の実装です。
+
+```python
+import promptogen as pg
+
+def generate_text_by_text(text: str) -> str:
+    # ここで大規模言語モデルからの出力を生成する
+    return "<generated text>"
+
+text_llm = pg.FunctionBasedTextLLM(
+    generate_text_by_text=generate_text_by_text,
+) 
+```
+
+### 例: OpenAI ChatGPT API を用いて出力を生成する
 
 このライブラリでは、大規模言語モデルからの出力を生成するための機能は提供していませんが、OpenAI ChatGPT API などを用いることで実現できます。
 
@@ -83,21 +109,29 @@ PromptoGenでは、プロンプトを文字列にするためのフォーマッ�
 あらかじめ、OpenAI API Key と Organization ID を環境変数に設定しておきます。
 
 ```python
+--8<-- "quickstart/quickstart.py:import"
+
 --8<-- "quickstart/quickstart.py:text_llm"
 ```
 
-`TextLLM` は、PromptoGen で大規模言語モデルを統一的に扱うための抽象クラスです。 `pg.FunctionBasedTextLLM` は、関数を用いて大規模言語モデルからの出力を生成する `TextLLM` の実装です。
-
 続いて、プロンプトを入力パラメータ込みで文字列にフォーマットし、大規模言語モデルからの出力を生成してみましょう。
 
-```python
+```python title="quickstart.py" hl_lines="3-7 17-18"
+--8<-- "quickstart/quickstart.py:import"
+
+# ...(省略)...
+
+text_llm = pg.FunctionBasedTextLLM(
+    # ...(省略)...
+)
+
+--8<-- "quickstart/quickstart.py:summarizer_omit"
+
 --8<-- "quickstart/quickstart.py:generate"
 ```
 
-コンソール出力:
 
-
-```console
+```console title="コンソール出力"
 --8<-- "quickstart/output.txt:generate"
 ```
 
@@ -106,13 +140,23 @@ PromptoGenでは、プロンプトを文字列にするためのフォーマッ�
 続いて、LLM出力は単なる文字列なので、Pythonオブジェクトに変換してみましょう。
 `formatter.parse` メソッドを使用することで、LLMからの出力文字列をプロンプトの出力パラメータを用いてパースできます。パースの結果はPythonの `dict` に格納されます。
 
-```python
+```python title="quickstart.py" hl_lines="20-21"
+--8<-- "quickstart/quickstart.py:import"
+
+# ...(省略)...
+
+text_llm = pg.FunctionBasedTextLLM(
+    # ...(省略)...
+)
+
+--8<-- "quickstart/quickstart.py:summarizer_omit"
+
+--8<-- "quickstart/quickstart.py:generate"
+
 --8<-- "quickstart/quickstart.py:parse"
 ```
 
-コンソール出力:
-
-```console
+```console title="コンソール出力"
 --8<-- "quickstart/output.txt:parse"
 ```
 

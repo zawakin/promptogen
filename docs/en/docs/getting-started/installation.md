@@ -6,8 +6,8 @@
 
 ## Installation
 
-```console
-$ pip install promptogen
+```sh
+pip install promptogen
 ```
 
 ## Verification of Operation
