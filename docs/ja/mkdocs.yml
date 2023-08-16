@@ -6,8 +6,8 @@ nav:
 - PromptoGen: index.md
 - はじめに:
   - インストール: getting-started/installation.md
+  - 概要: getting-started/overview.md
   - クイックスタート: getting-started/quickstart.md
-  - PromptoGenとは: getting-started/overview.md
   - 基本モデルを理解しよう:
     - Valueクラス: getting-started/value.md
     - Promptクラス: getting-started/prompt.md
@@ -16,9 +16,9 @@ nav:
     - Valueをパースする: getting-started/parse-value.md
     - Promptをフォーマットする: getting-started/format-prompt.md
     - LLM出力をパースする: getting-started/parse-prompt-output.md
-  - 便利な機能:
+  - 機能:
     - TextLLMインターフェイス: getting-started/text-llm.md
-    - PromptRunnerを使う: getting-started/prompt-runner.md
+    - PromptRunnerインターフェイス: getting-started/prompt-runner.md
   - コンセプト:
     - コンセプト: concepts/concept.md
 - 応用例:
@@ -45,44 +45,49 @@ theme:
     - scheme: slate
       primary: indigo
   features:
-    - announce.dismiss
-    - content.action.edit
-    - content.action.view
-    - content.code.annotate
-    - content.code.copy
-    - content.tabs.link
-    - content.tooltips
-    - header.autohide
-    - navigation.expand
-    - navigation.footer
-    - navigation.indexes
-    # - navigation.instant
-    # - navigation.prune
-    - navigation.sections
-    - navigation.tabs
-    # - navigation.tabs.sticky
-    - navigation.top
-    - navigation.tracking
-    - search.highlight
-    - search.share
-    - search.suggest
-    - toc.follow
+  - announce.dismiss
+  - content.action.edit
+  - content.action.view
+  - content.code.annotate
+  - content.code.copy
+  - content.tabs.link
+  # - header.autohide
+  - content.tooltips
+
+  # navigation:
+  # ref. https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
+  - navigation.expand
+  - navigation.footer
+  - navigation.indexes
+  # - navigation.instant
+  # TODO(zawakin): When we have many pages, we should enable this.
+  # ref. https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-pruning
+  # - navigation.prune
+  - navigation.sections
+  - navigation.tabs
+  # - navigation.tabs.sticky
+  - navigation.top
+  # - navigation.tracking
+  - search.highlight
+  - search.share
+  - search.suggest
+  - toc.follow
   font:
     text: Roboto
     code: Roboto Mono
   logo: /img/icon-white.svg
-  favicon: /img/favicon.png
+  favicon: /img/favicon-32x32.png
   icon:
     logo: logo
   language: ja
 markdown_extensions:
   # - admonition: null
   # - codehilite: null
-  # - pymdownx.keys: null
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+      linenums: !ENV [PYMDOWNX_HIGHLIGHT_LINENUMS, false]
   # - pymdownx.inlinehilite: null
   - pymdownx.snippets:
       base_path: ../../docs_src
@@ -105,10 +110,6 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_generator: !!python/name:materialx.emoji.to_svg
       emoji_index: !!python/name:materialx.emoji.twemoji
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.magiclink:
@@ -129,6 +130,8 @@ markdown_extensions:
   - pymdownx.tilde
 extra:
   social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/zawakin
   - icon: fontawesome/brands/twitter
     link: https://twitter.com/zawawahoge
   alternate:

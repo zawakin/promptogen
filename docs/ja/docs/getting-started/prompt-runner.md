@@ -1,4 +1,4 @@
-`PromptRunner` は、プロンプトを `TextLLM` を通じて実行するためのインターフェースです。
+`PromptRunner` は、プロンプトを実行するためのインターフェースです。
 
 `PromptRunner` は `run_prompt` メソッドを持ちます。このメソッドは、プロンプトと入力を受け取り、出力を `Value` (つまり `dict` )にパースした結果を返します。
 

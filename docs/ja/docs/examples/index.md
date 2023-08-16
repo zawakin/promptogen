@@ -4,7 +4,7 @@ PromptoGen は、軽量ライブラリではありますが、シンプルなデ
 
 以下に、その一部を紹介します。
 
-### プロンプトの生成
+### プロンプトの自動生成
 
 - [Context QA](context-qa.md)
 - [タスク分割](task-splitter.md)

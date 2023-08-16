@@ -3,7 +3,7 @@ site_url: https://promptogen.zawakin.dev/
 repo_url: https://github.com/zawakin/promptogen
 edit_uri: edit/main/docs/en/docs/
 nav:
-- PromptoGen: index.md
+- Home: index.md
 - Getting Started:
   - Installation: getting-started/installation.md
   - Quick Start: getting-started/quickstart.md
@@ -18,21 +18,22 @@ nav:
     - Parse LLM Output: getting-started/parse-prompt-output.md
   - Useful Features:
     - TextLLM Interface: getting-started/text-llm.md
-    - Use PromptRunner: getting-started/prompt-runner.md
+    - PromptRunner Interface: getting-started/prompt-runner.md
   - Concepts:
-    - Concepts: concepts/concept.md
+    - Concepts of PromptoGen ("Modularization" and "Keeping the Library Small"): concepts/concept.md
 - Application Examples:
   - Examples: examples/index.md
   - Collaboration with LLM:
-    - OpenAITextLLM: examples/openai-text-llm.md
-  - Auto-prompt Generation:
-    - Context QA: examples/context-qa.md
-    - Task Splitting: examples/task-splitter.md
+    - Implementation of TextLLM using OpenAI API: examples/openai-text-llm.md
+  - Automatic Prompt Generation:
+    - Generate Prompt of Context QA: examples/context-qa.md
+    - Generate Prompt of Task Splitting: examples/task-splitter.md
   - LLM Inference Process Output:
     - Reasoning for Input/Output (Context QA): examples/context-qa-reasoning.md
     - Adding Reasoning Process to Prompt: examples/prompt-reasoning.md
 - Contribution Guide: contributing.md
 - Language: language.md
+
 theme:
   name: material
   theme: null
@@ -49,15 +50,23 @@ theme:
   - content.code.annotate
   - content.code.copy
   - content.tabs.link
-  - header.autohide
+  # - header.autohide
   - content.tooltips
+
+  # navigation:
+  # ref. https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/
   - navigation.expand
   - navigation.footer
   - navigation.indexes
+  # - navigation.instant
+  # TODO(zawakin): When we have many pages, we should enable this.
+  # ref. https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-pruning
+  # - navigation.prune
   - navigation.sections
   - navigation.tabs
+  # - navigation.tabs.sticky
   - navigation.top
-  - navigation.tracking
+  # - navigation.tracking
   - search.highlight
   - search.share
   - search.suggest
@@ -66,7 +75,7 @@ theme:
     text: Roboto
     code: Roboto Mono
   logo: /img/icon-white.svg
-  favicon: /img/favicon.png
+  favicon: /img/favicon-32x32.png
   icon:
     logo: logo
   language: en
@@ -75,6 +84,7 @@ markdown_extensions:
     anchor_linenums: true
     line_spans: __span
     pygments_lang_class: true
+    linenums: !ENV [PYMDOWNX_HIGHLIGHT_LINENUMS, false]
 - pymdownx.snippets:
     base_path: ../../docs_src
     dedent_subsections: true
@@ -96,10 +106,6 @@ markdown_extensions:
 - pymdownx.emoji:
     emoji_generator: !!python/name:materialx.emoji.to_svg
     emoji_index: !!python/name:materialx.emoji.twemoji
-- pymdownx.highlight:
-    anchor_linenums: true
-    line_spans: __span
-    pygments_lang_class: true
 - pymdownx.inlinehilite
 - pymdownx.keys
 - pymdownx.magiclink:
@@ -120,6 +126,8 @@ markdown_extensions:
 - pymdownx.tilde
 extra:
   social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/zawakin
   - icon: fontawesome/brands/twitter
     link: https://twitter.com/zawawahoge
   alternate:

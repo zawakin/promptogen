@@ -1,5 +1,3 @@
-# Installation Instructions
-
 ## Operating Environment
 
 - Python 3.8 or higher

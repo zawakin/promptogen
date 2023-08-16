@@ -38,7 +38,7 @@ summarizer = pg.Prompt(
 # --8<-- [start:summarizer_omit]
 summarizer = pg.Prompt(
     name="Text Summarizer and Keyword Extractor",
-    # omitting description, input_parameters, output_parameters, template, and examples
+    # ...(other parameters omitted)...
 )
 # --8<-- [end:summarizer_omit]
 
@@ -83,6 +83,14 @@ text_llm = pg.FunctionBasedTextLLM(
     generate_text_by_text=lambda input_text: generate_chat_completion(input_text, "gpt-3.5-turbo"),
 )
 # --8<-- [end:text_llm]
+
+# --8<-- [start:text_llm_omit]
+# ...(omitted)...
+
+text_llm = pg.FunctionBasedTextLLM(
+    # ...(omitted)...
+)
+# --8<-- [end:text_llm_omit]
 
 # --8<-- [start:generate]
 raw_req = formatter.format_prompt(summarizer, input_value)

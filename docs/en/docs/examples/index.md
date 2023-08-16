@@ -1,13 +1,13 @@
-If you haven't read it yet, it's recommended to read [Getting Started](../getting-started/installation.md) first.
+If you haven't read it yet, we recommend reading [Getting Started](../getting-started/installation.md) first.
 
-While PromptoGen is a lightweight library, it represents prompts with simple data classes, making it easy to perform abstract operations.
+PromptoGen is a lightweight library, but since it represents prompts with simple data classes, it allows for easy abstract operations.
 
-Below are some of its features:
+Below, we introduce some of its features.
 
-### Prompt Creation
+### Automatic prompt generation
 
 - [Context QA](context-qa.md)
-- [Task Splitting](task-splitter.md)
+- [Task Splitter](task-splitter.md)
 
 ### Generating LLM Inferences
 
