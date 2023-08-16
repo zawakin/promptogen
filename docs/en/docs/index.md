@@ -6,9 +6,11 @@
 
 :material-file-document-alert: Documentation: https://promptogen.zawakin.dev/
 
-:material-source-repository: Source Code: https://github.com/zawakin/promptogen
+:material-github: Source Code: https://github.com/zawakin/promptogen
 
 :material-rocket: For the Quick Start Guide, click [here](getting-started/installation.md).
+
+:material-earth: [English](/) | [日本語](/ja/)
 
 ----
 
