@@ -38,11 +38,18 @@ theme:
   name: material
   theme: null
   palette:
-  - scheme: default
-    primary: black
-    accent: black
-  - scheme: slate
-    primary: indigo
+    - scheme: default
+      primary: black
+      accent: black
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue grey
+      accent: blue grey
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   features:
   - announce.dismiss
   - content.action.edit
