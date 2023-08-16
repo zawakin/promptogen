@@ -82,8 +82,8 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: /img/icon-white.svg
-  favicon: /img/favicon-32x32.png
+  logo: img/icon-white.svg
+  favicon: img/favicon-32x32.png
   icon:
     logo: logo
   language: ja
@@ -144,8 +144,10 @@ extra:
   alternate:
   - link: /
     name: en - English
+    lang: en
   - link: /ja/
     name: ja - 日本語
+    lang: ja
   analytics:
     provider: google
     property: !ENV GOOGLE_ANALYTICS_KEY
