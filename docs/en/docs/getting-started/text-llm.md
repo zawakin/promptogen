@@ -1,8 +1,37 @@
-The `TextLLM` abstract class is an interface for Large Language Models (LLM) that generate text from text.
+## TextLLM: Abstraction of Large Language Models
 
-`TextLLM` has a `generate` method. This method takes text as input and returns text.
+With PromptoGen, text generation with Large Language Models (LLM) is done via `pg.TextLLM`. Understanding and using this interface properly is key to making the most of this library.
+
+### Usage Example:
 
 ```python
+import promptogen as pg
+
+class YourTextLLM(pg.TextLLM):
+    def __init__(self, model: str):
+        self.model = model
+
+    def generate(self, text: str) -> str:
+        return generate_by_your_text_llm(text, self.model)
+
+text_llm = YourTextLLM(model="your-model")
+```
+
+In the example above, the `YourTextLLM` class is defined to use any desired LLM. The actual connection to the LLM and text generation logic is delegated to the `generate_by_your_text_llm` method.
+
+### Why is the `pg.TextLLM` interface important?
+
+PromptoGen is designed to be independent from specific LLM implementations (e.g., `gpt-3.5-turbo`, `gpt-4`). This allows for easy switching between different LLM versions or other language models. The `pg.TextLLM` interface plays a central role in achieving this independence. Through this interface, users can inject their own LLM implementations into PromptoGen.
+
+Thus, through the `pg.TextLLM` interface, PromptoGen retains flexibility and extensibility.
+
+## About `TextLLM`
+
+The `TextLLM` abstract class is an interface for Large Language Models (LLM) that generate text from text.
+
+`TextLLM` has a `generate` method. This method takes in text and returns text.
+
+```python title="Reference: text_llm.py"
 class LLM(ABC):
     """Language model interface."""
 
@@ -16,13 +45,11 @@ class TextLLM(LLM, ABC):
         pass
 ```
 
-Promptogen is designed to be independent of any specific LLM. `TextLLM` is a prime example of this. By defining such interfaces, various large language models can be handled uniformly.
+Promptogen is designed to not depend on a specific LLM. `TextLLM` is a prime example of this. By defining such interfaces, various large language models can be handled uniformly.
 
-## Method 1: Implementation using a custom class
+## Implementation Example 1: Using a Custom Class
 
-### Example using the OpenAI API
-
-Here is an example of implementing `TextLLM` using the OpenAI API. For instance, you can define a function called `generate_chat_completion` as follows:
+For instance, here's an example of implementing `TextLLM` using the OpenAI API. You can define a function like `generate_chat_completion` as shown below.
 
 ```python
 import openai
@@ -45,7 +72,7 @@ def generate_chat_completion(text: str, model: str) -> str:
     return raw_resp
 ```
 
-By inheriting the `TextLLM` class, you can implement `TextLLM`.
+By inheriting from the `TextLLM` class, you can implement `TextLLM`.
 
 ```python
 import promptogen as pg
@@ -58,13 +85,13 @@ class OpenAITextLLM(pg.TextLLM):
         return generate_chat_completion(text, self.model)
 ```
 
-## Method 2: FunctionBasedTextLLM
+## Implementation Example 2: Implementing `TextLLM` based on a Function
 
-The `FunctionBasedTextLLM` class is one of the implementations of the Large Language Model (LLM) that generates text from text.
+The `FunctionBasedTextLLM` class is one implementation of Large Language Models (LLM) that generate text from text.
 
 By specifying a function of the form `(input_text: str) -> str`, you can implement `TextLLM`.
 
-Compared to creating a custom class, this allows you to implement `TextLLM` more easily.
+Compared to creating a custom class, you can implement `TextLLM` more simply.
 
 ```python
 text_llm = FunctionBasedTextLLM(
@@ -72,7 +99,7 @@ text_llm = FunctionBasedTextLLM(
 )
 ```
 
-## How to use
+## How to Use
 
 ```python
 text_llm = OpenAITextLLM("gpt-3.5-turbo")
@@ -80,3 +107,5 @@ text_llm = OpenAITextLLM("gpt-3.5-turbo")
 print(text_llm.generate("Hello, I'm a human."))
 # Hello! How can I assist you today as an AI?
 ```
+
+Essentially, by building implementations that rely on `pg.TextLLM`, it becomes easier to construct a **generic system that doesn't depend on any specific LLM**.

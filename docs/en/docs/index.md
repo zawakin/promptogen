@@ -3,9 +3,13 @@
 <a href="/" target="_blank"><img src="img/logo-light-mode.svg#only-light" style="width: 90%; padding-left: 10%;"></a>
 <a href="/" target="_blank"><img src="img/logo-dark-mode.svg#only-dark" style="width: 90%; padding-left: 10%;"></a>
 
+<p style="text-align: center;">
+    <em>Bridging LLMs and Python Seamlessly.</em>
+</p>
+
 ----
 
-:material-file-document-alert: Documentation: https://promptogen.zawakin.dev/
+:material-file-document-alert: Documentation: https://promptogen.zawakin.dev
 
 :material-github: Source Code: https://github.com/zawakin/promptogen
 
@@ -17,35 +21,41 @@
 
 ## :material-book-multiple: About PromptoGen
 
-### :material-lightbulb: Project Vision
+### :material-lightbulb: PromptoGen Project Vision
 
-PromptoGen facilitates the conversion between text outputs of large language models and Python objects. This allows developers to concentrate on prompt generation and analysis without the need to directly interact with these expansive language models.
+**"Achieving efficient and extensible communication with Large Language Models (LLM)"**
 
-### :material-thought-bubble: Problem Being Solved
+1. **Seamless Conversion between LLM I/O and Python Objects**: Facilitate natural and efficient communication with LLMs.
+2. **Unique Abstraction Interface**: Offer users high customizability and extensibility.
+3. **Eliminating Dependency on LLM Communication**: Aim to build a robust system capable of flexibly adapting to future evolutions and changes in LLMs.
 
-A multitude of libraries exist that handle everything from interfacing with vast language models to text generation and interpretation. However, these all-in-one solutions can hinder the ability to customize specific functionalities.
+### :material-thought-bubble: Problems with Existing Libraries
 
-### :material-check-circle: Solution
+Other libraries: Due to often managing everything from LLM communication to text generation and parsing, the following issues arise:
 
-PromptoGen serves as a linguistic translation tool to simplify interactions with LLMs (Large Language Models). It offers unique features such as:
+1. :material-thought-bubble: **Difficulty in forming a prompt-engineering ecosystem.**
+2. :material-thought-bubble: **High dependence on LLM, making it vulnerable to LLM changes and evolution.**
+3. :material-thought-bubble: **Complex implementation with low customizability.**
 
-1. **Use of the `Prompt` Data Class**:
-  
-    - This data class has been structured to outline the fundamental details and format for liaising with an LLM.
-    - Each `Prompt` encompasses the name of the prompt, a description, details on input & output parameters, and specific examples of its application.
+### :material-check-circle: Solutions
 
-2. **Generation of Prompt Strings and Decoding Outputs using `PromptFormatter`**:
-    
-    - The `PromptFormatter` accepts a `Prompt` alongside an input value, transforming them into a string prompt that the LLM can interpret.
-    - It also modifies the textual response from the LLM into a Python data format (primarily dictionaries) based on the specifics of the associated `Prompt`.
+1. :material-check-circle: **`Prompt` Data Class**: **Fostering a prompt engineering ecosystem** 
+    - Defines basic LLM communication information (name, description, input/output info, template, examples).
+2. :material-check-circle: **`TextLLM` Interface**: **Ensuring independence from LLM implementations**
+    - Communication with LLM is through the `TextLLM` interface.
+3. :material-check-circle: **`PromptFormatter` Interface**: **Enhancing customizability**
+    - Users can define any formatter.
+    - Generates prompt strings from `Prompt` and input.
+    - Converts LLM text output to Python data structures.
 
-### :material-star-shooting: Benefits to Users
 
-1. **Modularity**: The liberty to integrate with other models or software.
-2. **Extensibility**: The capability to incorporate custom formatters and interpreters.
-3. **Independence**: Stability regardless of alterations in emerging language models or libraries.
-4. **Maintainability**: Hassle-free management and troubleshooting.
-5. **Development Efficiency**: Enables focus on creation without fretting about liaising with expansive language models.
+### :material-star-shooting: Benefits for Users
+- :material-puzzle: **Modularity**: Freedom to combine.
+- :material-plus: **Extensibility**: Ability to add custom formatters and parsers.
+- :material-shield-half-full: **Independence**: Unaffected by new models or libraries.
+- :material-wrench: **Maintainability**: Simplified management and troubleshooting.
+- :material-clock: **Development Efficiency**: No need to change the implementation for each LLM
+
 
 ## :material-laptop: Operating Environment
 
@@ -278,9 +288,65 @@ summarizer.to_json_file("summarizer.json")
 ### Loading the Prompt
 
 ```python
+import promptogen as pg
+
 summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
 
+Here's the translated text in English:
+
+### TextLLM: Flexible LLM Integration
+
+Through `pg.TextLLM`, PromptoGen achieves collaboration with a variety of large-scale language models (LLM).
+
+```python title="Implementation example of TextLLM interface"
+import promptogen as pg
+
+class YourTextLLM(pg.TextLLM):
+    def __init__(self, model: str):
+        self.model = model
+
+    def generate(self, text: str) -> str:
+        return generate_by_your_text_llm(text, self.model)
+
+text_llm = YourTextLLM(model="your-model")
+```
+
+By adopting this interface, PromptoGen can seamlessly incorporate different LLMs and their versions. Users can utilize various LLMs in a consistent manner regardless of the specific LLM.
+
+### PromptRunner: Execute Prompts Efficiently
+
+`pg.PromptRunner` supports the execution of prompts simply and efficiently.
+
+```python hl_lines="7 18" title="Prompt execution using PromptRunner"
+import promptogen as pg
+
+# Prepare an LLM that implements the `pg.TextLLM` interface
+text_llm = YourTextLLM(model="your-model")
+
+formatter = pg.KeyValuePromptFormatter()
+runner = pg.TextLLMPromptRunner(llm=text_llm, formatter=formatter)
+
+summarizer = pg.Prompt(
+    name="Text Summarizer and Keyword Extractor",
+    # ...
+)
+
+input_value = {
+    "text": "In the realm of software engineering, ...",
+}
+
+output_value = runner.run_prompt(summarizer, input_value)
+print(output_value)
+```
+
+Advantages of this tool:
+
+1. **Abstraction**: Users can execute prompts without being aware of the specific LLM implementation.
+2. **Consistency**: Changes are minimized when executing the same prompt with different LLMs.
+3. **Extensibility**: Adding new prompts or modifying existing ones is easy.
+
+`pg.PromptRunner` is a key tool for making prompt execution more intuitive and efficient using PromptoGen.
 
 ## Quick Start Guide
 
@@ -290,9 +356,13 @@ Please refer to the [Quick Start Guide](getting-started/quickstart.md).
 
 Refer to [Application Examples](examples/index.md).
 
+- Auto Prompt Generation
+- LLM I/O Inferences Generation
+- ...
+
 ## Dependent Libraries
 
-- [Pydantic](https://docs.pydantic.dev/latest/) ... Used for defining data classes
+PromptoGen only depends on [Pydantic](https://docs.pydantic.dev/latest/) to define the data class.
 
 ## Limitations
 

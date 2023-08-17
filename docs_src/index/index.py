@@ -37,3 +37,32 @@ raw_resp = """summary: 'Software developers collaborate on projects ...'"""
 summarized_resp = formatter.parse(summarizer, raw_resp)
 print('summary:')
 print(f'{summarized_resp["summary"]}')
+
+
+# --8<-- [start:your-text-llm]
+class YourTextLLM(pg.TextLLM):
+    def __init__(self, model: str):
+        self.model = model
+
+    def generate(self, text: str) -> str:
+        return generate_by_your_text_llm(text, self.model)
+
+
+text_llm = YourTextLLM(model="your-model")
+# --8<-- [end:your-text-llm]
+
+# --8<-- [start:prompt-runner]
+formatter = pg.KeyValuePromptFormatter()
+runner = pg.TextLLMPromptRunner(llm=text_llm, formatter=formatter)
+
+summarizer = pg.Prompt(
+    name="Text Summarizer and Keyword Extractor",
+    # ...
+)
+
+input_value = {
+    "text": "In the realm of software engineering, ...",
+}
+output_value = runner.run_prompt(summarizer, input_value)
+print(output_value)
+# --8<-- [end:prompt-runner]
