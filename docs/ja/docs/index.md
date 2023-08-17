@@ -3,9 +3,13 @@
 <a href="/" target="_blank"><img src="img/logo-light-mode.svg#only-light" style="width: 90%; padding-left: 10%;"></a>
 <a href="/" target="_blank"><img src="img/logo-dark-mode.svg#only-dark" style="width: 90%; padding-left: 10%;"></a>
 
+<p style="text-align: center;">
+    <em>LLMとPythonをシームレスにつなぐ。</em>
+</p>
+
 ----
 
-:material-file-document-alert: ドキュメンテーション: https://promptogen.zawakin.dev/
+:material-file-document-alert: ドキュメンテーション: https://promptogen.zawakin.dev
 
 :material-github: ソースコード: https://github.com/zawakin/promptogen
 
@@ -16,41 +20,40 @@
 ----
 
 ## :material-book-multiple: PromptoGenについて
+### :material-lightbulb: PromptoGenのプロジェクトビジョン
 
-### :material-lightbulb: プロジェクトのビジョン
+**「効率的で拡張可能な、大規模言語モデル(LLM)とのコミュニケーションを実現する」**
 
-PromptoGenは、大規模言語モデルのテキスト出力とPythonオブジェクト間の変換を助けるツールです。独自の抽象化インターフェイスを通じて、直接的な大規模言語モデルとの通信の依存性を排除し、プロンプト生成と解析に専念できるようにデザインされています。
+1. **LLM入出力とPythonオブジェクトのシームレスな変換**：LLMとのコミュニケーションを自然に、かつ効率的に行います。
+2. **独自の抽象化インターフェイス**：ユーザーに高いカスタマイズ性と拡張性を提供します。
+3. **LLM通信への依存性排除**：将来のLLMの進化や変更にも柔軟に対応できる堅牢なシステムを構築できるようにすることを目指します。
 
-### :material-thought-bubble: 解決する問題
+### :material-thought-bubble: 解決すべき課題
 
-多くのライブラリは、大規模言語モデルとの通信からテキスト生成・パースまでを全て担当します。これにより、特定の機能のカスタマイズが難しくなるとともに、特定の言語モデルへの強い依存が生じます。
+他のライブラリ: LLM通信からテキスト生成・パースまで担当していることが多いため、以下の課題があります。
+
+1. :material-thought-bubble: **プロンプトエンジニアリングのエコシステムが形成されにくい**
+2. :material-thought-bubble: **LLMに強く依存しているため、LLMの変更・進化に弱い**
+3. :material-thought-bubble: **実装が複雑で、カスタマイズ性が低い**
 
 ### :material-check-circle: ソリューション
 
-PromptoGenは、LLM（Large Language Model）とのコミュニケーションを円滑化するための言語変換ツールとして機能します。その核として`TextLLM`インターフェイスがあり、これによりLLMの具体的な実装からの独立性を確保しています。以下の手順で動作するのがその特徴です。
-
-1. **`Prompt`データクラスの利用**:
-
-    - このデータクラスは、LLMとのコミュニケーションにおけるプロンプトの基本情報やその形式を定義するためのものです。
-    - 各`Prompt`には、プロンプトの名前、説明、入力・出力のパラメータ情報、そして具体的な使用例が含まれています。
-
-2. **`TextLLM`インターフェイスによる独立性の確保**:
-
-    - `TextLLM`インターフェイスを使用することで、具体的なLLMの実装に依存することなく、独自の言語モデルやそのバージョンを容易に取り替えることができます。
-
-3. **`PromptFormatter`によるプロンプト文字列の生成と出力のパース**:
-
-    - `PromptFormatter`は`Prompt`と入力値を受け取り、これをLLMに送信できる形のプロンプト文字列に変換します。
-    - また、LLMからのテキスト形式の出力を、対応する`Prompt`の情報を基にして、プログラムが扱いやすいPythonのデータ構造（特にdict）に変換します。
+1. :material-check-circle: **`Prompt`データクラス**: **プロンプトエンジニアリングのエコシステム形成**
+    - LLMコミュニケーションの基本情報定義（名前、説明、入出力情報、テンプレート、使用例）
+2. :material-check-circle: **`TextLLM`インターフェイス**: **LLM実装からの独立性確保**
+    - データクラスライブラリ`Pydantic`だけへの依存で、LLMの進化にロバスト
+    - LLMとの通信は`TextLLM`インターフェイスを介す
+3. :material-check-circle: **`PromptFormatter`インターフェイス**: **カスタマイズ性の向上**
+    - 任意のフォーマッターを定義できる
+    - `Prompt`と入力からプロンプト文字列生成
+    - LLMテキスト出力をPythonデータ構造に変換
 
 ### :material-star-shooting: ユーザーにとってのメリット
-
-1. **モジュール性**: 他のモデルやライブラリと組み合わせ自由
-2. **拡張性**: 独自のフォーマッターやパーサーを追加可能
-3. **独立性**: 新しい言語モデルやライブラリの影響を受けません
-4. **メンテナンス性**: 管理・トラブルシューティングが簡単
-5. **開発効率**: 大規模言語モデルとの通信の心配なしで開発に専念
-
+- :material-puzzle: **モジュール性**: 組み合わせ自由
+- :material-plus: **拡張性**: 独自フォーマッターやパーサー追加可
+- :material-shield-half-full: **独立性**: 新しいモデルやライブラリの影響なし
+- :material-wrench: **メンテナンス性**: 管理やトラブルシューティングが簡単
+- :material-clock: **開発効率**: LLMごとに実装を変更する必要なし
 
 ## :material-laptop: 動作環境
 

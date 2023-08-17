@@ -1,17 +1,72 @@
-`PromptRunner` は、プロンプトを実行するためのインターフェースです。
+## PromptRunner: プロンプトの実行を簡略化
+
+`pg.PromptRunner`は、PromptoGenの中核的な部分であり、ユーザーが作成したプロンプトを効率よく実行する役割を果たします。最大の特徴は、**具体的なLLMの実装を気にせずにプロンプトを実行できる** 点にあります。これにより、プロンプトの作成や管理が大幅に簡略化されます。
+
+### 使い方:
+
+```python
+import promptogen as pg
+
+# formatterはプロンプトのフォーマットを行うオブジェクト
+formatter = pg.KeyValuePromptFormatter()
+
+# TextLLMのインスタンス作成は`TextLLM`ページを参照
+runner = pg.TextLLMPromptRunner(llm=text_llm, formatter=formatter)
+
+# 実際のプロンプトの作成
+summarizer = pg.Prompt(
+    name="Text Summarizer and Keyword Extractor",
+    # ...
+)
+
+# プロンプトの実行
+input_value = {
+    "text": "In the realm of software engineering, ...",
+}
+output_value = runner.run_prompt(summarizer, input_value)
+print(output_value)
+```
+
+## なぜ `pg.PromptRunner` は便利か?
+
+1. **抽象化**: ユーザーは具体的なLLMの実装を意識せずにプロンプトを実行できます。
+2. **一貫性**: 同じプロンプトを異なるLLMで実行する際の変更を最小限に抑えられます。
+3. **拡張性**: 新しいプロンプトの追加や既存プロンプトの修正が簡単です。
+
+このように、`pg.PromptRunner`は、PromptoGenでのプロンプトの実行を簡便かつ効率的に行うための強力なツールとなっています。
+
+## `PromptoRunner` の概要図
+
+ユーザーは、利用したい `TextLLM` と `PromptFormatter` を選択し、 `PromptRunner` を作成します。
+
+ `PromptRunner` に対し、 `Prompt` と `InputValue` を渡すことで、 `OutputValue` を取得できます。
+
+- `PromptRunner` への入力: `Prompt` と `InputValue`
+- `PromptRunner` からの出力: `OutputValue`
+
+`PromptRunner` は、以下のような流れで動作します。
+
+1. `Prompt` と `InputValue` を受け取る
+2. プロンプト文字列を生成する
+3. 生成したプロンプト文字列を `TextLLM` に渡す
+4. `TextLLM` からの出力を受け取る
+5. `PromptFormatter` により、出力を `OutputValue` に変換する
+6. `OutputValue` を返す
+
+![PromptoGenの概要](../img/promptogen_overview.png)
+
+## `PromptRunner` を実際に使用する
 
 `PromptRunner` は `run_prompt` メソッドを持ちます。このメソッドは、プロンプトと入力を受け取り、出力を `Value` (つまり `dict` )にパースした結果を返します。
 
-```python
+```python title="参考: PromptRunner抽象クラス"
 class PromptRunner(ABC):
-    """A prompt runner is responsible for running a prompt and returning the result."""
-
     @abstractmethod
     def run_prompt(self, prompt: Prompt, input_value: Value) -> Value:
         pass
 ```
 
-## 例: TextLLMPromptRunner
+### 実装例: `pg.TextLLMPromptRunner`
 
 `TextLLMPromptRunner` によるプロンプトの実行は、以下の手順で行われます。
 
@@ -19,27 +74,15 @@ class PromptRunner(ABC):
 2. `TextLLM` を使用して、テキストを生成します。
 3. `PromptFormatter` を使用して、生成されたテキストを解析して、`Value` を返します。
 
-```python
+```python title="pg.TextLLMPromptRunnerの実装を覗いてみる"
 class TextLLMPromptRunner(PromptRunner):
-    """A text-based prompt runner is responsible for running a prompt and returning the result."""
+    # ...
 
     def __init__(self, llm: TextLLM, formatter: PromptFormatter):
-        """Initialize a TextBasedPromptRunner.
-
-        Args:
-            llm: The LLM to use. It must be an instance of TextBasedLLM.
-            formatter: The prompt formatter to use. It must be an instance of PromptFormatter.
-        """
         self.text_llm = llm
         self.formatter = formatter
 
     def run_prompt(self, prompt: Prompt, input_value: Value) -> Value:
-        """Run the given prompt and return the result.
-
-        Args:
-            prompt: The prompt to run. It must be an instance of Prompt.
-            input_value: The input value to use. It must be an instance of Value, which is a dict.
-        """
         raw_req = self.formatter.format_prompt(prompt, input_value)
         raw_resp = self.text_llm.generate(raw_req)
         resp = self.formatter.parse(prompt, raw_resp)

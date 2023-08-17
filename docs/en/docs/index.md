@@ -3,9 +3,13 @@
 <a href="/" target="_blank"><img src="img/logo-light-mode.svg#only-light" style="width: 90%; padding-left: 10%;"></a>
 <a href="/" target="_blank"><img src="img/logo-dark-mode.svg#only-dark" style="width: 90%; padding-left: 10%;"></a>
 
+<p style="text-align: center;">
+    <em>Bridging LLMs and Python Seamlessly.</em>
+</p>
+
 ----
 
-:material-file-document-alert: Documentation: https://promptogen.zawakin.dev/
+:material-file-document-alert: Documentation: https://promptogen.zawakin.dev
 
 :material-github: Source Code: https://github.com/zawakin/promptogen
 
@@ -17,39 +21,41 @@
 
 ## :material-book-multiple: About PromptoGen
 
-### :material-lightbulb: Project Vision
+### :material-lightbulb: PromptoGen Project Vision
 
-PromptoGen is a tool that assists in the conversion between text outputs of large-scale language models and Python objects. Through its unique abstracted interface, it's designed to eliminate dependencies on direct communication with large-scale language models and allow a focus on prompt generation and analysis.
+**"Achieving efficient and extensible communication with Large Language Models (LLM)"**
 
-### :material-thought-bubble: Problem Being Addressed
+1. **Seamless Conversion between LLM I/O and Python Objects**: Facilitate natural and efficient communication with LLMs.
+2. **Unique Abstraction Interface**: Offer users high customizability and extensibility.
+3. **Eliminating Dependency on LLM Communication**: Aim to build a robust system capable of flexibly adapting to future evolutions and changes in LLMs.
 
-Many libraries take on the entirety of tasks from communicating with large-scale language models to generating and parsing texts. This can make customizing specific features challenging and results in a strong dependency on a particular language model.
+### :material-thought-bubble: Problems with Existing Libraries
 
-### :material-check-circle: Solution
+Other libraries: Due to often managing everything from LLM communication to text generation and parsing, the following issues arise:
 
-PromptoGen functions as a language conversion tool for smoothing out communication with LLM (Large Language Model). At its core is the `TextLLM` interface, which ensures independence from the concrete implementations of LLMs. It works through the following procedures:
+1. :material-thought-bubble: **Difficulty in forming a prompt-engineering ecosystem.**
+2. :material-thought-bubble: **High dependence on LLM, making it vulnerable to LLM changes and evolution.**
+3. :material-thought-bubble: **Complex implementation with low customizability.**
 
-1. **Usage of `Prompt` Data Class**:
+### :material-check-circle: Solutions
 
-    - This data class is intended for defining the basic information and format of prompts in communication with LLM.
-    - Each `Prompt` includes the name of the prompt, its description, information about its input-output parameters, and specific use cases.
+1. :material-check-circle: **`Prompt` Data Class**: **Fostering a prompt engineering ecosystem** 
+    - Defines basic LLM communication information (name, description, input/output info, template, examples).
+2. :material-check-circle: **`TextLLM` Interface**: **Ensuring independence from LLM implementations**
+    - Communication with LLM is through the `TextLLM` interface.
+3. :material-check-circle: **`PromptFormatter` Interface**: **Enhancing customizability**
+    - Users can define any formatter.
+    - Generates prompt strings from `Prompt` and input.
+    - Converts LLM text output to Python data structures.
 
-2. **Ensuring Independence through the `TextLLM` Interface**:
-
-    - By using the `TextLLM` interface, you can easily switch to your own language models or their versions without depending on specific LLM implementations.
-
-3. **Generating Prompt Strings and Parsing Outputs with `PromptFormatter`**:
-
-    - The `PromptFormatter` takes a `Prompt` and input values, converting them into a prompt string that can be sent to an LLM.
-    - It also transforms the text-based output from the LLM, based on the corresponding `Prompt` information, into a Python data structure that's easy to handle, especially dictionaries.
 
 ### :material-star-shooting: Benefits for Users
+- :material-puzzle: **Modularity**: Freedom to combine.
+- :material-plus: **Extensibility**: Ability to add custom formatters and parsers.
+- :material-shield-half-full: **Independence**: Unaffected by new models or libraries.
+- :material-wrench: **Maintainability**: Simplified management and troubleshooting.
+- :material-clock: **Development Efficiency**: No need to change the implementation for each LLM
 
-1. **Modularity**: Freely combine with other models or libraries.
-2. **Extensibility**: Can add custom formatters or parsers.
-3. **Independence**: Unaffected by new language models or libraries.
-4. **Maintainability**: Easy management and troubleshooting.
-5. **Development Efficiency**: Focus on development without worrying about communicating with large-scale language models.
 
 ## :material-laptop: Operating Environment
 
