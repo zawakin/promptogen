@@ -41,7 +41,7 @@ jobs:
     - name: Get Old Version
       id: old_version
       run: |
-        version=$(./scripts/extract_version_by_commit.sh ${{ github.event.before }} pyproject.toml)
+        version=$(./scripts/extract_version_by_commit.sh ${{ github.event.pull_request.base.ref }} pyproject.toml)
         if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
           echo "Error: Invalid old version format: $version"
           exit 1
@@ -51,7 +51,7 @@ jobs:
     - name: Get New Version
       id: new_version
       run: |
-        version=$(./scripts/extract_version_by_commit.sh ${{ github.sha }} pyproject.toml)
+        version=$(./scripts/extract_version_by_commit.sh ${{ github.event.pull_request.head.ref }} pyproject.toml)
         if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
           echo "Error: Invalid new version format: $version"
           exit 1
