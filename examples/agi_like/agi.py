@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Tuple
 
 import promptogen as pg
 from examples.llm.openai_util import OpenAITextLLM
@@ -10,7 +10,25 @@ from promptogen.prompt_interceptor.translate_interceptor import ValueTranslatorI
 formatter = pg.KeyValuePromptFormatter()
 llm = OpenAITextLLM(model="gpt-3.5-turbo")
 
-prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
+interceptors = [
+    ValueTranslatorInterceptor(llm=llm, from_lang="Japanese", to_lang="English"),
+]
+
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter, interceptors=interceptors)
+
+# text_summarizer = TextSummarizerPrompt()
+
+# while True:
+#     text = input("> ")
+#     resp = prompt_runner.run_prompt(
+#         text_summarizer,
+#         input_value={
+#             "text": text,
+#         },
+#     )
+#     print(resp["summary"])
+
+# exit()
 
 prompt_creator_prompt = PromptCreatorPrompt()
 
@@ -52,6 +70,8 @@ def setup_prompts():
 
 
 setup_prompts()
+# exit()
+
 
 prompts = PromptCollection.from_json_file("agi_like.json")
 
@@ -61,7 +81,7 @@ ps = prompts.prompts
 from typing import List
 
 
-def model_restructure_problem(initial_description: str) -> tuple[str, str]:
+def model_restructure_problem(initial_description: str) -> Tuple[str, str]:
     resp = prompt_runner.run_prompt(
         ps["model_restructure_problem"],
         input_value={
