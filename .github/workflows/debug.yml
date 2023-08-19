@@ -2,11 +2,11 @@ name: Test
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
     paths:
       - .github/workflows/debug.yml
   push:
-    branches: [ main ]
+    branches: [ master ]
     paths:
       - .github/workflows/debug.yml
 
@@ -16,18 +16,26 @@ jobs:
     name: Debug
     steps:
       - uses: actions/checkout@v3
-      - name: "true && $${{ false }}"
+      - name: "true && $${{ false }}" # executed
         if: true && ${{ false }}
         run: echo "true && false"
-      - name: "true && false"
+
+      - name: "true && false" # not executed
         if: true && false
         run: echo "true && false"
-      - name: "false"
+
+      - name: "false" # not executed
         if: false
         run: echo "false"
-      - name: "$${{ false }}"
+
+      - name: "$${{ false }}" # not executed
         if: ${{ false }}
         run: echo "${{ false }}"
-      - name: "$${{ true && false }}"
+
+      - name: "$${{ true && false }}" # not executed
         if: ${{ true && false }}
         run: echo "${{ true && false }}"
+
+      - name: "true" # not executed
+        if: true
+        run: echo "true"
