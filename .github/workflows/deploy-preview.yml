@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
     paths:
-      - .github/workflows/deploy-preview.yaml
+      - .github/workflows/deploy-preview.yml
 
       - "docs/**"
       - "docs_src/**"
