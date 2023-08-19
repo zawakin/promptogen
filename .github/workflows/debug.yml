@@ -39,3 +39,7 @@ jobs:
       - name: "true" # not executed
         if: true
         run: echo "true"
+
+      - name: "$${{ true }}" # not executed
+        if: ${{ true }}
+        run: echo "${{ true }}"
