@@ -1,0 +1,55 @@
+name: release
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - pyproject.toml
+
+env:
+  POETRY_VERSION: "1.5.1"
+  PYTHON_VERSION: "3.11"
+  WORKING_DIRECTORY: "promptogen"
+  RELEASE_BRANCH: "main"
+  RELEASE_LABEL: "release"
+
+jobs:
+  if_release:
+    if: |
+        ${{ github.event.pull_request.merged == true }}
+        && ${{ contains(github.event.pull_request.labels.*.name, env.RELEASE_LABEL) }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: "./.github/actions/poetry_setup"
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          poetry-version: ${{ env.POETRY_VERSION }}
+          cache-key: "release-v1"
+          install-command: |
+              echo "Running core tests, installing dependencies with poetry..."
+              poetry install
+      - name: Build project for distribution
+        run: poetry build
+      - name: Check Version
+        id: check-version
+        run: |
+          echo version=$(poetry version --short) >> $GITHUB_OUTPUT
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          generateReleaseNotes: true
+          tag: v${{ steps.check-version.outputs.version }}
+          commit: ${{ env.RELEASE_BRANCH }}
+      - name: Publish to PyPI
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          poetry publish
