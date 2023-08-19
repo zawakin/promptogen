@@ -2,11 +2,11 @@ name: Test
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - .github/workflows/debug.yml
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - .github/workflows/debug.yml
 
