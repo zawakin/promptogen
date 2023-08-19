@@ -16,7 +16,7 @@ jobs:
     name: Debug
     steps:
       - uses: actions/checkout@v3
-      - name: "true && ${{ false }}"
+      - name: "true && $${{ false }}"
         if: true && ${{ false }}
         run: echo "true && false"
       - name: "true && false"
@@ -25,6 +25,9 @@ jobs:
       - name: "false"
         if: false
         run: echo "false"
-      - name: "${{ false }}"
+      - name: "$${{ false }}"
         if: ${{ false }}
         run: echo "${{ false }}"
+      - name: "$${{ true && false }}"
+        if: ${{ true && false }}
+        run: echo "${{ true && false }}"
