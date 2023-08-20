@@ -28,6 +28,8 @@ nav:
   - Automatic Prompt Generation:
     - Generate Prompt of Context QA: examples/context-qa.md
     - Generate Prompt of Task Splitting: examples/task-splitter.md
+  - Prompt Interceptor:
+    - Translation Interceptor: examples/translation-interceptor.md
   - LLM Inference Process Output:
     - Reasoning for Input/Output (Context QA): examples/context-qa-reasoning.md
     - Adding Reasoning Process to Prompt: examples/prompt-reasoning.md

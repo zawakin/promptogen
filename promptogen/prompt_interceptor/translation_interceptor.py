@@ -5,7 +5,7 @@ from promptogen.model.value_formatter import Value
 from promptogen.prompt_tool.translation.dict_translator import ValueTranslator
 
 
-class ValueTranslatorInterceptor(PromptInterceptor):
+class ValueTranslationInterceptor(PromptInterceptor):
     def __init__(self, *, llm: TextLLM, from_lang: str, to_lang: str):
         self.value_translator = ValueTranslator(llm=llm)
         self.from_lang = from_lang

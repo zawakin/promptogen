@@ -21,9 +21,9 @@
 
 ## :material-book-multiple: About PromptoGen
 
-### :material-lightbulb: PromptoGen Project Vision
+### :material-lightbulb: Project Vision of PromptoGen
 
-**"Achieving efficient and extensible communication with Large Language Models (LLM)"**
+**"Achieving efficient and expandable communication with Large Language Models (LLM)"**
 
 1. **Seamless Conversion between LLM I/O and Python Objects**: Facilitate natural and efficient communication with LLMs.
 2. **Unique Abstraction Interface**: Offer users high customizability and extensibility.
@@ -31,13 +31,15 @@
 
 ### :material-thought-bubble: Problems with Existing Libraries
 
-Other libraries: Due to often managing everything from LLM communication to text generation and parsing, the following issues arise:
+Many other LLM-related libraries frequently handle everything, from the intricate details of LLM communication to text generation and parsing. This approach leads to several challenges:
 
 1. :material-thought-bubble: **Difficulty in forming a prompt-engineering ecosystem.**
 2. :material-thought-bubble: **High dependence on LLM, making it vulnerable to LLM changes and evolution.**
 3. :material-thought-bubble: **Complex implementation with low customizability.**
 
 ### :material-check-circle: Solutions
+
+To address these challenges, PromptoGen offers the following classes and interfaces:
 
 1. :material-check-circle: **`Prompt` Data Class**: **Fostering a prompt engineering ecosystem** 
     - Defines basic LLM communication information (name, description, input/output info, template, examples).
@@ -48,14 +50,30 @@ Other libraries: Due to often managing everything from LLM communication to text
     - Generates prompt strings from `Prompt` and input.
     - Converts LLM text output to Python data structures.
 
+PromptoGen relies solely on the data class library `Pydantic`, ensuring a robust design that remains resilient to LLM advancements.
+
+By utilizing PromptoGen, **there's no longer a need to implement the processes that commonly convert between strings and Python objects without relying on LLM**.
 
 ### :material-star-shooting: Benefits for Users
+
 - :material-puzzle: **Modularity**: Freedom to combine.
 - :material-plus: **Extensibility**: Ability to add custom formatters and parsers.
 - :material-shield-half-full: **Independence**: Unaffected by new models or libraries.
 - :material-wrench: **Maintainability**: Simplified management and troubleshooting.
 - :material-clock: **Development Efficiency**: No need to change the implementation for each LLM
 
+### :material-alert: Limitations of PromptoGen
+
+PromptoGen is designed prioritizing efficiency, simplicity, and reliability. Based on this philosophy, the tool deliberately does not support the following functionalities or characteristics:
+
+1. **Direct Communication with LLM**:  
+   PromptoGen doesn't directly support LLM communication. Instead, it emphasizes supporting interfaces and data conversion to enable efficient and natural communication.
+
+2. **Integration of a Version Manager for Prompt Management**:  
+   To avoid added complexities, the tool doesn't provide features for managing prompt versions.
+
+3. **Optimization for Specific LLM Implementations**:  
+   PromptoGen is designed to remain independent of any particular LLM implementation. This ensures it can flexibly adapt to future LLM changes or developments, serving its role as an autonomous library.
 
 ## :material-laptop: Operating Environment
 
@@ -107,6 +125,20 @@ summarizer = pg.Prompt(
         )
     ],
 )
+```
+
+### Saving the Prompt
+
+```python
+summarizer.to_json_file("summarizer.json")
+```
+
+### Loading the Prompt
+
+```python
+import promptogen as pg
+
+summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
 
 ### Format your Prompt as a String
@@ -279,22 +311,6 @@ You can parse this output as:
     {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
     ```
 
-### Saving the Prompt
-
-```python
-summarizer.to_json_file("summarizer.json")
-```
-
-### Loading the Prompt
-
-```python
-import promptogen as pg
-
-summarizer = pg.Prompt.from_json_file("summarizer.json")
-```
-
-Here's the translated text in English:
-
 ### TextLLM: Flexible LLM Integration
 
 Through `pg.TextLLM`, PromptoGen achieves collaboration with a variety of large-scale language models (LLM).
@@ -356,9 +372,9 @@ Please refer to the [Quick Start Guide](getting-started/quickstart.md).
 
 Refer to [Application Examples](examples/index.md).
 
-- Auto Prompt Generation
-- LLM I/O Inferences Generation
-- ...
+- [Translation Interceptor](examples/translation-interceptor.md)
+- [Auto Prompt Generation](examples/context-qa.md)
+- [LLM I/O Inferences Generation](examples/context-qa-reasoning.md)
 
 ## Dependent Libraries
 
