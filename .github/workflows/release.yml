@@ -1,15 +1,9 @@
 name: release
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
-    paths:
-      - pyproject.toml
-      - .github/workflows/release.yml
-  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
 
 env:
   POETRY_VERSION: "1.5.1"
@@ -18,65 +12,8 @@ env:
   RELEASE_BRANCH: "main"
 
 jobs:
-  check_version:
-    runs-on: ubuntu-latest
-    outputs:
-      changed: ${{ steps.compare.outputs.changed }}
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 100
-        sparse-checkout: |
-          scripts/extract_version_by_commit.sh
-          pyproject.toml
-
-    - name: Ensure script exists
-      run: |
-        if [[ ! -f ./scripts/extract_version_by_commit.sh ]]; then
-          echo "Error: extract_version_by_commit.sh script not found!"
-          exit 1
-        fi
-
-    - name: Get Old Version
-      id: old_version
-      run: |
-        version=$(./scripts/extract_version_by_commit.sh ${{ github.event.pull_request.base.ref }} pyproject.toml)
-        if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "Error: Invalid old version format: $version"
-          exit 1
-        fi
-        echo "version=$version" >> $GITHUB_OUTPUT
-
-    - name: Get New Version
-      id: new_version
-      run: |
-        version=$(./scripts/extract_version_by_commit.sh ${{ github.event.pull_request.head.ref }} pyproject.toml)
-        if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "Error: Invalid new version format: $version"
-          exit 1
-        fi
-        echo "version=$version" >> $GITHUB_OUTPUT
-
-    - name: Compare versions
-      id: compare
-      run: |
-        echo "old_version=${{ steps.old_version.outputs.version }}"
-        echo "new_version=${{ steps.new_version.outputs.version }}"
-
-        if [ "${{ steps.old_version.outputs.version }}" != "${{ steps.new_version.outputs.version }}" ]; then
-          echo "changed=true" >> $GITHUB_OUTPUT
-        else
-          echo "changed=false" >> $GITHUB_OUTPUT
-        fi
-        cat $GITHUB_OUTPUT
-
-  if_release:
-    needs: check_version
-    if: |
-        needs.check_version.outputs.changed == 'true'
-        && github.event.pull_request.merged == true
-        && contains(github.event.pull_request.labels.*.name, 'release')
+  release:
+    if: github.repository == 'zawakin/promptogen'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -94,16 +31,19 @@ jobs:
       - name: Check Version
         id: check-version
         run: |
+          # check tag and version
+          if [ "$(echo $GITHUB_REF | cut -d'/' -f3)" != "$(poetry version --short)" ]; then
+            echo "Tag and version are not matched."
+            exit 1
+          fi
           echo version=$(poetry version --short) >> $GITHUB_OUTPUT
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "dist/*"
           token: ${{ secrets.GITHUB_TOKEN }}
-          draft: false
+          draft: true
           generateReleaseNotes: true
-          tag: v${{ steps.check-version.outputs.version }}
-          commit: ${{ env.RELEASE_BRANCH }}
       - name: Publish to PyPI
         env:
           POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}
