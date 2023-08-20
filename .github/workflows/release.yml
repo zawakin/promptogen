@@ -1,4 +1,4 @@
-name: release
+name: Release to PyPI
 
 on:
   push:
@@ -15,6 +15,7 @@ jobs:
   release:
     if: github.repository == 'zawakin/promptogen'
     runs-on: ubuntu-latest
+    environment: release
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ env.PYTHON_VERSION }}
