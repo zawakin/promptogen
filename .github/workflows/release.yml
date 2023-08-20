@@ -33,7 +33,8 @@ jobs:
         run: |
           # check tag and version
           echo $GITHUB_REF_NAME
-          if [ "$(echo $GITHUB_REF_NAME | cut -d'/' -f3)" != "$(poetry version --short)" ]; then
+          echo $(poetry version --short)
+          if [ "$(echo $GITHUB_REF_NAME | cut -d'/' -f3)" != "v$(poetry version --short)" ]; then
             echo "Tag and version are not matched."
             exit 1
           fi
