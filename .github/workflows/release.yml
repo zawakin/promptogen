@@ -22,10 +22,13 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           poetry-version: ${{ env.POETRY_VERSION }}
-          cache-key: "release-v1"
+          cache-key: "release-v2"
           install-command: |
               echo "Running core tests, installing dependencies with poetry..."
               poetry install
+
+              echo "Install poetry-dynamic-versioning"
+              poetry self add "poetry-dynamic-versioning[plugin]"
       - name: Build project for distribution
         run: poetry build
       - name: Check Version
