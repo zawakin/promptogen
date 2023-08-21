@@ -38,33 +38,39 @@
 
 ## PromptoGen: Achieving efficient and expandable communication with LLM
 
-## 🚀 Key Features:
-- **Direct LLM I/O with Python Objects**: Enhance LLM interactions.
-- **Flexible Interface**: Ensure user customizability and extensibility.
-- **Future-Ready**: Reduce dependency on LLM evolutions.
+### 🚀 Vision
+"Seamlessly bridge the gap between LLM and Python, ensuring efficient, future-ready communication."
 
-## 💡 Why Choose PromptoGen?
-- **Comparison with Other Libraries**: Some LLM libraries might be more specific to certain versions of LLM and may not be as adaptable to future updates.
-- **Our Solution**: PromptoGen introduces:
-    - `Prompt` Data Class: Standardize LLM communication.
-    - `TextLLM` Interface: Interface for LLM communication.
-    - `PromptFormatter` Interface: User-defined formatters for more flexibility.
+### 💡 Key Challenges in LLM Libraries:
+- **Lack of an ecosystem for prompt engineering**, making prompt creation and sharing difficult.
+- **Strong dependency on specific LLM versions**, making them vulnerable to LLM updates.
+- **Complex implementations**, hindering customization.
 
-Only dependent on the `Pydantic` data class library, PromptoGen streamlines the bridge between LLM strings and Python objects.
+### 🎯 Why Choose PromptoGen?
+1. **Seamless Conversion between LLM I/O and Python Objects**: Streamlining LLM interactions.
+2. **Flexible & Unique Interface**: Guaranteeing user customizability and extensibility.
+3. **Future-Proof Design**: Stay ahead with reduced dependency on LLM evolutions.
 
-## 🎉 Benefits:
-- **Modular & Extendable**: Mix and match, add custom components.
-- **Future-Proof**: Unshaken by new model updates.
-- **Maintainable & Efficient**: Easy debugging and no need for per-LLM adjustments.
+**Compared to Other Libraries**: Many are tied to specific LLM versions, lacking the adaptability that PromptoGen offers. With a dependency only on the `Pydantic` data class library, PromptoGen serves as the ideal bridge between LLM strings and Python objects.
 
-## ⚠️ What PromptoGen Doesn't Do:
-- **Direct LLM Communication**: Focuses on efficient interfacing, not direct LLM conversations.
-- **Prompt Version Management**: Keeps it simple by not adding versioning.
-- **Specific LLM Optimization**: Stays neutral to any single LLM for adaptability.
+### 🛠️ Core Features:
+- **`Prompt` Data Class**: Standardizing LLM communication and supporting prompt engineering.
+- **`TextLLM` Interface**: Independence from LLM specifics.
+- **`PromptFormatter` Interface**: High customizability for users.
 
-## 📚 Detailed Documentation
+### 🎉 Benefits:
+- 🧩 **Modular & Extendable**: Flexibly mix, match, and add custom components.
+- 🛡️ **Future-Proof**: Stand strong against new model updates.
+- 🔧 **Maintainability**: Ensuring easy debugging and minimal adjustments for different LLMs.
 
-Please refer to the [documentation](https://promptogen.zawakin.dev).
+### ⚠️ Unsupported Features:
+- **Direct LLM Communication**: We prioritize efficient interfacing over direct LLM conversations.
+- **Prompt Version Management**: To keep things streamlined, we avoid adding versioning complexities.
+- **Specific LLM Optimization**: Our focus is on adaptability across LLMs rather than optimizing for any single one.
+
+### 📚 Learn More
+Dive deep into the [documentation](https://promptogen.zawakin.dev) for a comprehensive understanding.
+
 
 ----
 

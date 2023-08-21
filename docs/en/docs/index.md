@@ -19,60 +19,40 @@
 
 ----
 
-## PromptoGen
-### :material-lightbulb: Vision
-**"Achieving efficient and extensible communication with Large Language Models (LLMs)."**
+## :material-book-multiple: PromptoGen: Bridging LLMs and Python Seamlessly.
 
-1. **Seamless data conversion between LLM and Python**
-2. **Unique abstraction interface**
-3. **Elimination of dependence on individual LLM communication**
+### :material-rocket: Vision
+**"Seamlessly bridge the gap between LLM and Python, ensuring efficient, future-ready communication."**
 
-### :material-thought-bubble: Challenges
+### :material-lightbulb: Key Challenges in LLM Libraries:
+- **Lack of an ecosystem for prompt engineering**., making prompt creation and sharing difficult.
+- **Strong dependency on specific LLM versions**, making them vulnerable to LLM updates.
+- **Complex implementations**, hindering customization.
 
-Many LLM libraries face the following issues:
+### :material-target: Why Choose PromptoGen?
+1. **Seamless Conversion between LLM I/O and Python Objects**: Streamlining LLM interactions.
+2. **Flexible & Unique Interface**: Guaranteeing user customizability and extensibility.
+3. **Future-Proof Design**: Stay ahead with reduced dependency on LLM evolutions.
 
-1. **Lack of an ecosystem for prompt engineering**
-2. **Strong dependency on individual LLM implementations, making them vulnerable to LLM changes and evolutions**
-3. **Complex implementations and challenges in customization**
+**Compared to Other Libraries**: Many are tied to specific LLM versions, lacking the adaptability that PromptoGen offers. With a dependency only on the `Pydantic` data class library, PromptoGen serves as the ideal bridge between LLM strings and Python objects.
 
-### :material-check-circle: Solution
+### :material-toolbox: Core Features:
+- **`Prompt` Data Class**: Standardizing LLM communication and supporting prompt engineering.
+- **`TextLLM` Interface**: Independence from LLM specifics.
+- **`PromptFormatter` Interface**: High customizability for users.
 
-PromptoGen offers the following features to address these challenges:
+### :material-party-popper: Benefits:
+- :material-puzzle: **Modular & Extendable**: Flexibly mix, match, and add custom components.
+- :material-shield: **Future-Proof**: Stand strong against new model updates.
+- :material-wrench: **Maintainability**: Ensuring easy debugging and minimal adjustments for different LLMs.
 
-1. **`Prompt` Data Class**: Supports the establishment of a prompt engineering ecosystem.
-2. **`TextLLM` Interface**: Ensures independence from LLM implementations.
-3. **`PromptFormatter` Interface**: Provides high customizability.
+### :material-alert: Unsupported Features:
+- **Direct LLM Communication**: We prioritize efficient interfacing over direct LLM conversations.
+- **Prompt Version Management**: To keep things streamlined, we avoid adding versioning complexities.
+- **Specific LLM Optimization**: Our focus is on adaptability across LLMs rather than optimizing for any single one.
 
-The only library PromptoGen relies on is the data class library, `Pydantic`, making it robust against the evolution of LLMs.
-
-By utilizing PromptoGen, **there's no need to implement string-to-Python object conversion processes that commonly depend on LLMs**.
-
-### :material-star-shooting: Benefits
-
-- :material-puzzle: **Modularity**: Freedom to combine
-- :material-plus: **Extensibility**: Add custom formatters or parsers
-- :material-shield-half-full: **Independence**: Unaffected by new models or libraries
-- :material-wrench: **Maintainability**: Easy management and troubleshooting
-- :material-clock: **Development Efficiency**: No need to modify implementations for each LLM
-
-## :material-alert: Unsupported Features
-
-To maximize the features of PromptoGen, the following functionalities are intentionally not supported:
-
-1. **Direct communication with LLMs**:  
-   PromptoGen doesn't support direct communication with LLMs. Instead, it emphasizes interfaces and data conversion support for natural and efficient communication.
-
-2. **Version management for prompt management**:  
-   To avoid complexity, prompt versions and their management functions are not provided.
-
-3. **Optimization for specific LLM implementations**:  
-   PromptoGen is designed to be independent of specific LLM implementations. This ensures flexibility for future LLM evolutions and changes while maintaining its role as an independent library.
-
-
-
-## More Information
-
-[About PromptoGen](getting-started/overview.md)
+### :material-library: Learn More
+Dive deep into the [About PromptoGen](getting-started/overview.md) for a comprehensive understanding.
 
 ## :material-laptop: Requirements
 
