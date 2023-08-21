@@ -53,12 +53,6 @@ $ ./scripts/lint.sh
 $ ./scripts/lint.sh --fix
 ```
 
-## ドキュメントのビルド（メンテナ向け）
-
-```bash
-$ poetry run python ./scripts/docs.py build-all
-```
-
 ## ドキュメントのプレビュー
 
 ```bash
@@ -66,3 +60,15 @@ $ poetry run python ./scripts/docs.py live <lang>
 ```
 
 `<lang>`には `ja`（日本語）または `en`（英語）を指定してください。
+
+## ドキュメントのビルド（メンテナ向け）
+
+```bash
+$ poetry run python ./scripts/docs.py build-all
+```
+
+## ドキュメントのサーバー起動（メンテナ向け）
+
+```bash
+$ poetry run python ./scripts/docs.py serve
+```
