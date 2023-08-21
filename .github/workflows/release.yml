@@ -48,7 +48,7 @@ jobs:
         with:
           artifacts: "dist/*"
           token: ${{ secrets.GITHUB_TOKEN }}
-          draft: true
+          draft: false
           generateReleaseNotes: true
       - name: Publish to PyPI
         env:
