@@ -2,7 +2,7 @@
 
 <a href="/" target="_blank"><img src="docs/en/docs/img/logo-light-mode.svg#only-light"></a>
 
-<p style="text-align: center;">
+<p align="center">
     <em>Bridging LLMs and Python Seamlessly.</em>
 </p>
 
@@ -61,6 +61,10 @@ Only dependent on the `Pydantic` data class library, PromptoGen streamlines the 
 - **Direct LLM Communication**: Focuses on efficient interfacing, not direct LLM conversations.
 - **Prompt Version Management**: Keeps it simple by not adding versioning.
 - **Specific LLM Optimization**: Stays neutral to any single LLM for adaptability.
+
+## 📚 Detailed Documentation
+
+Please refer to the [documentation](https://promptogen.zawakin.dev).
 
 ----
 

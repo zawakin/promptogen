@@ -38,4 +38,3 @@ $ poetry run python ./scripts/docs.py live <lang>
 ```
 
 For `<lang>`, specify either `ja` (Japanese) or `en` (English).
-```
