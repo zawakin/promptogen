@@ -19,50 +19,45 @@
 
 ----
 
-## :material-book-multiple: PromptoGenについて
-### :material-lightbulb: PromptoGenのプロジェクトビジョン
 
+## PromptoGen
+### :material-lightbulb: ビジョン
 **「効率的で拡張可能な、大規模言語モデル(LLM)とのコミュニケーションを実現する」**
 
-1. **LLM入出力とPythonオブジェクトのシームレスな変換**：LLMとのコミュニケーションを自然に、かつ効率的に行います。
-2. **独自の抽象化インターフェイス**：ユーザーに高いカスタマイズ性と拡張性を提供します。
-3. **LLM通信への依存性排除**：将来のLLMの進化や変更にも柔軟に対応できる堅牢なシステムを構築できるようにすることを目指します。
+1. **LLMとPython間のシームレスなデータ変換**
+2. **独自の抽象化インターフェイス**
+3. **個々のLLM通信への依存排除**
 
-### :material-thought-bubble: 解決すべき課題
+### :material-thought-bubble: 課題
 
-他のLLM関連のライブラリの多くは、**LLMとのコミュニケーションの詳細な実装からテキスト生成・パースまで担当していることが多い** です。この結果、以下のような課題が生じます。
+多くのLLMライブラリは、以下の問題を抱えています。
 
-1. :material-thought-bubble: **プロンプトエンジニアリングのエコシステムが形成されにくい**
-2. :material-thought-bubble: **LLMに強く依存しているため、LLMの変更・進化に弱い**
-3. :material-thought-bubble: **実装が複雑で、カスタマイズ性が低い**
+1. **プロンプトエンジニアリングのエコシステム不足**
+2. **個々のLLM実装に強く依存しているため、LLMの変更・進化に弱い**
+3. **実装の複雑さとカスタマイズの困難さ**
 
 ### :material-check-circle: ソリューション
 
-これらの解決すべき課題に対し、PromptoGen は以下のクラス・インターフェイスを用意しています。
+PromptoGenは以下の機能を提供して課題を解決します。
 
-1. :material-check-circle: **`Prompt`データクラス**: **プロンプトエンジニアリングのエコシステム形成**
-    - LLMコミュニケーションの基本情報定義（名前、説明、入出力情報、テンプレート、使用例）
-2. :material-check-circle: **`TextLLM`インターフェイス**: **LLM実装からの独立性確保**
-    - LLMとの通信は`TextLLM`インターフェイスを介す
-3. :material-check-circle: **`PromptFormatter`インターフェイス**: **カスタマイズ性の向上**
-    - 任意のフォーマッターを定義できる
-    - `Prompt`と入力からプロンプト文字列生成
-    - LLMテキスト出力をPythonデータ構造に変換
+1. **`Prompt`データクラス**：プロンプトエンジニアリングのエコシステム化を支援
+2. **`TextLLM`インターフェイス**：LLM実装からの独立性の確保
+3. **`PromptFormatter`インターフェイス**：高いカスタマイズ性
 
 PromptoGenの依存先ライブラリは、データクラスライブラリ`Pydantic`のみで、LLMの進化に対して堅牢な作りです。
 
 PromptoGen を活用することで、 **LLMに依存せず共通に行われる、文字列とPythonオブジェクトの変換処理を実装する必要はなくなります**。
 
-### :material-star-shooting: ユーザーにとってのメリット
+### :material-star-shooting: メリット
+
 - :material-puzzle: **モジュール性**: 組み合わせ自由
 - :material-plus: **拡張性**: 独自フォーマッターやパーサー追加可
 - :material-shield-half-full: **独立性**: 新しいモデルやライブラリの影響なし
 - :material-wrench: **メンテナンス性**: 管理やトラブルシューティングが簡単
 - :material-clock: **開発効率**: LLMごとに実装を変更する必要なし
 
-## :material-alert: PromptoGenの非対応事項
-
-PromptoGenは、効率性、シンプルさ、そして信頼性を最優先に設計されています。この哲学に基づき、以下の機能や特性は意図的にサポートしていません：
+## :material-alert: 非対応事項
+PromptoGenの特徴を最大限に活用するため、以下の機能は意図的にサポートしていません：
 
 1. **LLMとの直接通信**：  
    PromptoGenはLLMとの通信自体をサポートしません。その代わり、コミュニケーションを自然に、かつ効率的に行うためのインターフェイスやデータ変換のサポートを重視しています。
@@ -73,6 +68,10 @@ PromptoGenは、効率性、シンプルさ、そして信頼性を最優先に�
 3. **特定のLLM実装への最適化**：  
    PromptoGenは、特定のLLM実装に依存しないよう設計されています。これにより、将来のLLMの進化や変更にも柔軟に対応できるとともに、独立したライブラリとしての役割を果たします。
 
+
+## もっと詳しく
+
+[PromptoGenとは](getting-started/overview.md)を参照してください。
 
 ## :material-laptop: 動作環境
 

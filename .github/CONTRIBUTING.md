@@ -53,12 +53,6 @@ $ ./scripts/lint.sh
 $ ./scripts/lint.sh --fix
 ```
 
-## Building the Documentation (for Maintainers)
-
-```bash
-$ poetry run python ./scripts/docs.py build-all
-```
-
 ## Previewing the Documentation
 
 ```bash
@@ -66,4 +60,15 @@ $ poetry run python ./scripts/docs.py live <lang>
 ```
 
 For `<lang>`, specify either `ja` (Japanese) or `en` (English).
+
+## Building the Documentation (for Maintainers)
+
+```bash
+$ poetry run python ./scripts/docs.py build-all
+```
+
+## Serving the Documentation (for Maintainers)
+
+```bash
+$ poetry run python ./scripts/docs.py serve
 ```

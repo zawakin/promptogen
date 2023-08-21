@@ -15,9 +15,19 @@ https://python-poetry.org/docs/#installation
 ```bash
 $ git clone https://github.com/zawakin/promptogen.git
 $ cd promptogen
-$ poetry env use 3.8 # Create a virtual environment
 $ poetry install --with docs
 ```
+
+Then, `.venv` is created in the repository root directory.
+
+It is recommended to use the virtual environment created by Poetry.
+To activate the virtual environment, run the following command:
+
+```bash
+$ poetry shell
+```
+
+For more information, see https://python-poetry.org/docs/basic-usage/#activating-the-virtual-environment.
 
 ### Running Tests
 
@@ -25,10 +35,22 @@ $ poetry install --with docs
 $ ./scripts/test.sh
 ```
 
-## Building the Documentation
+### Running Tests with Coverage
 
 ```bash
-$ poetry run python ./scripts/docs.py build-all
+$ ./scripts/coverage.sh
+```
+
+### Running Lint
+
+```bash
+$ ./scripts/lint.sh
+```
+
+### Running Lint with Auto-fix
+
+```bash
+$ ./scripts/lint.sh --fix
 ```
 
 ## Previewing the Documentation
@@ -38,4 +60,15 @@ $ poetry run python ./scripts/docs.py live <lang>
 ```
 
 For `<lang>`, specify either `ja` (Japanese) or `en` (English).
+
+## Building the Documentation (for Maintainers)
+
+```bash
+$ poetry run python ./scripts/docs.py build-all
+```
+
+## Serving the Documentation (for Maintainers)
+
+```bash
+$ poetry run python ./scripts/docs.py serve
 ```
