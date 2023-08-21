@@ -69,6 +69,10 @@ PromptoGenの特徴を最大限に活用するため、以下の機能は意図�
    PromptoGenは、特定のLLM実装に依存しないよう設計されています。これにより、将来のLLMの進化や変更にも柔軟に対応できるとともに、独立したライブラリとしての役割を果たします。
 
 
+## もっと詳しく
+
+[PromptoGenとは](getting-started/overview.md)を参照してください。
+
 ## :material-laptop: 動作環境
 
 Python 3.8 以上
