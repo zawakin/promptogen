@@ -38,37 +38,37 @@
 
 ## PromptoGen: Achieving efficient and expandable communication with LLM
 
-### 🚀 Vision
-"Seamlessly bridge the gap between LLM and Python, ensuring efficient, future-ready communication."
+## 🚀 Vision
+**"Seamlessly bridge the gap between LLM and Python, ensuring efficient, future-ready communication."**
 
-### 💡 Key Challenges in LLM Libraries:
+## 💡 Key Challenges in LLM Libraries:
 - **Lack of an ecosystem for prompt engineering**, making prompt creation and sharing difficult.
 - **Strong dependency on specific LLM versions**, making them vulnerable to LLM updates.
 - **Complex implementations**, hindering customization.
 
-### 🎯 Why Choose PromptoGen?
+## 🎯 Why Choose PromptoGen?
 1. **Seamless Conversion between LLM I/O and Python Objects**: Streamlining LLM interactions.
 2. **Flexible & Unique Interface**: Guaranteeing user customizability and extensibility.
 3. **Future-Proof Design**: Stay ahead with reduced dependency on LLM evolutions.
 
 **Compared to Other Libraries**: Many are tied to specific LLM versions, lacking the adaptability that PromptoGen offers. With a dependency only on the `Pydantic` data class library, PromptoGen serves as the ideal bridge between LLM strings and Python objects.
 
-### 🛠️ Core Features:
+## 🛠️ Core Features:
 - **`Prompt` Data Class**: Standardizing LLM communication and supporting prompt engineering.
 - **`TextLLM` Interface**: Independence from LLM specifics.
 - **`PromptFormatter` Interface**: High customizability for users.
 
-### 🎉 Benefits:
+## 🎉 Benefits:
 - 🧩 **Modular & Extendable**: Flexibly mix, match, and add custom components.
 - 🛡️ **Future-Proof**: Stand strong against new model updates.
 - 🔧 **Maintainability**: Ensuring easy debugging and minimal adjustments for different LLMs.
 
-### ⚠️ Unsupported Features:
+## ⚠️ Unsupported Features:
 - **Direct LLM Communication**: We prioritize efficient interfacing over direct LLM conversations.
 - **Prompt Version Management**: To keep things streamlined, we avoid adding versioning complexities.
 - **Specific LLM Optimization**: Our focus is on adaptability across LLMs rather than optimizing for any single one.
 
-### 📚 Learn More
+## 📚 Learn More
 Dive deep into the [documentation](https://promptogen.zawakin.dev) for a comprehensive understanding.
 
 
