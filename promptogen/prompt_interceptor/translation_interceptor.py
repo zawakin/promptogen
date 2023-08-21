@@ -12,7 +12,9 @@ class ValueTranslationInterceptor(PromptInterceptor):
         self.to_lang = to_lang
 
     def before_run(self, _: Prompt, input_value: Value) -> Value:
+        """Translate the input value to the target language."""
         return self.value_translator.translate_value(input_value, self.to_lang)
 
     def after_run(self, _: Prompt, output_value: Value) -> Value:
+        """Translate the output value to the source language."""
         return self.value_translator.translate_value(output_value, self.from_lang)
