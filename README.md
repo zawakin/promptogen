@@ -1,6 +1,6 @@
 # PromptoGen
 
-<a href="/" target="_blank"><img src="docs/en/docs/img/logo-light-mode.svg#only-light"></a>
+<a href="/" target="_blank"><img src="https://promptogen.zawakin.dev/img/logo-light-mode.svg"></a>
 
 <p align="center">
     <em>Bridging LLMs and Python Seamlessly.</em>
