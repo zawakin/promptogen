@@ -6,6 +6,24 @@
     <em>Bridging LLMs and Python Seamlessly.</em>
 </p>
 
+
+
+<p align="center">
+<a href="https://github.com/zawakin/promptogen/releases" target="_blank">
+    <img src="https://img.shields.io/github/release/zawakin/promptogen" alt="Releases">
+</a>
+
+<a href="https://github.com/zawakin/promptogen/actions/workflows/test.yml?query=branch%3Amain+event%3Apush" target="_blank">
+    <img src="https://github.com/zawakin/promptogen/actions/workflows/test.yml/badge.svg" alt="Test">
+</a>
+<a href="https://pypi.org/project/promptogen" target="_blank">
+    <img src="https://img.shields.io/pypi/v/promptogen?color=%2334D058&label=pypi%20package" alt="Package version">
+</a>
+<a href="https://pypi.org/project/promptogen" target="_blank">
+    <img src="https://img.shields.io/pypi/pyversions/promptogen.svg?color=%2334D058" alt="Supported Python versions">
+</a>
+</p>
+
 ----
 
 **Documentation**: https://promptogen.zawakin.dev
