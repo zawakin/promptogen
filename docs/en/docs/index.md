@@ -32,7 +32,7 @@
 Many LLM libraries face the following issues:
 
 1. **Lack of an ecosystem for prompt engineering**
-2. **Limited adaptability to LLM changes**
+2. **Vulnerability to changes & evolution of LLM due to strong dependence**
 3. **Complex implementations and challenges in customization**
 
 ### :material-check-circle: Solution
