@@ -75,7 +75,7 @@ PromptoGen is designed prioritizing efficiency, simplicity, and reliability. Bas
 3. **Optimization for Specific LLM Implementations**:  
    PromptoGen is designed to remain independent of any particular LLM implementation. This ensures it can flexibly adapt to future LLM changes or developments, serving its role as an autonomous library.
 
-## :material-laptop: Operating Environment
+## :material-laptop: Requirements
 
 Python 3.8 or higher
 
