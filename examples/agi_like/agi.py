@@ -5,30 +5,12 @@ from examples.llm.openai_util import OpenAITextLLM
 from promptogen.model.dataclass import DataClass
 from promptogen.prompt_collection import PromptCollection, PromptCreatorPrompt
 from promptogen.prompt_collection.prompts.text_summarizer import TextSummarizerPrompt
-from promptogen.prompt_interceptor.translate_interceptor import ValueTranslatorInterceptor
+from promptogen.prompt_interceptor.translation_interceptor import ValueTranslationInterceptor
 
 formatter = pg.KeyValuePromptFormatter()
 llm = OpenAITextLLM(model="gpt-3.5-turbo")
 
-interceptors = [
-    ValueTranslatorInterceptor(llm=llm, from_lang="Japanese", to_lang="English"),
-]
-
-prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter, interceptors=interceptors)
-
-# text_summarizer = TextSummarizerPrompt()
-
-# while True:
-#     text = input("> ")
-#     resp = prompt_runner.run_prompt(
-#         text_summarizer,
-#         input_value={
-#             "text": text,
-#         },
-#     )
-#     print(resp["summary"])
-
-# exit()
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
 
 prompt_creator_prompt = PromptCreatorPrompt()
 

@@ -1,4 +1,65 @@
-このページでは、コンテキストと質問を入力として受け取り、回答を出力するプロンプトを作成する方法を説明します。
+## プロンプト自動生成
+
+
+`pg.Prompt` データクラスも `dict` で表せるので、「プロンプト説明」と「作成背景」を入力とし、プロンプトを生成させることができます。
+
+PromptoGen ではいくつか事前に定義されたプロンプトがあり、そのうちの一つである `PromptCreatorPrompt` は次のような図で表される入出力パラメータを持ちます。
+
+```mermaid
+graph TD
+    Input1("プロンプト説明(description): str") --> Function["PromptCreatorPrompt"]
+    Input2("作成背景(background): str") --> Function["PromptCreatorPrompt"]
+    Function --> Output("プロンプト: pg.Prompt")
+```
+
+### プロンプト自動生成実装例
+
+実際にプロンプト自動生成を行うコードを見てみましょう。
+
+今回は、**文脈(context)と質問(question)を入力とし、回答(answer)を出力する** というプロンプトを作成します。
+
+```mermaid
+graph TD
+    Input1("文脈(context): str") --> Function["ContextQA Prompt"]
+    Input2("質問(question): str") --> Function["ContextQA Prompt"]
+    Function --> Output("回答(answer): str")
+```
+
+```python
+import promptogen as pg
+from promptogen.prompt_collection import PromptCreatorPrompt
+
+llm = YourTextLLM(model="your-model")
+
+formatter = pg.KeyValuePromptFormatter()
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
+
+prompt_creator_prompt = PromptCreatorPrompt()
+
+def create_context_qa_prompt() -> pg.Prompt:
+    input_value = {
+        # ここでプロンプトの説明を定義
+        "description": "Answer the question for the given context.",
+        # ここでプロンプトの作成背景を定義
+        "background": "(context: str, question: str) -> (answer: str)",
+    }
+    resp = prompt_runner.run_prompt(prompt_creator_prompt, input_value=input_value)
+    return pg.Prompt.from_dict(resp["prompt"])
+
+context_qa_prompt = create_context_qa_prompt()
+
+input_value = {
+    "context": "太郎は花子に花束を渡した。",
+    "question": "太郎は誰に花束を渡した？",
+}
+output_value = prompt_runner.run_prompt(context_qa_prompt, input_value=input_value)
+print(output_value)
+```
+
+```console
+{'answer': '花子'}
+```
+
 
 ## 準備
 

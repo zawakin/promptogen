@@ -1,4 +1,63 @@
-This page explains how to create a prompt that takes a context and a question as input and outputs an answer.
+## Automatic Prompt Generation
+
+The `pg.Prompt` data class can also be represented as a `dict`. Therefore, using "prompt description" and "creation background" as inputs, it's possible to generate prompts.
+
+PromptoGen has several pre-defined prompts. One of them, `PromptCreatorPrompt`, has input/output parameters represented by the following diagram:
+
+```mermaid
+graph TD
+    Input1("Prompt Description(description): str") --> Function["PromptCreatorPrompt"]
+    Input2("Creation Background(background): str") --> Function["PromptCreatorPrompt"]
+    Function --> Output("Prompt: pg.Prompt")
+```
+
+### Automatic Prompt Generation Implementation Example
+
+Let's look at an actual code that performs automatic prompt generation.
+
+This time, we'll create a prompt that **takes a context and a question as inputs, and outputs an answer**.
+
+```mermaid
+graph TD
+    Input1("Context(context): str") --> Function["ContextQA Prompt"]
+    Input2("Question(question): str") --> Function["ContextQA Prompt"]
+    Function --> Output("Answer(answer): str")
+```
+
+```python
+import promptogen as pg
+from promptogen.prompt_collection import PromptCreatorPrompt
+
+llm = YourTextLLM(model="your-model")
+
+formatter = pg.KeyValuePromptFormatter()
+prompt_runner = pg.TextLLMPromptRunner(llm=llm, formatter=formatter)
+
+prompt_creator_prompt = PromptCreatorPrompt()
+
+def create_context_qa_prompt() -> pg.Prompt:
+    input_value = {
+        # Define the prompt description here
+        "description": "Answer the question for the given context.",
+        # Define the creation background for the prompt here
+        "background": "(context: str, question: str) -> (answer: str)",
+    }
+    resp = prompt_runner.run_prompt(prompt_creator_prompt, input_value=input_value)
+    return pg.Prompt.from_dict(resp["prompt"])
+
+context_qa_prompt = create_context_qa_prompt()
+
+input_value = {
+    "context": "Taro gave Hanako a bouquet.",
+    "question": "Who did Taro give a bouquet to?",
+}
+output_value = prompt_runner.run_prompt(context_qa_prompt, input_value=input_value)
+print(output_value)
+```
+
+```console
+{'answer': 'Hanako'}
+```
 
 ## Setup
 
