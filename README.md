@@ -44,7 +44,7 @@
 - **Future-Ready**: Reduce dependency on LLM evolutions.
 
 ## 💡 Why Choose PromptoGen?
-- **Problem with Others**: Many LLM libraries are rigid, heavily reliant on LLM specifics, and aren't user-friendly.
+- **Comparison with Other Libraries**: Some LLM libraries might be more specific to certain versions of LLM and may not be as adaptable to future updates.
 - **Our Solution**: PromptoGen introduces:
     - `Prompt` Data Class: Standardize LLM communication.
     - `TextLLM` Interface: Interface for LLM communication.
