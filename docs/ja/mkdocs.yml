@@ -3,7 +3,7 @@ site_url: https://promptogen.zawakin.dev/ja/
 repo_url: https://github.com/zawakin/promptogen
 edit_uri: edit/main/docs/ja/docs/
 nav:
-- PromptoGen: index.md
+- ホーム: index.md
 - はじめに:
   - インストール: getting-started/installation.md
   - PromptoGenとは: getting-started/overview.md
