@@ -2,6 +2,8 @@
 
 The idea for this library originated from **issues perceived while reading and utilizing various LLM-related open-source software**.
 
+**By sharing this awareness of the issue, I hope to raise a topic of discussion for the community, so that we can seek even better solutions.**
+
 ### Current Challenges with LLM Libraries (Communities)
 
 Recently, not only OpenAI's `GPT-3.5-turbo` and `gpt-4`, a multitude of LLMs have become available.
