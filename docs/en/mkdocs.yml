@@ -21,6 +21,7 @@ nav:
     - PromptRunner Interface: getting-started/prompt-runner.md
   - Concepts:
     - Concepts: concepts/concept.md
+- Motivation: motivation.md
 - Application Examples:
   - Examples: examples/index.md
   - Collaboration with LLM:

@@ -21,6 +21,7 @@ nav:
     - PromptRunnerインターフェイス: getting-started/prompt-runner.md
   - コンセプト:
     - コンセプト: concepts/concept.md
+- 動機: motivation.md
 - 応用例:
   - 応用例: examples/index.md
   - LLMとの連携:
