@@ -90,6 +90,27 @@ import promptogen as pg
 
 # How to Use
 
+## TextLLM: Flexible LLM Integration
+
+Through `pg.TextLLM`, PromptoGen achieves collaboration with a variety of large-scale language models (LLM).
+
+```python title="Implementation example of TextLLM interface"
+import promptogen as pg
+
+class YourTextLLM(pg.TextLLM):
+    def __init__(self, model: str):
+        self.model = model
+
+    def generate(self, text: str) -> str:
+        return generate_by_your_text_llm(text, self.model)
+
+text_llm = YourTextLLM(model="your-model")
+```
+
+By adopting this interface, PromptoGen can seamlessly incorporate different LLMs and their versions. Users can utilize various LLMs in a consistent manner regardless of the specific LLM.
+
+For more information, please refer to [TextLLM](https://promptogen.zawakin.dev/getting-started/text-llm).
+
 ## Creating your Prompt
 
 ```python
@@ -221,27 +242,6 @@ print(summarized_resp)
 ```console title="Console Output"
 {'summary': 'This is a summary of the text.', 'keywords': ['sample', 'text', 'summarize']}
 ```
-
-## TextLLM: Flexible LLM Integration
-
-Through `pg.TextLLM`, PromptoGen achieves collaboration with a variety of large-scale language models (LLM).
-
-```python title="Implementation example of TextLLM interface"
-import promptogen as pg
-
-class YourTextLLM(pg.TextLLM):
-    def __init__(self, model: str):
-        self.model = model
-
-    def generate(self, text: str) -> str:
-        return generate_by_your_text_llm(text, self.model)
-
-text_llm = YourTextLLM(model="your-model")
-```
-
-By adopting this interface, PromptoGen can seamlessly incorporate different LLMs and their versions. Users can utilize various LLMs in a consistent manner regardless of the specific LLM.
-
-For more information, please refer to [TextLLM](https://promptogen.zawakin.dev/getting-started/text-llm).
 
 ## PromptRunner: Execute Prompts Efficiently
 
