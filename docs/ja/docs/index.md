@@ -87,6 +87,25 @@ import promptogen as pg
 
 ## 使い方
 
+### TextLLM: 柔軟なLLM連携
+
+`pg.TextLLM`を介すことで、PromptoGenは多種多様な大規模言語モデル(LLM)との連携を実現します。
+
+```python title="TextLLMインターフェイスの実装例"
+import promptogen as pg
+
+class YourTextLLM(pg.TextLLM):
+    def __init__(self, model: str):
+        self.model = model
+
+    def generate(self, text: str) -> str:
+        return generate_by_your_text_llm(text, self.model)
+
+text_llm = YourTextLLM(model="your-model")
+```
+
+このインターフェイスの採用により、PromptoGenは異なるLLMやそのバージョンをスムーズに組み込むことが可能になります。ユーザーはLLMによらない一貫した方法で、様々なLLMを活用できるようになります。
+
 ### プロンプトの作成
 
 ```python
@@ -303,25 +322,6 @@ import promptogen as pg
 
 summarizer = pg.Prompt.from_json_file("summarizer.json")
 ```
-
-### TextLLM: 柔軟なLLM連携
-
-`pg.TextLLM`を介すことで、PromptoGenは多種多様な大規模言語モデル(LLM)との連携を実現します。
-
-```python title="TextLLMインターフェイスの実装例"
-import promptogen as pg
-
-class YourTextLLM(pg.TextLLM):
-    def __init__(self, model: str):
-        self.model = model
-
-    def generate(self, text: str) -> str:
-        return generate_by_your_text_llm(text, self.model)
-
-text_llm = YourTextLLM(model="your-model")
-```
-
-このインターフェイスの採用により、PromptoGenは異なるLLMやそのバージョンをスムーズに組み込むことが可能になります。ユーザーはLLMによらない一貫した方法で、様々なLLMを活用できるようになります。
 
 ### PromptRunner: プロンプト実行、効率的に
 
