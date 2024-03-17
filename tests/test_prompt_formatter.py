@@ -6,7 +6,7 @@ from promptogen.prompt_formatter import JsonValueFormatter, KeyValueFormatter
 
 
 @pytest.fixture
-def json_prompt_formatter():
+def json_prompt_formatter() -> PromptFormatterInterface:
     input_formatter = JsonValueFormatter(indent=None)
     output_formatter = JsonValueFormatter(indent=None)
     return PromptFormatter(input_formatter=input_formatter, output_formatter=output_formatter)
@@ -187,14 +187,14 @@ def test_prompt_formatter_parse(json_prompt_formatter: PromptFormatterInterface,
 
 
 def test_json_prompt_formatter():
-    f = JsonPromptFormatter()
+    f: PromptFormatterInterface = JsonPromptFormatter()
 
     assert type(f.input_formatter) == JsonValueFormatter
     assert type(f.output_formatter) == JsonValueFormatter
 
 
 def test_key_value_prompt_formatter():
-    f = KeyValuePromptFormatter()
+    f: PromptFormatterInterface = KeyValuePromptFormatter()
 
     assert type(f.input_formatter) == KeyValueFormatter
     assert type(f.output_formatter) == KeyValueFormatter

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import typing
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -10,20 +11,14 @@ from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 from promptogen.model.value_formatter import Value, ValueFormatter
 
 
-class PromptFormatterInterface(ABC):
+class PromptFormatterInterface(typing.Protocol):
     """Interface for formatting a prompt and parsing the output of the prompt."""
 
-    @abstractmethod
-    def format_prompt(self, prompt: Prompt, input_value: Value) -> str:
-        pass  # pragma: no cover
+    def format_prompt(self, prompt: Prompt, input_value: Value) -> str: ...
 
-    @abstractmethod
-    def format_prompt_without_input(self, prompt: Prompt) -> str:
-        pass  # pragma: no cover
+    def format_prompt_without_input(self, prompt: Prompt) -> str: ...
 
-    @abstractmethod
-    def parse(self, prompt: Prompt, output: str) -> Value:
-        pass  # pragma: no cover
+    def parse(self, prompt: Prompt, output: str) -> Value: ...
 
 
 class PromptFormatterConfig(DataClass):
@@ -40,7 +35,7 @@ class PromptFormatterConfig(DataClass):
     show_template: bool = True
 
 
-class PromptFormatter(PromptFormatterInterface):
+class PromptFormatter:
     """Format a prompt and parse the output of the prompt.
 
     Args:
@@ -149,7 +144,7 @@ Output:"""
     def _format_parameter_infos(self, parameters: List[ParameterInfo]) -> str:
         return "\n".join(f"  - {p.name}: {p.description}" for p in parameters)
 
-    def parse(self, prompt: Prompt, s: str) -> Value:
+    def parse(self, prompt: Prompt, output: str) -> Value:
         """Parse the output of the prompt.
 
         Args:
@@ -160,7 +155,7 @@ Output:"""
             Value: Parsed output.
         """
         output_keys = [(param.name, type(prompt.template.output[param.name])) for param in prompt.output_parameters]
-        return self.output_formatter.parse(output_keys, s)
+        return self.output_formatter.parse(output_keys, output)
 
 
 def convert_dataclass_to_dict(value: Value) -> Value:

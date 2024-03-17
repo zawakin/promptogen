@@ -10,6 +10,7 @@ from promptogen.prompt_collection.prompts.text_summarizer import TextSummarizerP
 
 from promptogen.prompt_formatter import JsonValueFormatter, KeyValueFormatter
 from promptogen.prompt_formatter.key_value_formatter import KeyValuePromptFormatter
+from promptogen.prompt_formatter.prompt_formatter import PromptFormatterInterface
 from promptogen.prompt_interceptor.translation_interceptor import ValueTranslationInterceptor
 
 
@@ -32,7 +33,7 @@ def output_keys() -> List[Tuple[str, type]]:
 
 def test_llm_prompt_runner_run_prompt():
     prompt = TextSummarizerPrompt()
-    formatter = KeyValuePromptFormatter()
+    formatter: PromptFormatterInterface = KeyValuePromptFormatter()
     llm: TextLLM = FunctionBasedTextLLM(lambda _: 'summary: sample response returned by the LLM')
     prompt_runner = TextLLMPromptRunner(llm=llm, formatter=formatter)
 
