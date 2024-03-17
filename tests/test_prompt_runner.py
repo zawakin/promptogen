@@ -1,7 +1,7 @@
 from typing import List, Tuple
 from pydantic import BaseModel
 import pytest
-from promptogen.model.llm import FunctionBasedTextLLM
+from promptogen.model.llm import FunctionBasedTextLLM, TextLLM
 from promptogen.model.prompt import Prompt
 from promptogen.model.prompt_interceptor import PromptInterceptor
 from promptogen.model.prompt_runner import TextLLMPromptRunner
@@ -33,7 +33,7 @@ def output_keys() -> List[Tuple[str, type]]:
 def test_llm_prompt_runner_run_prompt():
     prompt = TextSummarizerPrompt()
     formatter = KeyValuePromptFormatter()
-    llm = FunctionBasedTextLLM(lambda _: 'summary: sample response returned by the LLM')
+    llm: TextLLM = FunctionBasedTextLLM(lambda _: 'summary: sample response returned by the LLM')
     prompt_runner = TextLLMPromptRunner(llm=llm, formatter=formatter)
 
     resp = prompt_runner.run_prompt(prompt, {
@@ -46,7 +46,7 @@ def test_llm_prompt_runner_run_prompt():
 def test_llm_prompt_runner_run_prompt_interceptors():
     prompt = TextSummarizerPrompt()
     formatter = KeyValuePromptFormatter()
-    llm = FunctionBasedTextLLM(lambda _: 'summary: sample response returned by the LLM')
+    llm: TextLLM = FunctionBasedTextLLM(lambda _: 'summary: sample response returned by the LLM')
 
     class TestInterceptor(PromptInterceptor):
         def before_run(self, _: Prompt, input_value: Value) -> Value:

@@ -1,7 +1,7 @@
 from typing import List, Tuple
 from pydantic import BaseModel
 import pytest
-from promptogen.model.llm import FunctionBasedTextLLM
+from promptogen.model.llm import FunctionBasedTextLLM, TextLLM
 from promptogen.model.prompt import create_sample_prompt
 from promptogen.model.prompt_runner import TextLLMPromptRunner
 from promptogen.prompt_collection.prompts.text_summarizer import TextSummarizerPrompt
@@ -33,7 +33,7 @@ def test_value_translation_interceptor_before_run():
     ```"""
         raise Exception(f"Unexpected input: {s}")
 
-    llm = FunctionBasedTextLLM(llm_func)
+    llm: TextLLM = FunctionBasedTextLLM(llm_func)
     interceptor = ValueTranslationInterceptor(llm=llm, from_lang="Japanese", to_lang="English")
     resp = interceptor.before_run(prompt, {
         'text': 'input text',
