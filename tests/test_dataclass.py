@@ -23,7 +23,7 @@ def test_dataclass_to_dict(dataclass: DataClass):
 
 
 def test_dataclass_copy(dataclass: DataClass):
-    assert dataclass.copy() == dataclass
+    assert dataclass.copy_me() == dataclass
 
 
 def test_dataclass_update(dataclass: DataClass):

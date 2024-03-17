@@ -10,7 +10,9 @@ from promptogen.prompt_collection.prompts.text_categorizer import TextCategorize
 
 class PromptCreatorPrompt(Prompt):
     name: str = "PromptCreator"
-    description: str = "Create a prompt from the given description and background. Use the given description as the prompt description as is. Consider background information to make the prompt more specific."
+    description: str = (
+        "Create a prompt from the given description and background. Use the given description as the prompt description as is. Consider background information to make the prompt more specific."
+    )
     input_parameters: List[ParameterInfo] = [
         ParameterInfo(
             name="description",

@@ -92,7 +92,7 @@ class Prompt(DataClass):
         Returns:
             A copy of the prompt with the input parameter renamed.
         """
-        input_parameters = [param.copy() for param in self.input_parameters]
+        input_parameters = [param.copy_me() for param in self.input_parameters]
         # find the parameter
         found = False
         index = -1
@@ -106,13 +106,13 @@ class Prompt(DataClass):
         input_parameters[index].name = new_name
 
         # rename in template
-        template = self.template.copy()
+        template = self.template.copy_me()
         template.input[new_name] = template.input.pop(old_name)
 
         # rename in examples
         examples = []
         for example in self.examples:
-            example = example.copy()
+            example = example.copy_me()
             example.input[new_name] = example.input.pop(old_name)
             examples.append(example)
 
@@ -132,7 +132,7 @@ class Prompt(DataClass):
         Returns:
             A copy of the prompt with the output parameter renamed.
         """
-        output_parameters = [param.copy() for param in self.output_parameters]
+        output_parameters = [param.copy_me() for param in self.output_parameters]
 
         # find the parameter
         found = False
@@ -147,13 +147,13 @@ class Prompt(DataClass):
         output_parameters[index].name = new_name
 
         # rename in template
-        template = self.template.copy()
+        template = self.template.copy_me()
         template.output[new_name] = template.output.pop(old_name)
 
         # rename in examples
         examples = []
         for example in self.examples:
-            example = example.copy()
+            example = example.copy_me()
             example.output[new_name] = example.output.pop(old_name)
             examples.append(example)
 

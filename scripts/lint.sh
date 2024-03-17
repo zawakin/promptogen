@@ -26,7 +26,7 @@ fi
 echo "Linting ${TARGET_DIRS}"
 
 poetry run flake8 ${TARGET_DIRS}
-poetry run mypy ${TARGET_DIRS}
+poetry run mypy ${TARGET_DIRS} --no-namespace-packages
 
 if $FIX; then
     poetry run black ${TARGET_DIRS}

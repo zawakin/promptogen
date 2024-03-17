@@ -17,7 +17,9 @@ class OptimizePromptOutput(DataClass):
 
 class PromptOptimizerPrompt(Prompt):
     name: str = "PromptOptimizer"
-    description: str = "You are an advanced AI assistant and your goal is to optimize a given prompt. You need to focus on improving the prompt title, description, and the number and description of input parameters. You may feel free to add or change any input or output parameters that are necessary to express the purpose of the prompt."
+    description: str = (
+        "You are an advanced AI assistant and your goal is to optimize a given prompt. You need to focus on improving the prompt title, description, and the number and description of input parameters. You may feel free to add or change any input or output parameters that are necessary to express the purpose of the prompt."
+    )
     input_parameters: List[ParameterInfo] = [
         ParameterInfo(name="original_prompt", description="original prompt"),
         ParameterInfo(name="background", description="background of the prompt"),
