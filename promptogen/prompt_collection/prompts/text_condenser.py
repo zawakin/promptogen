@@ -7,7 +7,9 @@ from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 
 class TextCondenserPrompt(Prompt):
     name: str = "TextCondenser"
-    description: str = "Given a long sentence and some information, remove the parts that are irrelevant to the specified information. However, be careful not to drop more information than necessary. (Please output as is not only the parts that are clearly related, but also the parts that may be related."
+    description: str = (
+        "Given a long sentence and some information, remove the parts that are irrelevant to the specified information. However, be careful not to drop more information than necessary. (Please output as is not only the parts that are clearly related, but also the parts that may be related."
+    )
     input_parameters: List[ParameterInfo] = [
         ParameterInfo(
             name="information", description="The information that needs to be preserved in the condensed text"

@@ -25,7 +25,7 @@ class DataClass(BaseModel):
         """
         return super().model_dump()
 
-    def copy(self: Model) -> Model:
+    def copy_me(self: Model) -> Model:
         """Create a copy of the dataclass.
 
         Returns:

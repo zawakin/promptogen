@@ -10,7 +10,9 @@ from promptogen.prompt_collection.prompts.text_categorizer import TextCategorize
 
 class ExampleCreatorPrompt(Prompt):
     name: str = "PromptExampleCreator"
-    description: str = "Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space."
+    description: str = (
+        "Create an random-like example from the given prompt. Please add examples with scattered inputs and outputs in semantic space."
+    )
     input_parameters: List[ParameterInfo] = [
         ParameterInfo(
             name="prompt",
