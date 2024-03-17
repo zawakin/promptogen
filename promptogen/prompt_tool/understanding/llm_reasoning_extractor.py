@@ -6,7 +6,11 @@ from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 from promptogen.model.prompt_transformer import PromptTransformer
 from promptogen.model.reasoning_extractor import ExampleReasoning, ReasoningExtractor
 from promptogen.prompt_formatter.key_value_formatter import KeyValueFormatter
-from promptogen.prompt_formatter.prompt_formatter import PromptFormatter, PromptFormatterConfig
+from promptogen.prompt_formatter.prompt_formatter import (
+    PromptFormatter,
+    PromptFormatterConfig,
+    PromptFormatterInterface,
+)
 from promptogen.prompt_formatter.text_formatter import TextValueFormatter
 
 DEFAULT_REASONING_TEMPLATE = """This is because ... So the answer is ..."""
@@ -99,7 +103,7 @@ class TextLLMReasoningExtractor(ReasoningExtractor):
             show_formatter_description=False,
             show_parameter_info=False,
         )
-        f = PromptFormatter(
+        f: PromptFormatterInterface = PromptFormatter(
             input_formatter=KeyValueFormatter(), output_formatter=TextValueFormatter("reasoning"), config=config
         )
         reasoning_prompt = transformer.transform_prompt(prompt)

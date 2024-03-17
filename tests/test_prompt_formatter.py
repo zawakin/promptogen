@@ -2,13 +2,14 @@ import pytest
 from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 
 from promptogen import JsonPromptFormatter, KeyValuePromptFormatter, PromptFormatter, PromptFormatterInterface
+from promptogen.model.value_formatter import ValueFormatter
 from promptogen.prompt_formatter import JsonValueFormatter, KeyValueFormatter
 
 
 @pytest.fixture
-def json_prompt_formatter():
-    input_formatter = JsonValueFormatter(indent=None)
-    output_formatter = JsonValueFormatter(indent=None)
+def json_prompt_formatter() -> PromptFormatterInterface:
+    input_formatter: ValueFormatter = JsonValueFormatter(indent=None)
+    output_formatter: ValueFormatter = JsonValueFormatter(indent=None)
     return PromptFormatter(input_formatter=input_formatter, output_formatter=output_formatter)
 
 
@@ -57,19 +58,6 @@ def prompt():
                 },
             ),
         ])
-
-
-def test_prompt_formatter_init_invalid():
-    input_formatter = JsonValueFormatter()
-    output_formatter = JsonValueFormatter(indent=None)
-    with pytest.raises(TypeError):
-        PromptFormatter(input_formatter=object(), output_formatter=object()) # type: ignore
-
-    with pytest.raises(TypeError):
-        PromptFormatter(input_formatter=input_formatter, output_formatter=object()) # type: ignore
-
-    with pytest.raises(TypeError):
-        PromptFormatter(input_formatter=object(), output_formatter=output_formatter) # type: ignore
 
 
 def test_prompt_formatter_format_prompt(json_prompt_formatter: PromptFormatterInterface, prompt: Prompt):
@@ -187,14 +175,14 @@ def test_prompt_formatter_parse(json_prompt_formatter: PromptFormatterInterface,
 
 
 def test_json_prompt_formatter():
-    f = JsonPromptFormatter()
+    f: PromptFormatterInterface = JsonPromptFormatter()
 
     assert type(f.input_formatter) == JsonValueFormatter
     assert type(f.output_formatter) == JsonValueFormatter
 
 
 def test_key_value_prompt_formatter():
-    f = KeyValuePromptFormatter()
+    f: PromptFormatterInterface = KeyValuePromptFormatter()
 
     assert type(f.input_formatter) == KeyValueFormatter
     assert type(f.output_formatter) == KeyValueFormatter

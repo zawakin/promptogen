@@ -34,7 +34,7 @@ class KeyValuePromptFormatter(PromptFormatter):
         )
 
 
-class KeyValueFormatter(ValueFormatter):
+class KeyValueFormatter:
     """Format a value as a key-value pair.
 
     The value is formatted as a string using the given value_formatter.
@@ -81,7 +81,7 @@ class KeyValueFormatter(ValueFormatter):
 
         return s.strip()
 
-    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> Value:
+    def parse(self, key_types: List[Tuple[str, type]], output: str) -> Value:
         """Parse the given output as a key-value pair.
 
         Args:
@@ -94,13 +94,13 @@ class KeyValueFormatter(ValueFormatter):
         if not isinstance(output, str):
             raise TypeError(f"Expected s to be a str, got {type(output).__name__}.")
 
-        if len(output_keys) == 0:
+        if len(key_types) == 0:
             raise ValueError("Expected output_keys to have at least one key.")
 
         result = {}
 
-        for idx, (key, key_type) in enumerate(output_keys):
-            next_key = output_keys[idx + 1][0] if idx + 1 < len(output_keys) else None
+        for idx, (key, key_type) in enumerate(key_types):
+            next_key = key_types[idx + 1][0] if idx + 1 < len(key_types) else None
             if next_key:
                 pattern = re.compile(f"{key}:.*?(?={next_key}:)", re.MULTILINE | re.DOTALL)
             else:

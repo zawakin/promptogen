@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+import typing
 from typing import Any, Dict, List, Tuple
 
 from typing_extensions import TypeAlias
@@ -8,15 +8,9 @@ from typing_extensions import TypeAlias
 Value: TypeAlias = Dict[str, Any]
 
 
-class ValueFormatter(ABC):
-    @abstractmethod
-    def description(self) -> str:
-        pass  # pragma: no cover
+class ValueFormatter(typing.Protocol):
+    def description(self) -> str: ...
 
-    @abstractmethod
-    def format(self, value: Value) -> str:
-        pass  # pragma: no cover
+    def format(self, value: Value) -> str: ...
 
-    @abstractmethod
-    def parse(self, key_types: List[Tuple[str, type]], s: str) -> Value:
-        pass  # pragma: no cover
+    def parse(self, key_types: List[Tuple[str, type]], output: str) -> Value: ...

@@ -16,7 +16,7 @@ class JsonPromptFormatter(PromptFormatter):
         )
 
 
-class JsonValueFormatter(ValueFormatter):
+class JsonValueFormatter:
     """The json output formatter.
 
     Args:
@@ -56,7 +56,7 @@ Be careful with the order of brackets in the json."""
 
         return with_code_block("json", json.dumps(value, ensure_ascii=False, indent=self.indent))
 
-    def parse(self, output_keys: List[Tuple[str, type]], output: str) -> Value:
+    def parse(self, key_types: List[Tuple[str, type]], output: str) -> Value:
         output = output.strip()
 
         if self.strict:
@@ -67,7 +67,7 @@ Be careful with the order of brackets in the json."""
 
         resp = json.loads(remove_code_block("json", output))
 
-        for key, _ in output_keys:
+        for key, _ in key_types:
             if key not in resp:
                 raise ValueError(f"Expected output to have key {key}.")
 

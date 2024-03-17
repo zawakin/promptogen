@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pytest
-from promptogen.model.llm import FunctionBasedTextLLM
+from promptogen.model.llm import FunctionBasedTextLLM, TextLLM
 from promptogen.model.prompt import IOExample, ParameterInfo, Prompt
 from promptogen.model.reasoning_extractor import ExampleReasoning
 from promptogen.prompt_tool.transformation.prompt_with_reasoning import PromptWithReasoningTransformer
@@ -93,7 +93,7 @@ test output parameter name 2: "output2"
 Output:"""
 
         return generated_reasoning
-    llm = FunctionBasedTextLLM(generate_text_by_text=generate_llm_response)
+    llm: TextLLM = FunctionBasedTextLLM(generate_text_by_text=generate_llm_response)
 
     explanation_generator = TextLLMReasoningExtractor(text_llm=llm, reasoning_template=explanation_template)
 
@@ -116,7 +116,7 @@ def test_reasoning_prompt_transformer_transform_prompt(prompt: Prompt):
     def generate_llm_response(s: str):
         return generated_reasoning
 
-    text_llm = FunctionBasedTextLLM(generate_text_by_text=generate_llm_response)
+    text_llm: TextLLM = FunctionBasedTextLLM(generate_text_by_text=generate_llm_response)
 
     reasoning_extractor = TextLLMReasoningExtractor(text_llm=text_llm, reasoning_template=reasoning_template)
     prompt_transformer = PromptWithReasoningTransformer(reasoning_extractor=reasoning_extractor)

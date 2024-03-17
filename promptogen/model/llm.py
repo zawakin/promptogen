@@ -1,29 +1,26 @@
-from abc import ABC, abstractmethod
-from typing import Callable
+import typing
 
 
-class LLM(ABC):
+class LLM(typing.Protocol):
     """Language model interface."""
 
     pass  # pragma: no cover
 
 
-class TextLLM(LLM, ABC):
+class TextLLM(typing.Protocol):
     """Language model interface that generates text from text."""
 
-    @abstractmethod
-    def generate(self, input_text: str) -> str:
-        pass  # pragma: no cover
+    def generate(self, input_text: str) -> str: ...
 
 
-class FunctionBasedTextLLM(TextLLM):
+class FunctionBasedTextLLM:
     """Text-based language model wrapper.
     It wraps a function that generates text by the given text.
     """
 
-    _gen: Callable[[str], str]
+    _gen: typing.Callable[[str], str]
 
-    def __init__(self, generate_text_by_text: Callable[[str], str]):
+    def __init__(self, generate_text_by_text: typing.Callable[[str], str]):
         """Initialize a TextBasedLLMWrapper.
 
         Args:
