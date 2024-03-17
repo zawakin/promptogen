@@ -1,9 +1,9 @@
 from typing import List, Tuple
 
-from promptogen.model.value_formatter import Value, ValueFormatter
+from promptogen.model.value_formatter import Value
 
 
-class TextValueFormatter(ValueFormatter):
+class TextValueFormatter:
     """Format the output as text by using the given key.
     The other parameters are ignored.
 

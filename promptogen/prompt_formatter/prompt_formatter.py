@@ -58,15 +58,6 @@ class PromptFormatter:
         output_formatter: ValueFormatter,
         config: PromptFormatterConfig = PromptFormatterConfig(),
     ):
-        if not isinstance(input_formatter, ValueFormatter):
-            raise TypeError(
-                f"input_formatter must be an instance of ValueFormatter, got {type(input_formatter).__name__}."
-            )
-        if not isinstance(output_formatter, ValueFormatter):
-            raise TypeError(
-                f"output_formatter must be an instance of OutputFormatter, got {type(output_formatter).__name__}."
-            )
-
         self.input_formatter = input_formatter
         self.output_formatter = output_formatter
         self.config = config
